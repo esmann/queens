@@ -30,3 +30,11 @@
 
     * Sidste frist for aflevering af rapporten 13. juni 2007
     * Fremlæggelse af projekt (eksamen) 27.-28. juni 2007 
+
+
+
+= Links =
+
+En rigtig god forklaring når man bruger bitpatterns:
+
+http://www.cl.cam.ac.uk/~mr10/backtrk.pdf
