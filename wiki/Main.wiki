@@ -3,10 +3,10 @@
 = Tidsplan =
 
     * Ordentligt kendskab til MiG (oneclick) 1 uge
-          o Simpelt javaprogram (ikke nqueen) - parallelt på oneclick
+          o ~~Simpelt javaprogram (ikke nqueen) - parallelt på oneclick~~
           o Rapport -> overblik over OneClick/MiG
     * Forstå algoritmen
-          o Gennemgang af algoritmen 1 uge
+          o ~~Gennemgang af algoritmen~~ 1 uge
           o Rapport 1 uge
     * Java og store tal > 2^64? (BigInt)
           o analyse af hvor stort problemet bliver???? (Kan vi?)
@@ -14,11 +14,9 @@
     * Simpel oversættelse til java (ikke-parallel) således at det virker på OneClick. (1 uge)
     * Analyse af parallellisering af algoritmen
           o Litteratur om dette (1-2 uger)
-          o
-
           o Antal delproblemer <-> Størrelse på et enkelt problem (Er der en optimal opdeling?)
     * Implementation af den parralleliserede algoritme
-          o Kod anden udgav
+          o Kode til en parrelleliseret 2. udgave
     * Test/Benchmark (n>20?)
           o Test af korrekthed (for f.eks. n=20)
           o Hastighed af dette
