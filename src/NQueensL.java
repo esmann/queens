@@ -1,6 +1,6 @@
 public class NQueensL
 {
-	public static void NQueensL(int size)
+	public static void NQueensL(int size)//{{{
 	{
 		int bit;
 		/*Initialize*/
@@ -17,6 +17,7 @@ public class NQueensL
 		for(Globals.Bound1=2; Globals.Bound1<Globals.SizeE; Globals.Bound1++)
 		{
 			Globals.Board.SetBoard(1, bit = 1 << Globals.Bound1);
+			// Her skal Bound1 gives med som argument saa man kan lave alle kaldene i for loopet parallelt. 
 			BackTrack1(2, (2 | bit)  << 1, 1 | bit, bit >> 1);
 		}
 
@@ -29,6 +30,7 @@ public class NQueensL
 			Globals.Board.Board2 = Globals.Bound2;
 			bit = 1 << Globals.Bound1;
 			Globals.Board.SetBoard(0, bit);
+			// Her skal Bound1, Bound2 og Board med som argument
 			BackTrack2(1, bit<<1, bit, bit>>1);
 			Globals.LastMask |= Globals.LastMask >> 1 | Globals.LastMask << 1;
 			Globals.EndBit >>= 1;
@@ -38,18 +40,22 @@ public class NQueensL
 		Globals.Unique = Globals.Count8 + Globals.Count4 + Globals.Count2;
 		Globals.Total = Globals.Count8*8 + Globals.Count4*4 + Globals.Count2*2;
 
-	}
+	}//}}}
 
-	public static void BackTrack1(int y, int left, int down, int right)
+	public static void BackTrack1(int y, int left, int down, int right)//{{{
 	{
 		int bitmap, bit;
-
+		
+		//Mask bliver brugt til at fjerne muligheden for spejlinger (?)
+		//left, down, right er de steder hvor der ikke kan staa noget (ie der staar allerede noget og spaerrer)
+		//bitmap er de mulige pladser vi har til raadighed
 		bitmap = Globals.Mask & ~(left|down|right);
 		if(y==Globals.SizeE)
 		{
 			if(bitmap !=0) 
 			{
-				Globals.Board.SetBoard(y, bitmap);
+				//Board bliver her kun brugt til display formaal!?
+				//Globals.Board.SetBoard(y, bitmap);
 				Globals.Count8++;
 			}
 		}
@@ -62,15 +68,17 @@ public class NQueensL
 			}
 			while(bitmap !=0) 
 			{
+				// Vi fjerner et 1-tal hver gang
 				bit = -bitmap & bitmap;
-				Globals.Board.SetBoard(y, bit);
-				bitmap ^= Globals.Board.GetBoard(y);
+				//Board bliver her kun brugt til display formaal!?
+				//Globals.Board.SetBoard(y, bit);
+				bitmap ^= bit;//Globals.Board.GetBoard(y);
 				BackTrack1(y+1, (left|bit) << 1, down | bit, (right | bit) >> 1);
 			}
 		}		
-	}
+	}//}}}
 
-	public static void BackTrack2(int y, int left, int down, int right)
+	public static void BackTrack2(int y, int left, int down, int right)//{{{
 	{
 		int bitmap;
 		int bit;
@@ -83,6 +91,7 @@ public class NQueensL
 				if((bitmap & Globals.LastMask) == 0)
 				{
 					Globals.Board.SetBoard(y, bitmap);
+					//Her skal Board med som argument
 					Check();
 				}
 			}
@@ -107,9 +116,9 @@ public class NQueensL
 				BackTrack2(y+1, (left | bit) << 1, down | bit, (right | bit) >> 1);
 			}
 		}
-	}
+	}//}}}
 
-	public static void Check()
+	public static void Check()//{{{
 	{
 		int own, you, bit, ptn;
 
@@ -170,9 +179,9 @@ public class NQueensL
 		}
 		Globals.Count8++;
 
-	}
+	}//}}}
 
-	public static void main(String [] args)
+	public static void main(String [] args)//{{{
 	{
 		long starttime;
 		long stoptime;
@@ -183,5 +192,5 @@ public class NQueensL
 				stoptime = System.currentTimeMillis();
 				System.out.println(Globals.Size + ": " + Globals.Total + " " + Globals.Unique + " " + (stoptime-starttime)/1000 + " seconds (" + Globals.Count2 + ", " + Globals.Count4 + ", " + Globals.Count8 + ")");
 		}
-	}
+	}//}}}
 }
