@@ -1,6 +1,5 @@
 public class NQueensL
 {
-	
 	public static void NQueensL(int size)
 	{
 		int bit;
@@ -184,79 +183,5 @@ public class NQueensL
 				stoptime = System.currentTimeMillis();
 				System.out.println(Globals.Size + ": " + Globals.Total + " " + Globals.Unique + " " + (stoptime-starttime)/1000 + " seconds (" + Globals.Count2 + ", " + Globals.Count4 + ", " + Globals.Count8 + ")");
 		}
-	}
-}
-
-class Globals
-{
-	public static int Size = 8;
-	public static int SizeE;
-	public static int Mask;
-	public static int TopBit;
-	public static int SideMask;
-	public static int LastMask;
-	public static int EndBit;
-	public static Board Board = new Board(); 
-	public static int Bound1;
-	public static int Bound2;
-
-	// Should be changed to BigInteger at some point
-	public static int Count8;
-	public static int Count4;
-	public static int Count2;
-	public static int Total;
-	public static int Unique;
-}
-
-class Board
-{
-
-	private static int[] Board = new int[30];
-	public static int BoardE;
-	public static int Board1;
-	public static int Board2;
-
-	public static void Board()
-	{
-	}
-
-	public static int GetBoard(int index)
-	{
-		return Board[index];
-	}
-	
-	public static void SetBoard(int index, int value)
-	{
-		Board[index] = value;
-	}
-
-	public static int GetBoardE(int index)
-	{
-		return Board[BoardE+index];
-	}
-	
-	public static void SetBoardE(int index, int value)
-	{
-		Board[BoardE+index] = value;
-	}
-
-	public static int GetBoard1(int index)
-	{
-		return Board[Board1+index];
-	}
-	
-	public static void SetBoard1(int index, int value)
-	{
-		Board[Board1+index] = value;
-	}
-
-	public static int GetBoard2(int index)
-	{
-		return Board[Board2+index];
-	}
-	
-	public static void SetBoard2(int index, int value)
-	{
-		Board[Board2+index] = value;
 	}
 }
