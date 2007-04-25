@@ -61,10 +61,15 @@ public class NQueensL
 		}
 		else
 		{
+			// Begrænsninger af løsninger, bound1 bliver sat i 
+			// anden iteration (første iteration sætter droningen i hjørnet)
+			
 			if(y < Globals.Bound1)
 			{
-				bitmap |= 2;
+				bitmap |= 2; 
+				// 
 				bitmap ^= 2;
+				//
 			}
 			while(bitmap !=0) 
 			{
@@ -73,6 +78,7 @@ public class NQueensL
 				//Board bliver her kun brugt til display formaal!?
 				//Globals.Board.SetBoard(y, bit);
 				bitmap ^= bit;//Globals.Board.GetBoard(y);
+				
 				BackTrack1(y+1, (left|bit) << 1, down | bit, (right | bit) >> 1);
 			}
 		}		
