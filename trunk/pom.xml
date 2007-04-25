@@ -28,23 +28,9 @@
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
           <archive>
-            <!--
-            <index>true</true>
-            -->
             <manifest>
               <mainClass>NQueensL</mainClass>
-
-<!--          <packageName>com.mycompany.app</packageName>-->
-              <!-- options
-              <addClasspath>true</addClasspath>
-              <addExtensions/>
-              <classpathPrefix/>
-              -->
             </manifest>
-            <manifestEntries>
-              <mode>development</mode>
-
-            </manifestEntries>
           </archive>
         </configuration>
       </plugin>
