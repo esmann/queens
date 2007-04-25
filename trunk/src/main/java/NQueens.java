@@ -1,7 +1,7 @@
 public class NQueens extends MiG.oneclick.Job
 {
 	
-	public void NQueens(int size)
+	public void init(int size)
 	{
 		int bit;
 		/*Initialize*/
@@ -186,7 +186,7 @@ public class NQueens extends MiG.oneclick.Job
 		starttime = System.currentTimeMillis();
 		try
 		{
-		NQueens(size);
+		init(size);
 		}
 		catch(Exception e)
 		{
