@@ -5,7 +5,7 @@ import java.util.Queue;
 import java.util.Set;
 
 public class NQueenBoards {
-	static Queue<CornerBoard> boards = new LinkedList<CornerBoard>();
+	static Queue<Board2> boards = new LinkedList<Board2>();
 	private static int size;
 	private static CornerBoard cboard;
 	private static int count8;
@@ -20,8 +20,8 @@ public class NQueenBoards {
 	//	maxSteps = Integer.parseInt(args[1]);
 		
 		
-		size = 26;
-		maxSteps = 2;
+		size = 11;
+		maxSteps = 12;
 		cboard = new CornerBoard(size);
 		boards.addAll(
 					cboard.init()
@@ -43,9 +43,9 @@ public class NQueenBoards {
 		// Dodgy code
 	
 		for (int i = 1; i <= n; i++) {
-			CornerBoard cb = boards.poll();
-			boards.addAll(cb.iterateLine());
-			System.out.println("Boards: " + boards.size());
+			Board2 board = boards.poll();
+			boards.addAll(board.iterateLine());
+			//System.out.println("Boards: " + boards.size());
 		}
 						
 		System.out.println("After step: " + steps  +"\n boards:" + boards.size());
