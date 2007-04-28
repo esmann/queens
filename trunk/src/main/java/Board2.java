@@ -10,14 +10,17 @@ public abstract class Board2 implements Cloneable {
 
 	protected int currentLine = 0; // zero indexed nxn board
 
-	private static int MASK;
+	protected static int MASK;
 
 	protected final int size;
+	
+	protected final int sizee;	
 
 	protected int nextPossible;
 
 	public Board2(int size) {
 		this.size = size;
+		this.sizee = size-1;
 		Board = new int[size];
 		MASK = (1 << size) - 1;
 	}
@@ -28,6 +31,8 @@ public abstract class Board2 implements Cloneable {
 
 	abstract boolean checkBounds();
 
+	abstract void backtrack();
+	
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		Board2 b = (Board2) super.clone();
