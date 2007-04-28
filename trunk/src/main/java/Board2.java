@@ -33,7 +33,7 @@ public abstract class Board2 implements Cloneable {
 
 	abstract void backtrack();
 	
-	abstract int getUnique();
+	abstract  int getUnique();
 
 	abstract int getTotal();
 	
@@ -73,9 +73,10 @@ public abstract class Board2 implements Cloneable {
 	public String toString() {
 		StringBuffer bout = new StringBuffer();
 
-		for (int i = 0; i <= currentLine; i++) {
-			bout.append(Integer.toBinaryString(Board[i]) + "\n");
+		for (int i = 0; i <= sizee; i++) {
+			bout.append(Integer.numberOfTrailingZeros(Board[i]) + "\n");
 		}
+		
 		return bout.toString();
 	}
 
@@ -88,22 +89,25 @@ public abstract class Board2 implements Cloneable {
 		Queue<Board2> boards = new LinkedList<Board2>();
 		try {
 			int selection;
-			int tmp = nextPossible;
+			if (!this.checkBounds())
+				return boards;
+
+			int tmp = nextPossible;						
 			while ((selection = Integer.lowestOneBit(tmp)) != 0) {
 				tmp ^= selection; // Set the selected bit to 0 in the original
 				// pattern
 				Board2 bnew = (Board2) this.clone();
 				bnew.setAndIncLine(selection);
-
+				/*
 				if (bnew.isCompleteBoard()) {
 					bnew.isSolution();
 					// FIXME we should count solutions
 					continue;
 				}
+				*/
 
 				// Bounds check might invalidate a board
-				if (!bnew.checkBounds())
-					continue;
+				
 
 				boards.add(bnew);
 			}
