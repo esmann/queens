@@ -179,4 +179,14 @@ public class MiddleBoard extends Board2 {
 		Count8++;
 
 	}
+
+	@Override
+	int getTotal() {
+		return Count2 * 2 + Count4 * 4 + Count8 *8 ;
+	}
+
+	@Override
+	int getUnique() {
+		return Count2 + Count4 + Count8;
+	}
 }

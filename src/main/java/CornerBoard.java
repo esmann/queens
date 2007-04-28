@@ -88,4 +88,14 @@ public class CornerBoard extends Board2 {
 		backtrackCorner(currentLine, leftDiagonal, horizontal, rightDiagonal);
 	}
 
+	@Override
+	int getTotal() {
+		return Count8 * 8;
+	}
+
+	@Override
+	int getUnique() {
+		return Count8;
+	}
+
 }

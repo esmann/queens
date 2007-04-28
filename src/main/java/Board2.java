@@ -33,6 +33,10 @@ public abstract class Board2 implements Cloneable {
 
 	abstract void backtrack();
 	
+	abstract int getUnique();
+
+	abstract int getTotal();
+	
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		Board2 b = (Board2) super.clone();
