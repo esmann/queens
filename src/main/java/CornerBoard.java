@@ -11,7 +11,7 @@ public class CornerBoard extends Board2 {
 	// should contain the full board along a path from root to leaf.
 
 	private int bound1 = 2;
-	private static int Count8;
+	private int Count8 = 0;
 
 	/**
 	 * Creates a new CornerBoard
@@ -28,7 +28,8 @@ public class CornerBoard extends Board2 {
 	public Collection<Board2> init() {
 		Collection<Board2> boards = new LinkedList<Board2>();
 		CornerBoard bnew;
-		for (bound1 = 2; bound1 < size - 1; bound1++) {
+		for (bound1 = 2; bound1 < sizee; bound1++) {
+			NQueenBoards.dout("" +bound1);
 			try {
 				bnew = (CornerBoard) this.clone();
 			} catch (CloneNotSupportedException e) {
@@ -41,7 +42,13 @@ public class CornerBoard extends Board2 {
 		}
 		return boards;
 	}
-
+	public String toString() {
+		
+		StringBuffer bout = new StringBuffer(super.toString());
+		bout.append("BOUND1: " + bound1);
+		bout.append("COUNT8: " + Count8);
+		return bout.toString();
+	}
 	public boolean isSolution() {
 		return ((Board[currentLine]) != 0);
 	}
@@ -60,9 +67,12 @@ public class CornerBoard extends Board2 {
 	}
 
 	public void backtrackCorner(int y, int left, int down, int right) {
+		NQueenBoards.dout("BTCORNER y: " + y);
+		
 		int bitmap, bit;
 
 		bitmap = this.MASK & ~(left | down | right);
+		NQueenBoards.dout("BTCORNER bitmap: " +  Integer.toBinaryString(bitmap));
 		if (y == size-1) {
 			if (bitmap != 0) {
 				Board[y] = bitmap;
@@ -85,6 +95,7 @@ public class CornerBoard extends Board2 {
 
 	@Override
 	void backtrack() {
+		
 		backtrackCorner(currentLine, leftDiagonal, horizontal, rightDiagonal);
 	}
 

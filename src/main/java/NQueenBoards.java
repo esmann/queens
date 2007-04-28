@@ -30,22 +30,28 @@ public class NQueenBoards {
 		// size = Integer.parseInt(args[0]);
 		// maxSteps = Integer.parseInt(args[1]);
 
-		size = 11;
+		size = 6;
 		maxSteps = 0;
-		//CornerBoard cboard = new CornerBoard(size);
-		MiddleBoard mboard = new MiddleBoard(size);
+		//CornerBoard cboard = new CornerBoard(size);		
 		//boards.addAll(cboard.init());
-		dout("After INIT #cornerboards=" + boards.size());
+		//dout("After INIT #cornerboards=" + boards.size());
+		MiddleBoard mboard = new MiddleBoard(size);
 		boards.addAll(mboard.init());
-		dout("After INIT #middleboards+cornerboards=" + boards.size());
+		dout("After INIT #middleboards=" + boards.size());
 		for (steps = 0; steps < maxSteps; steps++) {
 			iterateOnetime();
 		}
-
+		
 		for (Board2 board : boards) {
+		
+			dout("Before backtrack\n"  + board.toString());
+		
 			board.backtrack();
+			dout("After backtrack\n"  + board.toString());
 			total += board.getTotal();
+			
 			unique += board.getUnique();
+			dout("-----");
 		}
 		
 		System.out.println("\ntotal: " + total);
@@ -67,7 +73,7 @@ public class NQueenBoards {
 		for (int i = 1; i <= n; i++) {
 			Board2 board = boards.poll();
 			boards.addAll(board.iterateLine());
-			// System.out.println("Boards: " + boards.size());
+			System.out.println("Boards: " + boards.size());
 		}
 
 		System.out.println("After step: " + steps + "\n boards:"
