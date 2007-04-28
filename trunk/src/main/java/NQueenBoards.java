@@ -1,5 +1,6 @@
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
@@ -9,8 +10,10 @@ public class NQueenBoards {
 
 	private static int size;
 
-	private static int count8;
-
+	private static int total;
+	
+	private static int unique;
+	
 	private static int steps;
 
 	private static int maxSteps;
@@ -18,31 +21,43 @@ public class NQueenBoards {
 	/**
 	 * @param args
 	 */
-	public static void dout(String s){
+	public static void dout(String s) {
 		System.out.println(s);
 	}
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-	// size = Integer.parseInt(args[0]);
-	// maxSteps = Integer.parseInt(args[1]);
-		
-		
+		// size = Integer.parseInt(args[0]);
+		// maxSteps = Integer.parseInt(args[1]);
+
 		size = 11;
-		maxSteps = 4;
-		CornerBoard cboard = new CornerBoard(size);
+		maxSteps = 0;
+		//CornerBoard cboard = new CornerBoard(size);
 		MiddleBoard mboard = new MiddleBoard(size);
-		boards.addAll(cboard.init());
-		dout("After INIT #cornerboards=" +  boards.size());
+		//boards.addAll(cboard.init());
+		dout("After INIT #cornerboards=" + boards.size());
 		boards.addAll(mboard.init());
-		dout("After INIT #middleboards+cornerboards=" +  boards.size());
-	   for(steps = 0; steps < maxSteps;steps++) {
-		   iterateOnetime();
-	   }
-	   /*
+		dout("After INIT #middleboards+cornerboards=" + boards.size());
+		for (steps = 0; steps < maxSteps; steps++) {
+			iterateOnetime();
+		}
+
+		for (Board2 board : boards) {
+			board.backtrack();
+			total += board.getTotal();
+			unique += board.getUnique();
+		}
+		
+		System.out.println("\ntotal: " + total);
+		System.out.println("\nUnique: " + unique);
+		
+		
+		
+		/*
 		 * for (CornerBoard cb : boards) { System.out.println("------");
 		 * System.out.println(cb); }
 		 */
-	   
+
 	}
 
 	public static void iterateOnetime() {
