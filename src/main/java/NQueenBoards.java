@@ -1,4 +1,14 @@
 
+import java.awt.print.Printable;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.nio.CharBuffer;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -21,14 +31,39 @@ public class NQueenBoards {
 	public static void dout(String s) {
 		//System.out.println(s);
 	}
-
-	public static void main(String[] args) {
+	private static void createMRSL(String input) throws IOException  {
+		File f = new File("mrsl.TEMPLATE");
+		HashMap<String,String> vars = new HashMap<String,String>();
+		vars.put("$INPUTFILE",input);
+		StringBuffer sb = new StringBuffer();
+		BufferedReader in;
+		try {
+			in = new BufferedReader(new FileReader(f));
 		
-		size = Integer.parseInt(args[0]);
-		maxSteps = Integer.parseInt(args[1]);
+		String str;
+		
+		while ((str = in.readLine()) != null) {
+			
+			sb.append(str);			
+		}		
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String template = sb.toString();
+		
+		for (String var: vars.keySet()) {
+			template.replace(var, vars.get(var));
+		}
+		
+	}
+	public static void main(String[] args)  {
+		
+		//size = Integer.parseInt(args[0]);
+		//maxSteps = Integer.parseInt(args[1]);
 
-		//size = 10;
-		//maxSteps = 0;
+		size = 10;
+		maxSteps = 0;
 		CornerBoard cboard = new CornerBoard(size);		
 		boards.addAll(cboard.init());
 		dout("After INIT #cornerboards=" + boards.size());
@@ -39,12 +74,32 @@ public class NQueenBoards {
 			iterateOnetime();
 		}
 		
-		for (Board2 board : boards) {
+		
+		String basename = "board";
+		FileOutputStream fos;
+		ObjectOutputStream out;
+		try {
+		int count = 0;
+		for (Board2 board : boards) {			
+			fos = new FileOutputStream(basename + count++);
+			out = new ObjectOutputStream(fos);
+			out.writeObject(board);	
+		}
+		 
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		/*
+		for (Board2 board : boards) {	
 			board.backtrack();			
 			total += board.getTotal();			
 			unique += board.getUnique();
 			dout("-----");
-		}
+		}*
 		
 		System.out.println("\ntotal: " + total);
 		System.out.println("\nUnique: " + unique);
