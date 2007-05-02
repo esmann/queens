@@ -1,8 +1,11 @@
+import java.io.Serializable;
 import java.util.Collection;
+import java.util.Formattable;
+import java.util.Formatter;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public abstract class Board2 implements Cloneable {
+public abstract class Board2 implements Cloneable,Serializable {
 
 	protected int Board[];
 
@@ -36,6 +39,7 @@ public abstract class Board2 implements Cloneable {
 	abstract  int getUnique();
 
 	abstract int getTotal();
+	
 	
 	@Override
 	public Object clone() throws CloneNotSupportedException {
