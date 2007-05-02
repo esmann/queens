@@ -4,15 +4,16 @@ import java.util.LinkedList;
 public class MiddleBoard extends Board2 {
 	private static int TOPBIT;
 	private final int SIDEMASK;
-	private int BOARD1, BOARD2, LASTMASK, ENDBIT;
+	private int LASTMASK, ENDBIT;
 
 	private int bound1, bound2;
 
-	private static int Count2, Count8, Count4;
+	private int Count2, Count8, Count4;
 
 	public MiddleBoard(int size) {
 		super(size);
-		TOPBIT = 1 << size;
+		
+		TOPBIT = 1 << sizee; //size-1
 		SIDEMASK = TOPBIT | 1;
 		LASTMASK = TOPBIT | 1;
 		ENDBIT = TOPBIT >> 1;
@@ -31,7 +32,6 @@ public class MiddleBoard extends Board2 {
 				throw new InternalError(e.toString());
 			}
 			bnew.setAndIncLine(1 << bound1); // Af few more boards
-
 			boards.add(bnew);
 			LASTMASK |= LASTMASK >> 1 | LASTMASK << 1;
 			ENDBIT >>= 1;
@@ -56,9 +56,6 @@ public class MiddleBoard extends Board2 {
 	public String toString() {
 
 		StringBuffer bout = new StringBuffer(super.toString());
-		bout.append("BOUND1: " + bound1);
-		bout.append("BOUND2: " + bound2);
-		bout.append("COUNT2: " + Count2);
 		return bout.toString();
 	}
 
@@ -82,13 +79,12 @@ public class MiddleBoard extends Board2 {
 	}
 
 	public void backtrackMiddle(int y, int left, int down, int right) {
-		NQueenBoards.dout("BTCORNER y: " + y);
+	
+		
 		int bitmap;
 		int bit;
-
-		bitmap = MASK & ~(left | down | right);
 		
-		NQueenBoards.dout("BTCORNER bitmap: " +  Integer.toBinaryString(bitmap));
+		bitmap = MASK & ~(left | down | right);
 		
 		if (y == sizee) {
 			if (bitmap != 0) {
@@ -102,18 +98,21 @@ public class MiddleBoard extends Board2 {
 				bitmap |= SIDEMASK;
 				bitmap ^= SIDEMASK;
 			} else if (y == bound2) {
-				if (!((down & SIDEMASK) == 0))
-					return;				
-				if ((down & SIDEMASK) != SIDEMASK)
-					bitmap &= SIDEMASK;
+				
+				if ((down & SIDEMASK) == 0) return;
+
+				if ((down & SIDEMASK) != SIDEMASK) {					
+					bitmap &= SIDEMASK;					
+				}
 			}
-			while (bitmap != 0) {
-				bit = -bitmap & bitmap;
+			while (bitmap != 0) {		
+				bit = -bitmap & bitmap;				
 				Board[y] = bit;
 				bitmap ^= Board[y];
 				backtrackMiddle(y + 1, (left | bit) << 1, down | bit,
 						(right | bit) >> 1);
 			}
+			NQueenBoards.dout("<");			
 		}
 	}
 
@@ -124,8 +123,8 @@ public class MiddleBoard extends Board2 {
 
 	public void Check() {
 		int own, you, bit, ptn;
-
-		/* 90-degree rotation */
+		
+		/* 90-degree rotation */		
 		if (Board[bound2] == 1) {
 			for (ptn = 2, own = 1; own <= sizee; own++, ptn <<= 1) {
 				bit = 1;

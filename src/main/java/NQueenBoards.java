@@ -1,9 +1,6 @@
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
+
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Set;
 
 public class NQueenBoards {
 	static Queue<Board2> boards = new LinkedList<Board2>();
@@ -22,19 +19,19 @@ public class NQueenBoards {
 	 * @param args
 	 */
 	public static void dout(String s) {
-		System.out.println(s);
+		//System.out.println(s);
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		// size = Integer.parseInt(args[0]);
-		// maxSteps = Integer.parseInt(args[1]);
+		
+		size = Integer.parseInt(args[0]);
+		maxSteps = Integer.parseInt(args[1]);
 
-		size = 6;
-		maxSteps = 0;
-		//CornerBoard cboard = new CornerBoard(size);		
-		//boards.addAll(cboard.init());
-		//dout("After INIT #cornerboards=" + boards.size());
+		//size = 10;
+		//maxSteps = 0;
+		CornerBoard cboard = new CornerBoard(size);		
+		boards.addAll(cboard.init());
+		dout("After INIT #cornerboards=" + boards.size());
 		MiddleBoard mboard = new MiddleBoard(size);
 		boards.addAll(mboard.init());
 		dout("After INIT #middleboards=" + boards.size());
@@ -43,13 +40,8 @@ public class NQueenBoards {
 		}
 		
 		for (Board2 board : boards) {
-		
-			dout("Before backtrack\n"  + board.toString());
-		
-			board.backtrack();
-			dout("After backtrack\n"  + board.toString());
-			total += board.getTotal();
-			
+			board.backtrack();			
+			total += board.getTotal();			
 			unique += board.getUnique();
 			dout("-----");
 		}
@@ -73,7 +65,6 @@ public class NQueenBoards {
 		for (int i = 1; i <= n; i++) {
 			Board2 board = boards.poll();
 			boards.addAll(board.iterateLine());
-			System.out.println("Boards: " + boards.size());
 		}
 
 		System.out.println("After step: " + steps + "\n boards:"
