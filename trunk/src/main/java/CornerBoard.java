@@ -1,10 +1,5 @@
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Set;
 
 public class CornerBoard extends Board2 {
 	// This could be excessive storage, the recursion/iteration tree

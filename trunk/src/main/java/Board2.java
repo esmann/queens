@@ -12,9 +12,9 @@ public abstract class Board2 implements Cloneable {
 
 	protected static int MASK;
 
-	protected final int size;
+	protected static int size;
 	
-	protected final int sizee;	
+	protected static int sizee = 0;	
 
 	protected int nextPossible;
 
