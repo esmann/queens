@@ -61,7 +61,7 @@ public class NQueenBoards {
 		//size = Integer.parseInt(args[0]);
 		//maxSteps = Integer.parseInt(args[1]);
 
-		size = 10;
+		size = 9;
 		maxSteps = 0;
 		CornerBoard cboard = new CornerBoard(size);		
 		boards.addAll(cboard.init());
