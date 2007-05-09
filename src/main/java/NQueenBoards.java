@@ -42,8 +42,7 @@ public class NQueenBoards {
 		
 		String str;
 		
-		while ((str = in.readLine()) != null) {
-			
+		while ((str = in.readLine()) != null) {			
 			sb.append(str);			
 		}		
 		} catch (FileNotFoundException e) {
@@ -81,9 +80,12 @@ public class NQueenBoards {
 		try {
 		int count = 0;
 		for (Board2 board : boards) {			
-			fos = new FileOutputStream(basename + count++);
-			out = new ObjectOutputStream(fos);
+			String name = basename + count++;
+			fos = new FileOutputStream(name);
+			out = new ObjectOutputStream(fos);			
 			out.writeObject(board);	
+			createMRSL(name);
+			fos.close();
 		}
 		 
 		} catch (FileNotFoundException e) {
