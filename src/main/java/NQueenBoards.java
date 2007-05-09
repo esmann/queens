@@ -64,11 +64,11 @@ public class NQueenBoards {
 	}
 	public static void main(String[] args)  {
 		
-		//size = Integer.parseInt(args[0]);
-		//maxSteps = Integer.parseInt(args[1]);
+		size = Integer.parseInt(args[0]);
+		maxSteps = Integer.parseInt(args[1]);
 
-		size = 5;
-		maxSteps = 0;
+		//size = 5;
+		//maxSteps = 0;
 		CornerBoard cboard = new CornerBoard(size);		
 		boards.addAll(cboard.init());
 		dout("After INIT #cornerboards=" + boards.size());
