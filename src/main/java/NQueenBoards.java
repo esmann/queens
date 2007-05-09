@@ -7,7 +7,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.nio.CharBuffer;
+import java.io.PrintWriter;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -35,7 +36,7 @@ public class NQueenBoards {
 		File f = new File("mrsl.TEMPLATE");
 		HashMap<String,String> vars = new HashMap<String,String>();
 		vars.put("$INPUTFILE",input);
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		BufferedReader in;
 		try {
 			in = new BufferedReader(new FileReader(f));
@@ -43,7 +44,7 @@ public class NQueenBoards {
 		String str;
 		
 		while ((str = in.readLine()) != null) {			
-			sb.append(str);			
+			sb.append(str + "\n");			
 		}		
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -51,9 +52,14 @@ public class NQueenBoards {
 		}
 		String template = sb.toString();
 		
-		for (String var: vars.keySet()) {
-			template.replace(var, vars.get(var));
-		}
+		for (String var: vars.keySet()) {			
+			template = template.replace(var, vars.get(var));
+		}		
+		
+		PrintWriter out = new PrintWriter( new FileOutputStream(input + ".mrsl"));
+		out.write(template);
+		out.close();
+		
 		
 	}
 	public static void main(String[] args)  {
@@ -61,7 +67,7 @@ public class NQueenBoards {
 		//size = Integer.parseInt(args[0]);
 		//maxSteps = Integer.parseInt(args[1]);
 
-		size = 9;
+		size = 5;
 		maxSteps = 0;
 		CornerBoard cboard = new CornerBoard(size);		
 		boards.addAll(cboard.init());
@@ -84,8 +90,7 @@ public class NQueenBoards {
 			fos = new FileOutputStream(name);
 			out = new ObjectOutputStream(fos);			
 			out.writeObject(board);	
-			createMRSL(name);
-			fos.close();
+			createMRSL(name);		
 		}
 		 
 		} catch (FileNotFoundException e) {
