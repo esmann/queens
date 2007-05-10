@@ -35,7 +35,7 @@ public class NQueenBoards {
 	private static void createMRSL(String input) throws IOException  {
 		File f = new File("mrsl.TEMPLATE");
 		HashMap<String,String> vars = new HashMap<String,String>();
-		vars.put("$INPUTFILE",input);
+		vars.put("$INPUTFILE",input + ".obj");
 		StringBuilder sb = new StringBuilder();
 		BufferedReader in;
 		try {
@@ -67,7 +67,7 @@ public class NQueenBoards {
 		//size = Integer.parseInt(args[0]);
 		//maxSteps = Integer.parseInt(args[1]);
 
-		size = 5;
+		size = 9;
 		maxSteps = 0;
 		CornerBoard cboard = new CornerBoard(size);		
 		boards.addAll(cboard.init());
@@ -87,7 +87,7 @@ public class NQueenBoards {
 		int count = 0;
 		for (Board2 board : boards) {			
 			String name = basename + count++;
-			fos = new FileOutputStream(name);
+			fos = new FileOutputStream(name + ".obj");
 			out = new ObjectOutputStream(fos);			
 			out.writeObject(board);	
 			createMRSL(name);		

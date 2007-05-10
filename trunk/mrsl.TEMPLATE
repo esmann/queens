@@ -1,5 +1,5 @@
 ::EXECUTE::
-NQueenJob.class $INPUTFILE
+NQueenJob $INPUTFILE
 
 ::NOTIFY::
 jabber: frej@jabber.dk
@@ -9,9 +9,12 @@ jabber: frej@jabber.dk
 
 ::DISK::
 1
+
 ::CPUTIME::
 100
+
 ::RUNTIMEENVIRONMENT::
 JVM_BYTECODE
+
 ::SANDBOX::
 1
