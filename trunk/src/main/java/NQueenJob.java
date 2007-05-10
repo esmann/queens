@@ -29,6 +29,7 @@ public class NQueenJob extends Job {
                	if (infile.getMode() != File.R) {
                		throw new FileException("Could'nt open file for read: " + argv[0]);
                	}
+               	out("File opened");
                	readbuf = new byte[bufsize];
                	i=infile.read();
                 while( i!= -1 ) {
@@ -47,6 +48,7 @@ public class NQueenJob extends Job {
                 in = new ObjectInputStream(new ByteArrayInputStream(readbuf));
             	board = (Board2)in.readObject();
             	in.close();
+            	out("File read");
             	// Actual work is done in the board class :-)
                 boardtime = System.currentTimeMillis();
             	board.backtrack();

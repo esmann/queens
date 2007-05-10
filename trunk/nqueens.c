@@ -47,6 +47,7 @@ void Check(void)
         }
         if (own > BOARDE) {
             COUNT2++;
+            
             //Display();
             return;
         }
@@ -63,7 +64,7 @@ void Check(void)
         }
         if (own > BOARDE) {
             COUNT4++;
-            //Display();
+
             return;
         }
     }
@@ -78,6 +79,7 @@ void Check(void)
             if (*own < bit) break;
         }
     }
+
     COUNT8++;
     //Display();
 }
@@ -87,12 +89,13 @@ void Check(void)
 void Backtrack2(int y, int left, int down, int right)
 {
     int  bitmap, bit;
-
+                //Display();
     bitmap = MASK & ~(left | down | right);
     if (y == SIZEE) {
         if (bitmap) {
             if (!(bitmap & LASTMASK)) {
                 BOARD[y] = bitmap;
+
                 Check();
             }
         }
@@ -101,11 +104,13 @@ void Backtrack2(int y, int left, int down, int right)
             bitmap |= SIDEMASK;
             bitmap ^= SIDEMASK;
         } else if (y == BOUND2) {
-            if (!(down & SIDEMASK)) return;
+            if (!(down & SIDEMASK)) {
+              return;
+  }
             if ((down & SIDEMASK) != SIDEMASK) bitmap &= SIDEMASK;
         }
         while (bitmap) {
-            bitmap ^= BOARD[y] = bit = -bitmap & bitmap;
+            bitmap ^= BOARD[y] = bit = -bitmap & bitmap; 
             Backtrack2(y+1, (left | bit)<<1, down | bit, (right | bit)>>1);
         }
     }
@@ -121,6 +126,7 @@ void Backtrack1(int y, int left, int down, int right)
     if (y == SIZEE) {
         if (bitmap) {
             BOARD[y] = bitmap;
+
             COUNT8++;
             //Display();
         }
@@ -151,16 +157,18 @@ void NQueens(void)
 
     /* 0:000000001 */
     /* 1:011111100 */
-    BOARD[0] = 1;
+   BOARD[0] = 1;
     for (BOUND1=2; BOUND1<SIZEE; BOUND1++) {
         BOARD[1] = bit = 1 << BOUND1;
         Backtrack1(2, (2 | bit)<<1, 1 | bit, bit>>1);
     }
 
     /* 0:000001110 */
+
     SIDEMASK = LASTMASK = TOPBIT | 1;
     ENDBIT = TOPBIT >> 1;
     for (BOUND1=1,BOUND2=SIZE-2; BOUND1<BOUND2; BOUND1++,BOUND2--) {
+
         BOARD1 = &BOARD[BOUND1];
         BOARD2 = &BOARD[BOUND2];
         BOARD[0] = bit = 1 << BOUND1;
