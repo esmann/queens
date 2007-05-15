@@ -11,6 +11,7 @@ public class NQueenJob extends Job {
 
 	@Override
 	public void MiG_main(String[] argv) {
+		System.out.println("test");
 		if(argv.length > 0) {
         	String filename = argv[0];
             Board2 board = null;
@@ -22,14 +23,14 @@ public class NQueenJob extends Job {
             int i;
             int bufsize = 1000;
 			long starttime, endtime, boardtime;
-			out("starting up :-)");
+			//out("starting up :-)");
             try {
             	starttime = System.currentTimeMillis();
                	infile = this.open_file(argv[0], File.R);
                	if (infile.getMode() != File.R) {
                		throw new FileException("Could'nt open file for read: " + argv[0]);
                	}
-               	out("File opened");
+               	//out("File opened");
                	readbuf = new byte[bufsize];
                	i=infile.read();
                 while( i!= -1 ) {
@@ -48,7 +49,7 @@ public class NQueenJob extends Job {
                 in = new ObjectInputStream(new ByteArrayInputStream(readbuf));
             	board = (Board2)in.readObject();
             	in.close();
-            	out("File read");
+            	//out("File read");
             	// Actual work is done in the board class :-)
                 boardtime = System.currentTimeMillis();
             	board.backtrack();
@@ -56,9 +57,10 @@ public class NQueenJob extends Job {
                 boardtime = endtime - boardtime;
                 String total = Integer.toString(board.getTotal());
                 String unique = Integer.toString(board.getUnique());
-                
-                out(total + "\n" + unique);
-                fos = new FileOutputStream(filename + "_result");
+                String output = "\n" + filename + "\ntotal: " + total + "\nunique: " + unique;
+                System.out.println(output);
+                out(output);
+  /*              fos = new FileOutputStream(filename + "_result");
                 fos.write(total.getBytes());
                 fos.write('\n');
                 fos.write(unique.getBytes());
@@ -67,7 +69,7 @@ public class NQueenJob extends Job {
                 fos.write('\n');
                 fos.write((int)(endtime - starttime));
                 fos.close();
-                            
+    */                        
             } catch(IOException ex) {
             	ex.printStackTrace();
             } catch(ClassNotFoundException ex) {
