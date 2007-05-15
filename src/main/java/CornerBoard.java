@@ -15,9 +15,7 @@ public class CornerBoard extends Board2 {
 	 */
 	CornerBoard(int size) {
 		super(size);
-
 		setAndIncLine(1); // First queen is in right corner
-
 	}
 
 	public Collection<Board2> init() {
@@ -63,6 +61,9 @@ public class CornerBoard extends Board2 {
 
 	public void backtrackCorner(int y, int left, int down, int right) {
 		NQueenBoards.dout("BTCORNER y: " + y);
+		/*System.out.println("size: " + size);
+		System.out.println("bound1: " + bound1);
+		System.out.println("MASK: " + this.MASK);*/
 		
 		int bitmap, bit;
 
@@ -71,6 +72,7 @@ public class CornerBoard extends Board2 {
 		if (y == size-1) {
 			if (bitmap != 0) {
 				Board[y] = bitmap;
+				System.out.println("b1: " + y + ", " + left + ", " + down + ", " + right);
 				this.Count8++;
 			}
 		} else {
@@ -79,6 +81,7 @@ public class CornerBoard extends Board2 {
 				bitmap ^= 2;
 			}
 			while (bitmap != 0) {
+				//System.out.println("bitmap != 0");
 				bit = -bitmap & bitmap;
 				Board[y] = bit;
 				bitmap ^= Board[y];
@@ -90,7 +93,7 @@ public class CornerBoard extends Board2 {
 
 	@Override
 	void backtrack() {
-		
+		System.out.println("MASK: " + this.MASK);
 		backtrackCorner(currentLine, leftDiagonal, horizontal, rightDiagonal);
 	}
 
@@ -101,6 +104,7 @@ public class CornerBoard extends Board2 {
 
 	@Override
 	int getUnique() {
+		System.out.println("b1(" + Count8 + ")");
 		return Count8;
 	}
 

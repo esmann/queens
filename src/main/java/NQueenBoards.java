@@ -1,4 +1,3 @@
-
 import java.awt.print.Printable;
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,14 +16,15 @@ public class NQueenBoards {
 	static Queue<Board2> boards = new LinkedList<Board2>();
 
 	private static int size;
-
 	private static int total;
-	
 	private static int unique;
-	
 	private static int steps;
-
 	private static int maxSteps;
+	//Evuhl hack to get the applet to accept the objects..
+	/**
+	 * 
+	 */
+	static final long serialVersionUID = -2451967277903958339L;
 
 	/**
 	 * @param args
@@ -69,6 +69,7 @@ public class NQueenBoards {
 
 		size = 9;
 		maxSteps = 0;
+
 		CornerBoard cboard = new CornerBoard(size);		
 		boards.addAll(cboard.init());
 		dout("After INIT #cornerboards=" + boards.size());
@@ -90,7 +91,8 @@ public class NQueenBoards {
 			fos = new FileOutputStream(name + ".obj");
 			out = new ObjectOutputStream(fos);			
 			out.writeObject(board);	
-			createMRSL(name);		
+			createMRSL(name);
+			fos.close();
 		}
 		 
 		} catch (FileNotFoundException e) {
@@ -111,13 +113,10 @@ public class NQueenBoards {
 		System.out.println("\ntotal: " + total);
 		System.out.println("\nUnique: " + unique);
 		
-		
-		
 		/*
 		 * for (CornerBoard cb : boards) { System.out.println("------");
 		 * System.out.println(cb); }
 		 */
-
 	}
 
 	public static void iterateOnetime() {
@@ -128,10 +127,6 @@ public class NQueenBoards {
 			Board2 board = boards.poll();
 			boards.addAll(board.iterateLine());
 		}
-
-		System.out.println("After step: " + steps + "\n boards:"
-				+ boards.size());
-
+		System.out.println("After step: " + steps + "\n boards:"+ boards.size());
 	}
-
 }

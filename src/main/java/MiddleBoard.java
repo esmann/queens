@@ -2,8 +2,10 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 public class MiddleBoard extends Board2 {
-	private static int TOPBIT;
-	private final int SIDEMASK;
+	//removed static
+	private int TOPBIT;
+	//removed final
+	private int SIDEMASK;
 	private int LASTMASK, ENDBIT;
 
 	private int bound1, bound2;
@@ -80,6 +82,7 @@ public class MiddleBoard extends Board2 {
 
 	public void backtrackMiddle(int y, int left, int down, int right) {
 	
+		//System.out.println("backtrackMiddle");
 		
 		int bitmap;
 		int bit;
@@ -90,6 +93,7 @@ public class MiddleBoard extends Board2 {
 			if (bitmap != 0) {
 				if ((bitmap & LASTMASK) == 0) {
 					Board[y] = bitmap;
+					System.out.println("b2: " + y + ", " + left + ", " + down + ", " + right);
 					this.Check();
 				}
 			}
@@ -118,7 +122,8 @@ public class MiddleBoard extends Board2 {
 
 	@Override
 	void backtrack() {
-		backtrackMiddle(currentLine, leftDiagonal, horizontal, rightDiagonal);	
+		System.out.println("MASK: " + this.MASK);
+		backtrackMiddle(currentLine, leftDiagonal, horizontal, rightDiagonal);
 	}
 
 	public void Check() {
@@ -180,11 +185,12 @@ public class MiddleBoard extends Board2 {
 
 	@Override
 	int getTotal() {
-		return Count2 * 2 + Count4 * 4 + Count8 * 8;
+		return this.Count2 * 2 + this.Count4 * 4 + this.Count8 * 8;
 	}
 
 	@Override
 	int getUnique() {
-		return Count2 + Count4 + Count8;
+		System.out.println("b2(" + this.Count2 + ", " + this.Count4 + ", " + this.Count8 + ")");
+		return this.Count2 + this.Count4 + this.Count8;
 	}
 }

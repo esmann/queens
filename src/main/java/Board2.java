@@ -13,11 +13,15 @@ public abstract class Board2 implements Cloneable,Serializable {
 
 	protected int currentLine = 0; // zero indexed nxn board
 
-	protected static int MASK;
-
-	protected static int size;
-	
-	protected static int sizee = 0;	
+	//removed static
+	protected int MASK;
+	//removed static
+	protected int size;
+	//removed static
+	/**
+	 * 
+	 */
+	protected int sizee = 0;	
 
 	protected int nextPossible;
 
