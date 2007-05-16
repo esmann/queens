@@ -62,13 +62,16 @@ public class NQueenBoards {
 		
 		
 	}
+	/**
+	 * @param args
+	 */
 	public static void main(String[] args)  {
 		
 		//size = Integer.parseInt(args[0]);
 		//maxSteps = Integer.parseInt(args[1]);
 
-		size = 9;
-		maxSteps = 0;
+		size = 20;
+		maxSteps = 1;
 
 		CornerBoard cboard = new CornerBoard(size);		
 		boards.addAll(cboard.init());
@@ -87,7 +90,7 @@ public class NQueenBoards {
 		try {
 		int count = 0;
 		for (Board2 board : boards) {			
-			String name = basename + count++;
+			String name = basename + "-" + size + "-" + maxSteps + "-" + count++;
 			fos = new FileOutputStream(name + ".obj");
 			out = new ObjectOutputStream(fos);			
 			out.writeObject(board);	

@@ -11,7 +11,6 @@ public class NQueenJob extends Job {
 
 	@Override
 	public void MiG_main(String[] argv) {
-		System.out.println("test");
 		if(argv.length > 0) {
         	String filename = argv[0];
             Board2 board = null;
@@ -57,7 +56,9 @@ public class NQueenJob extends Job {
                 boardtime = endtime - boardtime;
                 String total = Integer.toString(board.getTotal());
                 String unique = Integer.toString(board.getUnique());
-                String output = "\n" + filename + "\ntotal: " + total + "\nunique: " + unique;
+                String sTime = Long.toString(endtime-starttime);
+                String sBoardTime = Long.toString(boardtime);
+                String output = "\n" + filename + "\ntotal: " + total + "\nunique: " + unique + "\nboardtime: " + sBoardTime + "\ntime: " + sTime;
                 System.out.println(output);
                 out(output);
   /*              fos = new FileOutputStream(filename + "_result");
