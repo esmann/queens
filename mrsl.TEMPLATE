@@ -1,5 +1,5 @@
 ::EXECUTE::
-NQueenJob $INPUTFILE
+NQueenJob boards/$INPUTFILE
 
 ::NOTIFY::
 jabber: frej@jabber.dk
@@ -11,7 +11,7 @@ jabber: frej@jabber.dk
 1
 
 ::CPUTIME::
-100
+100000
 
 ::RUNTIMEENVIRONMENT::
 JVM_BYTECODE
