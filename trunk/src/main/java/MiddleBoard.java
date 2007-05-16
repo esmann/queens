@@ -93,7 +93,7 @@ public class MiddleBoard extends Board2 {
 			if (bitmap != 0) {
 				if ((bitmap & LASTMASK) == 0) {
 					Board[y] = bitmap;
-					System.out.println("b2: " + y + ", " + left + ", " + down + ", " + right);
+					//System.out.println("b2: " + y + ", " + left + ", " + down + ", " + right);
 					this.Check();
 				}
 			}
@@ -122,7 +122,7 @@ public class MiddleBoard extends Board2 {
 
 	@Override
 	void backtrack() {
-		System.out.println("MASK: " + this.MASK);
+		//System.out.println("MASK: " + this.MASK);
 		backtrackMiddle(currentLine, leftDiagonal, horizontal, rightDiagonal);
 	}
 
@@ -190,7 +190,7 @@ public class MiddleBoard extends Board2 {
 
 	@Override
 	int getUnique() {
-		System.out.println("b2(" + this.Count2 + ", " + this.Count4 + ", " + this.Count8 + ")");
+		//System.out.println("b2(" + this.Count2 + ", " + this.Count4 + ", " + this.Count8 + ")");
 		return this.Count2 + this.Count4 + this.Count8;
 	}
 }

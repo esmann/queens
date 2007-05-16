@@ -72,7 +72,7 @@ public class CornerBoard extends Board2 {
 		if (y == size-1) {
 			if (bitmap != 0) {
 				Board[y] = bitmap;
-				System.out.println("b1: " + y + ", " + left + ", " + down + ", " + right);
+				//System.out.println("b1: " + y + ", " + left + ", " + down + ", " + right);
 				this.Count8++;
 			}
 		} else {
@@ -93,7 +93,7 @@ public class CornerBoard extends Board2 {
 
 	@Override
 	void backtrack() {
-		System.out.println("MASK: " + this.MASK);
+		//System.out.println("MASK: " + this.MASK);
 		backtrackCorner(currentLine, leftDiagonal, horizontal, rightDiagonal);
 	}
 
@@ -104,7 +104,7 @@ public class CornerBoard extends Board2 {
 
 	@Override
 	int getUnique() {
-		System.out.println("b1(" + Count8 + ")");
+		//System.out.println("b1(" + Count8 + ")");
 		return Count8;
 	}
 
