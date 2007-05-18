@@ -1,11 +1,18 @@
-\documentclass[a4wide,10pt]{article}
+\documentclass[a4,10pt]{article}
 
 \usepackage[danish]{babel}
-\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage{verbatim}
 \usepackage{amsmath}
 \usepackage{lscape}
 \usepackage{multicol}
+
+
+\font\chessfont=skak10
+\def\chs#1{{\chessfont#1}}
+
+\font\chessfont=skak10
+\def\QQ{q}{{\chessfont{q}}}
 
 \title{Bachelorprojekt\\N-dronning problemet i MiG}
 \author{Thomas Clement Mogensen \\ Frej Soya \\ Alex Esmann }
@@ -14,16 +21,132 @@
 \begin{document}
 \maketitle
 
-\subsection{Problemformulering}
-\input{problemformulering.tex}
-\subsection{Afgr�nsninger}
-\input{afgraensninger.tex}
-\subsection{Introduktion til MiG og one-click}
-\input{migintro.tex}
-\subsection{Paralellisering af Takaken's algoritme}
-\input{paralleltakaken.tex}
-\subsection{Afpr�vning og benchmarking}
-\input{benchmark.tex}
+\section{Problemformulering}\label{Problemformulering}
+
+
+%\input{problemformulering.tex}
+Opgavens formål er at implementere en parallel udgave af Takakens algoritme til løsning af n-dronning-problemet. Algoritmen skal køre på MiG-systemet (Minimum Intrusion Grid) og MiG's one-click arkitektur skal kunne udnyttes til at skaffe ressourcer til beregning af problemet. Formålet er på langt sigt at få beregnet en løsning til N-dronning-problemet for $n=26$, men opgaven er kun at gøre dette muligt ved hjælp af MiG. N-dronning-problemet er et klassisk beregningsproblem, der går ud på at finde antallet af mulige måder n dronninger kan placeres på et "skakbræt" med n x n felter, uden at nogen af dem er istand til at slå hinanden i næste træk. Problemets størrelse stiger eksponentielt med n, og er uhyre beregningstungt for store n, hvorfor store distribuerede systemer ofte benyttes. Hidtil er der kun fundet løsninger for $n \in \{1,...,25\}$. For distlab-gruppen her på diku ville en løsning for $n=26$, beregnet på et MiG-grid, kunne skabe opmærksomhed omkring MiG-systemet. 
+
+MiG er beskrevet indgående i \cite{simplemig} og \cite{mig}, \cite{etsi} beskriver N-dronning-problemet grundigere end ovenstående og præsenterer en løsning for n=25. Appendix queens.c i \cite{etsi} er en udskrift af Takakens algoritme implementeret i C.
+
+One-click muliggør deltagelse i et MiG-grid uden andre forudsætninger end en webbrowser og java. Tilgengæld er denne metode begrænset til at afvikle programmer, der er tilgængelige som java-bytecode. Brug af one-click giver adgang til et enormt (potentielt) antal beregningsressourcer, hvilket er grunden til at benytte one-click i denne opgave.    
+
+Opgaven indeholder altså følgende delproblemer: 
+\begin{itemize}
+\item At finde en effektiv strategi til parallelisering af Takakens algoritme. Herunder overvejelser omkring den optimale størrelse på delproblemer.
+\item Implementation af algoritmen i java på en sådan måde at den kan afvikles af one-click-klienter. 
+\item Strategi for indsamling, behandling og præsentation af delresultater. 
+\item Første opgave er naturligvis at få et bedre kendskab til MiG.
+\end{itemize}
+
+\subsection{Afgrænsninger}
+%\input{afgraensninger.tex}
+
+Projektets formål er ikke at beregne en løsning til N-dronning-problemet for $n=26$, hvilket problemets beregningsmæssige omfang kombineret med tids- og ressourcebegræsninger udelukker i praksis. Men kun at muliggøre og forhåbentlig igangsætte denne beregning. 
+Vi vil ikke tage stilling til den benyttede algoritmes korrekthed eller effektivitet, men kun til den bedst mulige strategi for parallelisering. Partitionering af problemdata skal foregå på en fornuftig måde, med tanke på hvordan det forventes beregningsressourcerne opfører sig, men en decideret statisk undersøgelse af midlertidige MiG-ressourcers opførsel eller levetid vil ikke blive foretaget\footnote{Med ressourcers opførsel tænkes på den tid man kan forvente en bruger vil lade sin one-click-klient køre}. Fordele og ulemper ved MiG eller One-click i forhold til andre grid-systemer falder også udenfor opgavens omfang. 
+
+Ved at at løse problemet for et lavere $n$ vil vi kunne estimere tiden og/eller antal CPU'er der skal bruges for at løse for n=26.
+
+\section{Placering af N Dronninger på et NxN skakbræt}
+
+Placering af N dronninger på et skabbræt med $NxN$ størrelse
+	
+\subsection{Model}
+Eksempel for på en løsning for $n=5$
+TODO
+\begin{tabular}{|c|c|c|c|c|l}
+       4 & 3 & 2 & 1 &  0 & \\
+\hline &  &  &  & \chs{q} & 0 \\
+\hline \chs{q} &  &  &  &  		  & 1 \\
+\hline &  &  & \chs{q} &  & 2\\
+\hline &  &  &  &  		  & 3 \\
+\hline & \Q &  &  &  		  & 4\\
+\hline
+\end{tabular}
+
+Samme brættet repæsenteret som et binært mønster. \textbf{1} markere  placering af en dronning 
+
+
+
+
+
+På den første linje kan en dronning placeres 5 forskellige steder
+
+
+
+QXXXX
+XQXXX
+XXQXX
+XXXQX
+XXXXQ
+
+
+Et bræt med en eller flere valgte linjer kan løses på samme måde med takakens algoritme.
+
+Hvert delbræt kan løses uafhængigt og antallet af løsninger kan akkumuleres for at få det totale antal løsninger.
+
+
+Dette kan gentages for hver linje. Ved at oprette delbræt hvor M linjer allerede er valgt. Findes ca. (N-M)! delbræt skal der for N=26 vil der for M=3 være 26*25*24=15,600 delbræt.
+
+Dette er en øvre grænse, der oprettes ikke delbræt som ikke er gyldige, og derudover er der i takakens kode optimeringer så der kun findes unikke løsninger (som så kan roteres og eller spejles)
+
+
+Vi er sikre på at >10000 delproblemer er rigeligt, et grid har alligevel max 500-1000 ??? CPU'er?
+
+Det tager lineær tid at oprette delboards, så vi bør uden problemer kunne skabe nok delboards. (Hukommelse er begrænsningen?)
+
+\subsection{Takakens backtrack optimeringer}
+
+\section{Introduktion til MiG og one-click}
+
+
+Vores system har flere dele, selve Grid delen er MiG som for os er en lukket boks
+Da en delopgave specifikt er at bruge og afprøve OneClick som kører som en java Applet.
+
+Minimum Intrusion Grid
+TODO: Andre system ting?
+\subsection{MiG}\label{MiG}
+
+
+
+
+\subsection{OneClick Applet}\label{Applet}
+Begrænsinger pga, applets
+\begin{itemize}
+	\item Sandbox model
+	\item max 64 mb ram
+	\item OneClick Kode/Mininum intrusion
+\end{itemize}
+
+\section{Paralellisering af Takaken's nqueen I Java}
+
+\subsection{Generelle implementeringsovervejelser}
+\subsubsection{Opdeling af opgaver}
+
+\begin{itemize}
+\item{Vi er nødt til at tage højde for at løsningen (antallet af løsinger) vil overstige hvad vi kan repræsentere som en 32bit værdi. }
+\end{itemize}
+
+I forbindelse med joboprettelse og resultatindsamling skal vi træffe nogle valg mht.  
+\begin{itemize}
+\item{Joboprettelsesstrategi - hvad skal der til for at beskrive et job.}
+\item{}
+\end{itemize}
+
+\subsection{Konkrete implementeringer}
+\subsubsection{Mig job}\label{label}
+\subsubsection{Ikke rekursiv kode}
+Fordi checkpointing gemmer ikke stack.
+\section{Afprøvning og benchmarking}
+\subsection{Oprindelig kode vs. ren java port}
+\subsection{Oprindelig kode Vs. ikke rekursiv løsning}
+
+%\input{benchmark.tex}
+TODO
+\section{Forbedringer til OneClick}
+%\input{forbedringer.tex}
+TODO
+
 
 \begin{thebibliography}{99}
 \bibitem{simplemig} Karlsen, Henrik Hoey, Vinter, Brian:
