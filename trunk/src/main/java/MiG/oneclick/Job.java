@@ -18,8 +18,8 @@ import javax.net.ssl.HttpsURLConnection;
 public abstract class Job implements java.io.Serializable
 {
    private int checkpoint_id;
-   private String server;
-   private String iosessionid;
+   private static String server;
+   private static String iosessionid;
    private String jobid;
    private StringBuffer stderr;
    private StringBuffer stdout;
@@ -42,7 +42,13 @@ public abstract class Job implements java.io.Serializable
 	this.stdout = new StringBuffer();
 	this.files = new Vector();
      }
-
+   public static String getServer() {
+	   return server;
+   }
+   public static String getIoSessionId() {
+	   return iosessionid;
+   }
+   
    private void cleanup_filelist()
      {
 	int i;

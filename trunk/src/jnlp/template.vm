@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- JNLP File for OneClick Client Demo Application -->
+<jnlp spec="1.5+" 
+	codebase="https://mig-1.imada.sdu.dk/sid_redirect/9762abe6c54f794e698e2e87037f0d8a3a0c926212d677a0293af2122faf0444.oneclick/">
+  <information>
+    <title>OneClick Webstart Application</title>
+    <vendor>miggrid</vendor>
+    <homepage href="www.migrid.org"/>
+    <description>SwingSet2 Demo Application</description>
+    <description kind="short">
+    Miggrid webstart oneclick
+	</description>
+    <icon href="images/swingset2.jpg"/>
+    <icon kind="splash" href="images/splash.gif"/>
+    <offline-allowed/> 
+
+    <shortcut online="false">
+      <desktop/>
+      <menu submenu="My Corporation Apps"/>
+    </shortcut>
+  </information>
+
+<applet-desc
+      documentBase="https://mig-1.imada.sdu.dk/cgi-sid/oneclick.py"
+      name="OneClick"
+      main-class="MiG.OneClick.Applet"
+      width="800"
+      height="600">
+<param name='server' value='https://mig-1.imada.sdu.dk'>
+<param name='sandboxkey' value='9762abe6c54f794e698e2e87037f0d8a3a0c926212d677a0293af2122faf0444'>
+<param name='resource_name' value='oneclick.40'>
+<param name='cputime' value='1000000'>      
+</applet-desc> 
+</jnlp>

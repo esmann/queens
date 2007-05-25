@@ -196,7 +196,7 @@ public class Resource implements Runnable
 	     
 	     // Request job
 	     request_joburl = this.request_joburl + "&localjobname=" + this.current_jobname;
-	     job_request_conn = new HttpsConnection(request_joburl);
+	     job_request_conn = new HttpsConnection(request_joburl,true);
 	     job_request_conn.open();
 	     
 	     // Check if request went ok
