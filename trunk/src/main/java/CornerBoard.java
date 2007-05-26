@@ -21,6 +21,10 @@ public class CornerBoard extends Board2 {
 	 */
 	CornerBoard(int size) {
 		super(size);
+		RightDiagonal = new int[size + 1];
+		LeftDiagonal = new int[size + 1];
+		Horizontal = new int[size + 1];
+		bitmap2 = new int[size + 1];
 		setAndIncLine(1); // First queen is in right corner
 	}
 
@@ -74,9 +78,9 @@ public class CornerBoard extends Board2 {
 	 * 
 	 * For hver linie For hver et-bit i linien (While) check om y=n
 	 * 
-	 * @param rightDiagonal2
-	 * @param horizontal2
-	 * @param leftDiagonal2
+	 * @param rightDiagonal
+	 * @param horizontal
+	 * @param leftDiagonal
 	 * @param currentLine
 	 * 
 	 * 
@@ -85,21 +89,34 @@ public class CornerBoard extends Board2 {
 	 * 
 	 */
 
-	public void nonrecursive() {
+	public void nonrecursive(int start, int leftDiagonal, int horizontal,
+			int rightDiagonal) {
+		NQueenBoards.dout("iterative start: " + start);
 		int bit;
 
-		currentLine2 = currentLine;
+		LeftDiagonal[start] = leftDiagonal;
+		Horizontal[start] = horizontal;
+		RightDiagonal[start] = rightDiagonal;
 
-		while (currentLine2 >= currentLine) {
+		bitmap2[start] = nextPossible;
 
-			bit = Board[currentLine2 - 1]; // Previously chosen
+		currentLine2 = start;
 
-			LeftDiagonal[currentLine2] = (LeftDiagonal[currentLine2 - 1] | bit) << 1;
-			Horizontal[currentLine2] = (Horizontal[currentLine2 - 1] | bit);
-			RightDiagonal[currentLine2] = (RightDiagonal[currentLine2 - 1] | bit) >> 1;
+		while (currentLine2 >= start) {
 
-			bitmap2[currentLine2] = this.MASK
-					& ~(LeftDiagonal[currentLine2] | Horizontal[currentLine2] | RightDiagonal[currentLine2]);
+			NQueenBoards.dout("currentline2: " + currentLine2);
+		
+			if (currentLine2 == sizee) {
+				if (bitmap2[sizee] != 0) {
+					this.Count8++;
+					
+				}
+			} else {				
+				if (currentLine2 < bound1) {
+					bitmap2[currentLine2] |= 2;
+					bitmap2[currentLine2] ^= 2;
+				}
+			}
 
 			if (bitmap2[currentLine2] != 0) {
 				// Select first onebit (from right)
@@ -111,21 +128,12 @@ public class CornerBoard extends Board2 {
 
 				currentLine2++; // Go to child/Next line
 
-				if (currentLine2 < bound1) {
-					bitmap2[currentLine2] |= 2;
-					bitmap2[currentLine2] ^= 2;
-				}
-
 			} else {
-				if (currentLine2 - 1 == size) {
-					this.Count8++;
-				}
-
-				while ((currentLine2 >= currentLine)
-						&& (bitmap2[currentLine2]) == 0) {
+				NQueenBoards.dout("Leaf/No more solutions: " + currentLine2);
+				// NQueenBoards.dout("Leaf/No more solutions: " + size);
+				while ((currentLine2 >= start) && (bitmap2[currentLine2]) == 0) {
 					currentLine2--;
 				}
-
 				// Select first onebit (from right)
 
 				bit = -bitmap2[currentLine2] & bitmap2[currentLine2];
@@ -134,8 +142,20 @@ public class CornerBoard extends Board2 {
 				// Remove this selection from bitmap2
 				bitmap2[currentLine2] ^= Board[currentLine2];
 
-				currentLine2++;
+				if (currentLine2 >= start) {
+					currentLine2++;
+				}
 			}
+
+			
+			
+			bit = Board[currentLine2 - 1]; // Previously chosen
+			LeftDiagonal[currentLine2] = (LeftDiagonal[currentLine2 - 1] | bit) << 1;
+			Horizontal[currentLine2] = (Horizontal[currentLine2 - 1] | bit);
+			RightDiagonal[currentLine2] = (RightDiagonal[currentLine2 - 1] | bit) >> 1;
+
+			bitmap2[currentLine2] = this.MASK
+			& ~(LeftDiagonal[currentLine2] | Horizontal[currentLine2] | RightDiagonal[currentLine2]);			
 
 		}
 
@@ -179,10 +199,13 @@ public class CornerBoard extends Board2 {
 	void backtrack() {
 		// System.out.println("MASK: " + this.MASK);
 
-		LeftDiagonal[currentLine - 1] = leftDiagonal;
-		Horizontal[currentLine - 1] = horizontal;
-		RightDiagonal[currentLine - 1] = rightDiagonal;
-		nonrecursive();
+		if (isRecursive()) {
+			backtrackCorner(currentLine, leftDiagonal, horizontal,
+					rightDiagonal);
+		} else {
+			nonrecursive(currentLine, leftDiagonal, horizontal, rightDiagonal);
+		}
+
 	}
 
 	@Override
