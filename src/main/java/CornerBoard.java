@@ -121,8 +121,8 @@ public class CornerBoard extends Board2 {
 					this.Count8++;
 				}
 
-				while ((currentLine2 >= currentLine) && (bitmap2[currentLine2]) == 0
-						 ) {
+				while ((currentLine2 >= currentLine)
+						&& (bitmap2[currentLine2]) == 0) {
 					currentLine2--;
 				}
 
@@ -141,47 +141,36 @@ public class CornerBoard extends Board2 {
 
 	}
 
-	public void backtrackCorner() {
-		NQueenBoards.dout("BTCORNER y: " + currentLine2);
+	public void backtrackCorner(int y, int left, int down, int right) {
+		NQueenBoards.dout("BTCORNER y: " + y);
 		/*
 		 * System.out.println("size: " + size); System.out.println("bound1: " +
 		 * bound1); System.out.println("MASK: " + this.MASK);
 		 */
 
-		int bit;
+		int bitmap, bit;
 
-		bit = Board[currentLine2 - 1];
-		LeftDiagonal[currentLine2] = (LeftDiagonal[currentLine2 - 1] | bit) << 1;
-		Horizontal[currentLine2] = (Horizontal[currentLine2 - 1] | bit);
-		RightDiagonal[currentLine2] = (RightDiagonal[currentLine2 - 1] | bit) >> 1;
-
-		bitmap2[currentLine2] = this.MASK
-				& ~(LeftDiagonal[currentLine2] | Horizontal[currentLine2] | RightDiagonal[currentLine2]);
-
-		NQueenBoards.dout("BTCORNER bitmap: "
-				+ Integer.toBinaryString(bitmap2[currentLine2]));
-		if (currentLine2 == size - 1) { // last line
-			if (bitmap2[currentLine2] != 0) {
-				Board[currentLine2] = bitmap2[currentLine2];
+		bitmap = this.MASK & ~(left | down | right);
+		NQueenBoards.dout("BTCORNER bitmap: " + Integer.toBinaryString(bitmap));
+		if (y == size - 1) {
+			if (bitmap != 0) {
+				Board[y] = bitmap;
 				// System.out.println("b1: " + y + ", " + left + ", " + down +
 				// ", " + right);
 				this.Count8++;
 			}
 		} else {
-			if (currentLine2 < bound1) {
-				bitmap2[currentLine2] |= 2;
-				bitmap2[currentLine2] ^= 2;
+			if (y < bound1) {
+				bitmap |= 2;
+				bitmap ^= 2;
 			}
-			while (bitmap2[currentLine2] != 0) {
+			while (bitmap != 0) {
 				// System.out.println("bitmap != 0");
-				bit = -bitmap2[currentLine2] & bitmap2[currentLine2];
-				Board[currentLine2] = bit;
-				bitmap2[currentLine2] ^= Board[currentLine2];
-				
-				if (currentLine2 >= currentLine) // ugly but fix
-					currentLine2++;
-				backtrackCorner();
-
+				bit = -bitmap & bitmap;
+				Board[y] = bit;
+				bitmap ^= Board[y];
+				backtrackCorner(y + 1, (left | bit) << 1, down | bit,
+						(right | bit) >> 1);
 			}
 		}
 	}
@@ -189,10 +178,10 @@ public class CornerBoard extends Board2 {
 	@Override
 	void backtrack() {
 		// System.out.println("MASK: " + this.MASK);
-				
-		LeftDiagonal[currentLine-1] = leftDiagonal;		
-		Horizontal[currentLine-1] = horizontal;
-		RightDiagonal[currentLine-1] = rightDiagonal;			
+
+		LeftDiagonal[currentLine - 1] = leftDiagonal;
+		Horizontal[currentLine - 1] = horizontal;
+		RightDiagonal[currentLine - 1] = rightDiagonal;
 		nonrecursive();
 	}
 
