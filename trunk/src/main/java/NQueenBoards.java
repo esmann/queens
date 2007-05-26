@@ -30,7 +30,7 @@ public class NQueenBoards {
 	 * @param args
 	 */
 	public static void dout(String s) {
-		//System.out.println(s);
+		System.out.println(s);
 	}
 	private static void createMRSL(String input) throws IOException  {
 		File f = new File("mrsl.TEMPLATE");
@@ -70,9 +70,9 @@ public class NQueenBoards {
 		//size = Integer.parseInt(args[0]);
 		//maxSteps = Integer.parseInt(args[1]);
 
-		size = 20;
+		size = 12;
 		maxSteps = 1;
-
+		NQueenBoards.dout("SIZE: " + size);
 		CornerBoard cboard = new CornerBoard(size);		
 		boards.addAll(cboard.init());
 		dout("After INIT #cornerboards=" + boards.size());
@@ -83,7 +83,7 @@ public class NQueenBoards {
 			iterateOnetime();
 		}
 		
-		
+		/*
 		String basename = "board";
 		FileOutputStream fos;
 		ObjectOutputStream out;
@@ -104,14 +104,16 @@ public class NQueenBoards {
 		} catch (IOException e) {
 			// TODO: handle exception
 			e.printStackTrace();
-		}
-		/*
-		for (Board2 board : boards) {	
+		}*/
+		
+		
+		for (Board2 board : boards) {
+			board.setRecursive(false);
 			board.backtrack();			
 			total += board.getTotal();			
 			unique += board.getUnique();
 			dout("-----");
-		}*
+		}
 		
 		System.out.println("\ntotal: " + total);
 		System.out.println("\nUnique: " + unique);
