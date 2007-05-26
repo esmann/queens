@@ -5,7 +5,7 @@ import java.util.Formatter;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public abstract class Board2 implements Cloneable,Serializable {
+public abstract class Board2 implements Cloneable, Serializable {
 
 	protected int Board[];
 
@@ -13,23 +13,36 @@ public abstract class Board2 implements Cloneable,Serializable {
 
 	protected int currentLine = 0; // zero indexed nxn board
 
-	//removed static
+	private boolean recursive = false;
+
+	// removed static
 	protected int MASK;
-	//removed static
+
+	// removed static
 	protected int size;
-	//removed static
+
+	// removed static
 	/**
 	 * 
 	 */
-	protected int sizee = 0;	
+	protected int sizee = 0;
 
 	protected int nextPossible;
 
 	public Board2(int size) {
+		
 		this.size = size;
-		this.sizee = size-1;
+		this.sizee = size - 1;
 		Board = new int[size];
 		MASK = (1 << size) - 1;
+	}
+
+	void setRecursive(boolean b) {
+		this.recursive = b;
+	}
+
+	protected boolean isRecursive() {
+		return  this.recursive;
 	}
 
 	abstract boolean isSolution();
@@ -39,12 +52,11 @@ public abstract class Board2 implements Cloneable,Serializable {
 	abstract boolean checkBounds();
 
 	abstract void backtrack();
-	
-	abstract  int getUnique();
+
+	abstract int getUnique();
 
 	abstract int getTotal();
-	
-	
+
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		Board2 b = (Board2) super.clone();
@@ -84,7 +96,7 @@ public abstract class Board2 implements Cloneable,Serializable {
 		for (int i = 0; i <= sizee; i++) {
 			bout.append(Integer.numberOfTrailingZeros(Board[i]) + "\n");
 		}
-		
+
 		return bout.toString();
 	}
 
@@ -100,22 +112,18 @@ public abstract class Board2 implements Cloneable,Serializable {
 			if (!this.checkBounds())
 				return boards;
 
-			int tmp = nextPossible;						
+			int tmp = nextPossible;
 			while ((selection = Integer.lowestOneBit(tmp)) != 0) {
 				tmp ^= selection; // Set the selected bit to 0 in the original
 				// pattern
 				Board2 bnew = (Board2) this.clone();
 				bnew.setAndIncLine(selection);
 				/*
-				if (bnew.isCompleteBoard()) {
-					bnew.isSolution();
-					// FIXME we should count solutions
-					continue;
-				}
-				*/
+				 * if (bnew.isCompleteBoard()) { bnew.isSolution(); // FIXME we
+				 * should count solutions continue; }
+				 */
 
 				// Bounds check might invalidate a board
-				
 
 				boards.add(bnew);
 			}
