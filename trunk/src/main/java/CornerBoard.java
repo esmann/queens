@@ -105,58 +105,49 @@ public class CornerBoard extends Board2 {
 		while (currentLine2 >= start) {
 
 			NQueenBoards.dout("currentline2: " + currentLine2);
-		
+				
 			if (currentLine2 == sizee) {
 				if (bitmap2[sizee] != 0) {
 					this.Count8++;
 					
 				}
-			} else {				
-				if (currentLine2 < bound1) {
+			} 
+			
+			if (currentLine2 < bound1) {
 					bitmap2[currentLine2] |= 2;
 					bitmap2[currentLine2] ^= 2;
-				}
+			
 			}
 
-			if (bitmap2[currentLine2] != 0) {
-				// Select first onebit (from right)
-				bit = -bitmap2[currentLine2] & bitmap2[currentLine2];
-				// Save our current selection
-				Board[currentLine2] = bit;
-				// Remove this selection from bitmap2
-				bitmap2[currentLine2] ^= Board[currentLine2];
-
-				currentLine2++; // Go to child/Next line
-
-			} else {
-				NQueenBoards.dout("Leaf/No more solutions: " + currentLine2);
-				// NQueenBoards.dout("Leaf/No more solutions: " + size);
+			if (bitmap2[currentLine2] == 0) {
+				NQueenBoards.dout("No more possible solutions: " + currentLine2);
 				while ((currentLine2 >= start) && (bitmap2[currentLine2]) == 0) {
 					currentLine2--;
-				}
-				// Select first onebit (from right)
-
-				bit = -bitmap2[currentLine2] & bitmap2[currentLine2];
-				// Save our current selection
-				Board[currentLine2] = bit;
-				// Remove this selection from bitmap2
-				bitmap2[currentLine2] ^= Board[currentLine2];
-
-				if (currentLine2 >= start) {
-					currentLine2++;
-				}
+				} 
 			}
-
 			
 			
-			bit = Board[currentLine2 - 1]; // Previously chosen
-			LeftDiagonal[currentLine2] = (LeftDiagonal[currentLine2 - 1] | bit) << 1;
-			Horizontal[currentLine2] = (Horizontal[currentLine2 - 1] | bit);
-			RightDiagonal[currentLine2] = (RightDiagonal[currentLine2 - 1] | bit) >> 1;
+			// Select first onebit (from right)
+			bit = -bitmap2[currentLine2] & bitmap2[currentLine2];
+			// Save our current selection
+			Board[currentLine2] = bit;
+			// Remove this selection from bitmap2
+			bitmap2[currentLine2] ^= Board[currentLine2];
 
-			bitmap2[currentLine2] = this.MASK
-			& ~(LeftDiagonal[currentLine2] | Horizontal[currentLine2] | RightDiagonal[currentLine2]);			
+			bit = Board[currentLine2]; // Previously chosen
+			LeftDiagonal[currentLine2+1] = (LeftDiagonal[currentLine2] | bit) << 1;
+			Horizontal[currentLine2+1] = (Horizontal[currentLine2] | bit);
+			RightDiagonal[currentLine2+1] = (RightDiagonal[currentLine2] | bit) >> 1;
 
+			bitmap2[currentLine2+1] = this.MASK
+			& ~(LeftDiagonal[currentLine2+1] | Horizontal[currentLine2+1] | RightDiagonal[currentLine2+1]);			
+
+
+			if (currentLine2 >= start) {
+				currentLine2++; // Go to child/Next line
+			}
+			
+			
 		}
 
 	}
