@@ -23,7 +23,7 @@ public abstract class Board2 implements Cloneable, Serializable {
 
 	// removed static
 	/**
-	 * 
+	 * import java.io.ObjectOutputStream;
 	 */
 	protected int sizee = 0;
 

@@ -5,9 +5,9 @@ public class MiddleBoard extends Board2 {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -7968646024953795581L;
+	//private static final long serialVersionUID = 6091744538421101679L;
 
-	private static int TOPBIT;
+	private int TOPBIT;
 
 	private int SIDEMASK;
 
@@ -75,7 +75,7 @@ public class MiddleBoard extends Board2 {
 	
 	public final void backtrackIterative(final int top, final int leftDiagonal,
 			final int horizontal, final int rightDiagonal) {
-		NQueenBoards.dout("iterative start: " + top);
+		//NQueenBoards.dout("iterative start: " + top);
 		int bit;
 
 		isOccupiedLeftDiagonal[top] = leftDiagonal;
@@ -88,7 +88,7 @@ public class MiddleBoard extends Board2 {
 		int bitmap; // used for minimizing array lookups
 		// for lines above 'top' queen placement is predetermined
 		while (currentBoardLine >= top) {
-			NQueenBoards.dout("CurrentBoardLine: " + currentBoardLine);
+			//NQueenBoards.dout("CurrentBoardLine: " + currentBoardLine);
 
 			bitmap = this.MASK
 					& ~(isOccupiedLeftDiagonal[currentBoardLine]
@@ -126,12 +126,12 @@ public class MiddleBoard extends Board2 {
 
 			// Go back up if no possibleplacements
 			if (bitmap == 0) {
-				NQueenBoards.dout("No more possible solutions: "
-						+ currentBoardLine);
+				//NQueenBoards.dout("No more possible solutions: "
+				//		+ currentBoardLine);
 				while ((currentBoardLine >= top)
 						&& (possiblePlacements[currentBoardLine]) == 0) {
 					currentBoardLine--;
-					NQueenBoards.dout("Going Back " + currentBoardLine);
+					//NQueenBoards.dout("Going Back " + currentBoardLine);
 				}
 			}
 
@@ -197,7 +197,7 @@ public class MiddleBoard extends Board2 {
 				backtrackRecursive(y + 1, (left | bit) << 1, down | bit,
 						(right | bit) >> 1);
 			}
-			NQueenBoards.dout("<");
+			//NQueenBoards.dout("<");
 		}
 	}
 
