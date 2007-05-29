@@ -1,13 +1,11 @@
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Formattable;
-import java.util.Formatter;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public abstract class Board2 implements Cloneable, Serializable {
 
-	protected int Board[];
+	protected int board[];
 
 	protected int leftDiagonal, rightDiagonal, horizontal = 0;
 
@@ -21,6 +19,10 @@ public abstract class Board2 implements Cloneable, Serializable {
 	// removed static
 	protected int size;
 
+	// Used for iterative
+	protected int isOccupiedLeftDiagonal[], isOccupiedRightDiagonal[],
+			isOccupiedHorizontal[], possiblePlacements[];
+
 	// removed static
 	/**
 	 * 
@@ -33,7 +35,11 @@ public abstract class Board2 implements Cloneable, Serializable {
 		
 		this.size = size;
 		this.sizee = size - 1;
-		Board = new int[size];
+		board = new int[size];
+		isOccupiedRightDiagonal = new int[size];
+		isOccupiedLeftDiagonal = new int[size];
+		isOccupiedHorizontal = new int[size];
+		possiblePlacements = new int[size];
 		MASK = (1 << size) - 1;
 	}
 
@@ -45,7 +51,7 @@ public abstract class Board2 implements Cloneable, Serializable {
 		return  this.recursive;
 	}
 
-	abstract boolean isSolution();
+	
 
 	abstract Collection<Board2> init();
 
@@ -60,13 +66,13 @@ public abstract class Board2 implements Cloneable, Serializable {
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		Board2 b = (Board2) super.clone();
-		b.Board = new int[this.size];
-		System.arraycopy(this.Board, 0, b.Board, 0, this.size);
+		b.board = new int[this.size];
+		System.arraycopy(this.board, 0, b.board, 0, this.size);
 		return (Object) b;
 	}
 
 	protected void setLine(int selectedbit) {
-		Board[currentLine] = selectedbit;
+		board[currentLine] = selectedbit;
 	}
 
 	protected void setAndIncLine(int selectedbit) {
@@ -87,14 +93,14 @@ public abstract class Board2 implements Cloneable, Serializable {
 	}
 
 	protected int getBoardLine() {
-		return Board[getLine()];
+		return board[getLine()];
 	}
 
 	public String toString() {
 		StringBuffer bout = new StringBuffer();
 
 		for (int i = 0; i <= sizee; i++) {
-			bout.append(Integer.numberOfTrailingZeros(Board[i]) + "\n");
+			bout.append(Integer.numberOfTrailingZeros(board[i]) + "\n");
 		}
 
 		return bout.toString();

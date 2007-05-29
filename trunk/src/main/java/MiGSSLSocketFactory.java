@@ -28,6 +28,7 @@
  */
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.Socket;
@@ -81,7 +82,7 @@ import org.apache.commons.ssl.TrustMaterial;
  */
 
 public class MiGSSLSocketFactory extends HttpSecureProtocol {
-	private String cacertFile, keyFile, certFile, conf, password;
+	private String cacertFile, certFile, password;
 
 	/**
 	 * Constructor for EasySSLProtocolSocketFactory.
@@ -108,34 +109,48 @@ public class MiGSSLSocketFactory extends HttpSecureProtocol {
 		super.setKeyMaterial(new KeyMaterial(certFile, password.toCharArray()));
 	}
 
-	private void loadConf() throws IOException {
+	private void loadConf() {
 		String f = System.getProperty("user.home");
-		BufferedReader in = new BufferedReader(new FileReader(f
-				+ "/.mig/miguser.conf"));
-		String line;
+		BufferedReader in = null;
+		try {
+			in = new BufferedReader(new FileReader(f + "/.mig/miguser.conf"));
+			String line;
 
-		while ((line = in.readLine()) != null) {
-			if (line.equals(""))  
-				continue;
-			String[] settings = line.split(" ", 2);
-			
-			switch (Conf.valueOf(settings[0])) {
-			case certfile: // We need the pkcs12 file!				
-				certFile = settings[1].replace(".pem", ".p12");
-				break;
-			case keyfile: // Not used...
-				keyFile = settings[1];
-				break;
-			case cacertfile:
-				cacertFile = settings[1];
-				break;
-			case password:
-				password = settings[1];
-				break;
-			default:
-				System.out.println("Did not recognize setting: " + line);
+			while ((line = in.readLine()) != null) {
+				if (line.equals(""))
+					continue;
+				String[] settings = line.split(" ", 2);
+
+				switch (Conf.valueOf(settings[0])) {
+				case certfile: // We need the pkcs12 file!
+					certFile = settings[1].replace(".pem", ".p12");
+					break;
+				case keyfile: // Not used...
+					// keyFile = settings[1];
+					break;
+				case cacertfile:
+					cacertFile = settings[1];
+					break;
+				case password:
+					password = settings[1];
+					break;
+				default:
+					System.out.println("Did not recognize setting: " + line);
+				}
+				
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {			
+			try {
+				in.close();
+			} catch (IOException e) {			
+				e.printStackTrace();
 			}
 		}
-
 	}
 }
