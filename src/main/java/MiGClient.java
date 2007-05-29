@@ -1,8 +1,8 @@
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
-import java.io.PipedOutputStream;
-import java.io.PipedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -116,13 +116,15 @@ public class MiGClient {
 		int count = 0;
 		int zipcount = 0;
 		ZipOutputStream out = null;
-		PipedInputStream pin = null;
-		PipedOutputStream pout = null;
+		//PipedInputStream pin = null;
+		//PipedOutputStream pout = null;
 		String temp;
 		byte[] buff;
 		try {
 			//create zipfile on disk (do we really _have_ to do that?)
-			out = new ZipOutputStream(new FileOutputStream(filename));
+			//out = new ZipOutputStream(new FileOutputStream(filename));
+			ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			out = new ZipOutputStream(bout);
 			
 			//pipedout/input stream virker ikke
 			//iflg api'en er det ikke hensigtsmæssigt at have både input og outputstream i samme tråd, da dette kan skabe deadlocks
@@ -136,9 +138,11 @@ public class MiGClient {
 					
 					//add board object to zipfile
 					out.putNextEntry(new ZipEntry("board" + count + ".obj"));
-					temp = board.toString();
-					buff = temp.getBytes();
-					out.write(buff);
+					ObjectOutputStream objout = new ObjectOutputStream(out);
+					objout.writeObject(board);
+					//temp = board.toString();
+					//buff = temp.getBytes();
+					//out.write(buff);
 					out.closeEntry();
 					//create and add mrsl file to zip file
 					MigJob job = new MigJob("NQueenJob boards/board" + count + ".obj", "board" + count + ".mrsl");
@@ -157,7 +161,7 @@ public class MiGClient {
 			PutMethod httpput = new PutMethod("https://mig-1.imada.sdu.dk/" + destination + filename);
 			InputStreamRequestEntity entity = null;
 			try {
-				entity = new InputStreamRequestEntity(new FileInputStream(filename));
+				entity = new InputStreamRequestEntity(new ByteArrayInputStream(bout.toByteArray()));
 				httpput.setRequestEntity(entity);
 				httpput.setRequestHeader("Content-Type", "submitandextract");
 				httpclient.executeMethod(httpput);
