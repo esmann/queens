@@ -29,7 +29,7 @@ public class CornerBoard extends Board2 {
 	 */
 	CornerBoard(int size) {
 		super(size);
-		
+
 		setAndIncLine(1); // First queen is in right corner
 	}
 
@@ -59,7 +59,6 @@ public class CornerBoard extends Board2 {
 		return bout.toString();
 	}
 
-
 	public boolean checkBounds() {
 		if (currentLine < bound1) {
 			nextPossible |= 2;
@@ -75,6 +74,7 @@ public class CornerBoard extends Board2 {
 
 	public final void backtrackIterative(final int top, final int leftDiagonal,
 			final int horizontal, final int rightDiagonal) {
+
 		NQueenBoards.dout("iterative start: " + top);
 		int bit;
 
@@ -93,22 +93,20 @@ public class CornerBoard extends Board2 {
 			bitmap = this.MASK
 					& ~(isOccupiedLeftDiagonal[currentBoardLine]
 							| isOccupiedHorizontal[currentBoardLine] | isOccupiedRightDiagonal[currentBoardLine]);
-			
-			
+
 			if (currentBoardLine == sizee) {
 				if (bitmap != 0) {
-					this.count8++;					
+					this.count8++;
 					NQueenBoards.dout("Solution " + currentBoardLine);
 					bitmap = 0; // We take the only solution that exists
-				} 
-					
-			}
+				}
 
-			if (currentBoardLine < bound1) {
-				bitmap |= 2;
-				bitmap ^= 2;
+			} else {
+				if (currentBoardLine < bound1) {
+					bitmap |= 2;
+					bitmap ^= 2;
+				}
 			}
-
 			possiblePlacements[currentBoardLine] = bitmap;
 
 			// Go back up if no possibleplacements
@@ -123,17 +121,16 @@ public class CornerBoard extends Board2 {
 			}
 
 			/*
-			 *  Get next "sibling":
-			 *  	Select first onbit (from right)
-			 * 		Save our current selection
-			 * 		remove the selection from possible solutions  (So it isn't chosen again)
+			 * Get next "sibling": Select first onbit (from right) 
+			 * Save our selected bit on the board  
+			 * Remove the selection from possible solutions
+			 * (So it isn't chosen again)
 			 */
 			possiblePlacements[currentBoardLine] ^= board[currentBoardLine] = -possiblePlacements[currentBoardLine]
 					& possiblePlacements[currentBoardLine];
 
-
 			bit = board[currentBoardLine]; // Previously chosen
-			
+
 			isOccupiedLeftDiagonal[currentBoardLine + 1] = (isOccupiedLeftDiagonal[currentBoardLine] | bit) << 1;
 			isOccupiedHorizontal[currentBoardLine + 1] = (isOccupiedHorizontal[currentBoardLine] | bit);
 			isOccupiedRightDiagonal[currentBoardLine + 1] = (isOccupiedRightDiagonal[currentBoardLine] | bit) >> 1;
@@ -160,7 +157,7 @@ public class CornerBoard extends Board2 {
 		NQueenBoards.dout("BTCORNER bitmap: " + Integer.toBinaryString(bitmap));
 		if (y == sizee) {
 			if (bitmap != 0) {
-				//board[y] = bitmap;
+				// board[y] = bitmap;
 				// System.out.println("b1: " + y + ", " + left + ", " + down +
 				// ", " + right);
 				this.count8++;
@@ -189,7 +186,8 @@ public class CornerBoard extends Board2 {
 			backtrackRecursive(currentLine, leftDiagonal, horizontal,
 					rightDiagonal);
 		} else {
-			backtrackIterative(currentLine, leftDiagonal, horizontal, rightDiagonal);
+			backtrackIterative(currentLine, leftDiagonal, horizontal,
+					rightDiagonal);
 		}
 
 	}
