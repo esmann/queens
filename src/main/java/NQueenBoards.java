@@ -1,16 +1,17 @@
-import java.awt.print.Printable;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
+
 import java.io.PrintWriter;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Map.Entry;
 
 public class NQueenBoards {
 	static Queue<Board2> boards = new LinkedList<Board2>();
@@ -32,15 +33,15 @@ public class NQueenBoards {
 	public static void dout(String s) {
 		System.out.println(s);
 	}
+	@SuppressWarnings("unused")
 	private static void createMRSL(String input) throws IOException  {
 		File f = new File("mrsl.TEMPLATE");
 		HashMap<String,String> vars = new HashMap<String,String>();
 		vars.put("$INPUTFILE",input + ".obj");
 		StringBuilder sb = new StringBuilder();
-		BufferedReader in;
+		BufferedReader in = null;
 		try {
-			in = new BufferedReader(new FileReader(f));
-		
+			in = new BufferedReader(new FileReader(f));		
 		String str;
 		
 		while ((str = in.readLine()) != null) {			
@@ -49,11 +50,13 @@ public class NQueenBoards {
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			in.close();
 		}
 		String template = sb.toString();
 		
-		for (String var: vars.keySet()) {			
-			template = template.replace(var, vars.get(var));
+		for (Entry<String,String> var: vars.entrySet()) {			
+			template = template.replace(var.getKey(), var.getValue());
 		}		
 		
 		PrintWriter out = new PrintWriter( new FileOutputStream(input + ".mrsl"));
@@ -70,8 +73,8 @@ public class NQueenBoards {
 		//size = Integer.parseInt(args[0]);
 		//maxSteps = Integer.parseInt(args[1]);
 
-		size = 12;
-		maxSteps = 1;
+		size = 7;
+		maxSteps = 0;
 		NQueenBoards.dout("SIZE: " + size);
 		CornerBoard cboard = new CornerBoard(size);		
 		boards.addAll(cboard.init());

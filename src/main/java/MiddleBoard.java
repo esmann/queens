@@ -2,15 +2,19 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 public class MiddleBoard extends Board2 {
-	//removed static
-	private int TOPBIT;
-	//removed final
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7968646024953795581L;
+	
+	private static int TOPBIT;
+
 	private int SIDEMASK;
 	private int LASTMASK, ENDBIT;
 
 	private int bound1, bound2;
 
-	private int Count2, Count8, Count4;
+	private int count2, count8, count4;
 
 	public MiddleBoard(int size) {
 		super(size);
@@ -41,19 +45,6 @@ public class MiddleBoard extends Board2 {
 		return boards;
 	}
 
-	@Override
-	boolean isSolution() {
-		if (nextPossible != 0) {
-			if ((nextPossible & LASTMASK) == 0) {
-				setLine(nextPossible);
-				return true;
-				// Globals.Board.SetBoard(y, bitmap);
-				// Her skal Board med som argument
-				// Check();
-			}
-		}
-		return false;
-	}
 
 	public String toString() {
 
@@ -92,9 +83,9 @@ public class MiddleBoard extends Board2 {
 		if (y == sizee) {
 			if (bitmap != 0) {
 				if ((bitmap & LASTMASK) == 0) {
-					Board[y] = bitmap;
+					board[y] = bitmap;
 					//System.out.println("b2: " + y + ", " + left + ", " + down + ", " + right);
-					this.Check();
+					this.check();
 				}
 			}
 		} else {
@@ -111,8 +102,8 @@ public class MiddleBoard extends Board2 {
 			}
 			while (bitmap != 0) {		
 				bit = -bitmap & bitmap;				
-				Board[y] = bit;
-				bitmap ^= Board[y];
+				board[y] = bit;
+				bitmap ^= board[y];
 				backtrackMiddle(y + 1, (left | bit) << 1, down | bit,
 						(right | bit) >> 1);
 			}
@@ -126,71 +117,71 @@ public class MiddleBoard extends Board2 {
 		backtrackMiddle(currentLine, leftDiagonal, horizontal, rightDiagonal);
 	}
 
-	public void Check() {
+	public void check() {
 		int own, you, bit, ptn;
 		
 		/* 90-degree rotation */		
-		if (Board[bound2] == 1) {
+		if (board[bound2] == 1) {
 			for (ptn = 2, own = 1; own <= sizee; own++, ptn <<= 1) {
 				bit = 1;
-				for (you = sizee; Board[you] != ptn && Board[own] >= bit; you--) {
+				for (you = sizee; board[you] != ptn && board[own] >= bit; you--) {
 					bit <<= 1;
 				}
-				if (Board[own] > bit)
+				if (board[own] > bit)
 					return;
-				if (Board[own] < bit)
+				if (board[own] < bit)
 					break;
 			}
 			if (own > sizee) {
-				Count2++;
+				count2++;
 				return;
 			}
 		}
 
 		/* 180-degree rotation */
-		if (Board[sizee] == ENDBIT) {
+		if (board[sizee] == ENDBIT) {
 			for (you = sizee - 1, own = 1; own <= sizee; own++, you--) {
 				bit = 1;
-				for (ptn = TOPBIT; ptn != Board[you] && Board[own] >= bit; ptn >>= 1) {
+				for (ptn = TOPBIT; ptn != board[you] && board[own] >= bit; ptn >>= 1) {
 					bit <<= 1;
 				}
-				if (Board[own] > bit)
+				if (board[own] > bit)
 					return;
-				if (Board[own] < bit)
+				if (board[own] < bit)
 					break;
 			}
 			if (own > sizee) {
-				Count4++;
+				count4++;
 				return;
 			}
 		}
 
 		/* 270-degree rotation */
 
-		if (Board[bound1] == TOPBIT) {
+		if (board[bound1] == TOPBIT) {
 			for (ptn = TOPBIT >> 1, own = 1; own <= sizee; own++, ptn >>= 1) {
 				bit = 1;
-				for (you = 0; Board[you] != ptn && Board[own] >= bit; you++) {
+				for (you = 0; board[you] != ptn && board[own] >= bit; you++) {
 					bit <<= 1;
 				}
-				if (Board[own] > bit)
+				if (board[own] > bit)
 					return;
-				if (Board[own] < bit)
+				if (board[own] < bit)
 					break;
 			}
 		}
-		Count8++;
+		count8++;
 
 	}
 
 	@Override
 	int getTotal() {
-		return this.Count2 * 2 + this.Count4 * 4 + this.Count8 * 8;
+		return this.count2 * 2 + this.count4 * 4 + this.count8 * 8;
 	}
 
 	@Override
 	int getUnique() {
 		//System.out.println("b2(" + this.Count2 + ", " + this.Count4 + ", " + this.Count8 + ")");
-		return this.Count2 + this.Count4 + this.Count8;
+		return this.count2 + this.count4 + this.count8;
 	}
 }
