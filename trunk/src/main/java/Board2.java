@@ -13,10 +13,8 @@ public abstract class Board2 implements Cloneable, Serializable {
 
 	private boolean recursive = false;
 
-	// removed static
 	protected int MASK;
 
-	// removed static
 	protected int size;
 
 	// Used for iterative
@@ -51,7 +49,6 @@ public abstract class Board2 implements Cloneable, Serializable {
 		return  this.recursive;
 	}
 
-	
 
 	abstract Collection<Board2> init();
 
@@ -106,9 +103,7 @@ public abstract class Board2 implements Cloneable, Serializable {
 		return bout.toString();
 	}
 
-	public boolean isCompleteBoard() {
-		return (currentLine == size - 1);
-	}
+	
 
 	// Create a new linkedlist every time... Slow?
 	public Queue<Board2> iterateLine() {
