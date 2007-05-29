@@ -6,10 +6,11 @@ public class MiddleBoard extends Board2 {
 	 * 
 	 */
 	private static final long serialVersionUID = -7968646024953795581L;
-	
+
 	private static int TOPBIT;
 
 	private int SIDEMASK;
+
 	private int LASTMASK, ENDBIT;
 
 	private int bound1, bound2;
@@ -18,8 +19,8 @@ public class MiddleBoard extends Board2 {
 
 	public MiddleBoard(int size) {
 		super(size);
-		
-		TOPBIT = 1 << sizee; //size-1
+
+		TOPBIT = 1 << sizee; // size-1
 		SIDEMASK = TOPBIT | 1;
 		LASTMASK = TOPBIT | 1;
 		ENDBIT = TOPBIT >> 1;
@@ -44,7 +45,6 @@ public class MiddleBoard extends Board2 {
 		}
 		return boards;
 	}
-
 
 	public String toString() {
 
@@ -72,19 +72,20 @@ public class MiddleBoard extends Board2 {
 	}
 
 	public void backtrackMiddle(int y, int left, int down, int right) {
-	
-		//System.out.println("backtrackMiddle");
-		
+
+		// System.out.println("backtrackMiddle");
+
 		int bitmap;
 		int bit;
-		
+
 		bitmap = MASK & ~(left | down | right);
-		
+
 		if (y == sizee) {
 			if (bitmap != 0) {
 				if ((bitmap & LASTMASK) == 0) {
 					board[y] = bitmap;
-					//System.out.println("b2: " + y + ", " + left + ", " + down + ", " + right);
+					// System.out.println("b2: " + y + ", " + left + ", " + down
+					// + ", " + right);
 					this.check();
 				}
 			}
@@ -93,34 +94,35 @@ public class MiddleBoard extends Board2 {
 				bitmap |= SIDEMASK;
 				bitmap ^= SIDEMASK;
 			} else if (y == bound2) {
-				
-				if ((down & SIDEMASK) == 0) return;
 
-				if ((down & SIDEMASK) != SIDEMASK) {					
-					bitmap &= SIDEMASK;					
+				if ((down & SIDEMASK) == 0)
+					return;
+
+				if ((down & SIDEMASK) != SIDEMASK) {
+					bitmap &= SIDEMASK;
 				}
 			}
-			while (bitmap != 0) {		
-				bit = -bitmap & bitmap;				
+			while (bitmap != 0) {
+				bit = -bitmap & bitmap;
 				board[y] = bit;
 				bitmap ^= board[y];
 				backtrackMiddle(y + 1, (left | bit) << 1, down | bit,
 						(right | bit) >> 1);
 			}
-			NQueenBoards.dout("<");			
+			NQueenBoards.dout("<");
 		}
 	}
 
 	@Override
 	void backtrack() {
-		//System.out.println("MASK: " + this.MASK);
+		// System.out.println("MASK: " + this.MASK);
 		backtrackMiddle(currentLine, leftDiagonal, horizontal, rightDiagonal);
 	}
 
 	public void check() {
 		int own, you, bit, ptn;
-		
-		/* 90-degree rotation */		
+
+		/* 90-degree rotation */
 		if (board[bound2] == 1) {
 			for (ptn = 2, own = 1; own <= sizee; own++, ptn <<= 1) {
 				bit = 1;
@@ -179,9 +181,22 @@ public class MiddleBoard extends Board2 {
 		return this.count2 * 2 + this.count4 * 4 + this.count8 * 8;
 	}
 
+	public int getCount8() {
+		return count8;
+	}
+
+	public int getCount4() {
+		return count4;
+	}
+
+	public int getCount2() {
+		return count2;
+	}
+
 	@Override
 	int getUnique() {
-		//System.out.println("b2(" + this.Count2 + ", " + this.Count4 + ", " + this.Count8 + ")");
+		// System.out.println("b2(" + this.Count2 + ", " + this.Count4 + ", " +
+		// this.Count8 + ")");
 		return this.count2 + this.count4 + this.count8;
 	}
 }
