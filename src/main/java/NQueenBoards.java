@@ -25,7 +25,7 @@ public class NQueenBoards {
 	/**
 	 * 
 	 */
-	static final long serialVersionUID = -2451967277903958339L;
+	static final long serialVersionUID = 6091744538421101679L;
 
 	/**
 	 * @param args
@@ -73,26 +73,37 @@ public class NQueenBoards {
 		//size = Integer.parseInt(args[0]);
 		//maxSteps = Integer.parseInt(args[1]);
 
-		size = 7;
-		maxSteps = 0;
-		NQueenBoards.dout("SIZE: " + size);
-		CornerBoard cboard = new CornerBoard(size);		
+		size = 9;
+		maxSteps = 1;
+
+		CornerBoard cboard = new CornerBoard(size);
+		cboard.setRecursive(true);
 		boards.addAll(cboard.init());
 		dout("After INIT #cornerboards=" + boards.size());
 		MiddleBoard mboard = new MiddleBoard(size);
+		mboard.setRecursive(true);
 		boards.addAll(mboard.init());
 		dout("After INIT #middleboards=" + boards.size());
 		for (steps = 0; steps < maxSteps; steps++) {
 			iterateOnetime();
 		}
 		
+
+		MiGClient client = new MiGClient();
+		client.submitAndExtract(boards, "boards/", "test.zip", 0);
 		/*
+
 		String basename = "board";
 		FileOutputStream fos;
 		ObjectOutputStream out;
 		try {
 		int count = 0;
-		for (Board2 board : boards) {			
+		
+		
+		for (Board2 board : boards) {
+			//client.upload(board, "boards/", basename + "-" + size + "-" + maxSteps + "-" + count++);
+			//client.upload(board, "boards/", "zomghats");
+			System.exit(0);
 			String name = basename + "-" + size + "-" + maxSteps + "-" + count++;
 			fos = new FileOutputStream(name + ".obj");
 			out = new ObjectOutputStream(fos);			
@@ -107,15 +118,16 @@ public class NQueenBoards {
 		} catch (IOException e) {
 			// TODO: handle exception
 			e.printStackTrace();
+
 		}*/
-		
-		
+		//int count = 0;
 		for (Board2 board : boards) {
+			//client.upload(board, "test/", "board-blah-" + count++);
 			board.setRecursive(false);
 			board.backtrack();			
 			total += board.getTotal();			
 			unique += board.getUnique();
-			dout("-----");
+		//	dout("-----");
 		}
 		
 		System.out.println("\ntotal: " + total);

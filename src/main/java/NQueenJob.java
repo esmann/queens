@@ -16,7 +16,7 @@ public class NQueenJob extends Job {
             Board2 board = null;
             File infile = null;
             ObjectInputStream in = null;
-            FileOutputStream fos = null;
+            //FileOutputStream fos = null;
             byte[] readbuf;
             int byte_counter = 0;
             int i;

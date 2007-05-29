@@ -119,6 +119,8 @@ public class MiGClient {
 		ZipOutputStream out = null;
 
 		try {
+			//create zipfile on disk (do we really _have_ to do that?)
+			//out = new ZipOutputStream(new FileOutputStream("temp.zip"));
 
 			// ByteArrayOutStream is a stream backed by a bytearray (duh? ;))
 			ByteArrayOutputStream bout = new ByteArrayOutputStream();
@@ -147,6 +149,7 @@ public class MiGClient {
 
 			InputStreamRequestEntity entity = null;
 
+			//entity = new InputStreamRequestEntity(new FileInputStream("temp.zip"));
 			entity = new InputStreamRequestEntity(new ByteArrayInputStream(bout
 					.toByteArray()));
 						
@@ -155,13 +158,13 @@ public class MiGClient {
 			httpput.setRequestHeader("Content-Type", "submitandextract");
 			httpclient.executeMethod(httpput);
 			
-			response = httpput.getResponseBodyAsString();
+			//response = httpput.getResponseBodyAsString();
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			System.out.println(response);
+			//System.out.println(response);
 			httpput.releaseConnection();
 		}
 	}
