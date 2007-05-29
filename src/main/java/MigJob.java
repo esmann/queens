@@ -6,8 +6,10 @@ import java.util.Iterator;
  */
 public class MigJob {
 	private HashMap<String, String> mrsl = new HashMap<String, String>();
+	private String mrslfilename;
 
-	public MigJob(String execute) {
+	public MigJob(String execute, String mrslfilename) {
+		this.mrslfilename=mrslfilename;
 		mrsl.put("EXECUTE", execute);
 		mrsl.put("RUNTIMEENVIRONMENT", "JVM_BYTECODE");
 		mrsl.put("SANDBOX", "1");
@@ -25,4 +27,8 @@ public class MigJob {
 		return sb.toString();
 	}
 
+	public String getFilename()
+	{
+		return this.mrslfilename;
+	}
 }
