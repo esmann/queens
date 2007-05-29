@@ -16,6 +16,8 @@ public class MiddleBoard extends Board2 {
 	private int bound1, bound2;
 
 	private int count2, count8, count4;
+	
+	protected int currentBoardLine;
 
 	public MiddleBoard(int size) {
 		super(size);
@@ -70,8 +72,94 @@ public class MiddleBoard extends Board2 {
 
 		return true;
 	}
+	
+	public final void backtrackIterative(final int top, final int leftDiagonal,
+			final int horizontal, final int rightDiagonal) {
+		NQueenBoards.dout("iterative start: " + top);
+		int bit;
 
-	public void backtrackMiddle(int y, int left, int down, int right) {
+		isOccupiedLeftDiagonal[top] = leftDiagonal;
+		isOccupiedHorizontal[top] = horizontal;
+		isOccupiedRightDiagonal[top] = rightDiagonal;
+
+		possiblePlacements[top] = nextPossible;
+		currentBoardLine = top;
+
+		int bitmap; // used for minimizing array lookups
+		// for lines above 'top' queen placement is predetermined
+		while (currentBoardLine >= top) {
+			NQueenBoards.dout("CurrentBoardLine: " + currentBoardLine);
+
+			bitmap = this.MASK
+					& ~(isOccupiedLeftDiagonal[currentBoardLine]
+							| isOccupiedHorizontal[currentBoardLine] | isOccupiedRightDiagonal[currentBoardLine]);
+			
+			
+			if (currentBoardLine == sizee) {
+				if (bitmap != 0) {
+					
+					if ((bitmap & LASTMASK) == 0) {
+						board[currentBoardLine] = bitmap;
+						//System.out.println("b2: " + y + ", " + left + ", " + down + ", " + right);
+						this.check();
+					}
+					bitmap = 0; // We take the only solution that exists
+				} 
+			}
+			else {	
+			if (currentBoardLine < bound1) {
+				bitmap |= SIDEMASK;
+				bitmap ^= SIDEMASK;
+			} else if (currentBoardLine == bound2) {
+				
+				if ((isOccupiedHorizontal[currentBoardLine] & SIDEMASK) == 0) {
+					bitmap = 0;
+				}
+
+				if ((isOccupiedHorizontal[currentBoardLine] & SIDEMASK) != SIDEMASK) {					
+					bitmap &= SIDEMASK;					
+				}
+			}
+			}
+
+			possiblePlacements[currentBoardLine] = bitmap;
+
+			// Go back up if no possibleplacements
+			if (bitmap == 0) {
+				NQueenBoards.dout("No more possible solutions: "
+						+ currentBoardLine);
+				while ((currentBoardLine >= top)
+						&& (possiblePlacements[currentBoardLine]) == 0) {
+					currentBoardLine--;
+					NQueenBoards.dout("Going Back " + currentBoardLine);
+				}
+			}
+
+			/*
+			 *  Get next "sibling":
+			 *  	Select first onbit (from right)
+			 * 		Save our current selection
+			 * 		remove the selection from possible solutions  (So it isn't chosen again)
+			 */
+			possiblePlacements[currentBoardLine] ^= board[currentBoardLine] = -possiblePlacements[currentBoardLine]
+					& possiblePlacements[currentBoardLine];
+
+
+			bit = board[currentBoardLine]; // Previously chosen
+			
+			isOccupiedLeftDiagonal[currentBoardLine + 1] = (isOccupiedLeftDiagonal[currentBoardLine] | bit) << 1;
+			isOccupiedHorizontal[currentBoardLine + 1] = (isOccupiedHorizontal[currentBoardLine] | bit);
+			isOccupiedRightDiagonal[currentBoardLine + 1] = (isOccupiedRightDiagonal[currentBoardLine] | bit) >> 1;
+
+			if (currentBoardLine >= top) {
+				currentBoardLine++; // Go to child/Next line
+			}
+
+		}
+
+	}
+
+	public void backtrackRecursive(int y, int left, int down, int right) {
 
 		// System.out.println("backtrackMiddle");
 
@@ -106,7 +194,7 @@ public class MiddleBoard extends Board2 {
 				bit = -bitmap & bitmap;
 				board[y] = bit;
 				bitmap ^= board[y];
-				backtrackMiddle(y + 1, (left | bit) << 1, down | bit,
+				backtrackRecursive(y + 1, (left | bit) << 1, down | bit,
 						(right | bit) >> 1);
 			}
 			NQueenBoards.dout("<");
@@ -116,13 +204,17 @@ public class MiddleBoard extends Board2 {
 	@Override
 	void backtrack() {
 		// System.out.println("MASK: " + this.MASK);
-		backtrackMiddle(currentLine, leftDiagonal, horizontal, rightDiagonal);
+		if (isRecursive()) {
+			backtrackRecursive(currentLine, leftDiagonal, horizontal,
+					rightDiagonal);
+		} else {
+			backtrackIterative(currentLine, leftDiagonal, horizontal, rightDiagonal);
+		}
 	}
 
 	public void check() {
 		int own, you, bit, ptn;
 
-		/* 90-degree rotation */
 		if (board[bound2] == 1) {
 			for (ptn = 2, own = 1; own <= sizee; own++, ptn <<= 1) {
 				bit = 1;
