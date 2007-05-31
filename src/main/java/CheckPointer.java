@@ -1,3 +1,5 @@
+import java.util.TimerTask;
+
 import MiG.oneclick.Job;
 
 /**
@@ -9,14 +11,9 @@ import MiG.oneclick.Job;
  * 
  */
 
-public class CheckPointer implements Runnable {
+public class CheckPointer extends TimerTask {
 	private Board2 board;
-
-	private boolean alive;
-
 	private CheckPointAction action;
-
-	private long checkpoint_interval;
 
 	/**
 	 * 
@@ -27,38 +24,22 @@ public class CheckPointer implements Runnable {
 	 * @param interval
 	 *            time to wait for each checkpoint, in seconds
 	 */
-	CheckPointer(Board2 board, CheckPointAction action, int interval) {
+	CheckPointer(Board2 board, CheckPointAction action) {
 		this.board = board;
 		this.action = action;
-		this.checkpoint_interval = interval * 1000;
-		this.alive = true;
-	}
-
-	public void stop() {
-		alive = false;
 	}
 
 	public void run() {
-		try {
-			boolean result;
-			System.out.println("CHECKPOINTTHREAD STARTED");
-			while (alive) {												
-				synchronized (board) {
-					System.out.println("PREPARE CHECKPOINT");
-					result = action.checkpoint();
-					System.out.println("Checkpointing finished with: "
-							+ (result ? "sucess" : "failure"));
-					board.suspendBacktrack(false);
-					board.notify();
-					System.out.println("CHECKPOINT SLEEPS");				
-					board.wait(checkpoint_interval);
-					System.out.println("CHECKPOINT WOKEN");					
-				}
-			}
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		boolean result;
+		System.out.println("CHECKPOINT TASK STARTED");
+		board.suspendBacktrack(true);
+		synchronized (board) { // We don't want backtrack to corrup our snapshot
+			System.out.println("DOING CHECKPOINT");
+			result = action.checkpoint();
+			System.out.println("Checkpointing finished with: "
+					+ (result ? "sucess" : "failure"));
+			board.suspendBacktrack(false);
+			board.notify();
 		}
-
 	}
 }

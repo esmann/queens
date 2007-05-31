@@ -1,5 +1,7 @@
 import static org.junit.Assert.*;
 
+import java.util.Timer;
+
 import org.junit.Test;
 
 public class CornerBoardTest {
@@ -9,7 +11,7 @@ public class CornerBoardTest {
 
 	}
 
-	private static final int CHECKPOINT_INTERVAL = 2;
+	private static final int CHECKPOINT_INTERVAL = 4*1000;
 
 	class CheckPointActionMock implements CheckPointAction {
 
@@ -49,12 +51,15 @@ public class CornerBoardTest {
 		System.out.println("SIZE: " + size);
 		CornerBoard cboard = new CornerBoard(size);
 		cboard.setRecursive(recursive);
-
+		Timer t = new Timer();
 		int total = 0;
 		for (Board2 b : cboard.init()) {
-			(new Thread(new CheckPointer(b, new CheckPointActionMock(),
-					CHECKPOINT_INTERVAL))).start();
+			
+			t.schedule(new CheckPointer(b,new CheckPointActionMock()),
+					CHECKPOINT_INTERVAL, CHECKPOINT_INTERVAL);
+			
 			b.backtrack();
+			t.cancel(); // Doesn't kill currently running task...			
 			total += b.getTotal();
 			break;
 		}
