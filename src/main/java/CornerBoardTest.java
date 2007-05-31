@@ -9,38 +9,21 @@ public class CornerBoardTest {
 
 	}
 
-	private static final int CHECKPOINT_INTERVAL = 15*1000;
+	private static final int CHECKPOINT_INTERVAL = 2;
 
-	private class CheckPointThreadTest extends Thread {
+	class CheckPointActionMock implements CheckPointAction {
 
-		private Board2 board;
-
-		CheckPointThreadTest(Board2 b) {
-			this.board = b;
-		}
-
-		public void run() {
+		public boolean checkpoint() {
+			System.out.println("Doing fake Checkpoint");
 			try {
-				synchronized (board) {
-					int count = 0;
-					dout("CHECKPOINT STARTS");
-					while (this.isAlive()) {
-						dout("CHECKPOINT SLEEPS");
-						board.wait(CHECKPOINT_INTERVAL);
-						board.doCheckpoint(true);
-						dout("DOING CHECKPOINT nr: " + ++count);
-						Thread.sleep(5000);
-						board.doCheckpoint(false);						
-						dout("DONE CHECKPOINT nr: " + count);
-						
-					}
-				}
+				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
+			return true;
 		}
+
 	}
 
 	// @Test(timeout = 5000)
@@ -69,12 +52,12 @@ public class CornerBoardTest {
 
 		int total = 0;
 		for (Board2 b : cboard.init()) {
-			(new CheckPointThreadTest(b)).start();
+			(new Thread(new CheckPointer(b, new CheckPointActionMock(),
+					CHECKPOINT_INTERVAL))).start();
 			b.backtrack();
 			total += b.getTotal();
 			break;
 		}
 		assertEquals(expectedSolutions, total);
 	}
-
 }
