@@ -71,7 +71,7 @@ public class CornerBoard extends Board2 {
 		this.bound1 = bound;
 	}
 
-	public final void backtrackIterative(final int top, final int leftDiagonal,
+	public synchronized final void backtrackIterative(final int top, final int leftDiagonal,
 			final int horizontal, final int rightDiagonal) {
 
 		dout("iterative start: " + top);
@@ -97,30 +97,19 @@ public class CornerBoard extends Board2 {
 			iteration++;
 			if ((iteration % 5000) == 0)
 				System.out.println("iteration nr: " + iteration);
-			
-			if (checkpoint) {
-				CornerBoardTest.dout("DO A CHECKPOINT: " + iteration);
+
+			if (suspendBacktrack) {
+				CornerBoardTest
+						.dout("DETECTED a suspend request at iteration: "
+								+ iteration);
 				try {
-					synchronized (this) {
-						CornerBoardTest.dout("Board got it's own monitor");
-						while (checkpoint) {															
-							wait();
-							CornerBoardTest.dout("Got notification: "
-									+ iteration);
-							CornerBoardTest.dout("And checkpoint is:"
-									+ checkpoint);
-						}
-						CornerBoardTest
-						.dout("Board is quitting it's own monitor");
+					while (suspendBacktrack) {
+						wait();
 					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 
-				// } catch (InterruptedException e) {
-				// e.printStackTrace();
-				// }
-				CornerBoardTest.dout("CHECKPOINT DONE nr: " + iteration);
 			}
 			dout("CurrentBoardLine: " + currentBoardLine);
 

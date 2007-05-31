@@ -21,10 +21,10 @@ public abstract class Board2 implements Cloneable, Serializable {
 	protected int isOccupiedLeftDiagonal[], isOccupiedRightDiagonal[],
 			isOccupiedHorizontal[], possiblePlacements[];
 
-	
 	public static void dout(String s) {
-		//System.out.println(s);
+		// System.out.println(s);
 	}
+
 	// removed static
 	/**
 	 * import java.io.ObjectOutputStream;
@@ -33,10 +33,12 @@ public abstract class Board2 implements Cloneable, Serializable {
 
 	protected int nextPossible;
 
-	protected boolean checkpoint;
+	protected boolean suspendBacktrack = false;
+
+	private boolean checkpointing = true;
 
 	public Board2(int size) {
-		
+
 		this.size = size;
 		this.sizee = size - 1;
 		board = new int[size];
@@ -52,9 +54,8 @@ public abstract class Board2 implements Cloneable, Serializable {
 	}
 
 	protected boolean isRecursive() {
-		return  this.recursive;
+		return this.recursive;
 	}
-
 
 	abstract Collection<Board2> init();
 
@@ -109,8 +110,6 @@ public abstract class Board2 implements Cloneable, Serializable {
 		return bout.toString();
 	}
 
-	
-
 	// Create a new linkedlist every time... Slow?
 	public Queue<Board2> iterateLine() {
 		Queue<Board2> boards = new LinkedList<Board2>();
@@ -131,7 +130,6 @@ public abstract class Board2 implements Cloneable, Serializable {
 				 */
 
 				// Bounds check might invalidate a board
-
 				boards.add(bnew);
 			}
 		} catch (CloneNotSupportedException e) {
@@ -141,8 +139,15 @@ public abstract class Board2 implements Cloneable, Serializable {
 		return boards;
 	}
 
-	public void doCheckpoint(boolean b) {
-		checkpoint = b;
-		
+	public void suspendBacktrack(boolean b) {
+		suspendBacktrack = b;
+	}
+
+	public void setCheckpointing(boolean b) {
+		this.checkpointing = b;
+	}
+
+	public boolean useCheckpointing() {
+		return this.checkpointing;
 	}
 }
