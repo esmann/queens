@@ -15,11 +15,13 @@
 \author{Thomas Clement Mogensen \\ Frej Soya \\ Alex Esmann }
 
 %\maketitle
+
 \begin{document}
 \maketitle
+\tableofcontents
+
 
 \section{Problemformulering}\label{Problemformulering}
-
 
 %\input{problemformulering.tex}
 Opgavens formål er at implementere en parallel udgave af Takakens algoritme til løsning af n-dronning-problemet. Algoritmen skal køre på MiG-systemet (Minimum Intrusion Grid) og MiG's one-click arkitektur skal kunne udnyttes til at skaffe ressourcer til beregning af problemet. Formålet er på langt sigt at få beregnet en løsning til N-dronning-problemet for $n=26$, men opgaven er kun at gøre dette muligt ved hjælp af MiG. N-dronning-problemet er et klassisk beregningsproblem, der går ud på at finde antallet af mulige måder n dronninger kan placeres på et "skakbræt" med n x n felter, uden at nogen af dem er istand til at slå hinanden i næste træk. Problemets størrelse stiger eksponentielt med n, og er uhyre beregningstungt for store n, hvorfor store distribuerede systemer ofte benyttes. Hidtil er der kun fundet løsninger for $n \in \{1,...,25\}$. For distlab-gruppen her på diku ville en løsning for $n=26$, beregnet på et MiG-grid, kunne skabe opmærksomhed omkring MiG-systemet. 
@@ -130,10 +132,31 @@ I forbindelse med joboprettelse og resultatindsamling skal vi træffe nogle valg
 \item{}
 \end{itemize}
 
-\subsection{Konkrete implementeringer}
+\subsection{One-click-specifikke begrænsninger}
+
+Class-filer caches af browserens java-plugin. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver at browseren genstartes for ikke at fejle på serialVersionUID og derved færdiggøre jobbet, men uden resultat! 
+
+
+
+\subsection{Konkrete implementeringsproblemer}
 \subsubsection{Mig job}\label{label}
 \subsubsection{Ikke rekursiv kode}
 Fordi checkpointing gemmer ikke stack.
+
+\subsection{Resultatindsamling og -visning}
+Vi skal have en vedligeholdelsesproces kørende, der sørger for at 
+\begin{itemize}
+	\item Genkøre fejlede job
+	\item Indsamle resultater fra færdige jobs
+	\item Muliggøre løbende projektstatus og offentliggørelse af resultater 
+\end{itemize}
+Dette program kan for eksempel være det samme der står for at oprette vores jobs i første omgang. Muligheden for at tilpasse ikke-kørte jobs på baggrund af informationer om gridets tilstand (antallet af tilgængelige resourcer).
+\begin{itemize}
+	\item hvordan indsamlers resultater
+	\item
+\end{itemize}
+
+
 \section{Afprøvning og benchmarking}
 \subsection{Oprindelig kode vs. ren java port}
 \subsection{Oprindelig kode Vs. ikke rekursiv løsning}
@@ -159,8 +182,15 @@ http://mig-1.imada.sdu.dk/MiG/Mig/published\_papers/CPA05-Arch.pdf
 http://portal.etsi.org/docbox/GRID/Open/GRID\%20Plugtests\%202006/N-QUEENS-TESTCASE-2006-v2.pdf (2006)
 \end{thebibliography}
 
+
+
+\appendix
 %\landscape
 %\tiny
+\section{nqueens.c}
+\verbatiminput{../../nqueens.c}
+
+
 %\begin{multicols}{2}[\section{\LaTeX kildekode}]
 %\section*{Skabelon.tex}
 %\verbatiminput{skabelon.tex}
