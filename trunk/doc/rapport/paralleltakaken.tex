@@ -10,8 +10,11 @@ I forbindelse med joboprettelse og resultatindsamling skal vi træffe nogle valg 
 \item{}
 \end{itemize}
  
-
+Det skal overvejes om en den rekursive implementation Takaken bruger vil fungere i en one-click-implementation. Skal vi gøre brug af one-click's checkpointing er en rekursiv implementation ikke oplagt, idet jobbets stak ikke bevares på tværs af den serialisation der sker under checkpointing. Det er derfor nødvendigt at lave en ikke ikke-rekursiv eller hale-rekursiv implementation hvis vi vil undgå selv at skulle gemme og reetablere vores stak ved i forbindelse med checkpointing og genetablering af job fra checkpoint.
 
 
 \subsubsection{Konkrete implementeringer}
+
+
+
 
