@@ -5,11 +5,9 @@ public class CornerBoard extends Board2 {
 	/**
 	 * 
 	 */
-//	private static final long serialVersionUID = 8858183150323980473L;
-
+	// private static final long serialVersionUID = 8858183150323980473L;
 	// This could be excessive storage, the recursion/iteration tree
 	// should contain the full board along a path from root to leaf.
-
 	/**
 	 * If line<bound => removes possible placements.
 	 */
@@ -37,7 +35,8 @@ public class CornerBoard extends Board2 {
 		Collection<Board2> boards = new LinkedList<Board2>();
 		CornerBoard bnew;
 		for (bound1 = 2; bound1 < sizee; bound1++) {
-			//NQueenBoards.dout("" + bound1);
+			dout("" + bound1);
+
 			try {
 				bnew = (CornerBoard) this.clone();
 			} catch (CloneNotSupportedException e) {
@@ -75,20 +74,55 @@ public class CornerBoard extends Board2 {
 	public final void backtrackIterative(final int top, final int leftDiagonal,
 			final int horizontal, final int rightDiagonal) {
 
-		//NQueenBoards.dout("iterative start: " + top);
+		dout("iterative start: " + top);
+
 		int bit;
 
-		isOccupiedLeftDiagonal[top] = leftDiagonal;
-		isOccupiedHorizontal[top] = horizontal;
-		isOccupiedRightDiagonal[top] = rightDiagonal;
+		// This way we could restart in a checkpoint
+		if (possiblePlacements[top] == 0) {
+			isOccupiedLeftDiagonal[top] = leftDiagonal;
+			isOccupiedHorizontal[top] = horizontal;
+			isOccupiedRightDiagonal[top] = rightDiagonal;
 
-		possiblePlacements[top] = nextPossible;
-		currentBoardLine = top;
+			currentBoardLine = top;
+			possiblePlacements[top] = nextPossible;
+		} else {
+			dout("Resuming from a checkpoint");
+		}
 
 		int bitmap; // used for minimizing array lookups
 		// for lines above 'top' queen placement is predetirmined
+		int iteration = 0;
 		while (currentBoardLine >= top) {
-			//NQueenBoards.dout("CurrentBoardLine: " + currentBoardLine);
+			iteration++;
+			if ((iteration % 5000) == 0)
+				System.out.println("iteration nr: " + iteration);
+			
+			if (checkpoint) {
+				CornerBoardTest.dout("DO A CHECKPOINT: " + iteration);
+				try {
+					synchronized (this) {
+						CornerBoardTest.dout("Board got it's own monitor");
+						while (checkpoint) {															
+							wait();
+							CornerBoardTest.dout("Got notification: "
+									+ iteration);
+							CornerBoardTest.dout("And checkpoint is:"
+									+ checkpoint);
+						}
+						CornerBoardTest
+						.dout("Board is quitting it's own monitor");
+					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+
+				// } catch (InterruptedException e) {
+				// e.printStackTrace();
+				// }
+				CornerBoardTest.dout("CHECKPOINT DONE nr: " + iteration);
+			}
+			dout("CurrentBoardLine: " + currentBoardLine);
 
 			bitmap = this.MASK
 					& ~(isOccupiedLeftDiagonal[currentBoardLine]
@@ -97,7 +131,7 @@ public class CornerBoard extends Board2 {
 			if (currentBoardLine == sizee) {
 				if (bitmap != 0) {
 					this.count8++;
-					//NQueenBoards.dout("Solution " + currentBoardLine);
+					dout("Solution " + currentBoardLine);
 					bitmap = 0; // We take the only solution that exists
 				}
 
@@ -111,20 +145,19 @@ public class CornerBoard extends Board2 {
 
 			// Go back up if no possibleplacements
 			if (bitmap == 0) {
-				//NQueenBoards.dout("No more possible solutions: "
-						//+ currentBoardLine);
+
+				dout("No more possible solutions: " + currentBoardLine);
 				while ((currentBoardLine >= top)
 						&& (possiblePlacements[currentBoardLine]) == 0) {
 					currentBoardLine--;
-					//NQueenBoards.dout("Going Back " + currentBoardLine);
+					dout("Going Back " + currentBoardLine);
 				}
 			}
 
 			/*
-			 * Get next "sibling": Select first onbit (from right) 
-			 * Save our selected bit on the board  
-			 * Remove the selection from possible solutions
-			 * (So it isn't chosen again)
+			 * Get next "sibling": Select first onbit (from right) Save our
+			 * selected bit on the board Remove the selection from possible
+			 * solutions (So it isn't chosen again)
 			 */
 			possiblePlacements[currentBoardLine] ^= board[currentBoardLine] = -possiblePlacements[currentBoardLine]
 					& possiblePlacements[currentBoardLine];
@@ -145,7 +178,9 @@ public class CornerBoard extends Board2 {
 
 	public final void backtrackRecursive(final int y, final int left,
 			final int down, final int right) {
-		//NQueenBoards.dout("BTCORNER y: " + y);
+
+		dout("BTCORNER y: " + y);
+
 		/*
 		 * System.out.println("size: " + size); System.out.println("bound1: " +
 		 * bound1); System.out.println("MASK: " + this.MASK);
@@ -154,7 +189,8 @@ public class CornerBoard extends Board2 {
 		int bitmap, bit;
 
 		bitmap = this.MASK & ~(left | down | right);
-		//NQueenBoards.dout("BTCORNER bitmap: " + Integer.toBinaryString(bitmap));
+		dout("BTCORNER bitmap: " + Integer.toBinaryString(bitmap));
+
 		if (y == sizee) {
 			if (bitmap != 0) {
 				// board[y] = bitmap;
