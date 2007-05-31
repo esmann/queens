@@ -21,6 +21,10 @@ public abstract class Board2 implements Cloneable, Serializable {
 	protected int isOccupiedLeftDiagonal[], isOccupiedRightDiagonal[],
 			isOccupiedHorizontal[], possiblePlacements[];
 
+	
+	public static void dout(String s) {
+		//System.out.println(s);
+	}
 	// removed static
 	/**
 	 * import java.io.ObjectOutputStream;
@@ -28,6 +32,8 @@ public abstract class Board2 implements Cloneable, Serializable {
 	protected int sizee = 0;
 
 	protected int nextPossible;
+
+	protected boolean checkpoint;
 
 	public Board2(int size) {
 		
@@ -133,5 +139,10 @@ public abstract class Board2 implements Cloneable, Serializable {
 			e.printStackTrace();
 		}
 		return boards;
+	}
+
+	public void doCheckpoint(boolean b) {
+		checkpoint = b;
+		
 	}
 }
