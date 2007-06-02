@@ -1,6 +1,6 @@
 import static org.junit.Assert.*;
 
-import java.util.Collection;
+
 import java.util.LinkedList;
 import java.util.Queue;
 

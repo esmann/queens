@@ -2,12 +2,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 public class CornerBoard extends Board2 {
-	/**
-	 * 
-	 */
+
 	// private static final long serialVersionUID = 8858183150323980473L;
-	// This could be excessive storage, the recursion/iteration tree
-	// should contain the full board along a path from root to leaf.
 	/**
 	 * If line<bound => removes possible placements.
 	 */
@@ -18,8 +14,6 @@ public class CornerBoard extends Board2 {
 	 */
 	private int count8 = 0;
 
-	protected int currentBoardLine;
-
 	/**
 	 * Creates a new CornerBoard
 	 * 
@@ -27,15 +21,16 @@ public class CornerBoard extends Board2 {
 	 */
 	CornerBoard(int size) {
 		super(size);
+		// First queen is in the corner
+		setFirstLine(1);
 
-		setAndIncLine(1); // First queen is in right corner
 	}
 
 	public Collection<Board2> init() {
 		Collection<Board2> boards = new LinkedList<Board2>();
 		CornerBoard bnew;
 		for (bound1 = 2; bound1 < sizee; bound1++) {
-			dout("" + bound1);
+			dout("Bound1: " + bound1);
 
 			try {
 				bnew = (CornerBoard) this.clone();
@@ -58,10 +53,11 @@ public class CornerBoard extends Board2 {
 		return bout.toString();
 	}
 
+	@Override
 	public boolean checkBounds() {
-		if (currentLine < bound1) {
-			nextPossible |= 2;
-			nextPossible ^= 2;
+		if (currentBoardLine < bound1) {
+			possiblePlacements[currentBoardLine] |= 2;
+			possiblePlacements[currentBoardLine] ^= 2;
 		}
 		// Cornerboard is always true
 		return true;
@@ -71,29 +67,15 @@ public class CornerBoard extends Board2 {
 		this.bound1 = bound;
 	}
 
-	public synchronized final void backtrackIterative(final int top, final int leftDiagonal,
-			final int horizontal, final int rightDiagonal) {
-
+	public synchronized final void backtrackIterative() {
+		int top = currentBoardLine;
 		dout("iterative start: " + top);
-
 		int bit;
-
-		// This way we could restart in a checkpoint
-		if (possiblePlacements[top] == 0) {
-			isOccupiedLeftDiagonal[top] = leftDiagonal;
-			isOccupiedHorizontal[top] = horizontal;
-			isOccupiedRightDiagonal[top] = rightDiagonal;
-
-			currentBoardLine = top;
-			possiblePlacements[top] = nextPossible;
-		} else {
-			dout("Resuming from a checkpoint");
-		}
-
 		int bitmap; // used for minimizing array lookups
 		// for lines above 'top' queen placement is predetirmined
 		int iteration = 0;
 		while (currentBoardLine >= top) {
+			dout("CurrentBoardLine: " + currentBoardLine);
 			iteration++;
 			if ((iteration % 5000) == 0)
 				System.out.println("iteration nr: " + iteration);
@@ -111,7 +93,6 @@ public class CornerBoard extends Board2 {
 				}
 
 			}
-			dout("CurrentBoardLine: " + currentBoardLine);
 
 			bitmap = this.MASK
 					& ~(isOccupiedLeftDiagonal[currentBoardLine]
@@ -185,6 +166,7 @@ public class CornerBoard extends Board2 {
 				// board[y] = bitmap;
 				// System.out.println("b1: " + y + ", " + left + ", " + down +
 				// ", " + right);
+				System.out.println("SOLUTION!\n");
 				this.count8++;
 			}
 		} else {
@@ -201,20 +183,6 @@ public class CornerBoard extends Board2 {
 						(right | bit) >> 1);
 			}
 		}
-	}
-
-	@Override
-	void backtrack() {
-		// System.out.println("MASK: " + this.MASK);
-
-		if (isRecursive()) {
-			backtrackRecursive(currentLine, leftDiagonal, horizontal,
-					rightDiagonal);
-		} else {
-			backtrackIterative(currentLine, leftDiagonal, horizontal,
-					rightDiagonal);
-		}
-
 	}
 
 	@Override

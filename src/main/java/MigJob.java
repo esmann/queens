@@ -1,5 +1,5 @@
 import java.util.HashMap;
-import java.util.Iterator;
+
 
 /*
  * MigJob represents a mRSL file, or should at least serialize to this
@@ -7,7 +7,7 @@ import java.util.Iterator;
 public class MigJob {
 	private HashMap<String, String> mrsl = new HashMap<String, String>();
 	private String mrslfilename;
-	//PROJECT skal tilføjes som argument, så det er nemmere at ændre.. (nyt PROJECT for hver test m.m.)
+	//PROJECT skal tilfÃ¸jes som argument, sÃ¥ det er nemmere at Ã¦ndre.. (nyt PROJECT for hver test m.m.)
 	//evt samme for VGRID
 	public MigJob(String execute, String mrslfilename) {
 		this.mrslfilename=mrslfilename;
