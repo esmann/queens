@@ -20,50 +20,53 @@
 \maketitle
 \tableofcontents
 
+\tableofcontents
 
 \section{Problemformulering}\label{Problemformulering}
 
 %\input{problemformulering.tex}
-Opgavens formål er at implementere en parallel udgave af Takakens algoritme til løsning af n-dronning-problemet. Algoritmen skal køre på MiG-systemet (Minimum Intrusion Grid) og MiG's one-click arkitektur skal kunne udnyttes til at skaffe ressourcer til beregning af problemet. Formålet er på langt sigt at få beregnet en løsning til N-dronning-problemet for $n=26$, men opgaven er kun at gøre dette muligt ved hjælp af MiG. N-dronning-problemet er et klassisk beregningsproblem, der går ud på at finde antallet af mulige måder n dronninger kan placeres på et "skakbræt" med n x n felter, uden at nogen af dem er istand til at slå hinanden i næste træk. Problemets størrelse stiger eksponentielt med n, og er uhyre beregningstungt for store n, hvorfor store distribuerede systemer ofte benyttes. Hidtil er der kun fundet løsninger for $n \in \{1,...,25\}$. For distlab-gruppen her på diku ville en løsning for $n=26$, beregnet på et MiG-grid, kunne skabe opmærksomhed omkring MiG-systemet. 
+at implementere en parallel udgave af Takakens algoritme til løsning af n-dronning-problemet. Algoritmen skal køre på MiG-systemet (Minimum Intrusion Grid) og MiG's one-click arkitektur skal kunne udnyttes til at skaffe ressourcer til beregning af problemet. Formålet er på langt sigt at få beregnet en løsning til N-dronning-problemet for $n=26$, men opgaven er kun at gøre dette muligt ved hjælp af MiG. N-dronning-problemet er et klassisk beregningsproblem, der går ud på at finde antallet af mulige måder n dronninger kan placeres på et "skakbræt" med n x n felter, uden at nogen af dem er istand til at slå hinanden i næste træk. Problemets størrelse stiger eksponentielt med n, og er uhyre beregningstungt for store n, hvorfor store distribuerede systemer ofte benyttes. Hidtil er der kun fundet løsninger for $n \in \{1,...,25\}$. For distlab-gruppen her på diku ville en løsning for $n=26$, beregnet på et MiG-grid, kunne skabe opmærksomhed omkring MiG-systemet.
 
 MiG er beskrevet indgående i \cite{simplemig} og \cite{mig}, \cite{etsi} beskriver N-dronning-problemet grundigere end ovenstående og præsenterer en løsning for n=25. Appendix queens.c i \cite{etsi} er en udskrift af Takakens algoritme implementeret i C.
 
-One-click muliggør deltagelse i et MiG-grid uden andre forudsætninger end en webbrowser og java. Tilgengæld er denne metode begrænset til at afvikle programmer, der er tilgængelige som java-bytecode. Brug af one-click giver adgang til et enormt (potentielt) antal beregningsressourcer, hvilket er grunden til at benytte one-click i denne opgave.    
+One-click muliggør deltagelse i et MiG-grid uden andre forudsætninger end en webbrowser og java. Tilgengæld er denne metode begrænset til at afvikle programmer, der er tilgængelige som java-bytecode. Brug af one-click giver adgang til et enormt (potentielt) antal beregningsressourcer, hvilket er grunden til at benytte one-click i denne opgave.
 
-Opgaven indeholder altså følgende delproblemer: 
+Opgaven indeholder altså følgende delproblemer:
 \begin{itemize}
 \item At finde en effektiv strategi til parallelisering af Takakens algoritme. Herunder overvejelser omkring den optimale størrelse på delproblemer.
-\item Implementation af algoritmen i java på en sådan måde at den kan afvikles af one-click-klienter. 
-\item Strategi for indsamling, behandling og præsentation af delresultater. 
+\item Implementation af algoritmen i java på en sådan måde at den kan afvikles af one-click-klienter.
+\item Strategi for indsamling, behandling og præsentation af delresultater.
 \item Første opgave er naturligvis at få et bedre kendskab til MiG.
 \end{itemize}
 
 \subsection{Afgrænsninger}
 %\input{afgraensninger.tex}
 
-Projektets formål er ikke at beregne en løsning til N-dronning-problemet for $n=26$, hvilket problemets beregningsmæssige omfang kombineret med tids- og ressourcebegræsninger udelukker i praksis. Men kun at muliggøre og forhåbentlig igangsætte denne beregning. 
-Vi vil ikke tage stilling til den benyttede algoritmes korrekthed eller effektivitet, men kun til den bedst mulige strategi for parallelisering. Partitionering af problemdata skal foregå på en fornuftig måde, med tanke på hvordan det forventes beregningsressourcerne opfører sig, men en decideret statisk undersøgelse af midlertidige MiG-ressourcers opførsel eller levetid vil ikke blive foretaget\footnote{Med ressourcers opførsel tænkes på den tid man kan forvente en bruger vil lade sin one-click-klient køre}. Fordele og ulemper ved MiG eller One-click i forhold til andre grid-systemer falder også udenfor opgavens omfang. 
+Projektets formål er ikke at beregne en løsning til N-dronning-problemet for $n=26$, hvilket problemets beregningsmæssige omfang kombineret med tids- og ressourcebegræsninger udelukker i praksis. Men kun at muliggøre og forhåbentlig igangsætte denne beregning.
+Vi vil ikke tage stilling til den benyttede algoritmes korrekthed eller effektivitet, men kun til den bedst mulige strategi for parallelisering. Partitionering af problemdata skal foregå på en fornuftig måde, med tanke på hvordan det forventes beregningsressourcerne opfører sig, men en decideret statisk undersøgelse af midlertidige MiG-ressourcers opførsel eller levetid vil ikke blive foretaget\footnote{Med ressourcers opførsel tænkes på den tid man kan forvente en bruger vil lade sin one-click-klient køre}. Fordele og ulemper ved MiG eller One-click i forhold til andre grid-systemer falder også udenfor opgavens omfang.
 
 Ved at at løse problemet for et lavere $n$ vil vi kunne estimere tiden og/eller antal CPU'er der skal bruges for at løse for n=26.
+
 
 \section{Placering af N Dronninger på et NxN skakbræt}
 
 Placering af N dronninger på et skabbræt med $NxN$ størrelse
-	
+
 \subsection{Model}
 Eksempel for på en løsning for $n=5$
-TODO
-\begin{tabular}{|c|c|c|c|c|l}
-       4 & 3 & 2 & 1 &  0 & \\
-\hline &  &  &  & \chs{q} & 0 \\
-\hline \chs{q} &  &  &  &  		  & 1 \\
-\hline &  &  & \chs{q} &  & 2\\
-\hline &  &  &  &  		  & 3 \\
-\hline & Q &  &  &  		  & 4\\
-\hline
-\end{tabular}
 
-Samme brættet repæsenteret som et binært mønster. \textbf{1} markere  placering af en dronning 
+FIXME
+%\begin{tabular}{|c|c|c|c|c|l}
+%       4 & 3 & 2 & 1 &  0 & \\
+%\hline &  &  &  & \chs{q} & 0 \\
+%\hline \chs{q} &  &  &  &  		  & 1 \\
+%\hline &  &  & \chs{q} &  & 2\\
+%\hline &  &  &  &  		  & 3 \\
+%\hline & Q &  &  &  		  & 4\\
+%\hline
+%\end{tabular}
+
+Samme bræt repræsenteret et binært mønster. \textbf{1} markere  placering af en dronning
 
 
 
@@ -126,7 +129,7 @@ Begrænsinger pga, applets
 \item{Vi er nødt til at tage højde for at løsningen (antallet af løsinger) vil overstige hvad vi kan repræsentere som en 32bit værdi. }
 \end{itemize}
 
-I forbindelse med joboprettelse og resultatindsamling skal vi træffe nogle valg mht.  
+I forbindelse med joboprettelse og resultatindsamling skal vi træffe nogle valg mht.
 \begin{itemize}
 \item{Joboprettelsesstrategi - hvad skal der til for at beskrive et job.}
 \item{}
@@ -140,8 +143,25 @@ Class-filer caches af browserens java-plugin. Ændringer i class-filer, der bety
 
 \subsection{Konkrete implementeringsproblemer}
 \subsubsection{Mig job}\label{label}
-\subsubsection{Ikke rekursiv kode}
+\subsubsection{Iterative udgave}
+\subsection{Checkpoint}
+
 Fordi checkpointing gemmer ikke stack.
+
+
+\subsection{Resultatindsamling og -visning}
+Vi skal have en vedligeholdelsesproces kørende, der sørger for at 
+\begin{itemize}
+	\item Genkøre fejlede job
+	\item Indsamle resultater fra færdige jobs
+	\item Muliggøre løbende projektstatus og offentliggørelse af resultater 
+\end{itemize}
+Dette program kan for eksempel være det samme der står for at oprette vores jobs i første omgang. Muligheden for at tilpasse ikke-kørte jobs på baggrund af informationer om gridets tilstand (antallet af tilgængelige resourcer).
+\begin{itemize}
+	\item hvordan indsamlers resultater
+	\item
+\end{itemize}
+
 
 \subsection{Resultatindsamling og -visning}
 Vi skal have en vedligeholdelsesproces kørende, der sørger for at 
@@ -158,8 +178,12 @@ Dette program kan for eksempel være det samme der står for at oprette vores jo
 
 
 \section{Afprøvning og benchmarking}
-\subsection{Oprindelig kode vs. ren java port}
-\subsection{Oprindelig kode Vs. ikke rekursiv løsning}
+\subsection{Takaken}
+\subsection{Java port}
+\subsection{Java port v2}
+\subsubsection{Rekursion vs. Iterativ metode}
+\subsubsection{Iterativ med checkpoints}
+\subsection{MiGrid}
 
 %\input{benchmark.tex}
 TODO
