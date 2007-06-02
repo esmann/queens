@@ -38,38 +38,6 @@ public class NQueenBoards {
 		System.out.println(s);
 	}
 	
-	@SuppressWarnings("unused")
-	private static void createMRSL(String input) throws IOException {
-		File f = new File("mrsl.TEMPLATE");
-		HashMap<String, String> vars = new HashMap<String, String>();
-		vars.put("$INPUTFILE", input + ".obj");
-		StringBuilder sb = new StringBuilder();
-		BufferedReader in = null;
-		try {
-			in = new BufferedReader(new FileReader(f));
-			String str;
-
-			while ((str = in.readLine()) != null) {
-				sb.append(str + "\n");
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			in.close();
-		}
-		String template = sb.toString();
-
-		for (Entry<String, String> var : vars.entrySet()) {
-			template = template.replace(var.getKey(), var.getValue());
-		}
-
-		PrintWriter out = new PrintWriter(new FileOutputStream(input + ".mrsl"));
-		out.write(template);
-		out.close();
-
-	}
-
 	/**
 	 * @param args
 	 */
@@ -78,11 +46,12 @@ public class NQueenBoards {
 		// size = Integer.parseInt(args[0]);
 		// maxSteps = Integer.parseInt(args[1]);
 
-		size = 9;
-		maxSteps = 1;
+		size = 19;
+		maxSteps = 0;
 
 		CornerBoard cboard = new CornerBoard(size);
 		cboard.setRecursive(true);
+		cboard.setCheckpointing(true);
 		boards.addAll(cboard.init());
 		//dout("After INIT #cornerboards=" + boards.size());
 		MiddleBoard mboard = new MiddleBoard(size);

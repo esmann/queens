@@ -14,11 +14,11 @@ public class NQueenJob extends Job {
 	 */
 	//private static final long serialVersionUID = -6693387052709608747L;
 
-	private static final int CHECKPOINT_INTERVAL = 15 * 1000;
+	private static final int CHECKPOINT_INTERVAL = 30 * 1000;
 
 	private static Board2 board;
 	public boolean checkpoint() {
-		return this.checkpoint();
+		return super.checkpoint();
 	}
 	@Override
 	public void MiG_main(String[] argv) {
@@ -65,7 +65,10 @@ public class NQueenJob extends Job {
 				board = (Board2) in.readObject();
 				in.close();
 				Timer t = new Timer();
-
+				if (board instanceof CornerBoard) 
+					System.out.println("CornerBoard wooo !");
+										
+				
 				if (board.useCheckpointing())					
 					t.schedule(new CheckPointer(board,new CheckPointActionMiG(this)),
 							CHECKPOINT_INTERVAL, CHECKPOINT_INTERVAL);

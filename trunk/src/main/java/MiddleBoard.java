@@ -5,8 +5,7 @@ public class MiddleBoard extends Board2 {
 	/**
 	 * 
 	 */
-	//private static final long serialVersionUID = 6091744538421101679L;
-
+	// private static final long serialVersionUID = 6091744538421101679L;
 	private int TOPBIT;
 
 	private int SIDEMASK;
@@ -16,12 +15,10 @@ public class MiddleBoard extends Board2 {
 	private int bound1, bound2;
 
 	private int count2, count8, count4;
-	
-	protected int currentBoardLine;
 
 	public MiddleBoard(int size) {
 		super(size);
-
+		
 		TOPBIT = 1 << sizee; // size-1
 		SIDEMASK = TOPBIT | 1;
 		LASTMASK = TOPBIT | 1;
@@ -58,99 +55,92 @@ public class MiddleBoard extends Board2 {
 	public boolean checkBounds() {
 
 		if (getLine() < bound1) {
-			nextPossible |= SIDEMASK;
-			nextPossible ^= SIDEMASK;
+			possiblePlacements[currentBoardLine] |= SIDEMASK;
+			possiblePlacements[currentBoardLine] ^= SIDEMASK;
 		} else if (getLine() == this.bound2) {
 
-			if ((horizontal & SIDEMASK) == 0)
+			if ((isOccupiedHorizontal[this.getBoardLine()] & SIDEMASK) == 0)
 				// This board can never become a solution
 				return false;
 
-			if ((horizontal & SIDEMASK) != SIDEMASK)
-				nextPossible &= SIDEMASK;
+			if ((isOccupiedHorizontal[this.getBoardLine()] & SIDEMASK) != SIDEMASK)
+				possiblePlacements[currentBoardLine] &= SIDEMASK;
 		}
 
 		return true;
 	}
-	
-	public final void backtrackIterative(final int top, final int leftDiagonal,
-			final int horizontal, final int rightDiagonal) {
-		//NQueenBoards.dout("iterative start: " + top);
+	@Override
+	public synchronized final void backtrackIterative() {
+
 		int bit;
-
-		isOccupiedLeftDiagonal[top] = leftDiagonal;
-		isOccupiedHorizontal[top] = horizontal;
-		isOccupiedRightDiagonal[top] = rightDiagonal;
-
-		possiblePlacements[top] = nextPossible;
-		currentBoardLine = top;
-
+		int top = currentBoardLine;
+		
 		int bitmap; // used for minimizing array lookups
 		// for lines above 'top' queen placement is predetermined
 		while (currentBoardLine >= top) {
-			//NQueenBoards.dout("CurrentBoardLine: " + currentBoardLine);
+			NQueenBoards.dout("CurrentBoardLine: " + currentBoardLine);
 
 			bitmap = this.MASK
 					& ~(isOccupiedLeftDiagonal[currentBoardLine]
 							| isOccupiedHorizontal[currentBoardLine] | isOccupiedRightDiagonal[currentBoardLine]);
-			
-			
+
 			if (currentBoardLine == sizee) {
 				if (bitmap != 0) {
-					
+
 					if ((bitmap & LASTMASK) == 0) {
 						board[currentBoardLine] = bitmap;
-						//System.out.println("b2: " + y + ", " + left + ", " + down + ", " + right);
+						// System.out.println("b2: " + y + ", " + left + ", " +
+						// down + ", " + right);
 						this.check();
 					}
 					bitmap = 0; // We take the only solution that exists
-				} 
-			}
-			else {	
-			if (currentBoardLine < bound1) {
-				bitmap |= SIDEMASK;
-				bitmap ^= SIDEMASK;
-			} else if (currentBoardLine == bound2) {
-				
-				if ((isOccupiedHorizontal[currentBoardLine] & SIDEMASK) == 0) {
-					bitmap = 0;
 				}
+			} else {
+				if (currentBoardLine < bound1) {
+					bitmap |= SIDEMASK;
+					bitmap ^= SIDEMASK;
+				} else if (currentBoardLine == bound2) {
 
-				if ((isOccupiedHorizontal[currentBoardLine] & SIDEMASK) != SIDEMASK) {					
-					bitmap &= SIDEMASK;					
+					if ((isOccupiedHorizontal[currentBoardLine] & SIDEMASK) == 0) {
+						bitmap = 0;
+					}
+
+					if ((isOccupiedHorizontal[currentBoardLine] & SIDEMASK) != SIDEMASK) {
+						bitmap &= SIDEMASK;
+					}
 				}
-			}
 			}
 
 			possiblePlacements[currentBoardLine] = bitmap;
 
 			// Go back up if no possibleplacements
 			if (bitmap == 0) {
-				//NQueenBoards.dout("No more possible solutions: "
-				//		+ currentBoardLine);
+
+				// NQueenBoards.dout("No more possible solutions: "
+				// + currentBoardLine);
+
 				while ((currentBoardLine >= top)
 						&& (possiblePlacements[currentBoardLine]) == 0) {
 					currentBoardLine--;
-					//NQueenBoards.dout("Going Back " + currentBoardLine);
+					NQueenBoards.dout("Going Back " + currentBoardLine);
+
 				}
 			}
 
 			/*
-			 *  Get next "sibling":
-			 *  	Select first onbit (from right)
-			 * 		Save our current selection
-			 * 		remove the selection from possible solutions  (So it isn't chosen again)
+			 * Get next "sibling": Select first onbit (from right) Save our
+			 * current selection remove the selection from possible solutions
+			 * (So it isn't chosen again)
 			 */
 			possiblePlacements[currentBoardLine] ^= board[currentBoardLine] = -possiblePlacements[currentBoardLine]
 					& possiblePlacements[currentBoardLine];
 
-
 			bit = board[currentBoardLine]; // Previously chosen
-			
+
 			isOccupiedLeftDiagonal[currentBoardLine + 1] = (isOccupiedLeftDiagonal[currentBoardLine] | bit) << 1;
 			isOccupiedHorizontal[currentBoardLine + 1] = (isOccupiedHorizontal[currentBoardLine] | bit);
 			isOccupiedRightDiagonal[currentBoardLine + 1] = (isOccupiedRightDiagonal[currentBoardLine] | bit) >> 1;
-
+			
 			if (currentBoardLine >= top) {
 				currentBoardLine++; // Go to child/Next line
 			}
@@ -197,18 +187,7 @@ public class MiddleBoard extends Board2 {
 				backtrackRecursive(y + 1, (left | bit) << 1, down | bit,
 						(right | bit) >> 1);
 			}
-			//NQueenBoards.dout("<");
-		}
-	}
-
-	@Override
-	void backtrack() {
-		// System.out.println("MASK: " + this.MASK);
-		if (isRecursive()) {
-			backtrackRecursive(currentLine, leftDiagonal, horizontal,
-					rightDiagonal);
-		} else {
-			backtrackIterative(currentLine, leftDiagonal, horizontal, rightDiagonal);
+			// NQueenBoards.dout("<");
 		}
 	}
 
