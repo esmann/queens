@@ -1,7 +1,13 @@
 public class CheckPointActionMiG implements CheckPointAction {
+	
+	private NQueenJob job;
 
-	public boolean checkpoint() {
-		return this.checkpoint(); // From Mig.oneclick.Job
+	public CheckPointActionMiG(NQueenJob job) {
+		this.job = job;
+	}
+	
+	public boolean doCheckpoint() {
+		return job.checkpoint(); // From Mig.oneclick.Job
 	}
 
 }

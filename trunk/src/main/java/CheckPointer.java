@@ -35,7 +35,7 @@ public class CheckPointer extends TimerTask {
 		board.suspendBacktrack(true);
 		synchronized (board) { // We don't want backtrack to corrup our snapshot
 			System.out.println("DOING CHECKPOINT");
-			result = action.checkpoint();
+			result = action.doCheckpoint();
 			System.out.println("Checkpointing finished with: "
 					+ (result ? "sucess" : "failure"));
 			board.suspendBacktrack(false);

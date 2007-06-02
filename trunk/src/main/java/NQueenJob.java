@@ -17,7 +17,9 @@ public class NQueenJob extends Job {
 	private static final int CHECKPOINT_INTERVAL = 15 * 1000;
 
 	private static Board2 board;
-
+	public boolean checkpoint() {
+		return this.checkpoint();
+	}
 	@Override
 	public void MiG_main(String[] argv) {
 		if (argv.length > 0) {
@@ -65,7 +67,7 @@ public class NQueenJob extends Job {
 				Timer t = new Timer();
 
 				if (board.useCheckpointing())					
-					t.schedule(new CheckPointer(board,new CheckPointActionMiG()),
+					t.schedule(new CheckPointer(board,new CheckPointActionMiG(this)),
 							CHECKPOINT_INTERVAL, CHECKPOINT_INTERVAL);
 				
 				
