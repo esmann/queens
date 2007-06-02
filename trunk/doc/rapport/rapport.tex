@@ -10,7 +10,7 @@
 
 \font\chessfont=skak10
 \def\chs#1{{\chessfont#1}}
-
+\def\OC{OneClick}
 \title{Bachelorprojekt\\N-dronning problemet i MiG}
 \author{Thomas Clement Mogensen \\ Frej Soya \\ Alex Esmann }
 
@@ -46,15 +46,9 @@ Projektets formål er ikke at beregne en løsning til N-dronning-problemet for $
 Vi vil ikke tage stilling til den benyttede algoritmes korrekthed eller effektivitet, men kun til den bedst mulige strategi for parallelisering. Partitionering af problemdata skal foregå på en fornuftig måde, med tanke på hvordan det forventes beregningsressourcerne opfører sig, men en decideret statisk undersøgelse af midlertidige MiG-ressourcers opførsel eller levetid vil ikke blive foretaget\footnote{Med ressourcers opførsel tænkes på den tid man kan forvente en bruger vil lade sin one-click-klient køre}. Fordele og ulemper ved MiG eller One-click i forhold til andre grid-systemer falder også udenfor opgavens omfang.
 
 Ved at at løse problemet for et lavere $n$ vil vi kunne estimere tiden og/eller antal CPU'er der skal bruges for at løse for n=26.
-
-
-\section{Placering af N Dronninger på et NxN skakbræt}
-
+\section{Analyse}
 Placering af N dronninger på et skabbræt med $NxN$ størrelse
-
-\subsection{Model}
 Eksempel for på en løsning for $n=5$
-
 FIXME
 %\begin{tabular}{|c|c|c|c|c|l}
 %       4 & 3 & 2 & 1 &  0 & \\
@@ -65,6 +59,8 @@ FIXME
 %\hline & Q &  &  &  		  & 4\\
 %\hline
 %\end{tabular}
+
+\subsection{Model}
 
 Samme bræt repræsenteret et binært mønster. \textbf{1} markere  placering af en dronning
 
@@ -139,6 +135,10 @@ I forbindelse med joboprettelse og resultatindsamling skal vi træffe nogle valg
 
 Class-filer caches af browserens java-plugin. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver at browseren genstartes for ikke at fejle på serialVersionUID og derved færdiggøre jobbet, men uden resultat! 
 
+\subsubsection{Bugs og mangler}
+\begin{itemize}
+	\item Et job fejler ikke hvis jobbet kaster en java.lang.Error (Forskellig fra Java.lang.Exception, begge har dog typen java.lang.Throwable)
+\end{itemize}
 
 
 \subsection{Konkrete implementeringsproblemer}
@@ -151,6 +151,9 @@ Fordi checkpointing gemmer ikke stack.
 
 \subsection{Resultatindsamling og -visning}
 Vi skal have en vedligeholdelsesproces kørende, der sørger for at 
+
+- Frej Lad mig sende en mail pr. færdigt job? Og så et job der checker 'jævnligt' at alle mails er modtaget?
+
 \begin{itemize}
 	\item Genkøre fejlede job
 	\item Indsamle resultater fra færdige jobs
