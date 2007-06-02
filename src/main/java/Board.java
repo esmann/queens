@@ -1,7 +1,8 @@
 public class Board
 {
     
-	private static int[] Board;
+	private static int[] Board = new int[30];
+
 	public static int BoardE;
 	public static int Board1;
 	public static int Board2;
@@ -10,11 +11,6 @@ public class Board
 		
 	}
 	
-	public Board(int size)
-	{
-		Board = new int[size];
-	}
-
 	public static int GetBoard(int index)
 	{
 		return Board[index];
