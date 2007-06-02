@@ -5,11 +5,11 @@ import java.util.Queue;
 
 public abstract class Board2 implements Cloneable, Serializable {
 
-	protected int board[];
+	protected int size;
 
-	// protected int leftDiagonal, rightDiagonal, horizontal = 0;
-
-	// protected int currentLine = 0; // zero indexed nxn board
+	// Using arrays for the iterative part
+	protected int board[], isOccupiedLeftDiagonal[], isOccupiedRightDiagonal[],
+			isOccupiedHorizontal[], possiblePlacements[];
 
 	protected int currentBoardLine = 0;
 
@@ -17,27 +17,17 @@ public abstract class Board2 implements Cloneable, Serializable {
 
 	protected int MASK;
 
-	protected int size;
-
-	// Used for iterative
-	protected int isOccupiedLeftDiagonal[], isOccupiedRightDiagonal[],
-			isOccupiedHorizontal[], possiblePlacements[];
-
 	public static void dout(String s) {
 		System.out.println(s);
 	}
 
-	// removed static
-	/**
-	 * import java.io.ObjectOutputStream;
-	 */
 	protected int sizee = 0;
-
-	//protected int nextPossible;
 
 	protected boolean suspendBacktrack = false;
 
 	private boolean checkpointing = true;
+
+	protected int top = -1;
 
 	public Board2(int size) {
 
@@ -70,13 +60,20 @@ public abstract class Board2 implements Cloneable, Serializable {
 
 	public void backtrack() {
 		// System.out.println("MASK: " + this.MASK);
-
+		
+		// Save original currenboardLine to top?
+		if (top == -1) {
+			top = currentBoardLine;	
+		} else {
+			System.out.println("Board detected resume");
+		}
+				
 		if (isRecursive()) {
-			System.out.println(this.toString());
-			backtrackRecursive(currentBoardLine,
-					isOccupiedLeftDiagonal[currentBoardLine],
-					isOccupiedHorizontal[currentBoardLine],
-					isOccupiedRightDiagonal[currentBoardLine]);
+			// System.out.println(this.toString());
+			backtrackRecursive(top,
+					isOccupiedLeftDiagonal[top],
+					isOccupiedHorizontal[top],
+					isOccupiedRightDiagonal[top]);
 		} else {
 			backtrackIterative();
 		}
@@ -109,18 +106,18 @@ public abstract class Board2 implements Cloneable, Serializable {
 	}
 
 	protected void setFirstLine(int selected) {
-		System.out.println("Setting line:"  + currentBoardLine);
+		// System.out.println("Setting line:" + currentBoardLine);
 		board[currentBoardLine] = selected;
 
 		currentBoardLine++;
-		
+
 		isOccupiedHorizontal[currentBoardLine] = selected;
-		
-		isOccupiedLeftDiagonal[currentBoardLine] = selected  << 1;
+
+		isOccupiedLeftDiagonal[currentBoardLine] = selected << 1;
 		isOccupiedRightDiagonal[currentBoardLine] = selected >> 1;
-		
+
 		possiblePlacements[currentBoardLine] = MASK & ~(selected);
-		
+
 	}
 
 	private void setLine(int selectedbit) {
@@ -130,9 +127,6 @@ public abstract class Board2 implements Cloneable, Serializable {
 	protected void setAndIncLine(int selectedbit) {
 		setLine(selectedbit);
 
-		System.out.println("Setting line:"  + currentBoardLine);
-		System.out.println("with "  + Integer.toBinaryString(board[currentBoardLine]));
-
 		currentBoardLine++;
 		// Calculate occupied possitions based on previous queen placements
 		isOccupiedLeftDiagonal[currentBoardLine] = (isOccupiedLeftDiagonal[currentBoardLine - 1] | selectedbit) << 1;
@@ -140,12 +134,11 @@ public abstract class Board2 implements Cloneable, Serializable {
 		isOccupiedRightDiagonal[currentBoardLine] = (isOccupiedRightDiagonal[currentBoardLine - 1] | selectedbit) >> 1;
 
 		isOccupiedHorizontal[currentBoardLine] = (isOccupiedHorizontal[currentBoardLine - 1] | selectedbit);
-		
+
 		possiblePlacements[currentBoardLine] = MASK
 				& ~(isOccupiedHorizontal[currentBoardLine]
 						| isOccupiedRightDiagonal[currentBoardLine] | isOccupiedLeftDiagonal[currentBoardLine]);
-		
-		
+
 	}
 
 	protected int getLine() {
@@ -160,7 +153,7 @@ public abstract class Board2 implements Cloneable, Serializable {
 		StringBuffer bout = new StringBuffer();
 		bout.append("--------------\n");
 		bout.append("BOARD\n");
-		
+
 		for (int i = 0; i <= sizee; i++) {
 			bout.append(Integer.numberOfTrailingZeros(board[i]) + "\n");
 		}
@@ -170,7 +163,8 @@ public abstract class Board2 implements Cloneable, Serializable {
 		}
 		bout.append("LEFTDIAGONAL\n");
 		for (int i = 0; i <= sizee; i++) {
-			bout.append(Integer.toBinaryString((isOccupiedLeftDiagonal[i])) + "\n");
+			bout.append(Integer.toBinaryString((isOccupiedLeftDiagonal[i]))
+					+ "\n");
 		}
 		bout.append("--------------\n");
 		return bout.toString();
