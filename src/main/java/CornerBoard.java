@@ -145,7 +145,7 @@ public class CornerBoard extends Board2 {
 	public final void backtrackRecursive(final int y, final int left,
 			final int down, final int right) {
 
-		dout("BTCORNER y: " + y);
+		//dout("BTCORNER y: " + y);
 
 		/*
 		 * System.out.println("size: " + size); System.out.println("bound1: " +
@@ -155,14 +155,14 @@ public class CornerBoard extends Board2 {
 		int bitmap, bit;
 
 		bitmap = this.MASK & ~(left | down | right);
-		dout("BTCORNER bitmap: " + Integer.toBinaryString(bitmap));
+		//dout("BTCORNER bitmap: " + Integer.toBinaryString(bitmap));
 
 		if (y == sizee) {
 			if (bitmap != 0) {
 				// board[y] = bitmap;
 				// System.out.println("b1: " + y + ", " + left + ", " + down +
 				// ", " + right);
-				System.out.println("SOLUTION!\n");
+//				System.out.println("SOLUTION!\n");
 				this.count8++;
 			}
 		} else {

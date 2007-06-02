@@ -191,12 +191,16 @@ public class NQueensL
 	{
 		long starttime;
 		long stoptime;
+		int size = 16;
 		if(args.length > 0)
 		{
-				starttime = System.currentTimeMillis();
-				NQueensL(Integer.parseInt(args[0]));
-				stoptime = System.currentTimeMillis();
-				System.out.println(Globals.Size + ": " + Globals.Total + " " + Globals.Unique + " " + (stoptime-starttime)/1000 + " seconds (" + Globals.Count2 + ", " + Globals.Count4 + ", " + Globals.Count8 + ")");
+			size = Integer.parseInt(args[0]);
 		}
+				starttime = System.currentTimeMillis();
+				NQueensL(size);
+				stoptime = System.currentTimeMillis();
+				double time = stoptime-starttime;
+				
+				System.out.println(Globals.Size + ": " + Globals.Total + " " + Globals.Unique + " "  + (time/1000));
 	}//}}}
 }
