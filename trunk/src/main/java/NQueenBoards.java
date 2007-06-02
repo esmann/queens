@@ -13,6 +13,8 @@ public class NQueenBoards {
 	private static int steps;
 
 	private static int maxSteps;
+	
+	private static boolean isRecursive;
 
 	// Evuhl hack to get the applet to accept the objects..
 	/**
@@ -35,35 +37,58 @@ public class NQueenBoards {
 		// size = Integer.parseInt(args[0]);
 		// maxSteps = Integer.parseInt(args[1]);
 
-		size = 18;
-		maxSteps = 0;
-
+		size = 17;
+		maxSteps = 1;
+		isRecursive = true;
+		
+		if(args.length > 2){
+			if(Integer.parseInt(args[0]) > 0){
+				size = Integer.parseInt(args[0]);
+			}
+			
+			if(Integer.parseInt(args[1]) >= 0){
+				size = Integer.parseInt(args[1]);
+			}
+			
+			if(args[2] !=  "")
+				isRecursive = Boolean.parseBoolean(args[2]);
+		}
+		
+			
+		long starttime, boardtime, endtime;
+		starttime = System.currentTimeMillis();
 		
 		CornerBoard cboard = new CornerBoard(size);
-		cboard.setRecursive(false);
+		cboard.setRecursive(isRecursive);
 		cboard.setCheckpointing(true);
 		boards.addAll(cboard.init());
 		//dout("After INIT #cornerboards=" + boards.size());
 		MiddleBoard mboard = new MiddleBoard(size);
+		mboard.setRecursive(isRecursive);
 		mboard.setCheckpointing(true);
-		mboard.setRecursive(false);
 		boards.addAll(mboard.init());
 		//dout("After INIT #middleboards=" + boards.size());
 		for (steps = 0; steps < maxSteps; steps++) {
 			iterateOnetime();
 		}
-
-		MiGClient client = new MiGClient();
-		client.submitAndExtract(boards, "boards/", "test.zip", 0);
-		/*for (Board2 board : boards) {
-			// client.upload(board, "test/", "board-blah-" + count++);
-			board.setRecursive(false);
+		
+		/*if(args[3] != ""){
+			MiGClient client = new MiGClient();
+			client.submitAndExtract(boards, "boards/", "test.zip", 0);
+		}*/
+		boardtime = System.currentTimeMillis();
+		//boardtime er den tid det tager at generere, pakke og uploade boards.
+		boardtime = boardtime - starttime;
+		System.out.println("boardtime: " + boardtime);
+		for (Board2 board : boards) {
+			board.setRecursive(isRecursive);
 			board.backtrack();
 			total += board.getTotal();
 			unique += board.getUnique();
 			// dout("-----");
-		}*/
-
+		}
+		endtime = System.currentTimeMillis();
+		System.out.println("time: " + (endtime-starttime));
 		System.out.println("total: " + total);
 		System.out.println("Unique: " + unique);
 
