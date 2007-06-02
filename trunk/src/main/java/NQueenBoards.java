@@ -47,7 +47,7 @@ public class NQueenBoards {
 			}
 			
 			if(Integer.parseInt(args[1]) >= 0){
-				size = Integer.parseInt(args[1]);
+				maxSteps = Integer.parseInt(args[1]);
 			}
 			
 			if(args[2] !=  "")
