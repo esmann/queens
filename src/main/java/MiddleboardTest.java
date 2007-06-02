@@ -37,7 +37,7 @@ public class MiddleboardTest {
 
 		boards.addAll(mboard.init());
 
-		int maxSteps = 10;
+		int maxSteps = 6;
 		for (int steps = 0; steps < maxSteps; steps++) {
 			int n = boards.size();
 			for (int i = 1; i <= n; i++) {
@@ -47,6 +47,7 @@ public class MiddleboardTest {
 		}
 		int total = 0, count2 = 0, count4 = 0, count8 = 0;
 		for (Board2 board : boards) {
+			board.setRecursive(true);
 			board.backtrack();
 			total += board.getTotal();			
 			count2 += ((MiddleBoard)board).getCount2();
@@ -60,7 +61,8 @@ public class MiddleboardTest {
 	}
 
 	void testHelper(int size, int expectedSolutions, boolean recursive,int expectedCount8, int expectedCount4,int expectedCount2) {
-		System.out.println("SIZE: " + size);
+		System.out.println("Testing SIZE,EXPECTS: " + size + "," + expectedSolutions);
+		
 		MiddleBoard mboard = new MiddleBoard(size);
 		mboard.setRecursive(recursive);
 

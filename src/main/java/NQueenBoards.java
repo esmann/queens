@@ -46,16 +46,18 @@ public class NQueenBoards {
 		// size = Integer.parseInt(args[0]);
 		// maxSteps = Integer.parseInt(args[1]);
 
-		size = 19;
+		size = 18;
 		maxSteps = 0;
 
+		
 		CornerBoard cboard = new CornerBoard(size);
-		cboard.setRecursive(true);
+		cboard.setRecursive(false);
 		cboard.setCheckpointing(true);
 		boards.addAll(cboard.init());
 		//dout("After INIT #cornerboards=" + boards.size());
 		MiddleBoard mboard = new MiddleBoard(size);
-		mboard.setRecursive(true);
+		mboard.setCheckpointing(true);
+		mboard.setRecursive(false);
 		boards.addAll(mboard.init());
 		//dout("After INIT #middleboards=" + boards.size());
 		for (steps = 0; steps < maxSteps; steps++) {

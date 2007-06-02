@@ -30,7 +30,7 @@ public class CornerBoard extends Board2 {
 		Collection<Board2> boards = new LinkedList<Board2>();
 		CornerBoard bnew;
 		for (bound1 = 2; bound1 < sizee; bound1++) {
-			dout("Bound1: " + bound1);
+			//dout("Bound1: " + bound1);
 
 			try {
 				bnew = (CornerBoard) this.clone();
@@ -68,30 +68,26 @@ public class CornerBoard extends Board2 {
 	}
 
 	public synchronized final void backtrackIterative() {
-		int top = currentBoardLine;
-		dout("iterative start: " + top);
+		dout("iterative starts at: " + top);
 		int bit;
 		int bitmap; // used for minimizing array lookups
-		// for lines above 'top' queen placement is predetirmined
-		int iteration = 0;
+		
 		while (currentBoardLine >= top) {
-			dout("CurrentBoardLine: " + currentBoardLine);
-			iteration++;
-			if ((iteration % 5000) == 0)
-				System.out.println("iteration nr: " + iteration);
+			//dout("CurrentBoardLine: " + currentBoardLine);
+//			iteration++;
+//			if ((iteration % 5000) == 0)
+//				System.out.println("iteration nr: " + iteration);
 
 			if (suspendBacktrack) {
-				CornerBoardTest
-						.dout("DETECTED a suspend request at iteration: "
-								+ iteration);
-				try {
+				
+						dout("DETECTED a suspend request");
 					while (suspendBacktrack) {
-						wait();
+						try { // We ignore interrupts......
+							wait(); //Allow checkpointing to get the monitor
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 					}
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-
 			}
 
 			bitmap = this.MASK
@@ -101,7 +97,7 @@ public class CornerBoard extends Board2 {
 			if (currentBoardLine == sizee) {
 				if (bitmap != 0) {
 					this.count8++;
-					dout("Solution " + currentBoardLine);
+					//dout("Solution " + currentBoardLine);
 					bitmap = 0; // We take the only solution that exists
 				}
 
@@ -116,11 +112,11 @@ public class CornerBoard extends Board2 {
 			// Go back up if no possibleplacements
 			if (bitmap == 0) {
 
-				dout("No more possible solutions: " + currentBoardLine);
+				//dout("No more possible solutions: " + currentBoardLine);
 				while ((currentBoardLine >= top)
 						&& (possiblePlacements[currentBoardLine]) == 0) {
 					currentBoardLine--;
-					dout("Going Back " + currentBoardLine);
+					//dout("Going Back " + currentBoardLine);
 				}
 			}
 

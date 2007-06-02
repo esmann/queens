@@ -18,7 +18,7 @@ public class MiddleBoard extends Board2 {
 
 	public MiddleBoard(int size) {
 		super(size);
-		
+
 		TOPBIT = 1 << sizee; // size-1
 		SIDEMASK = TOPBIT | 1;
 		LASTMASK = TOPBIT | 1;
@@ -69,16 +69,26 @@ public class MiddleBoard extends Board2 {
 
 		return true;
 	}
+
 	@Override
 	public synchronized final void backtrackIterative() {
 
 		int bit;
-		int top = currentBoardLine;
-		
 		int bitmap; // used for minimizing array lookups
 		// for lines above 'top' queen placement is predetermined
 		while (currentBoardLine >= top) {
-			NQueenBoards.dout("CurrentBoardLine: " + currentBoardLine);
+			// NQueenBoards.dout("CurrentBoardLine: " + currentBoardLine);
+
+			if (suspendBacktrack) {
+				CornerBoardTest.dout("DETECTED a suspend request");
+				while (suspendBacktrack) {
+					try { // We ignore interrupts......
+						wait(); // Allow checkpointing to get the monitor
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 
 			bitmap = this.MASK
 					& ~(isOccupiedLeftDiagonal[currentBoardLine]
@@ -122,7 +132,7 @@ public class MiddleBoard extends Board2 {
 				while ((currentBoardLine >= top)
 						&& (possiblePlacements[currentBoardLine]) == 0) {
 					currentBoardLine--;
-					NQueenBoards.dout("Going Back " + currentBoardLine);
+					// NQueenBoards.dout("Going Back " + currentBoardLine);
 
 				}
 			}
@@ -140,7 +150,7 @@ public class MiddleBoard extends Board2 {
 			isOccupiedLeftDiagonal[currentBoardLine + 1] = (isOccupiedLeftDiagonal[currentBoardLine] | bit) << 1;
 			isOccupiedHorizontal[currentBoardLine + 1] = (isOccupiedHorizontal[currentBoardLine] | bit);
 			isOccupiedRightDiagonal[currentBoardLine + 1] = (isOccupiedRightDiagonal[currentBoardLine] | bit) >> 1;
-			
+
 			if (currentBoardLine >= top) {
 				currentBoardLine++; // Go to child/Next line
 			}
