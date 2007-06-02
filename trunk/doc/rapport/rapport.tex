@@ -22,8 +22,12 @@
 
 \tableofcontents
 
-\section{Problemformulering}\label{Problemformulering}
+\abstract{}
 
+\section{Problemformulering}\label{problemformulering}
+\begin{verse}
+	En del af indholdet af problemformulereringen fra synopsen flyttes til henholdsvis resumé, \ref{nqueenproblemet} og \ref{migogoneclick}. Selve synopsen inkluderes som bilag. Resuméet skal være ren gentagelse.
+\end{verse}
 %\input{problemformulering.tex}
 at implementere en parallel udgave af Takakens algoritme til løsning af n-dronning-problemet. Algoritmen skal køre på MiG-systemet (Minimum Intrusion Grid) og MiG's one-click arkitektur skal kunne udnyttes til at skaffe ressourcer til beregning af problemet. Formålet er på langt sigt at få beregnet en løsning til N-dronning-problemet for $n=26$, men opgaven er kun at gøre dette muligt ved hjælp af MiG. N-dronning-problemet er et klassisk beregningsproblem, der går ud på at finde antallet af mulige måder n dronninger kan placeres på et "skakbræt" med n x n felter, uden at nogen af dem er istand til at slå hinanden i næste træk. Problemets størrelse stiger eksponentielt med n, og er uhyre beregningstungt for store n, hvorfor store distribuerede systemer ofte benyttes. Hidtil er der kun fundet løsninger for $n \in \{1,...,25\}$. For distlab-gruppen her på diku ville en løsning for $n=26$, beregnet på et MiG-grid, kunne skabe opmærksomhed omkring MiG-systemet.
 
@@ -39,14 +43,28 @@ Opgaven indeholder altså følgende delproblemer:
 \item Første opgave er naturligvis at få et bedre kendskab til MiG.
 \end{itemize}
 
-\subsection{Afgrænsninger}
+\subsection{Afgrænsninger}\label{afgænsninger}
 %\input{afgraensninger.tex}
 
 Projektets formål er ikke at beregne en løsning til N-dronning-problemet for $n=26$, hvilket problemets beregningsmæssige omfang kombineret med tids- og ressourcebegræsninger udelukker i praksis. Men kun at muliggøre og forhåbentlig igangsætte denne beregning.
 Vi vil ikke tage stilling til den benyttede algoritmes korrekthed eller effektivitet, men kun til den bedst mulige strategi for parallelisering. Partitionering af problemdata skal foregå på en fornuftig måde, med tanke på hvordan det forventes beregningsressourcerne opfører sig, men en decideret statisk undersøgelse af midlertidige MiG-ressourcers opførsel eller levetid vil ikke blive foretaget\footnote{Med ressourcers opførsel tænkes på den tid man kan forvente en bruger vil lade sin one-click-klient køre}. Fordele og ulemper ved MiG eller One-click i forhold til andre grid-systemer falder også udenfor opgavens omfang.
 
 Ved at at løse problemet for et lavere $n$ vil vi kunne estimere tiden og/eller antal CPU'er der skal bruges for at løse for n=26.
-\section{Analyse}
+
+
+
+\section{Konklusion}\label{konklusion}
+\begin{verse}
+	Kortfattet konklusion på løsningen (og processen?).
+\end{verse}
+
+
+
+\section{Nqueen-problemet}\label{nqueenproblemet}
+\begin{verse}
+	Her beskriver vi selve nqueen-problemet, og Takakens optimerede backtrack algoritme.
+\end{verse}
+
 Placering af N dronninger på et skabbræt med $NxN$ størrelse
 Eksempel for på en løsning for $n=5$
 FIXME
@@ -60,9 +78,9 @@ FIXME
 %\hline
 %\end{tabular}
 
-\subsection{Model}
+\subsection{Bitmapmodellen}\label{bitmapmodellen}
 
-Samme bræt repræsenteret et binært mønster. \textbf{1} markere  placering af en dronning
+Samme bræt repræsenteret som et binært mønster. \textbf{1} markerer  placering af en dronning
 
 
 
@@ -93,22 +111,32 @@ Vi er sikre på at >10000 delproblemer er rigeligt, et grid har alligevel max 50
 
 Det tager lineær tid at oprette delboards, så vi bør uden problemer kunne skabe nok delboards. (Hukommelse er begrænsningen?)
 
-\subsection{Takakens backtrack optimeringer}
 
-\section{Introduktion til MiG og one-click}
 
+\subsection{Takakens backtrack optimeringer}\label{backtrackoptimeringer}
+\begin{verse}
+	Vi har afgrænset os fra at beskrive Takakens optimeringer, endsige vise deres korrekthed. I dette afsnit vil vi dog alligevel diskutere optimeringernes overordnede virkemåde. Dog kun i det omfang det er nødvendigt for at kunne omstrukturere algoritmen uden at miste optimeringer.   
+\end{verse}
+
+
+
+
+\section{MiG og one-click}\label{migogoneclick}
+\begin{verse}
+	Her beskrives MiG-grid og one-click overordnet. Tekniske detaljer i forbindelse med brug af MiG-grid, og særligt udvikling af one-click-applikationer, identificeres. Dette afsnit henvender sig således kun til dig, der ikke allerede har kendskab til disse emner.  
+\end{verse}
 
 Vores system har flere dele, selve Grid delen er MiG som for os er en lukket boks
 Da en delopgave specifikt er at bruge og afprøve OneClick som kører som en java Applet.
 
 Minimum Intrusion Grid
 TODO: Andre system ting?
-\subsection{MiG}\label{MiG}
+\subsection{MiG}\label{mig}
 
 
 
 
-\subsection{OneClick Applet}\label{Applet}
+\subsection{OneClick Applet}\label{applet}
 Begrænsinger pga, applets
 \begin{itemize}
 	\item Sandbox model
@@ -154,31 +182,50 @@ Vi skal have en vedligeholdelsesproces kørende, der sørger for at
 
 - Frej Lad mig sende en mail pr. færdigt job? Og så et job der checker 'jævnligt' at alle mails er modtaget?
 
-\begin{itemize}
-	\item Genkøre fejlede job
-	\item Indsamle resultater fra færdige jobs
-	\item Muliggøre løbende projektstatus og offentliggørelse af resultater 
-\end{itemize}
-Dette program kan for eksempel være det samme der står for at oprette vores jobs i første omgang. Muligheden for at tilpasse ikke-kørte jobs på baggrund af informationer om gridets tilstand (antallet af tilgængelige resourcer).
-\begin{itemize}
-	\item hvordan indsamlers resultater
-	\item
-\end{itemize}
-
 
 \subsection{Resultatindsamling og -visning}
-Vi skal have en vedligeholdelsesproces kørende, der sørger for at 
+En måde et holde styr på den samlede beregning af en løsning på n-dronning-problemet er, at have en vedligeholdelsesproces kørende, der sørger for at 
 \begin{itemize}
 	\item Genkøre fejlede job
 	\item Indsamle resultater fra færdige jobs
 	\item Muliggøre løbende projektstatus og offentliggørelse af resultater 
 \end{itemize}
-Dette program kan for eksempel være det samme der står for at oprette vores jobs i første omgang. Muligheden for at tilpasse ikke-kørte jobs på baggrund af informationer om gridets tilstand (antallet af tilgængelige resourcer).
+Dette program kan for eksempel være det samme der står for at oprette vores jobs i første omgang. Muligheden for at tilpasse ikke-kørte jobs på baggrund af informationer om gridets tilstand (antallet af tilgængelige resourcer). 
+
+Som alternativ tilbyder migrid at informere indsendere når dennes job er afsluttet, eksempelvis via email. Det vil være betydeligt enklere kun at foretage behandling af resultater når   
 \begin{itemize}
 	\item hvordan indsamlers resultater
 	\item
 \end{itemize}
 
+
+\section{Implementeringens struktur}\label{implementeringensstruktur}
+\begin{verse}
+	Følgende er ment som en læsevejledning til programmets kildekode, såvel som en vejledning til afvikling af programmet på forskellige måder. 
+\end{verse}
+
+Den udviklede kildekode er organiseret i følgende filer:
+\begin{itemize}
+	\item[Board.java] 
+	\item[Board2.java] Basis-klasse for wrapper-klasser til backtrack
+	\item[CornerBoard.java] wrapper-klasse til backtrack for cornerboards
+	\item[MiddleBoard.java] wrapper-klasse til backtrack for middleboard
+	\item[CheckPointer.java] implementerer checkpointing
+	\item[CheckPointAction.java] implementerer checkpointing
+	\item[CornerBoardTest.java] unittests til CornerBoard
+	\item[MiddelBoardTest.java] unittests til MiddleBoard
+	\item[MiGClient.java] java-implementation af en del af migrid-hjælpeprogrammerne
+	\item[MiGJob.java] klasse der beskriver et job og kan generere en .mRSL-fil
+	\item[MiGSSLSocketFactory.java] hjælpeklasse til MiGClient-klassen
+	\item[NQueenBoards.java] Jobgeneratoren, parallel-nqueen-algoritme, der genererer delproblemer i form af boards, hvor de første $m$ dronninger allerede er placeret. 
+	\item[NQueenJob.java] hovedklassen for et migrid-one-click-job. 
+	\item[NQueens.java] Testfil - Direkte java-port af Takakens c-kode. Kan køres som one-click job.
+	\item[NQueensL.java] Testfil - Direkte java-port af Takakens c-kode. Kan køres lokalt.
+\end{itemize}
+
+Programmet kan afvikles lokalt eller på migrid, med 
+
+for forskell
 
 \section{Afprøvning og benchmarking}
 \subsection{Takaken}
