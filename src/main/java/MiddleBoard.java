@@ -80,7 +80,7 @@ public class MiddleBoard extends Board2 {
 			// NQueenBoards.dout("CurrentBoardLine: " + currentBoardLine);
 
 			if (suspendBacktrack) {
-				CornerBoardTest.dout("DETECTED a suspend request");
+				dout("DETECTED a suspend request");
 				while (suspendBacktrack) {
 					try { // We ignore interrupts......
 						wait(); // Allow checkpointing to get the monitor

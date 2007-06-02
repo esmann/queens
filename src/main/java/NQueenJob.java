@@ -64,6 +64,8 @@ public class NQueenJob extends Job {
 	@Override
 	public void MiG_main(String[] argv) {
 
+		Timer t = new Timer();
+
 		if (argv.length != 1)
 			System.out.println("\nUsage: NQueenJob serialized-board-filename");
 
@@ -77,8 +79,6 @@ public class NQueenJob extends Job {
 				System.out.println("Board loaded from checkpoint");
 				System.out.println(board.toString());
 			}
-
-			Timer t = new Timer();
 
 			if (board.useCheckpointing())
 				t.schedule(new CheckPointer(board,
@@ -114,6 +114,9 @@ public class NQueenJob extends Job {
 		} catch (FileException ex) {
 			err("error: fileexception");
 			err(ex.toString());
+		} finally {			
+			if (board.useCheckpointing())
+				t.cancel();				
 		}
 
 	}
