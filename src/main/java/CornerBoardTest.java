@@ -15,7 +15,7 @@ public class CornerBoardTest {
 
 	class CheckPointActionMock implements CheckPointAction {
 
-		public boolean checkpoint() {
+		public boolean doCheckpoint() {
 			System.out.println("Doing fake Checkpoint");
 			try {
 				Thread.sleep(2000);

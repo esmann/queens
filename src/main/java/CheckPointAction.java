@@ -1,4 +1,4 @@
 
 public interface CheckPointAction {
-	public boolean checkpoint();
+	public boolean doCheckpoint();
 }
