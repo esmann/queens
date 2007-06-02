@@ -1,8 +1,10 @@
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.FileOutputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
@@ -119,8 +121,8 @@ public class MiGClient {
 		ZipOutputStream out = null;
 
 		try {
-			//create zipfile on disk (do we really _have_ to do that?)
-			//out = new ZipOutputStream(new FileOutputStream("temp.zip"));
+			// create zipfile on disk (do we really _have_ to do that?)
+			// out = new ZipOutputStream(new FileOutputStream("temp.zip"));
 
 			// ByteArrayOutStream is a stream backed by a bytearray (duh? ;))
 			ByteArrayOutputStream bout = new ByteArrayOutputStream();
@@ -129,42 +131,59 @@ public class MiGClient {
 			int count = 0;
 			for (Board2 board : boards) {
 				// add board object to zipfile
-				out.putNextEntry(new ZipEntry("board" + count + ".obj"));
+				out.putNextEntry(new ZipEntry("board" + board.size + "-"
+						+ count + ".obj"));
 				ObjectOutputStream objout = new ObjectOutputStream(out);
 				objout.writeObject(board);
 				out.closeEntry();
 
 				// create and add mrsl file to zip file
-				MigJob job = new MigJob("NQueenJob boards/board" + count
-						+ ".obj", "board" + count + ".mrsl");
-				out.putNextEntry(new ZipEntry("board" + count + ".mrsl"));
+				MigJob job = new MigJob("NQueenJob boards/board" + board.size
+						+ "-" + count + ".obj", "board" + count + ".mrsl");
+				out.putNextEntry(new ZipEntry("board" + board.size + "-"
+						+ count + ".mrsl"));
 
 				out.write(job.toString().getBytes());
 				out.closeEntry();
-				
+
 				count++;
 			}
-
 			out.close();
 
 			InputStreamRequestEntity entity = null;
 
-			//entity = new InputStreamRequestEntity(new FileInputStream("temp.zip"));
+			// entity = new InputStreamRequestEntity(new
+			// FileInputStream("temp.zip"));
 			entity = new InputStreamRequestEntity(new ByteArrayInputStream(bout
 					.toByteArray()));
-						
-			
+
 			httpput.setRequestEntity(entity);
 			httpput.setRequestHeader("Content-Type", "submitandextract");
 			httpclient.executeMethod(httpput);
-			
-			//response = httpput.getResponseBodyAsString();
+			response = httpput.getResponseBodyAsString();
+			FileOutputStream jobidout;
+
+			jobidout = new FileOutputStream("test-"
+					+ System.currentTimeMillis());
+			String[] output = response.split("\n");
+			for (String line : output) {
+				if (line.contains("assigned")) {
+					jobidout.write(line.split(" ")[0].getBytes());
+					jobidout.write("\n".getBytes());
+					// System.out.println(line.split(" ")[0]);
+
+				}
+			}
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			//System.out.println(response);
+			// her skal outputtet parses, og jobids stoppes i en text fil.. til
+			// senere brug.. der..
+
+			// System.out.println(output[0]);
+			// System.out.println(response);
 			httpput.releaseConnection();
 		}
 	}

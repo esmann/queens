@@ -7,13 +7,16 @@ import java.util.Iterator;
 public class MigJob {
 	private HashMap<String, String> mrsl = new HashMap<String, String>();
 	private String mrslfilename;
-
+	//PROJECT skal tilføjes som argument, så det er nemmere at ændre.. (nyt PROJECT for hver test m.m.)
+	//evt samme for VGRID
 	public MigJob(String execute, String mrslfilename) {
 		this.mrslfilename=mrslfilename;
 		mrsl.put("EXECUTE", execute);
 		mrsl.put("RUNTIMEENVIRONMENT", "JVM_BYTECODE");
 		mrsl.put("SANDBOX", "1");
 		mrsl.put("CPUTIME", "100000");
+		mrsl.put("VGRID", "NQueen");
+		mrsl.put("PROJECT", "NQueen_Test");
 	}
 
 	@Override

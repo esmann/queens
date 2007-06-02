@@ -12,17 +12,11 @@ public class NQueenJob extends Job {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6693387052709608747L;
+	//private static final long serialVersionUID = -6693387052709608747L;
 
 	private static final int CHECKPOINT_INTERVAL = 15 * 1000;
 
 	private static Board2 board;
-
-	public class CheckPointActionMig implements CheckPointAction {
-		public boolean checkpoint() {
-			return this.checkpoint(); // From Mig.oneclick.Job
-		}
-	}
 
 	@Override
 	public void MiG_main(String[] argv) {
@@ -71,7 +65,7 @@ public class NQueenJob extends Job {
 				Timer t = new Timer();
 
 				if (board.useCheckpointing())					
-					t.schedule(new CheckPointer(board,new CheckPointActionMig()),
+					t.schedule(new CheckPointer(board,new CheckPointActionMiG()),
 							CHECKPOINT_INTERVAL, CHECKPOINT_INTERVAL);
 				
 				
@@ -96,11 +90,16 @@ public class NQueenJob extends Job {
 				out(output);
 			} catch (IOException ex) {
 				ex.printStackTrace();
+				err("error: ioexception");
+				err(ex.toString());
 			} catch (ClassNotFoundException ex) {
 				ex.printStackTrace();
+				err("error: class not found");
+				err(ex.toString());
 			} catch (FileException ex) {
-				out(ex.toString());
-			}
+				err("error: fileexception");
+				err(ex.toString());
+			} 
 
 		} else {
 

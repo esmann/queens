@@ -25,7 +25,7 @@ public class NQueenBoards {
 	/**
 	 * 
 	 */
-	static final long serialVersionUID = 6091744538421101679L;
+	static final long serialVersionUID = 71874518354897178L;
 
 	/**
 	 * @param args
@@ -79,11 +79,11 @@ public class NQueenBoards {
 		CornerBoard cboard = new CornerBoard(size);
 		cboard.setRecursive(true);
 		boards.addAll(cboard.init());
-		dout("After INIT #cornerboards=" + boards.size());
+		//dout("After INIT #cornerboards=" + boards.size());
 		MiddleBoard mboard = new MiddleBoard(size);
 		mboard.setRecursive(true);
 		boards.addAll(mboard.init());
-		dout("After INIT #middleboards=" + boards.size());
+		//dout("After INIT #middleboards=" + boards.size());
 		for (steps = 0; steps < maxSteps; steps++) {
 			iterateOnetime();
 		}
@@ -121,17 +121,17 @@ public class NQueenBoards {
 
 		}*/
 		//int count = 0;
-		for (Board2 board : boards) {
+		/*for (Board2 board : boards) {
 			//client.upload(board, "test/", "board-blah-" + count++);
 			board.setRecursive(false);
 			board.backtrack();			
 			total += board.getTotal();			
 			unique += board.getUnique();
 		//	dout("-----");
-		}
+		}*/
 		
-		System.out.println("\ntotal: " + total);
-		System.out.println("\nUnique: " + unique);
+		System.out.println("total: " + total);
+		System.out.println("Unique: " + unique);
 		
 		/*
 		 * for (CornerBoard cb : boards) { System.out.println("------");
@@ -147,6 +147,6 @@ public class NQueenBoards {
 			Board2 board = boards.poll();
 			boards.addAll(board.iterateLine());
 		}
-		System.out.println("After step: " + steps + "\n boards:"+ boards.size());
+		//System.out.println("After step: " + steps + "\n boards:"+ boards.size());
 	}
 }
