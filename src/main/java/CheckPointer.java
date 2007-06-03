@@ -39,7 +39,7 @@ public class CheckPointer extends TimerTask {
 			System.out.println("Checkpointing finished with: "
 					+ (result ? "sucess" : "failure"));
 			board.suspendBacktrack(false);
-			board.notify();
+			board.notify(); //board is wait()'ing for us!
 		}
 	}
 }

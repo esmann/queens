@@ -4,8 +4,15 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public abstract class Board2 implements Cloneable, Serializable {
-
+	
+	
+	//ONLY USED FOR TESTING CHECKPOINTING DO NOT USE THIS ELSEWHERE!
+	protected boolean exitAfterCheckpoint = false;
+	protected boolean complete = false;
+	
 	protected int size;
+
+	protected long time = 0;
 
 	// Using arrays for the iterative part
 	protected int board[], isOccupiedLeftDiagonal[], isOccupiedRightDiagonal[],
@@ -18,7 +25,7 @@ public abstract class Board2 implements Cloneable, Serializable {
 	protected int MASK;
 
 	public static void dout(String s) {
-		System.out.println(s);
+		// System.out.println(s);
 	}
 
 	protected int sizee = 0;
@@ -59,25 +66,29 @@ public abstract class Board2 implements Cloneable, Serializable {
 	abstract void backtrackIterative();
 
 	public void backtrack() {
-		// System.out.println("MASK: " + this.MASK);
+
 		
-		// Save original currenboardLine to top?
+
+		// Save original currenboardLine to top
 		if (top == -1) {
-			top = currentBoardLine;	
+			top = currentBoardLine;
 		} else {
 			System.out.println("Board detected resume");
+			System.out.println("Has already spent cputime (ms):" + time);
+			if (isRecursive()) 
+				throw new Error("Can not resume when backtracking recursively");			
 		}
-				
+		
+		
 		if (isRecursive()) {
 			// System.out.println(this.toString());
-			backtrackRecursive(top,
-					isOccupiedLeftDiagonal[top],
-					isOccupiedHorizontal[top],
-					isOccupiedRightDiagonal[top]);
+			backtrackRecursive(top, isOccupiedLeftDiagonal[top],
+					isOccupiedHorizontal[top], isOccupiedRightDiagonal[top]);
 		} else {
 			backtrackIterative();
 		}
-
+		
+		System.out.println("Total Backtracking took(ms) :" + this.time);
 	}
 
 	abstract int getUnique();
@@ -198,7 +209,14 @@ public abstract class Board2 implements Cloneable, Serializable {
 		}
 		return boards;
 	}
-
+	/**
+	 * A board could be resumed, if 
+	 * isComplete() == true no further computation can be done 
+	 *
+	 */
+	public boolean isComplete() {
+		return complete;
+	}
 	public void suspendBacktrack(boolean b) {
 		suspendBacktrack = b;
 	}
