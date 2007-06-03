@@ -79,7 +79,7 @@ public class NQueenBoards {
 		boardtime = System.currentTimeMillis();
 		//boardtime er den tid det tager at generere, pakke og uploade boards.
 		boardtime = boardtime - starttime;
-		System.out.println("boardtime: " + boardtime);
+		//System.out.println("boardtime: " + boardtime);
 		for (Board2 board : boards) {
 			board.setRecursive(isRecursive);
 			board.backtrack();
@@ -88,9 +88,11 @@ public class NQueenBoards {
 			// dout("-----");
 		}
 		endtime = System.currentTimeMillis();
-		System.out.println("time: " + (endtime-starttime));
+		float time = endtime-starttime;
+		System.out.println(size + ": " + total + " " + unique + " " + time/1000);
+		/*System.out.println("time: " + (endtime-starttime));
 		System.out.println("total: " + total);
-		System.out.println("Unique: " + unique);
+		System.out.println("Unique: " + unique);*/
 
 		/*
 		 * for (CornerBoard cb : boards) { System.out.println("------");

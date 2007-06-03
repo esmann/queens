@@ -68,7 +68,7 @@ public class CornerBoard extends Board2 {
 	}
 
 	public synchronized final void backtrackIterative() {
-		dout("iterative starts at: " + top);
+		//dout("iterative starts at: " + top);
 		int bit;
 		int bitmap; // used for minimizing array lookups
 		
@@ -80,7 +80,7 @@ public class CornerBoard extends Board2 {
 
 			if (suspendBacktrack) {
 				
-						dout("DETECTED a suspend request");
+						//dout("DETECTED a suspend request");
 					while (suspendBacktrack) {
 						try { // We ignore interrupts......
 							wait(); //Allow checkpointing to get the monitor
