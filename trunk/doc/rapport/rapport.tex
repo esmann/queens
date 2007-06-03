@@ -133,19 +133,24 @@ Det tager lineær tid at oprette delboards, så vi bør uden problemer kunne ska
 	Her beskrives MiG-grid og one-click overordnet. Tekniske detaljer i forbindelse med brug af MiG-grid, og særligt udvikling af one-click-applikationer, identificeres. Dette afsnit henvender sig således kun til dig, der ikke allerede har kendskab til disse emner.  
 \end{verse}
 
+\subsection{Minimum intrusion Grig}\label{mig}
+
+Minimum instrusion Grid, herefter MiG, er et grid-system der sigter efter at stille så få krav til deltagelse som muligt - både for brugere og ressourcer. I MiG-termiologi en ressource en enhed der kan sættes til at beregne et problem. I mange andre gridsystemer benyttes speciel software til kommunikation mellem den enkelte ressource og gridet, undgår man helt dette mindskes kompleksiteten af det samlede system dramatisk. Omkostninger til den første opsætning og efterfølgende vedligeholdelse af systemet minimeres.   (FIXME: beskrivelse af anonymitet, sikkerhed, skalerbarhed, 	referér til artikler på migrid.org) \
+MiG giver brugeren mulighed for at få adgang til et stort antal beregningsressourcer, uden at skulle bekymre sig om hvor disse befinder sig, hvem der ejer dem, hvorvidt de hver især er istand til at løse den aktuelle opgave\footnote{Et givent problem kan f.eks. stille særlige krav til ressourcens arkitektur, eksisterende programmel, osv. FIXME:er der mere under osv?}. Her og i det nedenstående skal "brugeren" læses som "en person/udvikler m/k der ønsker at få beregnet et problem vha. MiG (FIXME: mindre fjollet definition)". Brugeren præsenteres for en abstraktion af MiG, der fremstiller et kendt paradigme fra unix-systemer; et hjemmekatalog hvori brugeren kan placere sine data- og programfiler. Brugerens interaktion med MiG forgår via en række scripts der efterligner kendte kommandoer til manipulation af filer i hjemmekataloget, og introducerer kommandoer til at starte og stoppe job. Begge metoder giver mulighed for at udføre basale funktioner på MiG, såsom at igangsætte job, se status på tidligere jobs og give adgang til data-, program- og resultatfiler i hjemmekataloget. Et job sættes igang ved at køre kommandoen migsubmit med såkaldt mRSL-fil\footnote{MiG Resource Selector Language} der indeholder en beskrivelse af det job der skal afvikles. Beskrivelsen fortæller MiG hvilken programfil der skal køres, med hvilke parametre, hvor lang tid jobbet forventes at tage og eventuelle krav jobbet har til ressourcer der skal afvikle det. Et kørende job har adgang filerne i  hjemmekataloget. Resultatet af et job skal skrives til hjemmekataloget for senere at kunne aflæses af brugeren. For hvert job oprettes desuden 3 filer i hjemmekataloget. De indeholder hhv. exit-status, standard output og standard error, ganske som de kendes fra unix-systemer. 
+Al den ovennævnte interaktion med MiG kan alternativt foregå gennem et særligt webinterface. 
 Vores system har flere dele, selve Grid delen er MiG som for os er en lukket boks
 Da en delopgave specifikt er at bruge og afprøve OneClick som kører som en java Applet.
 
-Minimum Intrusion Grid
 TODO: Andre system ting?
-\subsection{MiG}\label{mig}
-
-
-
 
 \subsection{OneClick Applet}\label{applet}
-Begrænsinger pga, applets
+
+OneClick er et framework til udvikling af java-appletter, der kan interagere med MiG. Ved hjælp af OneClick kan en hvilken som helst computer gøres til en MiG-ressource, unden nogen for for opsætning eller installation af programmel, hvilket gør det muligt for ganske alm. mennesker at bidrage regnekraft til gridet. Det eneste der kræves er en webbrowser der kan afvikle java-appletter. Implementerer man sit job som en java-applet vil det kunne afvikles på alle OneClick-ressourcer, uden at skulle specificere særlige krav til arkitektur med videre. Til gengæld vil det være begrænset til kun at køre på OneClick-ressourcer. 
+OneClick er især interessant i forbindelse med hvad man kunne kalde sociale beregninger, det vil sige beregningsprojekter som almindelige mennesker kunne have interesse i at bidrage til, eller endog konkurrere om at bidrage mest til. Kendte eksempler på sådanne projekter er SETI@home og FOLDING@home. Når måling af tidsforbrug per resource bliver implementeret i OneClick kunne man også  forestille sig et MiG-grid som en åben markedsplads hvor både virksomheder og privatpersoner kunne købe og sælge regnekraft gennem MiG uden at skulle bekymre sig om hvor beregningerne reelt foretages eller hvad hvad der regnes på.  FIXME:blah-blah
+
+Ved afvikling af java-appletter er der en række begrænsinger pga, applets
 \begin{itemize}
+	
 	\item Sandbox model
 	\item max 64 mb ram
 	\item OneClick Kode/Mininum intrusion
@@ -273,6 +278,9 @@ http://portal.etsi.org/docbox/GRID/Open/GRID\%20Plugtests\%202006/N-QUEENS-TESTC
 \section{Kildekode}
 \subsection{nqueens.c}
 %\verbatiminput{../../nqueens.c}
+
+\section{Synopsis}
+%\input{synopsis.tex}
 
 
 
