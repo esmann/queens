@@ -75,21 +75,32 @@ public class MiddleBoard extends Board2 {
 
 		int bit;
 		int bitmap; // used for minimizing array lookups
-		// for lines above 'top' queen placement is predetermined
+
+		long begin = System.currentTimeMillis();
+		// for lines above 'top' queen placement is predetermined		
 		while (currentBoardLine >= top) {
-			// NQueenBoards.dout("CurrentBoardLine: " + currentBoardLine);
+			dout("CurrentBoardLine: " + currentBoardLine);
 
 			if (suspendBacktrack) {
 				//dout("DETECTED a suspend request");
+				long now = System.currentTimeMillis();
+				long diff = now-begin;
+				
+				time += diff;
+				// Don't add previous time spent again
+				begin = System.currentTimeMillis();
 				while (suspendBacktrack) {
 					try { // We ignore interrupts......
-						wait(); // Allow checkpointing to get the monitor
+						wait(); // Allow checkpointing thread to enter the boards monitor
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 				}
+				
+				if (exitAfterCheckpoint) // testing purposes only					
+					return;
 			}
-
+			
 			bitmap = this.MASK
 					& ~(isOccupiedLeftDiagonal[currentBoardLine]
 							| isOccupiedHorizontal[currentBoardLine] | isOccupiedRightDiagonal[currentBoardLine]);
@@ -156,12 +167,15 @@ public class MiddleBoard extends Board2 {
 			}
 
 		}
+		// We have finished board calculation
+		time += System.currentTimeMillis()-begin;
+		complete = true; 
 
 	}
 
 	public void backtrackRecursive(int y, int left, int down, int right) {
 
-		// System.out.println("backtrackMiddle");
+		//System.out.println("backtrackMiddle");
 
 		int bitmap;
 		int bit;

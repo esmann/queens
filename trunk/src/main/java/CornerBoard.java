@@ -71,25 +71,29 @@ public class CornerBoard extends Board2 {
 		//dout("iterative starts at: " + top);
 		int bit;
 		int bitmap; // used for minimizing array lookups
-		
+		long begin = System.currentTimeMillis();
+//		 for lines above 'top' queen placement is predetermined
 		while (currentBoardLine >= top) {
 			//dout("CurrentBoardLine: " + currentBoardLine);
-//			iteration++;
-//			if ((iteration % 5000) == 0)
-//				System.out.println("iteration nr: " + iteration);
-
+			
 			if (suspendBacktrack) {
+				//dout("DETECTED a suspend request");
+				long now = System.currentTimeMillis();
+				long diff = now-begin;
 				
-						//dout("DETECTED a suspend request");
-					while (suspendBacktrack) {
-						try { // We ignore interrupts......
-							wait(); //Allow checkpointing to get the monitor
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
+				time += diff;
+				// Don't add previous time spent again
+				begin = System.currentTimeMillis();
+				while (suspendBacktrack) {
+					try { // We ignore interrupts......
+						wait(); // Allow checkpointing thread to enter the boards monitor
+					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
+				}	
+				if (exitAfterCheckpoint) // testing purposes only					
+					return;
 			}
-
 			bitmap = this.MASK
 					& ~(isOccupiedLeftDiagonal[currentBoardLine]
 							| isOccupiedHorizontal[currentBoardLine] | isOccupiedRightDiagonal[currentBoardLine]);
@@ -137,9 +141,10 @@ public class CornerBoard extends Board2 {
 			if (currentBoardLine >= top) {
 				currentBoardLine++; // Go to child/Next line
 			}
-
 		}
-
+		// We have finished board calculation
+		time += System.currentTimeMillis()-begin;
+		complete = true; 
 	}
 
 	public final void backtrackRecursive(final int y, final int left,
