@@ -67,7 +67,12 @@ Ved at at løse problemet for et lavere $n$ vil vi kunne estimere tiden og/eller
 
 Placering af N dronninger på et skabbræt med $NxN$ størrelse
 Eksempel på en løsning for $n=5$
-FIXME
+QXXXX
+XQXXX
+XXQXX
+XXXQX
+XXXXQ
+
 %\begin{tabular}{|c|c|c|c|c|l}
 %       4 & 3 & 2 & 1 &  0 & \\
 %\hline &  &  &  & \chs{q} & 0 \\
@@ -97,19 +102,19 @@ XXXQX
 XXXXQ
 
 
-Et bræt med en eller flere valgte linjer kan løses på samme måde med takakens algoritme.
 
-Hvert delbræt kan løses uafhængigt og antallet af løsninger kan akkumuleres for at få det totale antal løsninger.
+Samme bræt repræsenteres som et binært mønster. \textbf{1} markerer placering af en dronning. Det totale antal løsninger er minumum $n!$. Det ses 
 
+
+Et bræt med en eller flere valgte linjer kan løses på samme måde med takakens algoritme. Hvert delbræt kan løses uafhængigt og antallet af løsninger for hvert bræt akkumuleres for at få det totale antal løsninger.
 
 Dette kan gentages for hver linje. Ved at oprette delbræt hvor M linjer allerede er valgt. Findes ca. (N-M)! delbræt skal der for N=26 vil der for M=3 være 26*25*24=15,600 delbræt.
 
 Dette er en øvre grænse, der oprettes ikke delbræt som ikke er gyldige, og derudover er der i takakens kode optimeringer så der kun findes unikke løsninger (som så kan roteres og eller spejles)
 
 
-Vi er sikre på at >10000 delproblemer er rigeligt, et grid har alligevel max 500-1000 ??? CPU'er?
-
 Det tager lineær tid at oprette delboards, så vi bør uden problemer kunne skabe nok delboards. (Hukommelse er begrænsningen?)
+
 
 
 
@@ -121,6 +126,7 @@ Det tager lineær tid at oprette delboards, så vi bør uden problemer kunne ska
 
 
 
+\subsection{Sikkerhed}
 
 \section{MiG og one-click}\label{migogoneclick}
 \begin{verse}
