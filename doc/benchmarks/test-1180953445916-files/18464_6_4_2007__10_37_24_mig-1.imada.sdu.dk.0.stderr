@@ -1,0 +1,36 @@
+
+--------------- Begin stacktrace ----------------
+java.lang.reflect.InvocationTargetException
+sun.reflect.GeneratedMethodAccessor31.invoke(Unknown Source)
+sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+java.lang.reflect.Method.invoke(Method.java:597)
+MiG.oneclick.Exe.run(Exe.java:254)
+java.lang.Thread.run(Thread.java:619)
+
+Caused by:
+NQueenJob.MiG_main(NQueenJob.java:118)
+sun.reflect.GeneratedMethodAccessor31.invoke(Unknown Source)
+sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+java.lang.reflect.Method.invoke(Method.java:597)
+MiG.oneclick.Exe.run(Exe.java:254)
+java.lang.Thread.run(Thread.java:619)
+
+---------------- End stacktrace -----------------
+
+--------------- Begin stacktrace ----------------
+java.lang.reflect.InvocationTargetException
+sun.reflect.GeneratedMethodAccessor31.invoke(Unknown Source)
+sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+java.lang.reflect.Method.invoke(Method.java:597)
+MiG.oneclick.Exe.run(Exe.java:254)
+java.lang.Thread.run(Thread.java:619)
+
+Caused by:
+NQueenJob.MiG_main(NQueenJob.java:118)
+sun.reflect.GeneratedMethodAccessor31.invoke(Unknown Source)
+sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+java.lang.reflect.Method.invoke(Method.java:597)
+MiG.oneclick.Exe.run(Exe.java:254)
+java.lang.Thread.run(Thread.java:619)
+
+---------------- End stacktrace -----------------
