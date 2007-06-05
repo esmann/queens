@@ -37,7 +37,7 @@ public abstract class Board2 implements Cloneable, Serializable {
 	protected int top = -1;
 
 	public Board2(int size) {
-
+		
 		this.size = size;
 		this.sizee = size - 1;
 		board = new int[size + 1];

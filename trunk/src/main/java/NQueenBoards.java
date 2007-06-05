@@ -39,7 +39,7 @@ public class NQueenBoards {
 
 		size = 17;
 		maxSteps = 1;
-		isRecursive = true;
+		isRecursive = false;
 		
 		if(args.length > 2){
 			if(Integer.parseInt(args[0]) > 0){
@@ -93,6 +93,7 @@ public class NQueenBoards {
 		/*System.out.println("time: " + (endtime-starttime));
 		System.out.println("total: " + total);
 		System.out.println("Unique: " + unique);*/
+		System.out.println("backtrack iterations, corner - middle " + CornerBoard.getBacktrackCount() + " - " + MiddleBoard.getBacktrackCount());
 
 		/*
 		 * for (CornerBoard cb : boards) { System.out.println("------");

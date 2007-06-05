@@ -14,6 +14,7 @@ public class CornerBoard extends Board2 {
 	 */
 	private int count8 = 0;
 
+	private static int backtrackcount= 0;
 	/**
 	 * Creates a new CornerBoard
 	 * 
@@ -74,6 +75,7 @@ public class CornerBoard extends Board2 {
 		long begin = System.currentTimeMillis();
 //		 for lines above 'top' queen placement is predetermined
 		while (currentBoardLine >= top) {
+			countBacktrack();
 			//dout("CurrentBoardLine: " + currentBoardLine);
 			
 			if (suspendBacktrack) {
@@ -146,17 +148,25 @@ public class CornerBoard extends Board2 {
 		time += System.currentTimeMillis()-begin;
 		complete = true; 
 	}
+	
+	public static void countBacktrack() {
+		backtrackcount += 1;
+	}
+	
+	public static int getBacktrackCount() {
+		return backtrackcount;
+	}
 
 	public final void backtrackRecursive(final int y, final int left,
 			final int down, final int right) {
-
+        countBacktrack();
 		//dout("BTCORNER y: " + y);
 
 		/*
 		 * System.out.println("size: " + size); System.out.println("bound1: " +
 		 * bound1); System.out.println("MASK: " + this.MASK);
 		 */
-
+        
 		int bitmap, bit;
 
 		bitmap = this.MASK & ~(left | down | right);

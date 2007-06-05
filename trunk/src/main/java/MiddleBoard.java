@@ -15,6 +15,8 @@ public class MiddleBoard extends Board2 {
 	private int bound1, bound2;
 
 	private int count2, count8, count4;
+	
+	public static int backtrackcount = 0;
 
 	public MiddleBoard(int size) {
 		super(size);
@@ -79,7 +81,7 @@ public class MiddleBoard extends Board2 {
 		long begin = System.currentTimeMillis();
 		// for lines above 'top' queen placement is predetermined		
 		while (currentBoardLine >= top) {
-			dout("CurrentBoardLine: " + currentBoardLine);
+			countBacktrack();
 
 			if (suspendBacktrack) {
 				//dout("DETECTED a suspend request");
@@ -172,9 +174,17 @@ public class MiddleBoard extends Board2 {
 		complete = true; 
 
 	}
+	
+	public static void countBacktrack() {
+		backtrackcount += 1;
+	}
+	
+	public static int getBacktrackCount() {
+		return backtrackcount;
+	}
 
 	public void backtrackRecursive(int y, int left, int down, int right) {
-
+        countBacktrack();
 		//System.out.println("backtrackMiddle");
 
 		int bitmap;
