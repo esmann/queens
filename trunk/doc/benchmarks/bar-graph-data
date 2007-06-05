@@ -11,3 +11,7 @@
 11 java-18-0-false-int-mig 585.820
 12 java-18-1-true-int-mig 447.968
 13 java-18-1-false-int-mig 609.134
+14 java-18-0-true-bigint-mig 378.138
+15 java-18-0-false-bigint-mig 5624.459
+16 java-18-1-true-bigint-mig 447.512
+17 java-18-1-false-bigint-mig 5581.597
