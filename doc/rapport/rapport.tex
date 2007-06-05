@@ -1,15 +1,17 @@
-\documentclass[a4,10pt]{article}
+\documentclass[a4,10pt,draft]{article}
 
 \usepackage[danish]{babel}
+%\usepackage[latin1]{inputenc}
 \usepackage[utf8]{inputenc}
 \usepackage{verbatim}
 \usepackage{amsmath}
 \usepackage{lscape}
 \usepackage{multicol}
+\usepackage{fixme}
 
 
-\font\chessfont=skak10
-\def\chs#1{{\chessfont#1}}
+%\font\chessfont=skak10
+%\def\chs#1{{\chessfont#1}}
 \def\OC{OneClick}
 \title{Bachelorprojekt\\N-dronning problemet i MiG}
 \author{Thomas Clement Mogensen \\ Frej Soya \\ Alex Esmann }
@@ -237,18 +239,18 @@ Programmet kan afvikles lokalt på en enkelt maskine eller på migrid,
 
 
 \section{Afprøvning og benchmarking}
-Benchmarking-delens fremmeste formål er at finde svar på en række spørgsmål inden udregningen sættes igang.
-Reelt har vi kun en enkelt parameter vi kan skrue på, nemlig $m$ - antallet af dronninger vi placerer på hver board før vi genererer et mig job til at regne videre på det board. 
-Hvilket forhold mellem 
+%Benchmarking-delens fremmeste formål er at finde svar på en række spørgsmål inden udregningen sættes igang.
+%Reelt har vi kun en enkelt parameter vi kan skrue på, nemlig $m$ - antallet af dronninger vi placerer på hver board før vi genererer et mig job til at regne videre på det board. 
+%Hvilket forhold mellem 
 
-\subsection{Takaken}
-\subsection{Java port}
-\subsection{Java port v2}
-\subsubsection{Rekursion vs. Iterativ metode}
-\subsubsection{Iterativ med checkpoints}
-\subsection{MiGrid}
+%\subsection{Takaken}
+%\subsection{Java port}
+%\subsection{Java port v2}
+%\subsubsection{Rekursion vs. Iterativ metode}
+%\subsubsection{Iterativ med checkpoints}
+%\subsection{MiGrid}
 
-%\input{benchmark.tex}
+\input{benchmark.tex}
 TODO
 \section{Forbedringer til OneClick}
 %\input{forbedringer.tex}
