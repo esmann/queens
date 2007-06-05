@@ -6,3 +6,7 @@ test-1180952901775, 1.855, 18, 0, true, int
 test-1180953445916, 12.002, 18, 1, true, int
 test-1180966353656, 8.445, 18, 1, false, int
 test-1180966543083, 1.908, 18, 0, false, int
+test-1180998931128, 103.442, 18, 1, true, bigint
+test-1180999041775,  15.504, 18, 1, false, bigint
+test-1180999205654, 19.079, 18, 0, true bigint
+test-1180999144782, 19.779, 18, 0, false, bigint
