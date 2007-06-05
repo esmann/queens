@@ -34,7 +34,13 @@ gcc (GCC) 4.1.2 (Ubuntu 4.1.2-0ubuntu4)
 De første tests er kørt på revision 77 (i forbindelse med den iterative test er
 udskrivning af debug info til skærmen dog blevet kommenteret ud)
 
-<b1 plot>
+\begin{figure}
+\begin{center}
+\includegraphics{../benchmarks/b1.pdf}
+\caption{insert proper caption here } 
+\label{plot:b1}
+\end{center}
+\end{figure}
 
 Som det ses er C udgaven en smule hurtigere end den direkte java port, der igen
 er lidt hurtigere end den paralleliserede udgave af koden, når den kører
@@ -46,7 +52,13 @@ Den parallelle udgave af koden er i dette tilfælde her kørt med
 Den næste graf er den rekursive udgave af den parallele kode kørt med forskellig
 \texttt{maxSteps}. 
 
-<b2 plot>
+\begin{figure}
+\begin{center}
+\includegraphics{../benchmarks/b2.pdf}
+\caption{insert proper caption here } 
+\label{plot:b2}
+\end{center}
+\end{figure}
 
 Som det ses, har det ikke nogen indflydelse på performance, når det kører
 lokalt, der er altså ikke det store overhead ved at generere en masse opgaver og
@@ -69,6 +81,14 @@ i de næste tests er \texttt{int} skiftet ud med \texttt{BigInteger} (revision
 83
 
 Sammenligning af alle benchmarks
+
+\begin{figure}
+\begin{center}
+\includegraphics{../benchmarks/b3.pdf}
+\caption{insert proper caption here } 
+\label{plot:b3}
+\end{center}
+\end{figure}
 
 \begin{itemize}
 \item[1] Takakens C-kode
