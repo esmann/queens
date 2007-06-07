@@ -1,30 +1,57 @@
-\documentclass[a4,10pt]{article}
-
+\documentclass[draft,a4paper,10pt]{article}
 \usepackage[danish]{babel}
-%\usepackage[latin1]{inputenc}
 \usepackage[utf8]{inputenc}
 \usepackage{verbatim}
 \usepackage{amsmath}
 \usepackage{lscape}
 \usepackage{multicol}
-\usepackage[draft]{fixme}
+\usepackage{fixme}
+\usepackage{tikz}
+\usepackage{pgflibrarytikztrees}
+\usepackage{lastpage}
+\usepackage{listings}
+\usepackage{fancyvrb}
+\usepackage{wrapfig}                           %Mulighed for at wrappe tekst om figurer
+\usepackage{fancyhdr}                          %Flere muligheder med headere og footere
+\usepackage{lastpage}                          %Mulighed for at referere til sidste sidetal
 
-%\font\chessfont=skak10
-%\def\chs#1{{\chessfont#1}}
+
+
+\headheight 14.5pt                             %H<F8>jden af headeren
+\textwidth 5.87in                              %Tekstbredden
+
+\pagestyle{fancy}                              %Benyt fancyhdr-pakken
+\fancyhead[R]{\thepage\ af \pageref{LastPage}} %Skriv sidetallene som "x af y"
+\fancyhead[L]{N-dronning problemet i MiG}              %Headeren
+\fancyfoot[C]{}                                %Fjern sidetallet som er standard
+
+\oddsidemargin 0.2in                           %Venstre margin er 1in + dette tal
+                                               %Med en textwidth p<E5> 5.87in og en
+                                               %oddsidemargin p<E5> 0.2 bliver marginerne
+                                               %lige store p<E5> A4 som er 8,27in bredt
+
+
+
+
+\font\chessfont=skak10
+\def\chs#1{{\chessfont#1}}
+
 \def\OC{OneClick}
 \title{Bachelorprojekt\\N-dronning problemet i MiG}
 \author{Thomas Clement Mogensen \\ Frej Soya \\ Alex Esmann }
 
-%\maketitle
+
 
 \begin{document}
+
+
 \maketitle
 \tableofcontents
 
-\tableofcontents
 
-\abstract{}
 
+\newpage
+\setcounter{page}{1}
 \section{Problemformulering}\label{problemformulering}
 \begin{verse}
 	En del af indholdet af problemformulereringen fra synopsen flyttes til henholdsvis resumé, \ref{nqueenproblemet} og \ref{migogoneclick}. Selve synopsen inkluderes som bilag. Resuméet skal være ren gentagelse.
@@ -60,52 +87,81 @@ Ved at at løse problemet for et lavere $n$ vil vi kunne estimere tiden og/eller
 \end{verse}
 
 
-
 \section{Nqueen-problemet}\label{nqueenproblemet}
 \begin{verse}
 	Her beskriver vi selve nqueen-problemet, og Takakens optimerede backtrack algoritme.
 \end{verse}
 
-Placering af N dronninger på et skabbræt med $NxN$ størrelse
-Eksempel på en løsning for $n=5$
-QXXXX
-XQXXX
-XXQXX
-XXXQX
-XXXXQ
 
-%\begin{tabular}{|c|c|c|c|c|l}
-%       4 & 3 & 2 & 1 &  0 & \\
-%\hline &  &  &  & \chs{q} & 0 \\
-%\hline \chs{q} &  &  &  &  		  & 1 \\
-%\hline &  &  & \chs{q} &  & 2\\
-%\hline &  &  &  &  		  & 3 \\
-%\hline & Q &  &  &  		  & 4\\
-%\hline
-%\end{tabular}
+NQueen problemet er finde antallet af måder man kan placere N dronninger på et et kvadratisk NxN bræt, således at ingen dronning kan slå hinanden. Et felt må ikke være i samme diagonal eller linie som et tidligere valg.
+
+Eksempel på en løsning for $n=5$
+
+\begin{tabular}{|c|c|c|c|c|c}
+\hline	 &  & &   \chs{q} & \\
+\hline	\chs{q} & &  &  & \\
+\hline	 & & \chs{q} &  &  \\
+\hline	 &  &  & & \chs{q} \\
+\hline	 & \chs{q} & &  &  \\
+\hline
+\end{tabular}
+
+
+Tilsvarende bitmap model hvor hver plads enten er et '1' eller '0'
+\fixme{Skakbræt fyldt med 1/0}
+
+\fixme{Træstruktur kunne være endnu bedre med et grid i hver knude der viser valgte pladser med en markering}
+
+
+\begin{tikzpicture}
+  \foreach \x in {1,...,4}
+    \foreach \y in {1,...,4}
+    {
+      (\x,\y) rectangle (0.1,0.1);
+      \ifnum \x<\y
+        \breakforeach
+      \fi
+    }
+\end{tikzpicture}
+
+
+Ovenstående løsning hvor vi allerede har valgt 2 i række 1, kan den følgende udregning vises som et træ.
+
+\begin{tikzpicture}[node distance=1cm]
+	
+%    \tikzstyle{every node}=[draw]
+    \node[grow=right] {}
+    	child {node {2}
+	        child {node {5}
+    	  		child {node {3}
+    	  			child { node{1} child { node{4}} }
+	      		}
+    	   		child {node {1} child {node{4}}}        		        	          		        	  
+	       	}
+		    child {node {4}
+		    	child {node {1}
+		    		child {node {3} child { node {5}} }
+		    	} 
+		    }
+	     }
+	 ;
+
+\end{tikzpicture}
+Antallet af børn er antallet af \textit{mulige} valg som ikke blokeres af tidligere placeringer.
+
+\begin{verse}
+	Beskrivelse af fordeling af løsninger for et skakbræt, med & uden takakens optimeringer. Fordeling af løsninger størrelsen på problemet
+\end{verse}
+
+
+
 
 \subsection{Bitmapmodellen}\label{bitmapmodellen}
+\begin{verse}
+	Beskrivelse af NQueen problemet som bitmaps og tidskompleksitet
+\end{verse}
 
-Samme bræt repræsenteret som et binært mønster. \textbf{1} markerer  placering af en dronning
-
-
-
-
-
-På den første linje kan en dronning placeres 5 forskellige steder
-
-
-
-QXXXX
-XQXXX
-XXQXX
-XXXQX
-XXXXQ
-
-
-
-Samme bræt repræsenteres som et binært mønster. \textbf{1} markerer placering af en dronning. Det totale antal løsninger er minumum $n!$. Det ses 
-
+Samme bræt repræsenteres som et binært mønster. \textbf{1} markerer placering af en dronning. Det totale antal løsninger er begrænset af $n!$. 
 
 Et bræt med en eller flere valgte linjer kan løses på samme måde med takakens algoritme. Hvert delbræt kan løses uafhængigt og antallet af løsninger for hvert bræt akkumuleres for at få det totale antal løsninger.
 
@@ -114,7 +170,6 @@ Dette kan gentages for hver linje. Ved at oprette delbræt hvor M linjer allered
 Dette er en øvre grænse, der oprettes ikke delbræt som ikke er gyldige, og derudover er der i takakens kode optimeringer så der kun findes unikke løsninger (som så kan roteres og eller spejles)
 
 
-Det tager lineær tid at oprette delboards, så vi bør uden problemer kunne skabe nok delboards. (Hukommelse er begrænsningen?)
 
 
 
@@ -136,8 +191,9 @@ Det tager lineær tid at oprette delboards, så vi bør uden problemer kunne ska
 
 \subsection{Minimum intrusion Grig}\label{mig}
 
-Minimum instrusion Grid, herefter MiG, er et grid-system der sigter efter at stille så få krav til deltagelse som muligt - både for brugere og ressourcer. I MiG-termiologi en ressource en enhed der kan sættes til at beregne et problem. I mange andre gridsystemer benyttes speciel software til kommunikation mellem den enkelte ressource og gridet, undgår man helt dette mindskes kompleksiteten af det samlede system dramatisk. Omkostninger til den første opsætning og efterfølgende vedligeholdelse af systemet minimeres.   (FIXME: beskrivelse af anonymitet, sikkerhed, skalerbarhed, 	referér til artikler på migrid.org) \
-MiG giver brugeren mulighed for at få adgang til et stort antal beregningsressourcer, uden at skulle bekymre sig om hvor disse befinder sig, hvem der ejer dem, hvorvidt de hver især er istand til at løse den aktuelle opgave\footnote{Et givent problem kan f.eks. stille særlige krav til ressourcens arkitektur, eksisterende programmel, osv. FIXME:er der mere under osv?}. Her og i det nedenstående skal "brugeren" læses som "en person/udvikler m/k der ønsker at få beregnet et problem vha. MiG (FIXME: mindre fjollet definition)". Brugeren præsenteres for en abstraktion af MiG, der fremstiller et kendt paradigme fra unix-systemer; et hjemmekatalog hvori brugeren kan placere sine data- og programfiler. Brugerens interaktion med MiG forgår via en række scripts der efterligner kendte kommandoer til manipulation af filer i hjemmekataloget, og introducerer kommandoer til at starte og stoppe job. Begge metoder giver mulighed for at udføre basale funktioner på MiG, såsom at igangsætte job, se status på tidligere jobs og give adgang til data-, program- og resultatfiler i hjemmekataloget. Et job sættes igang ved at køre kommandoen migsubmit med såkaldt mRSL-fil\footnote{MiG Resource Selector Language} der indeholder en beskrivelse af det job der skal afvikles. Beskrivelsen fortæller MiG hvilken programfil der skal køres, med hvilke parametre, hvor lang tid jobbet forventes at tage og eventuelle krav jobbet har til ressourcer der skal afvikle det. Et kørende job har adgang filerne i  hjemmekataloget. Resultatet af et job skal skrives til hjemmekataloget for senere at kunne aflæses af brugeren. For hvert job oprettes desuden 3 filer i hjemmekataloget. De indeholder hhv. exit-status, standard output og standard error, ganske som de kendes fra unix-systemer. 
+Minimum instrusion Grid, herefter MiG, er et grid-system der sigter efter at stille så få krav til deltagelse som muligt - både for brugere og ressourcer. I MiG-termiologi en ressource en enhed der kan sættes til at beregne et problem. I mange andre gridsystemer benyttes speciel software til kommunikation mellem den enkelte ressource og gridet, undgår man helt dette mindskes kompleksiteten af det samlede system dramatisk. Omkostninger til den første opsætning og efterfølgende vedligeholdelse af systemet minimeres.   \fixme{beskrivelse af anonymitet, sikkerhed, skalerbarhed, 	referér til artikler på migrid.org} 
+
+MiG giver brugeren mulighed for at få adgang til et stort antal beregningsressourcer, uden at skulle bekymre sig om hvor disse befinder sig, hvem der ejer dem, hvorvidt de hver især er istand til at løse den aktuelle opgave\footnote{Et givent problem kan f.eks. stille særlige krav til ressourcens arkitektur, eksisterende programmel, osv. }\fixme{footnote er der mere under osv?}. Her og i det nedenstående skal "brugeren" læses som "en person/udvikler m/k der ønsker at få beregnet et problem vha. MiG \fixme{mindre fjollet definition}. Brugeren præsenteres for en abstraktion af MiG, der fremstiller et kendt paradigme fra unix-systemer; et hjemmekatalog hvori brugeren kan placere sine data- og programfiler. Brugerens interaktion med MiG forgår via en række scripts der efterligner kendte kommandoer til manipulation af filer i hjemmekataloget, og introducerer kommandoer til at starte og stoppe job. Begge metoder giver mulighed for at udføre basale funktioner på MiG, såsom at igangsætte job, se status på tidligere jobs og give adgang til data-, program- og resultatfiler i hjemmekataloget. Et job sættes igang ved at køre kommandoen migsubmit med såkaldt mRSL-fil\footnote{MiG Resource Selector Language} der indeholder en beskrivelse af det job der skal afvikles. Beskrivelsen fortæller MiG hvilken programfil der skal køres, med hvilke parametre, hvor lang tid jobbet forventes at tage og eventuelle krav jobbet har til ressourcer der skal afvikle det. Et kørende job har adgang filerne i  hjemmekataloget. Resultatet af et job skal skrives til hjemmekataloget for senere at kunne aflæses af brugeren. For hvert job oprettes desuden 3 filer i hjemmekataloget. De indeholder hhv. exit-status, standard output og standard error, ganske som de kendes fra unix-systemer. 
 Al den ovennævnte interaktion med MiG kan alternativt foregå gennem et særligt webinterface. 
 Vores system har flere dele, selve Grid delen er MiG som for os er en lukket boks
 Da en delopgave specifikt er at bruge og afprøve OneClick som kører som en java Applet.
@@ -147,7 +203,7 @@ TODO: Andre system ting?
 \subsection{OneClick Applet}\label{applet}
 
 OneClick er et framework til udvikling af java-appletter, der kan interagere med MiG. Ved hjælp af OneClick kan en hvilken som helst computer gøres til en MiG-ressource, unden nogen for for opsætning eller installation af programmel, hvilket gør det muligt for ganske alm. mennesker at bidrage regnekraft til gridet. Det eneste der kræves er en webbrowser der kan afvikle java-appletter. Implementerer man sit job som en java-applet vil det kunne afvikles på alle OneClick-ressourcer, uden at skulle specificere særlige krav til arkitektur med videre. Til gengæld vil det være begrænset til kun at køre på OneClick-ressourcer. 
-OneClick er især interessant i forbindelse med hvad man kunne kalde sociale beregninger, det vil sige beregningsprojekter som almindelige mennesker kunne have interesse i at bidrage til, eller endog konkurrere om at bidrage mest til. Kendte eksempler på sådanne projekter er SETI@home og FOLDING@home. Når måling af tidsforbrug per resource bliver implementeret i OneClick kunne man også  forestille sig et MiG-grid som en åben markedsplads hvor både virksomheder og privatpersoner kunne købe og sælge regnekraft gennem MiG uden at skulle bekymre sig om hvor beregningerne reelt foretages eller hvad hvad der regnes på.  FIXME:blah-blah
+OneClick er især interessant i forbindelse med hvad man kunne kalde sociale beregninger, det vil sige beregningsprojekter som almindelige mennesker kunne have interesse i at bidrage til, eller endog konkurrere om at bidrage mest til. Kendte eksempler på sådanne projekter er SETI@home og FOLDING@home. Når måling af tidsforbrug per resource bliver implementeret i OneClick kunne man også  forestille sig et MiG-grid som en åben markedsplads hvor både virksomheder og privatpersoner kunne købe og sælge regnekraft gennem MiG uden at skulle bekymre sig om hvor beregningerne reelt foretages eller hvad hvad der regnes på.  \fixme{blah-blah}
 
 Ved afvikling af java-appletter er der en række begrænsinger pga, applets
 \begin{itemize}
@@ -179,6 +235,11 @@ Class-filer caches af browserens java-plugin. Ændringer i class-filer, der bety
 \subsubsection{Bugs og mangler}
 \begin{itemize}
 	\item Et job fejler ikke hvis jobbet kaster en java.lang.Error (Forskellig fra Java.lang.Exception, begge har dog typen java.lang.Throwable)
+	\item Ens job tvinges til at afhænge af MiG.nqueen.JoB
+	\item File I/O følger ikke Inputstream / Outputstream	
+	\item Brug af suns egen HTTP implementation. Brug i stedet http-commons fra Apache
+	\item Vi har glemt en masse
+	\item Webstart vil klart være at foretrække. Det er rigtigt at der kommer en certifikat fejl (https) - men så længe certifikat ikke er i browserens CA liste vil browseren i stedet komme med en advarsel.
 \end{itemize}
 
 
