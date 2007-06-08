@@ -1,4 +1,4 @@
-\documentclass[draft,a4paper,10pt]{article}
+\documentclass[final,a4paper,10pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[danish]{babel}
 \usepackage{natbib}
@@ -12,7 +12,7 @@
 \usepackage{amsmath}
 \usepackage{lscape}
 \usepackage{multicol}
-\usepackage{fixme}
+\usepackage[draft]{fixme}
 \usepackage{tikz}
 \usepackage{pgflibrarytikztrees}
 \usepackage{lastpage}
@@ -40,9 +40,9 @@
                                                %lige store p<E5> A4 som er 8,27in bredt
 \font\chessfont=skak10
 \def\chs#1{{\chessfont#1}}
+\newcommand{\mig}{MiG}
+\newcommand{\oc}{One-Click}
 
-
-\def\OC{OneClick}
 \title{Bachelorprojekt\\N-dronning problemet i MiG}
 \author{Thomas Clement Mogensen \\ Frej Soya \\ Alex Esmann }
 
@@ -85,14 +85,12 @@ Ved at at løse problemet for et lavere $n$ vil vi kunne estimere tiden og/eller
 \end{verse}
 
 \section{Nqueen-problemet}\label{nqueenproblemet}
-\begin{verse}
-	Her beskriver vi selve nqueen-problemet, og Takakens optimerede backtrack algoritme.
-\end{verse}
 
-NQueen problemet er finde antallet af måder man kan placere N dronninger på et et kvadratisk NxN bræt, således at ingen dronning kan slå en anden. Bemærk at vi skal finde alle løsninger, og ikke bare finde alle løsninger - hvilket er et helt andet problem. Hidtil er der kun fundet løsninger for $n \in \{1,...,25\}$.\cite{sekvenser}. Derudover beskriver \cite{etsi} en manuelt distribueret løsning for $n=25$. Der findes desuden masser af referencer på \url{http://www.liacs.nl/home/kosters/nqueens.html}
+NQueen problemet er finde antallet af måder man kan placere N dronninger på et et kvadratisk NxN bræt, således at ingen dronning kan slå en anden. Bemærk at vi skal finde alle løsninger $Q(n)$, og ikke bare finde alle løsninger - hvilket er et helt andet problem. Hidtil er der kun fundet løsninger for $n \in \{1,...,25\}$.\cite{sekvenser}. Derudover beskriver \cite{etsi} en manuelt distribueret løsning for $n=25$. Der findes desuden masser af referencer på \url{http://www.liacs.nl/home/kosters/nqueens.html} relateret til nqueen problemet. 
 
+
+\begin{figure}
 \begin{center}
-
 \begin{tabular}{|c|c|c|c|c|c}
 \hline	 &  & &   \chs{q} & \\
 \hline	\chs{q} & &  &  & \\
@@ -101,19 +99,33 @@ NQueen problemet er finde antallet af måder man kan placere N dronninger på et
 \hline	 & \chs{q} & &  &  \\
 \hline
 \end{tabular}
-Eksempel på en løsning for $n=5$.
 \end{center}
+\caption{Eksempel på en løsning for $n=5$}
+\end{figure}
+
+
+\subsection{Backtracking}\label{backtracking}
+
+Backtracking bruges ofte til at løse kombinatoriske probleme
 
 \fixme{Træstruktur kunne være endnu bedre med et grid i hver knude der viser valgte pladser med en markering}
-Ovenstående løsning hvor vi allerede har valgt 2 i række 1, kan den følgende udregning vises som et træ.
+
+\begin{tikzpicture}[node distance=1cm]
+	%    \tikzstyle{every node}=[draw]    
+	\node (root) {} child {edge from parent};
+\end{tikzpicture}
+
+
+\begin{figure}[!h]
+
 \begin{tikzpicture}[node distance=1cm]
 	%    \tikzstyle{every node}=[draw]
-    \node {}
-    	child
+    \node (root) {} [grow=right]
+   	    child edge from parent
+    	child 
 	    child
-	    child
-    	child {node {2}
-	        child {node {5}
+    	child {node (2) {2}
+	        child  {node {5}
     	  		child {node {3}
     	  			child { node{1} child { node{4}} }
 	      		}
@@ -125,24 +137,23 @@ Ovenstående løsning hvor vi allerede har valgt 2 i række 1, kan den følgende
 		    	} 
 		    }
 	     }
-	     child
+	     child 
 	 ;
 
 \end{tikzpicture}
-Antallet af børn er antallet af \textit{mulige} valg som ikke blokeres af tidligere placeringer.
+\caption{Ovenstående løsning hvor vi allerede har valgt 2 i række 1, kan den følgende udregning vises som et træ.
+Antallet af børn er antallet af \textit{mulige} valg som ikke blokeres af tidligere placeringer}
+	
+\end{figure}
 
 
-\begin{verse}
-Beskrivelse af fordeling af løsninger for et skakbræt, med & uden takakens optimeringer. Fordeling af løsninger størrelsen på problemet
-\end{verse}
 
 \subsection{Bitmapmodellen}\label{bitmapmodellen}
 \begin{verse}
-	Beskrivelse af NQueen problemet som bitmaps og tidskompleksitet
+	Beskrivelse af NQueen problemet som bitmaps / bit vektorer
 \end{verse}
 
 Samme bræt repræsenteres som et binært mønster. \textbf{1} markerer placering af en dronning. Det totale antal løsninger er begrænset af $n!$. 
-
 Et bræt med en eller flere valgte linjer kan løses på samme måde med takakens algoritme. Hvert delbræt kan løses uafhængigt og antallet af løsninger for hvert bræt akkumuleres for at få det totale antal løsninger.
 
 Dette kan gentages for hver linje. Ved at oprette delbræt hvor M linjer allerede er valgt. Findes ca. (N-M)! delbræt skal der for N=26 vil der for M=3 være 26*25*24=15,600 delbræt.
@@ -150,16 +161,12 @@ Dette kan gentages for hver linje. Ved at oprette delbræt hvor M linjer allered
 Dette er en øvre grænse, der oprettes ikke delbræt som ikke er gyldige, og derudover er der i takakens kode optimeringer så der kun findes unikke løsninger (som så kan roteres og eller spejles)
 
 
-
-
-
-
 \subsection{Takakens backtrack optimeringer}\label{backtrackoptimeringer}
 \begin{verse}
 	Vi har afgrænset os fra at beskrive Takakens optimeringer, endsige vise deres korrekthed. I dette afsnit vil vi dog alligevel diskutere optimeringernes overordnede virkemåde. Dog kun i det omfang det er nødvendigt for at kunne omstrukturere algoritmen uden at miste optimeringer.   
 \end{verse}
 
-
+Takaken opdeler beregningen i to delproblemer. Et hvor den første dronning placeres i øverste hjørne, og et andet delproblem hvor dronningen placeres i midten. For løsninger med dronninger i hjørnet fjernes løsninger i kolonne 2 fra fra$2 \ldots n-2$. 
 
 
 \subsection{Sikkerhed}
