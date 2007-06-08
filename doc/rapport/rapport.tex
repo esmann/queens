@@ -106,7 +106,7 @@ NQueen problemet er finde antallet af måder man kan placere N dronninger på et
 
 \subsection{Backtracking}\label{backtracking}
 
-Backtracking bruges ofte til at løse kombinatoriske probleme
+En 
 
 \fixme{Træstruktur kunne være endnu bedre med et grid i hver knude der viser valgte pladser med en markering}
 
@@ -121,12 +121,12 @@ Backtracking bruges ofte til at løse kombinatoriske probleme
 \begin{tikzpicture}[node distance=1cm]
 	%    \tikzstyle{every node}=[draw]
     \node (root) {} [grow=right]
-   	    child edge from parent
-    	child 
+   	    child 
+   	    child 
 	    child
     	child {node (2) {2}
-	        child  {node {5}
-    	  		child {node {3}
+	        child  {node (25) {5}
+    	  		child {node  {3}
     	  			child { node{1} child { node{4}} }
 	      		}
     	   		child {node {1} child {node{4}}}        		        	          		        	  
