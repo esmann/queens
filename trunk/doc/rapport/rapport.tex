@@ -106,38 +106,56 @@ En
 
 \begin{tikzpicture}[node distance=1cm]
 	%    \tikzstyle{every node}=[draw]    
-	\node (root) {} child {edge from parent};
+    \node (root) {} [grow=right,gray]
+   	    child 
+   	    child 
+	    child
+    	child {node (2) {2} 
+	        child  {node (25) {5}
+    	  		child {node (253)  {3}
+    	  			child { node{1} child { node{4}} }
+	      		}
+    	   		child {node {1} child {node{4}}}        		        	          		        	  
+	       	}
+		    child {node {4} edge from parent[red]
+		    	child {node {1}
+		    		child {node {3} child { node {5} } }
+		    	} 
+		    }
+	     }
+	     child 
+	 ;
 \end{tikzpicture}
 
-
+\tikzstyle{level 1}=[sibling distance=1cm]
 \begin{figure}[!h]
 
 \begin{tikzpicture}[node distance=1cm]
 	%    \tikzstyle{every node}=[draw]
-    \node (root) {} [grow=right]
+    \node (root) {} [grow=right,dotted]
    	    child 
    	    child 
-	    child
-    	child {node (2) {2}
+	    child 
+    	child {node (2) {2} [black,solid]
 	        child  {node (25) {5}
-    	  		child {node  {3}
+    	  		child {node (253)  {3}
     	  			child { node{1} child { node{4}} }
 	      		}
     	   		child {node {1} child {node{4}}}        		        	          		        	  
 	       	}
 		    child {node {4}
 		    	child {node {1}
-		    		child {node {3} child { node {5}} }
+		    		child {node {3} child {node {5} } }
 		    	} 
 		    }
 	     }
 	     child 
 	 ;
-
+%	\node at (253) {grid(1,1)};
 \end{tikzpicture}
-\caption{Ovenstående løsning hvor vi allerede har valgt 2 i række 1, kan den følgende udregning vises som et træ.
-Antallet af børn er antallet af \textit{mulige} valg som ikke blokeres af tidligere placeringer}
-	
+\caption{Et beslutningstræ. Knuder er beslutninger, mens kanter de mulige beslutninger el. valg der kan foretages.  Bemærk at roden er række 0, kanterne, inklusive de grå er så mulige valg. Dette beslutningstræ viser har allerede efter at $2$ er valgt i række $1$.
+Antallet af børn er antallet af \textit{mulige} valg som ikke blokeres af tidligere placeringer. Antallet blade i nivea 5}
+\label{tree}
 \end{figure}
 
 
@@ -146,7 +164,14 @@ Antallet af børn er antallet af \textit{mulige} valg som ikke blokeres af tidli
 	Beskrivelse af NQueen problemet som bitmaps / bit vektorer
 \end{verse}
 
-Samme bræt repræsenteres som et binært mønster. \textbf{1} markerer placering af en dronning. Det totale antal løsninger er begrænset af $n!$. 
+\fixme{Eksempel af et bræt med bitvektorer}
+
+. \textbf{1} markerer placering af en dronning. Dette er beskrevet af \cite{Zongyan02} og implementeret af takaken nqueen.c \ref{ckode}. Udover at repræsentere hver række på et skakbræt med en bitvektor, er idéen at der for hver række vedligeholdes en bitvektor for de pladser, hvor det er muligt at placere en dronning, som netop er antallet af knuder i et 
+
+
+
+Det der bruges kun lagerplads for $N-M$,  som er dybden af træet \ref{fig:tree}, samtidige bitvektorer -
+
 Et bræt med en eller flere valgte linjer kan løses på samme måde med takakens algoritme. Hvert delbræt kan løses uafhængigt og antallet af løsninger for hvert bræt akkumuleres for at få det totale antal løsninger.
 
 Dette kan gentages for hver linje. Ved at oprette delbræt hvor M linjer allerede er valgt. Findes ca. (N-M)! delbræt skal der for N=26 vil der for M=3 være 26*25*24=15,600 delbræt.
@@ -365,7 +390,7 @@ sendJobFinished
 
 
 \section{Kildekode}
-\subsection{nqueens.c}
+\subsection{nqueens.c}\label{ckode}
 %\verbatiminput{../../nqueens.c}
 
 \section{Synopsis}
