@@ -1,6 +1,13 @@
 \documentclass[draft,a4paper,10pt]{article}
-\usepackage[danish]{babel}
 \usepackage[utf8]{inputenc}
+\usepackage[danish]{babel}
+\usepackage{natbib}
+\bibliographystyle{dk-plainnat}
+
+
+
+\usepackage{url}
+
 \usepackage{verbatim}
 \usepackage{amsmath}
 \usepackage{lscape}
@@ -11,9 +18,11 @@
 \usepackage{lastpage}
 \usepackage{listings}
 \usepackage{fancyvrb}
+
 \usepackage{wrapfig}                           %Mulighed for at wrappe tekst om figurer
 \usepackage{fancyhdr}                          %Flere muligheder med headere og footere
 \usepackage{lastpage}                          %Mulighed for at referere til sidste sidetal
+
 
 
 
@@ -29,26 +38,18 @@
                                                %Med en textwidth p<E5> 5.87in og en
                                                %oddsidemargin p<E5> 0.2 bliver marginerne
                                                %lige store p<E5> A4 som er 8,27in bredt
-
-
-
-
 \font\chessfont=skak10
 \def\chs#1{{\chessfont#1}}
+
 
 \def\OC{OneClick}
 \title{Bachelorprojekt\\N-dronning problemet i MiG}
 \author{Thomas Clement Mogensen \\ Frej Soya \\ Alex Esmann }
 
-
-
 \begin{document}
-
 
 \maketitle
 \tableofcontents
-
-
 
 \newpage
 \setcounter{page}{1}
@@ -57,13 +58,12 @@
 	En del af indholdet af problemformulereringen fra synopsen flyttes til henholdsvis resumé, \ref{nqueenproblemet} og \ref{migogoneclick}. Selve synopsen inkluderes som bilag. Resuméet skal være ren gentagelse.
 \end{verse}
 %\input{problemformulering.tex}
-at implementere en parallel udgave af Takakens algoritme til løsning af n-dronning-problemet. Algoritmen skal køre på MiG-systemet (Minimum Intrusion Grid) og MiG's one-click arkitektur skal kunne udnyttes til at skaffe ressourcer til beregning af problemet. Formålet er på langt sigt at få beregnet en løsning til N-dronning-problemet for $n=26$, men opgaven er kun at gøre dette muligt ved hjælp af MiG. N-dronning-problemet er et klassisk beregningsproblem, der går ud på at finde antallet af mulige måder n dronninger kan placeres på et "skakbræt" med n x n felter, uden at nogen af dem er istand til at slå hinanden i næste træk. Problemets størrelse stiger eksponentielt med n, og er uhyre beregningstungt for store n, hvorfor store distribuerede systemer ofte benyttes. Hidtil er der kun fundet løsninger for $n \in \{1,...,25\}$. For distlab-gruppen her på diku ville en løsning for $n=26$, beregnet på et MiG-grid, kunne skabe opmærksomhed omkring MiG-systemet.
 
-MiG er beskrevet indgående i \cite{simplemig} og \cite{mig}, \cite{etsi} beskriver N-dronning-problemet grundigere end ovenstående og præsenterer en løsning for n=25. Appendix queens.c i \cite{etsi} er en udskrift af Takakens algoritme implementeret i C.
-
+\fixme{flyt til oneclick}
 One-click muliggør deltagelse i et MiG-grid uden andre forudsætninger end en webbrowser og java. Tilgengæld er denne metode begrænset til at afvikle programmer, der er tilgængelige som java-bytecode. Brug af one-click giver adgang til et enormt (potentielt) antal beregningsressourcer, hvilket er grunden til at benytte one-click i denne opgave.
 
-Opgaven indeholder altså følgende delproblemer:
+\fixme{slet?}
+ Opgaven indeholder altså følgende delproblemer:
 \begin{itemize}
 \item At finde en effektiv strategi til parallelisering af Takakens algoritme. Herunder overvejelser omkring den optimale størrelse på delproblemer.
 \item Implementation af algoritmen i java på en sådan måde at den kan afvikles af one-click-klienter.
@@ -79,23 +79,19 @@ Vi vil ikke tage stilling til den benyttede algoritmes korrekthed eller effektiv
 
 Ved at at løse problemet for et lavere $n$ vil vi kunne estimere tiden og/eller antal CPU'er der skal bruges for at løse for n=26.
 
-
-
 \section{Konklusion}\label{konklusion}
 \begin{verse}
-	Kortfattet konklusion på løsningen (og processen?).
+	Kortfattet konklusion på løsningen og processen
 \end{verse}
-
 
 \section{Nqueen-problemet}\label{nqueenproblemet}
 \begin{verse}
 	Her beskriver vi selve nqueen-problemet, og Takakens optimerede backtrack algoritme.
 \end{verse}
 
+NQueen problemet er finde antallet af måder man kan placere N dronninger på et et kvadratisk NxN bræt, således at ingen dronning kan slå en anden. Bemærk at vi skal finde alle løsninger, og ikke bare finde alle løsninger - hvilket er et helt andet problem. Hidtil er der kun fundet løsninger for $n \in \{1,...,25\}$.\cite{sekvenser}. Derudover beskriver \cite{etsi} en manuelt distribueret løsning for $n=25$. Der findes desuden masser af referencer på \url{http://www.liacs.nl/home/kosters/nqueens.html}
 
-NQueen problemet er finde antallet af måder man kan placere N dronninger på et et kvadratisk NxN bræt, således at ingen dronning kan slå hinanden. Et felt må ikke være i samme diagonal eller linie som et tidligere valg.
-
-Eksempel på en løsning for $n=5$
+\begin{center}
 
 \begin{tabular}{|c|c|c|c|c|c}
 \hline	 &  & &   \chs{q} & \\
@@ -105,32 +101,17 @@ Eksempel på en løsning for $n=5$
 \hline	 & \chs{q} & &  &  \\
 \hline
 \end{tabular}
-
-
-Tilsvarende bitmap model hvor hver plads enten er et '1' eller '0'
-\fixme{Skakbræt fyldt med 1/0}
+Eksempel på en løsning for $n=5$.
+\end{center}
 
 \fixme{Træstruktur kunne være endnu bedre med et grid i hver knude der viser valgte pladser med en markering}
-
-
-\begin{tikzpicture}
-  \foreach \x in {1,...,4}
-    \foreach \y in {1,...,4}
-    {
-      (\x,\y) rectangle (0.1,0.1);
-      \ifnum \x<\y
-        \breakforeach
-      \fi
-    }
-\end{tikzpicture}
-
-
 Ovenstående løsning hvor vi allerede har valgt 2 i række 1, kan den følgende udregning vises som et træ.
-
 \begin{tikzpicture}[node distance=1cm]
-	
-%    \tikzstyle{every node}=[draw]
-    \node[grow=right] {}
+	%    \tikzstyle{every node}=[draw]
+    \node {}
+    	child
+	    child
+	    child
     	child {node {2}
 	        child {node {5}
     	  		child {node {3}
@@ -144,17 +125,16 @@ Ovenstående løsning hvor vi allerede har valgt 2 i række 1, kan den følgende
 		    	} 
 		    }
 	     }
+	     child
 	 ;
 
 \end{tikzpicture}
 Antallet af børn er antallet af \textit{mulige} valg som ikke blokeres af tidligere placeringer.
 
+
 \begin{verse}
 Beskrivelse af fordeling af løsninger for et skakbræt, med & uden takakens optimeringer. Fordeling af løsninger størrelsen på problemet
 \end{verse}
-
-
-
 
 \subsection{Bitmapmodellen}\label{bitmapmodellen}
 \begin{verse}
@@ -189,9 +169,9 @@ Dette er en øvre grænse, der oprettes ikke delbræt som ikke er gyldige, og de
 	Her beskrives MiG-grid og one-click overordnet. Tekniske detaljer i forbindelse med brug af MiG-grid, og særligt udvikling af one-click-applikationer, identificeres. Dette afsnit henvender sig således kun til dig, der ikke allerede har kendskab til disse emner.  
 \end{verse}
 
-\subsection{Minimum intrusion Grig}\label{mig}
+\subsection{Minimum intrusion Grid}\label{mig}
 
-Minimum instrusion Grid, herefter MiG, er et grid-system der sigter efter at stille så få krav til deltagelse som muligt - både for brugere og ressourcer. I MiG-termiologi en ressource en enhed der kan sættes til at beregne et problem. I mange andre gridsystemer benyttes speciel software til kommunikation mellem den enkelte ressource og gridet, undgår man helt dette mindskes kompleksiteten af det samlede system dramatisk. Omkostninger til den første opsætning og efterfølgende vedligeholdelse af systemet minimeres.   \fixme{beskrivelse af anonymitet, sikkerhed, skalerbarhed, 	referér til artikler på migrid.org} 
+Minimum instrusion Grid, herefter MiG, er et grid-system der sigter efter at stille så få krav til deltagelse som muligt - både for brugere og ressourcer. I MiG-termiologi en ressource en enhed der kan sættes til at beregne et problem. I mange andre gridsystemer benyttes speciel software til kommunikation mellem den enkelte ressource og gridet, undgår man helt dette mindskes kompleksiteten af det samlede system dramatisk. Omkostninger til den første opsætning og efterfølgende vedligeholdelse af systemet minimeres.   \fixme{beskrivelse af anonymitet, sikkerhed, skalerbarhed, 	referér til artikler på migrid.org}. MiG er beskrevet indgåede på i \cite{simplemig,mig}
 
 MiG giver brugeren mulighed for at få adgang til et stort antal beregningsressourcer, uden at skulle bekymre sig om hvor disse befinder sig, hvem der ejer dem, hvorvidt de hver især er istand til at løse den aktuelle opgave\footnote{Et givent problem kan f.eks. stille særlige krav til ressourcens arkitektur, eksisterende programmel, osv. }\fixme{footnote er der mere under osv?}. Her og i det nedenstående skal "brugeren" læses som "en person/udvikler m/k der ønsker at få beregnet et problem vha. MiG \fixme{mindre fjollet definition}. Brugeren præsenteres for en abstraktion af MiG, der fremstiller et kendt paradigme fra unix-systemer; et hjemmekatalog hvori brugeren kan placere sine data- og programfiler. Brugerens interaktion med MiG forgår via en række scripts der efterligner kendte kommandoer til manipulation af filer i hjemmekataloget, og introducerer kommandoer til at starte og stoppe job. Begge metoder giver mulighed for at udføre basale funktioner på MiG, såsom at igangsætte job, se status på tidligere jobs og give adgang til data-, program- og resultatfiler i hjemmekataloget. Et job sættes igang ved at køre kommandoen migsubmit med såkaldt mRSL-fil\footnote{MiG Resource Selector Language} der indeholder en beskrivelse af det job der skal afvikles. Beskrivelsen fortæller MiG hvilken programfil der skal køres, med hvilke parametre, hvor lang tid jobbet forventes at tage og eventuelle krav jobbet har til ressourcer der skal afvikle det. Et kørende job har adgang filerne i  hjemmekataloget. Resultatet af et job skal skrives til hjemmekataloget for senere at kunne aflæses af brugeren. For hvert job oprettes desuden 3 filer i hjemmekataloget. De indeholder hhv. exit-status, standard output og standard error, ganske som de kendes fra unix-systemer. 
 Al den ovennævnte interaktion med MiG kan alternativt foregå gennem et særligt webinterface. 
@@ -317,25 +297,15 @@ TODO
 TODO
 
 
-\begin{thebibliography}{99}
-\bibitem{simplemig} Karlsen, Henrik Hoey, Vinter, Brian:
-\emph{Minimum intrusion Grid - The simple model},
-http://mig-1.imada.sdu.dk/MiG/Mig/published\_papers/ETN05-Simple.pdf (2005)
-\bibitem{mig} Vinter, Brian:
-\emph{The Architecture of the Minimum intrusion Grid, MiG},
-http://mig-1.imada.sdu.dk/MiG/Mig/published\_papers/CPA05-Arch.pdf
-(2005)
-\bibitem{etsi} Guillemin, Patrick:
-\emph{3rd N Queens ETSI Plugtests Contest - Counting the number of
-  solutions Single and Distributed Programs}
-http://portal.etsi.org/docbox/GRID/Open/GRID\%20Plugtests\%202006/N-QUEENS-TESTCASE-2006-v2.pdf (2006)
-\end{thebibliography}
+%\bibliographystyle{plainnat}
 
 
+\bibliography{rapport}
 
 \appendix
 %\landscape
 %\tiny
+
 
 \section{Kildekode}
 \subsection{nqueens.c}
@@ -350,5 +320,6 @@ http://portal.etsi.org/docbox/GRID/Open/GRID\%20Plugtests\%202006/N-QUEENS-TESTC
 %\section*{Skabelon.tex}
 %\verbatiminput{skabelon.tex}
 %\end{multicols}
+
 
 \end{document}
