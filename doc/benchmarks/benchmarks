@@ -13,7 +13,7 @@
 //	- java
 //	- java rekursiv
 //	- java iterativ
-* hvor lang tid bruges på det enkelte job
+* hvor lang tid bruges på det enkelte job (og hvad er bounds)
 //* gør maxSteps en forskel
 //* hvor mange jobs laves afhængig af maxSteps .. heap fejl.. men stadig output
 * hvad er tidsforbruget for genereringen
