@@ -43,6 +43,7 @@
 \newcommand{\mig}{MiG}
 \newcommand{\oc}{One-Click}
 
+
 \title{Bachelorprojekt\\N-dronning problemet i MiG}
 \author{Thomas Clement Mogensen \\ Frej Soya \\ Alex Esmann }
 
@@ -171,26 +172,26 @@ Takaken opdeler beregningen i to delproblemer. Et hvor den første dronning plac
 
 \subsection{Sikkerhed}
 
-\section{MiG og one-click}\label{migogoneclick}
+\section{\mig og \oc}\label{migogoneclick}
 \begin{verse}
-	Her beskrives MiG-grid og one-click overordnet. Tekniske detaljer i forbindelse med brug af MiG-grid, og særligt udvikling af one-click-applikationer, identificeres. Dette afsnit henvender sig således kun til dig, der ikke allerede har kendskab til disse emner.  
+	Her beskrives \mig-grid og one-click overordnet. Tekniske detaljer i forbindelse med brug af \mig-grid, og særligt udvikling af one-click-applikationer, identificeres. Dette afsnit henvender sig således kun til dig, der ikke allerede har kendskab til disse emner.  
 \end{verse}
 
 \subsection{Minimum intrusion Grid}\label{mig}
 
-Minimum instrusion Grid, herefter MiG, er et grid-system der sigter efter at stille så få krav til deltagelse som muligt - både for brugere og ressourcer. I MiG-termiologi en ressource en enhed der kan sættes til at beregne et problem. I mange andre gridsystemer benyttes speciel software til kommunikation mellem den enkelte ressource og gridet, undgår man helt dette mindskes kompleksiteten af det samlede system dramatisk. Omkostninger til den første opsætning og efterfølgende vedligeholdelse af systemet minimeres.   \fixme{beskrivelse af anonymitet, sikkerhed, skalerbarhed, 	referér til artikler på migrid.org}. MiG er beskrevet indgåede på i \cite{simplemig,mig}
+Minimum instrusion Grid, herefter \mig, er et grid-system der sigter efter at stille så få krav til deltagelse som muligt - både for brugere og ressourcer. I \mig-termiologi en ressource en enhed der kan sættes til at beregne et problem. I mange andre gridsystemer benyttes speciel software til kommunikation mellem den enkelte ressource og gridet, undgår man helt dette mindskes kompleksiteten af det samlede system dramatisk. Omkostninger til den første opsætning og efterfølgende vedligeholdelse af systemet minimeres. \fixme{beskrivelse af anonymitet, sikkerhed, skalerbarhed}. \mig er beskrevet indgåede i \cite{simplemig,mig}.
 
-MiG giver brugeren mulighed for at få adgang til et stort antal beregningsressourcer, uden at skulle bekymre sig om hvor disse befinder sig, hvem der ejer dem, hvorvidt de hver især er istand til at løse den aktuelle opgave\footnote{Et givent problem kan f.eks. stille særlige krav til ressourcens arkitektur, eksisterende programmel, osv. }\fixme{footnote er der mere under osv?}. Her og i det nedenstående skal "brugeren" læses som "en person/udvikler m/k der ønsker at få beregnet et problem vha. MiG \fixme{mindre fjollet definition}. Brugeren præsenteres for en abstraktion af MiG, der fremstiller et kendt paradigme fra unix-systemer; et hjemmekatalog hvori brugeren kan placere sine data- og programfiler. Brugerens interaktion med MiG forgår via en række scripts der efterligner kendte kommandoer til manipulation af filer i hjemmekataloget, og introducerer kommandoer til at starte og stoppe job. Begge metoder giver mulighed for at udføre basale funktioner på MiG, såsom at igangsætte job, se status på tidligere jobs og give adgang til data-, program- og resultatfiler i hjemmekataloget. Et job sættes igang ved at køre kommandoen migsubmit med såkaldt mRSL-fil\footnote{MiG Resource Selector Language} der indeholder en beskrivelse af det job der skal afvikles. Beskrivelsen fortæller MiG hvilken programfil der skal køres, med hvilke parametre, hvor lang tid jobbet forventes at tage og eventuelle krav jobbet har til ressourcer der skal afvikle det. Et kørende job har adgang filerne i  hjemmekataloget. Resultatet af et job skal skrives til hjemmekataloget for senere at kunne aflæses af brugeren. For hvert job oprettes desuden 3 filer i hjemmekataloget. De indeholder hhv. exit-status, standard output og standard error, ganske som de kendes fra unix-systemer. 
-Al den ovennævnte interaktion med MiG kan alternativt foregå gennem et særligt webinterface. 
-Vores system har flere dele, selve Grid delen er MiG som for os er en lukket boks
+\mig giver brugeren mulighed for at få adgang til et stort antal beregningsressourcer, uden at skulle bekymre sig om hvor disse befinder sig, hvem der ejer dem, hvorvidt de hver især er istand til at løse den aktuelle opgave\footnote{Et givent problem kan f.eks. stille særlige krav til ressourcens arkitektur, eksisterende programmel, osv. }\fixme{footnote er der mere under osv?}. Her og i det nedenstående henviser udtrykket ""brugeren"" til en udvikler der ønsker at få beregnet et problem vha. \mig \fixme{mindre fjollet definition}. Brugeren præsenteres for en abstraktion af \mig, der fremstiller et kendt paradigme fra unix-systemer; et hjemmekatalog hvori brugeren kan placere sine data- og programfiler. Brugerens interaktion med \mig forgår via en række scripts der efterligner kendte kommandoer til manipulation af filer i hjemmekataloget, og introducerer kommandoer til at starte og stoppe job. Begge metoder giver mulighed for at udføre basale funktioner på \mig, såsom at igangsætte job, se status på tidligere jobs og give adgang til data-, program- og resultatfiler i hjemmekataloget. Et job sættes igang ved at køre kommandoen migsubmit med såkaldt mRSL-fil\footnote{\mig Resource Selector Language} der indeholder en beskrivelse af det job der skal afvikles. Beskrivelsen fortæller \mig hvilken programfil der skal køres, med hvilke parametre, hvor lang tid jobbet forventes at tage og eventuelle krav jobbet har til ressourcer der skal afvikle det. Et kørende job har adgang filerne i  hjemmekataloget. Resultatet af et job skal skrives til hjemmekataloget for senere at kunne aflæses af brugeren. For hvert job oprettes desuden 3 filer i hjemmekataloget. De indeholder hhv. exit-status, standard output og standard error, ganske som de kendes fra unix-systemer. 
+Al den ovennævnte interaktion med \mig kan alternativt foregå gennem et særligt webinterface. 
+Vores system har flere dele, selve Grid delen er \mig som for os er en lukket boks
 Da en delopgave specifikt er at bruge og afprøve OneClick som kører som en java Applet.
 
 TODO: Andre system ting?
 
 \subsection{OneClick Applet}\label{applet}
 
-OneClick er et framework til udvikling af java-appletter, der kan interagere med MiG. Ved hjælp af OneClick kan en hvilken som helst computer gøres til en MiG-ressource, unden nogen for for opsætning eller installation af programmel, hvilket gør det muligt for ganske alm. mennesker at bidrage regnekraft til gridet. Det eneste der kræves er en webbrowser der kan afvikle java-appletter. Implementerer man sit job som en java-applet vil det kunne afvikles på alle OneClick-ressourcer, uden at skulle specificere særlige krav til arkitektur med videre. Til gengæld vil det være begrænset til kun at køre på OneClick-ressourcer. 
-OneClick er især interessant i forbindelse med hvad man kunne kalde sociale beregninger, det vil sige beregningsprojekter som almindelige mennesker kunne have interesse i at bidrage til, eller endog konkurrere om at bidrage mest til. Kendte eksempler på sådanne projekter er SETI@home og FOLDING@home. Når måling af tidsforbrug per resource bliver implementeret i OneClick kunne man også  forestille sig et MiG-grid som en åben markedsplads hvor både virksomheder og privatpersoner kunne købe og sælge regnekraft gennem MiG uden at skulle bekymre sig om hvor beregningerne reelt foretages eller hvad hvad der regnes på.  \fixme{blah-blah}
+OneClick er et framework til udvikling af java-appletter, der kan interagere med \mig. Ved hjælp af OneClick kan en hvilken som helst computer gøres til en \mig-ressource, unden nogen for for opsætning eller installation af programmel, hvilket gør det muligt for ganske alm. mennesker at bidrage regnekraft til gridet. Det eneste der kræves er en webbrowser der kan afvikle java-appletter. Implementerer man sit job som en java-applet vil det kunne afvikles på alle OneClick-ressourcer, uden at skulle specificere særlige krav til arkitektur med videre. Til gengæld vil det være begrænset til kun at køre på OneClick-ressourcer. 
+OneClick er især interessant i forbindelse med hvad man kunne kalde sociale beregninger, det vil sige beregningsprojekter som almindelige mennesker kunne have interesse i at bidrage til, eller endog konkurrere om at bidrage mest til. Kendte eksempler på sådanne projekter er SETI@home og FOLDING@home. Når måling af tidsforbrug per resource bliver implementeret i OneClick kunne man også  forestille sig et \mig-grid som en åben markedsplads hvor både virksomheder og privatpersoner kunne købe og sælge regnekraft gennem \mig uden at skulle bekymre sig om hvor beregningerne reelt foretages eller hvad hvad der regnes på.  \fixme{for meget blah-blah}
 
 Ved afvikling af java-appletter er der en række begrænsinger pga, applets
 \begin{itemize}
@@ -209,7 +210,15 @@ Ved afvikling af java-appletter er der en række begrænsinger pga, applets
 \item{Vi er nødt til at tage højde for at løsningen (antallet af løsinger) vil overstige hvad vi kan repræsentere som en 32bit værdi. }
 \end{itemize}
 
-I forbindelse med joboprettelse og resultatindsamling skal vi træffe nogle valg mht.
+\subsubsection{Joboprettelse}
+Et NQueen-job består af en .mRSL-fil og en  
+\fixme{hvordan opretter vi job, hvad består et job af(serialze, mrsl)}
+
+\subsubsection{Skemalægning af job}
+I \mig skemalægges afviklingen af job som en FIFO-kø. Dvs. at job afvikles i samme rækkefølge som de submittes til gridet. Ved udløb af tidsfristen for afvikling af jobbet placeres jobbet bagerst i køen. I forbindelse med 
+
+\subsubsection{Resultatindsamling}
+I forbindelse med joboprettelse og resultatindsamling skal vi træffe nogle valg mht. 
 \begin{itemize}
 \item{Joboprettelsesstrategi - hvad skal der til for at beskrive et job.}
 \item{}
@@ -217,15 +226,16 @@ I forbindelse med joboprettelse og resultatindsamling skal vi træffe nogle valg
 
 \subsection{One-click-specifikke begrænsninger}
 
-Class-filer caches af browserens java-plugin. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver at browseren genstartes for ikke at fejle på serialVersionUID og derved færdiggøre jobbet, men uden resultat! 
+I forbindelse med udvikling og afprøvning af en \oc-applet skal man være opmærksom på at Class-filer caches af browserens java-plugin. Ændringer i implementeringen kan medføre fejl under afviklingen på resourcer der bruger forældede class-filer, selvom \mig opfatter jobbet som udført uden fejl. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver opdatering af denne cache. Man kan altså riskikere at appletten får en undtagelse på serialVersionUID og derved markeres jobbet som færdigt, uden at være kommet til et resultat. En uhensigtsmæssighed i forbindelse med undtagelseshåndtering i basisklassen MigJob.java gør at jobbet alligevel vil se ud til at være afsluttet succesfuldt. Se afsnit \cite{bugs}. 
 
-\subsubsection{Bugs og mangler}
+
+\subsubsection{Bugs og mangler}\label{bugs}
 \begin{itemize}
 	\item Et job fejler ikke hvis jobbet kaster en java.lang.Error (Forskellig fra Java.lang.Exception, begge har dog typen java.lang.Throwable)
 	\item Ens job tvinges til at afhænge af MiG.nqueen.JoB
 	\item File I/O følger ikke Inputstream / Outputstream	
 	\item Brug af suns egen HTTP implementation. Brug i stedet http-commons fra Apache
-	\item Vi har glemt en masse
+	\item Vi har glemt en masse 
 	\item Webstart vil klart være at foretrække. Det er rigtigt at der kommer en certifikat fejl (https) - men så længe certifikat ikke er i browserens CA liste vil browseren i stedet komme med en advarsel.
 \end{itemize}
 
@@ -241,7 +251,7 @@ Fordi checkpointing gemmer ikke stack.
 \subsection{Resultatindsamling og -visning}
 Vi skal have en vedligeholdelsesproces kørende, der sørger for at 
 
-- Frej Lad mig sende en mail pr. færdigt job? Og så et job der checker 'jævnligt' at alle mails er modtaget?
+- Frej Lad \mig sende en mail pr. færdigt job? Og så et job der checker 'jævnligt' at alle mails er modtaget?
 
 
 \subsection{Resultatindsamling og -visning}
@@ -253,13 +263,13 @@ En måde et holde styr på den samlede beregning af en løsning på n-dronning-p
 \end{itemize}
 Dette program kan for eksempel være det samme der står for at oprette vores jobs i første omgang. Muligheden for at tilpasse ikke-kørte jobs på baggrund af informationer om gridets tilstand (antallet af tilgængelige resourcer). 
 
-Som alternativ tilbyder migrid at informere indsendere når dennes job er afsluttet, eksempelvis via email. Det vil være betydeligt enklere kun at foretage behandling af resultater hver gang et sådant er klar, uden at have et permanent indsamlingsprogram kører. Vi er dog stadig nødsaget til at håndtere fejl i det enkelte job eller rapporteringen af jobafslutning. 
+Som alternativ tilbyder \mig-grid at informere indsendere når dennes job er afsluttet, eksempelvis via email. Det vil være betydeligt enklere kun at foretage behandling af resultater hver gang et sådant er klar, uden at have et permanent indsamlingsprogram kører. Vi er dog stadig nødsaget til at håndtere fejl i det enkelte job eller rapporteringen af jobafslutning. 
 
 
 
 \section{Implementeringens struktur}\label{implementeringensstruktur}
 \begin{verse}
-	Følgende er ment som en læsevejledning til programmets kildekode, såvel som en vejledning til afvikling af programmet til forskellige formål. 
+	Følgende er ment som en læsevejledning til programmets kildekode, såvel som en vejledning til afvikling af programmet med forskellige formål. 
 \end{verse}
 
 Den udviklede kildekode er organiseret i følgende filer:
@@ -272,16 +282,16 @@ Den udviklede kildekode er organiseret i følgende filer:
 	\item[CheckPointAction.java] implementerer checkpointing
 	\item[CornerBoardTest.java] unittests til CornerBoard
 	\item[MiddelBoardTest.java] unittests til MiddleBoard
-	\item[MiGClient.java] java-implementation af en del af migrid-hjælpeprogrammerne
+	\item[MiGClient.java] java-implementation af en del af \mig-grid-hjælpeprogrammerne
 	\item[MiGJob.java] klasse der beskriver et job og kan generere en .mRSL-fil
 	\item[MiGSSLSocketFactory.java] hjælpeklasse til MiGClient-klassen
 	\item[NQueenBoards.java] Jobgeneratoren, parallel-nqueen-algoritme, der genererer delproblemer i form af boards, hvor de første $m$ dronninger allerede er placeret. 
-	\item[NQueenJob.java] hovedklassen for et migrid-one-click-job. 
+	\item[NQueenJob.java] hovedklassen for et \mig-grid-\oc-job. 
 	\item[NQueens.java] Testfil - Direkte java-port af Takakens c-kode. Kan køres som one-click job.
 	\item[NQueensL.java] Testfil - Direkte java-port af Takakens c-kode. Kan køres lokalt.
 \end{itemize}
 
-Programmet kan afvikles lokalt på en enkelt maskine eller på migrid,  
+Programmet kan afvikles lokalt på en enkelt maskine eller på \mig-grid,  
 
 
 
