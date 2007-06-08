@@ -41,6 +41,7 @@ udskrivning af debug info til skærmen dog blevet kommenteret ud)
 \label{plot:b1}
 \end{center}
 \end{figure}
+\fixme{caption}
 
 Som det ses er C udgaven en smule hurtigere end den direkte java port, der igen
 er lidt hurtigere end den paralleliserede udgave af koden, når den kører
@@ -59,16 +60,39 @@ Den næste graf er den rekursive udgave af den parallele kode kørt med forskell
 \label{plot:b2}
 \end{center}
 \end{figure}
+\fixme{caption}
 
-Som det ses, har det ikke den store indflydelse på performance, når det kører
-lokalt, der er altså ikke det store overhead ved at generere en masse opgaver og
-løse dem bagefter, når det kører lokalt. 
+Som det ses, har det ikke den store indflydelse på performance, der er altså
+ikke det store overhead ved at generere en masse opgaver og løse dem bagefter,
+når det kører lokalt. 
 
 Det skal også nævnes at for $maxSteps>n/2$ vil vores program regne forkert.
 Dette skyldes \fixme{ja.. hvad skyldes det.. }
 
 \fixme{hvor mange jobs bliver der lavet for de forskellige maxsteps, indsæt
 tabel?}
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline N & maxSteps & boards & n & maxSteps & boards \\
+\hline 15 & 0 & 18 & 17 & 0 & 21\\
+\hline 15 & 1 & 173 & 17 & 1 & 243\\
+\hline 15 & 2 & 1310 & 17 & 2 & 2282 \\ 
+\hline 15 & 3 & 8349 & 17 & 3 & 18161\\
+\hline 15 & 4 & 43961 & 18 & 0 & 23   \\
+\hline 16 & 0 & 20 &    18 & 1 & 289  \\
+\hline 16 & 1 & 212 &   18 & 2 & 2983 \\
+\hline 16 & 2 & 1797 &  18 & 3 & 26204\\
+\hline 16 & 3 & 12840 & & &\\
+\hline 16 & 4 & 76224 & & & \\
+\hline
+\end{tabular}
+\caption{Antal Boards der bliver genereret}
+\label{table:noboards}
+\end{center}
+\end{table}
+
+
 
 Alle tests er i første omgang kørt 5 gange, dette blev gjort for at se om
 køretiden svingede meget, da dette ikke lader til at være tilfældet vil resten
@@ -87,17 +111,19 @@ Sammenligning af alle benchmarks
 \begin{figure}[h]
 \begin{center}
 \includegraphics{../benchmarks/b3.pdf}
-\caption{insert proper caption here } 
+\caption{nsert proper caption here } 
 \label{plot:b3}
 \end{center}
 \end{figure}
+\fixme{caption}
 
 Som det ses på figur \ref{plot:b3} kører den iterative udgave af koden fra
 rev. 83 utroligt langsomt i forhold til foregående udgaver. 
 Dette skyldes en en linje kode, der ikke var blevet kommenteret ud. Denne linje
 konkatenerede to strenge. Uden denne linje kører koden væsentlig hurtigere, som
 det ses af søjle 18. Den rekursive kode kører en smule langsommere med
-\texttt{BigInteger} (søjle 4 mod søjle 8)
+\texttt{BigInteger} (søjle 4 mod søjle 8), hvor tiden stiger fra 406.xxx til
+414.xxx\fixme{indsaet rigtige tal}, hvilket svarer til en forøgelse på knap 2\%
 
 \begin{itemize}
 \item[1] Takakens C-kode
@@ -117,7 +143,7 @@ det ses af søjle 18. Den rekursive kode kører en smule langsommere med
 \item[15], Parallel java port, \texttt{maxSteps}=0, iterativ, bigint, MiG
 \item[16], Parallel java port, \texttt{maxSteps}=1, rekursiv, bigint, MiG
 \item[17], Parallel java port, \texttt{maxSteps}=1, iterativ, bigint, MiG
-\item[17], Parallel java port, \texttt{maxSteps}=1, iterativ, bigint, rev9x 
+\item[18], Parallel java port, \texttt{maxSteps}=1, iterativ, bigint, rev9x 
 \fixme{indsaet sidste tests her og opdatere graph}
 \end{itemize}
 
