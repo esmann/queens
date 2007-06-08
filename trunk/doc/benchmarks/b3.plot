@@ -1,4 +1,4 @@
-set terminal pdf
+set terminal pdf fname "Helvetica" fsize "4"
 set out "b3.pdf"
 set autoscale
 unset log
@@ -10,4 +10,5 @@ set ytic auto
 set title "NQueens (Size 18)"
 set xlabel ""
 set ylabel "Time (seconds)"
-plot 'bar-graph-data' using 1:3 title '' with boxes fs solid 0.5 lt 2
+plot 'bar-graph-data' using 1:3 title '' with boxes fs solid 0.5 lt 2, \
+	   ''								using 1:3:3 with labels center offset 0,1 notitle
