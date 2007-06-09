@@ -82,8 +82,6 @@ Ved at at løse problemet for et lavere $n$ vil vi kunne estimere tiden og/eller
 
 NQueen problemet er finde antallet af måder man kan placere N dronninger på et et kvadratisk NxN bræt, således at ingen dronning kan slå en anden. Bemærk at vi skal finde alle løsninger $Q(n)$, og ikke bare finde alle løsninger - hvilket er et helt andet problem. Hidtil er der kun fundet løsninger for $n \in \{1,...,25\}$.\cite{sekvenser}. Derudover beskriver \cite{etsi} en manuelt distribueret løsning for $n=25$. Der findes desuden masser af referencer på \url{http://www.liacs.nl/home/kosters/nqueens.html} relateret til nqueen problemet. 
 
-
-
 \begin{figure}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c}
@@ -98,10 +96,11 @@ NQueen problemet er finde antallet af måder man kan placere N dronninger på et
 \caption{Eksempel på en løsning for $n=5$}
 \end{figure}
 
-Backtracking bliver ofte brug til løsning af dette problem . Derudover repræsenterer vi skakbrættet med en bitmap, som beskrevet i \ref{bitmapmodellen}. Takaken's sekventielle udgave beskrives kort og implikationer af optimeringer i \ref{takalgo}.
-
+Backtracking bliver ofte brug til løsning af dette problem\fixme{crap sætning} . Derudover repræsenterer vi skakbrættet med en bitmap, som beskrevet i \ref{bitmapmodellen}. Takaken's sekventielle udgave beskrives kort og implikationer af optimeringer i \ref{takalgo}.
 
 \subsection{backtracking}
+
+Rafineret brute force. Udtømmende søgning af løsninger.
 
 \fixme{Træstruktur kunne være endnu bedre med et grid i hver knude der viser valgte pladser med en markering}
 
@@ -219,7 +218,7 @@ Af disse er kun de to første af betydning for vores formål. Det bliver naturli
 En java-applet afvikles i et lukket miljø, 
 
 
-\fixme{det er her checkpointing-mekanismen i \co\ skal beskrives}
+\fixme{det er her checkpointing-mekanismen i \oc\ skal beskrives}
 
 \section{Paralellisering af Takaken's nqueen I Java}
 
