@@ -59,7 +59,7 @@
 	En del af indholdet af problemformulereringen fra synopsen flyttes til henholdsvis resumé, \ref{nqueenproblemet} og \ref{migogoneclick}. Selve synopsen inkluderes som bilag. Resuméet skal være ren gentagelse.
 \end{verse}
 \fixme{slet?}
-Projektets formål er ikke at beregne en løsning til N-dronning-problemet for $n=26$, hvilket problemets beregningsmæssige omfang kombineret med tids- og ressourcebegræsninger udelukker i praksis. Men kun at muliggøre og forhåbentlig igangsætte denne beregning.
+Projektets formål er ikke at beregne en løsning til N-dronning-problemet for $n=26$, hvilket problemets beregningsmæssige omfang kombineret med tids- og ressourcebegrænsninger udelukker i praksis. Men kun at muliggøre og forhåbentlig igangsætte denne beregning.
 Vi vil ikke tage stilling til den benyttede algoritmes korrekthed eller effektivitet, men kun til den bedst mulige strategi for parallelisering. Partitionering af problemdata skal foregå på en fornuftig måde, med tanke på hvordan det forventes beregningsressourcerne opfører sig, men en decideret statisk undersøgelse af midlertidige MiG-ressourcers opførsel eller levetid vil ikke blive foretaget\footnote{Med ressourcers opførsel tænkes på den tid man kan forvente en bruger vil lade sin one-click-klient køre}. Fordele og ulemper ved MiG eller One-click i forhold til andre grid-systemer falder også udenfor opgavens omfang.
 
 Ved at at løse problemet for et lavere $n$ vil vi kunne estimere tiden og/eller antal CPU'er der skal bruges for at løse for n=26.
@@ -246,6 +246,12 @@ I praksis gælder altså følgende:
 \end{itemize}
  
 Vi kan sørge for at generere 
+
+\fixme{beskriv vores løsning indgående}
+Vores løsning bygger på såkaldt \emph{statisk orkestration}
+\fixme{}
+
+
 \fixme{Hvad kan vi så gøre i praksis?}
 \fixme{pointe : Antal job må (helst) aldrig blive mindre end antal resourcer}
 
@@ -268,14 +274,8 @@ Et NQueen-job består af en .mRSL-fil og en
 
 
 \subsubsection{Skemalægning af job}
-I \mig skemalægges afviklingen af job som en FIFO-kø. Dvs. at job afvikles i samme rækkefølge som de submittes til gridet. Ved udløb af tidsfristen for afvikling af jobbet placeres jobbet bagerst i køen. I forbindelse med 
+I \mig skemalægges afviklingen af job som en FIFO-kø. Dvs. at job afvikles i samme rækkefølge som de submittes til gridet. Ved afbryding af jobbet eller ved udløb af tidsfristen for afvikling af jobbet placeres jobbet bagerst i køen.  
 
-\subsubsection{Resultatindsamling}
-I forbindelse med joboprettelse og resultatindsamling skal vi træffe nogle valg mht. 
-\begin{itemize}
-\item{Joboprettelsesstrategi - hvad skal der til for at beskrive et job.}
-\item{}
-\end{itemize}
 
 \subsection{One-click-specifikke begrænsninger}
 
@@ -289,7 +289,7 @@ I forbindelse med udvikling og afprøvning af en \oc-applet skal man være opmæ
 	\item File I/O følger ikke Inputstream / Outputstream	
 	\item Brug af suns egen HTTP implementation. Brug i stedet http-commons fra Apache
 	\item Vi har glemt en masse 
-	\item Webstart vil klart være at foretrække. Det er rigtigt at der kommer en certifikat fejl (https) - men så længe certifikat ikke er i browserens CA liste vil browseren i stedet komme med en advarsel.
+	\item Webstart vil klart være at foretrække. Det er rigtigt at der kommer en certifikat fejl (https) - men så længe certifikat ikke er i browserens CA liste vil browseren i stedet komme med en advarsel.q
 \end{itemize}
 
 
@@ -302,12 +302,6 @@ Fordi checkpointing gemmer ikke stack.
 
 
 \subsection{Resultatindsamling og -visning}
-Vi skal have en vedligeholdelsesproces kørende, der sørger for at 
-
-- Frej Lad \mig sende en mail pr. færdigt job? Og så et job der checker 'jævnligt' at alle mails er modtaget?
-
-
-\subsection{Resultatindsamling og -visning}
 En måde et holde styr på den samlede beregning af en løsning på n-dronning-problemet er, at have en vedligeholdelsesproces kørende, der sørger for at 
 \begin{itemize}
 	\item Genkøre fejlede job
@@ -317,6 +311,8 @@ En måde et holde styr på den samlede beregning af en løsning på n-dronning-p
 Dette program kan for eksempel være det samme der står for at oprette vores jobs i første omgang. Muligheden for at tilpasse ikke-kørte jobs på baggrund af informationer om gridets tilstand (antallet af tilgængelige resourcer). 
 
 Som alternativ tilbyder \mig-grid at informere indsendere når dennes job er afsluttet, eksempelvis via email. Det vil være betydeligt enklere kun at foretage behandling af resultater hver gang et sådant er klar, uden at have et permanent indsamlingsprogram kører. Vi er dog stadig nødsaget til at håndtere fejl i det enkelte job eller rapporteringen af jobafslutning. 
+
+- Frej Lad \mig sende en mail pr. færdigt job? Og så et job der checker 'jævnligt' at alle mails er modtaget?
 
 
 
