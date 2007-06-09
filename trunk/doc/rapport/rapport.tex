@@ -201,13 +201,13 @@ Dette er en øvre grænse, der oprettes ikke delbræt som ikke er gyldige\fixme{
 
 \textsc{Minimum instrusion Grid}, herefter \mig, er et grid-system der sigter efter at stille så få krav for deltagelse som muligt - både overfor brugere og ressourcer. I \mig-termiologi er en ressource en enhed der kan sættes til at beregne et problem. I mange andre gridsystemer benyttes speciel software til kommunikation mellem den enkelte ressource og gridet, undgår man helt dette mindskes kompleksiteten af det samlede system dramatisk. Omkostninger til den første opsætning og efterfølgende vedligeholdelse af systemet minimeres. \fixme{beskrivelse af anonymitet, sikkerhed, skalerbarhed}. \mig er beskrevet indgåede i \cite{simplemig,mig}.
 
-\mig\ giver brugeren mulighed for at få adgang til et stort antal beregningsressourcer, uden at skulle bekymre sig om hvor disse befinder sig, hvem der ejer dem, hvorvidt de hver især er istand til at løse den aktuelle opgave\footnote{Et givent problem kan f.eks. stille særlige krav til ressourcens arkitektur, eksisterende programmel, osv.}\fixme{er der mere under osv?}. Her og i det nedenstående henviser udtrykket ""brugeren"" til en udvikler der ønsker at få beregnet et problem vha. \mig \fixme{mindre fjollet definition}. Brugeren præsenteres for en abstraktion af \mig, der fremstiller et kendt paradigme fra unix-systemer; et hjemmekatalog hvori brugeren kan placere sine data- og programfiler. Brugerens interaktion med \mig\ forgår via en række scripts der efterligner kendte kommandoer til manipulation af filer i hjemmekataloget, og introducerer kommandoer til at starte og stoppe job. Begge metoder giver mulighed for at udføre basale funktioner på \mig, såsom at igangsætte job, se status på tidligere jobs og give adgang til data-, program- og resultatfiler i hjemmekataloget. Et job sættes igang ved at køre kommandoen migsubmit med såkaldt mRSL-fil\footnote{\mig\ Resource Selector Language} der indeholder en beskrivelse af det job der skal afvikles. Beskrivelsen fortæller \mig\ hvilken programfil der skal køres, med hvilke parametre, hvor lang tid jobbet forventes at tage og eventuelle krav jobbet har til ressourcer der skal afvikle det. Et kørende job har adgang filerne i  hjemmekataloget. Resultatet af et job skal skrives til hjemmekataloget for senere at kunne aflæses af brugeren. For hvert job oprettes desuden 3 filer i hjemmekataloget. De indeholder hhv. exit-status, standard output og standard error, ganske som de kendes fra unix-systemer. 
+\mig\ giver brugeren mulighed for at få adgang til et stort antal beregningsressourcer, uden at skulle bekymre sig om hvor disse befinder sig, hvem der ejer dem, hvorvidt de hver især er istand til at løse den aktuelle opgave\footnote{Et givent problem kan f.eks. stille særlige krav til ressourcens arkitektur, eksisterende programmel, osv.}\fixme{er der mere under osv?}. Her og i det nedenstående henviser udtrykket ""brugeren"" til en udvikler der ønsker at få beregnet et problem vha. \mig \fixme{mindre fjollet definition}. Brugeren præsenteres for en abstraktion af \mig, der fremstiller et kendt paradigme fra unix-systemer; et hjemmekatalog hvori brugeren kan placere sine data- og programfiler. Brugerens interaktion med \mig\ forgår via en række scripts der efterligner kendte kommandoer til manipulation af filer i hjemmekataloget, og introducerer kommandoer til at starte og stoppe job. Begge metoder giver mulighed for at udføre basale funktioner på \mig, såsom at igangsætte job, se status på tidligere jobs og give adgang til data-, program- og resultatfiler i hjemmekataloget. Et job sættes igang ved at køre kommandoen migsubmit med såkaldt mRSL-fil\footnote{\mig\ Resource Language} der indeholder en beskrivelse af det job der skal afvikles. Beskrivelsen fortæller \mig\ hvilken programfil der skal køres, med hvilke parametre, hvor lang tid jobbet forventes at tage og eventuelle krav jobbet har til ressourcer der skal afvikle det. Et kørende job har adgang filerne i  hjemmekataloget. Resultatet af et job skal skrives til hjemmekataloget for senere at kunne aflæses af brugeren. For hvert job oprettes desuden 3 filer i hjemmekataloget. De indeholder hhv. exit-status, standard output og standard error, ganske som de kendes fra unix-systemer. 
 Al den ovennævnte interaktion med \mig\ kan alternativt foregå gennem et særligt webinterface. 
 
 \subsection{\oc}\label{applet}
 \oc\ muliggører deltagelse i et \mig-grid uden andre forudsætninger end en webbrowser og java. Tilgengæld er denne metode begrænset til at afvikle programmer, der er tilgængelige som java-bytecode. Brug af \oc\ giver adgang til et enormt (potentielt) antal beregningsressourcer, hvilket er grunden til at benytte \oc\ i denne opgave.
 \oc\ er et framework til udvikling af java-appletter, der kan interagere med \mig\. Ved hjælp af \oc\ kan en hvilken som helst computer gøres til en \mig-ressource, unden nogen for for opsætning eller installation af programmel, hvilket gør det muligt for ganske alm. mennesker at bidrage regnekraft til gridet. Det eneste der kræves er en webbrowser der kan afvikle java-appletter. Implementerer man sit job som en java-applet vil det kunne afvikles på alle \oc-ressourcer, uden at skulle specificere særlige krav til arkitektur med videre. Til gengæld vil det være begrænset til kun at køre på \oc-ressourcer. 
-\oc\ er især interessant i forbindelse med hvad man kunne kalde sociale beregninger, det vil sige beregningsprojekter som almindelige mennesker kunne have interesse i at bidrage til, eller endog konkurrere om at bidrage mest til. Kendte eksempler på sådanne projekter er SETI@home og FOLDING@home. Når måling af tidsforbrug per resource bliver implementeret i \oc\ kunne man også  forestille sig et \mig-grid som en åben markedsplads hvor både virksomheder og privatpersoner kunne købe og sælge regnekraft gennem \mig\ uden at skulle bekymre sig om, eller have mulighed for at vide, hvor beregningerne reelt foretages eller hvad hvad der regnes på. \fixme{for meget blah-blah}
+\oc\ er især interessant i forbindelse med hvad man kunne kalde sociale beregninger, det vil sige beregningsprojekter som almindelige mennesker kunne have interesse i at bidrage til, eller endog konkurrere om at bidrage mest til. Kendte eksempler på sådanne projekter er SETI@home og FOLDING@home. Når måling af tidsforbrug per ressource bliver implementeret i \oc\ kunne man også  forestille sig et \mig-grid som en åben markedsplads hvor både virksomheder og privatpersoner kunne købe og sælge regnekraft gennem \mig\ uden at skulle bekymre sig om, eller have mulighed for at vide, hvor beregningerne reelt foretages eller hvad hvad der regnes på. \fixme{for meget blah-blah}
 
 
 En java-applet afvikles i et lukket miljø, en såkaldt sandkasse, for at beskytte den maskine der afvikler appletten. n række begrænsinger vi bliver nødt til at forholde os til
@@ -220,7 +220,7 @@ En java-applet afvikles i et lukket miljø, en såkaldt sandkasse, for at beskyt
 	\item \oc\ Kode/Mininum intrusion.
 \end{itemize}
 
-Af disse er kun de to første af betydning for vores formål. Det bliver naturligvis et krav at alle delproblemer vi sender ud kan beregnes uden at bruge mere end 64MB hukommelse på klienten. Uden jni har vi ikke mulighed for måle på hvor meget reel cputid vores applet har fået tildelt, eller kende resourcens hastighed eller arkitektur. 
+Af disse er kun de to første af betydning for vores formål. Det bliver naturligvis et krav at alle delproblemer vi sender ud kan beregnes uden at bruge mere end 64MB hukommelse på klienten. Uden jni har vi ikke mulighed for måle på hvor meget reel cputid vores applet har fået tildelt, eller kende ressourcens hastighed eller arkitektur. 
 \subsubsection{Checkpointing}
 \oc\ indeholder kode til oprettelse af checkpoints under kørslen af et job. Et checkpoint er en gemt programtilstand, hvorfra det er muligt at fortsætte afviklingen. \oc\ indeholder desuden mekanismer til genetablering af programtilstanden fra et givent check. Når et \oc-job sendes til en ressource sendes det nyeste checkpoint med, hvis et sådant eksisterer, og \oc\ sørger for at genetablere tilstanden før eksekveringen af jobbet starter. Dette er præcis den funktionalitet vi behøver, for at kunne sikre at vi ikke behøver køre en beregning forfra når en ressource forsvinder.    
 
@@ -239,7 +239,12 @@ Og med de yderligere antagelser at
 	\item Ressourcer er permanente
 \end{enumerate}
 I denne ideelle situation opnåes maksimal udnyttelse af tilgængelige ressourcer, og samtidig minimalt overhead i forbindelse med jobskift og dataoverførsel.
-I praksis er disse krav meget svære at opfylde. \ref{beregningstid} er for Nqueen ikke det samme som størrelsen af de del-data der regnes på. Det gælder for Nqueen at et beregningstiden for et delproblem følger antallet af løsninger i delproblemet. Vi kan altså ikke ikke ved opdeling af problemet kende de enkelte delproblemers beregningstid. Kunne vi det ville vi allerede kende antallet af løsninger. Istedet kan vi opdele problemet i dele med samme data-størrelse - dvs. samme antal dronninger mangler at blive placeret. \fixme{hvad kan vi sige om om beregningstiden for problemer med samme data-størrelse? Øvre grænse for variationen i køretid?} \fixme{indsæt reference til benchmarks, der viser beregningstid for hvert delproblem, og skriv noget om hvad benchmarks viser vi kan regne med ifm. beregningstid} Beregningstiden kompliceres yderligere af at delproblemerne skal beregnes på heterogene ressourcer, som vi ikke kan kende hastigheden af før delopgaven er færdigregnet. Heller ikke antallet af tilgængelige ressourcer (\ref{antal}) har vi ingen mulighed for at kende. Ydermere arver vi fra backtrack-algoritmen en opdeling af delproblemer i to typer, nemlig hjørnebræt og midtebræt. På grund af Takakens optimeringer \fixme{kun på grund af Takakens optimeringer?} har de to brættyper væsentligt forskellige beregningstider. 
+I praksis er disse krav meget svære at opfylde. \ref{beregningstid} er for Nqueen ikke det samme som størrelsen af de del-data der regnes på. Det gælder for Nqueen at et beregningstiden for et delproblem følger antallet af løsninger i delproblemet. Vi kan altså ikke ikke ved opdeling af problemet kende de enkelte delproblemers beregningstid. Kunne vi det ville vi allerede kende antallet af løsninger. Istedet kan vi opdele problemet i dele med samme data-størrelse - dvs. samme antal dronninger mangler at blive placeret. 
+
+\fixme{hvad kan vi sige om om beregningstiden for problemer med samme data-størrelse? Øvre grænse for variationen i køretid?} \fixme{indsæt reference til benchmarks, der viser beregningstid for hvert delproblem, og skriv noget om hvad benchmarks viser vi kan regne med ifm. beregningstid} 
+
+Beregningstiden kompliceres yderligere af at delproblemerne skal beregnes på heterogene ressourcer, som vi ikke kan kende hastigheden af før delopgaven er færdigregnet. Heller ikke antallet af tilgængelige ressourcer (\ref{antal}) har vi ingen mulighed for at kende. Ydermere arver vi fra backtrack-algoritmen en opdeling af delproblemer i to typer, nemlig hjørnebræt og midtebræt. På grund af Takakens optimeringer har de to brættyper væsentligt forskellige beregningstider. 
+\fixme{kun på grund af Takakens optimeringer?} 
 
 I praksis gælder altså følgende:
 \begin{itemize}
@@ -254,15 +259,15 @@ Vi kan sørge for at generere
 
 \fixme{beskriv vores løsning indgående}
 
-\fixme{pointe : Antal job må (helst) aldrig blive mindre end antal resourcer}
+\fixme{pointe : Antal job må (helst) aldrig blive mindre end antal ressourcer}
 
 Idet både ressourcer og delproblemer er heterogene kan vi behandle dem som et samlet problem. Delopgaverne bliver så at sige bare endnu mere forskellige.
-\fixme{pointe : den største forøgelse at samlet beregningstid vil forekomme hvis den langtsommeste resource får den største delopgave når alle andre opgaver er regnet}
+\fixme{pointe : den største forøgelse at samlet beregningstid vil forekomme hvis den langtsommeste ressource får den største delopgave når alle andre opgaver er regnet}
 
 \fixme{Vi laver bræt med samme antal forudplacerede dronninger, og lader ønsket til antallet af bræt diktere antal forudplacerede dronninger - hvilke andre metoder kunne man benytte?}
 
 Et NQueen-job består af en .mRSL-fil og en  
-\fixme{hvordan opretter vi job, hvad består et job af(serialze, mrsl)}
+\fixme{hvordan opretter vi job, hvad består et job af(serialize, mrsl)}
 
 \fixme{Vi er nødt til at tage højde for at løsningen (antallet af løsinger) vil overstige hvad vi kan repræsentere som en 32bit værdi.}
 
@@ -271,7 +276,7 @@ Denne løsning kan bedst karakteriseres som såkaldt \emph{statisk orkestration}
 For at afhjælpe dette problem kan joboprettelsen gøres mere dynamisk. Den indledende mængde delopgaver kan tilpasses det øjeblikkelige antal ressourcer. Herefter opdeles en eller flere af disse i mindre delopgaver, så snart der er ledige ressourcer. På denne måde sikres det at ingen beregningskraft står ubrugt hen. 
 Det bedste valg af job til genopdeling vil være det jo der kræver mest beregningstid, da dette vil resultere i den mindst mulige spredning i beregningsstørrelse for de alle opgaver efter opdelingen. På figur \ref{tabel:boardtimes} ser vi eksempler for beregningstiden for hver delopgave. Det er tydeligt at de følger et mønster, og at vi kan bestemme et indbyrdes størrelsesforhold mellem hhv. alle hjørne- og midtebræt. Dette giver os en god idé om hvilken delopgave det bedst kan betale sig at splitte op. Tilgengæld har vi ikke mulighed for at vide, om beregningen af denne opgave allerede er ved at være færdig. 
 
-Løsningen kører en separat tråd der checkpointing
+Løsningen kører en separat tråd, der foretager checkpointing, og en timertråd, der giver giver beregningen besked om at afgive cpu'en til checkpointtråden, når den når et sikkert sted.
 
 \section{Parallelisering af Takaken's nqueen I Java}
 
@@ -285,7 +290,7 @@ I \mig skemalægges afviklingen af job som en FIFO-kø. Dvs. at job afvikles i s
 
 \subsection{\oc-specifikke begrænsninger}
 
-I forbindelse med udvikling og afprøvning af en \oc-applet skal man være opmærksom på at Class-filer caches af browserens java-plugin. Ændringer i implementeringen kan medføre fejl under afviklingen på resourcer der bruger forældede class-filer, selvom \mig opfatter jobbet som udført uden fejl. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver opdatering af denne cache. Man kan altså riskikere at appletten får en undtagelse på serialVersionUID og derved markeres jobbet som færdigt, uden at være kommet til et resultat. En uhensigtsmæssighed i forbindelse med undtagelseshåndtering i basisklassen MigJob.java gør at jobbet alligevel vil se ud til at være afsluttet succesfuldt. Se afsnit \cite{bugs}. 
+I forbindelse med udvikling og afprøvning af en \oc-applet skal man være opmærksom på at Class-filer caches af browserens java-plugin. Ændringer i implementeringen kan medføre fejl under afviklingen på ressourcer der bruger forældede class-filer, selvom \mig opfatter jobbet som udført uden fejl. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver opdatering af denne cache. Man kan altså riskikere at appletten får en undtagelse på serialVersionUID og derved markeres jobbet som færdigt, uden at være kommet til et resultat. En uhensigtsmæssighed i forbindelse med undtagelseshåndtering i basisklassen MigJob.java gør at jobbet alligevel vil se ud til at være afsluttet succesfuldt. Se afsnit \cite{bugs}. 
 
 
 \subsubsection{Bugs og mangler}\label{bugs}
@@ -313,7 +318,7 @@ En måde et holde styr på den samlede beregning af en løsning på n-dronning-p
 	\item Indsamle resultater fra færdige jobs
 	\item Muliggøre løbende projektstatus og offentliggørelse af resultater 
 \end{itemize}
-Dette program kan for eksempel være det samme der står for at oprette vores jobs i første omgang. Muligheden for at tilpasse ikke-kørte jobs på baggrund af informationer om gridets tilstand (antallet af tilgængelige resourcer). 
+Dette program kan for eksempel være det samme der står for at oprette vores jobs i første omgang. Muligheden for at tilpasse ikke-kørte jobs på baggrund af informationer om gridets tilstand (antallet af tilgængelige ressourcer). 
 
 Som alternativ tilbyder \mig-grid at informere indsendere når dennes job er afsluttet, eksempelvis via email. Det vil være betydeligt enklere kun at foretage behandling af resultater hver gang et sådant er klar, uden at have et permanent indsamlingsprogram kører. Vi er dog stadig nødsaget til at håndtere fejl i det enkelte job eller rapporteringen af jobafslutning. 
 
@@ -376,7 +381,7 @@ det umiddelbart til..
 
 \oc applet'en kommer hele tiden med en popup fejl, hvis brugeren ikke har
 certificat (skal nok lige verificeres, var noget jeg fik at vide af Asser, da
-han legede resource for \mig)
+han legede ressource for \mig)
 
 Job Status side ala. Files/Folders
 tingen, så man nemmere kan vælge flere jobs og cancelle/resubmitte.. og
