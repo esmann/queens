@@ -126,28 +126,6 @@ det ses af søjle 18. Den rekursive kode kører en smule langsommere med
 \texttt{BigInteger} (søjle 4 mod søjle 8), hvor tiden stiger fra 406.xxx til
 414.xxx\fixme{indsaet rigtige tal}, hvilket svarer til en forøgelse på knap 2\%
 
-\begin{itemize}
-\item[1] Takakens C-kode
-\item[2] Direkte java port
-\item[3] Parallel java port, \texttt{maxSteps}=0, rekursiv, int, lokal
-\item[4] Parallel java port, \texttt{maxSteps}=1, rekursiv, int, lokal
-\item[5] Parallel java port, \texttt{maxSteps}=2, rekursiv, int, lokal
-\item[6] Parallel java port, \texttt{maxSteps}=3, rekursiv, int, lokal
-\item[7] Parallel java port, \texttt{maxSteps}=1, iterativ, int, lokal
-\item[8] Parallel java port, \texttt{maxSteps}=1, rekursiv, bigint, lokal
-\item[9] Parallel java port, \texttt{maxSteps}=1, iterativ, bigint, lokal
-\item[10] Parallel java port, \texttt{maxSteps}=0, rekursiv, int, MiG
-\item[11], Parallel java port, \texttt{maxSteps}=0, iterativ, int MiG
-\item[12], Parallel java port, \texttt{maxSteps}=1, rekursiv, int, MiG
-\item[13], Parallel java port, \texttt{maxSteps}=1, iterativ, int, MiG
-\item[14], Parallel java port, \texttt{maxSteps}=0, rekursiv, bigint, MiG
-\item[15], Parallel java port, \texttt{maxSteps}=0, iterativ, bigint, MiG
-\item[16], Parallel java port, \texttt{maxSteps}=1, rekursiv, bigint, MiG
-\item[17], Parallel java port, \texttt{maxSteps}=1, iterativ, bigint, MiG
-\item[18], Parallel java port, \texttt{maxSteps}=1, iterativ, bigint, rev107 
-\fixme{indsaet sidste tests her og opdatere graph}
-\end{itemize}
-
 \subsection{overhead ved jobskifte}
 
 I MiG\_main() metoden i NQueenJob laver vi et timestamp i starten og slutningen af metoden. 
@@ -168,16 +146,12 @@ boards.
 
 \begin{table}
 \begin{center}
-\begin{tabular}{|c|c|c|c|c|c|c|c|}
-\hline N  & kodebase 		  & middleboard & cornerboard & N  & kodebase      & middleboard & cornerboard \\
-\hline 15 & C kode   			&             &             & 17 & C kode        &             &             \\
-\hline 15 & Java          &             &             & 17 & Java          &             &             \\
-\hline 15 & Java rek. &             &             & 17 & Java rek. &             &             \\
-\hline 15 & Java ite. &             &             & 17 & Java ite. &             &             \\
-\hline 16 & C kode   			&             &             & 18 & C kode        &             &             \\
-\hline 16 & Java          &             &             & 18 & Java          &             &             \\
-\hline 16 & Java rek. &             &             & 18 & Java rek. &             &             \\
-\hline 16 & Java ite. &             &             & 18 & Java ite. &             &             \\
+\begin{tabular}{|c|c|c|c|}
+\hline
+\hline 18 & C kode        &             &             \\
+\hline 18 & Java          &             &             \\
+\hline 18 & Java rek. &             &             \\
+\hline 18 & Java ite. &             &             \\
 \hline
 \end{tabular}
 \caption{Kald til backtrack}

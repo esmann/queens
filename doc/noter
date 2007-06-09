@@ -1,0 +1,146 @@
+== Antal jobs ==
+hvor mange jobs skal der laves, ved n=26 og maxsteps=3 har vi 205k jobs, ved
+maxsteps=4 har vi 2,9mio jobs, men er der nogen grund til at lave så mange jobs,
+når vi alligevel ikke regner med at have særlige mange klienter. Medmindre det
+er bedre at have ekstra mange jobs, men derimod knap så store jobs..  Dette kan self.
+godt ændre sig i fremtiden, men indtil da er der ikke nogen go' grund til at
+kigge på problemet (Problemet er at den nuværende kode ikke umiddelbart kan
+genere de 2.9mio jobs uden at man sætter max heap size til 768MB)
+
+== Job konstruktion ==
+
+Pt. laver vi en masse boards og serializer dem og gemmer dem og laver en mRSL
+fil til hver. Det kan tage lang tid at gemme alle disse jobs, en alternativ måde
+er at vi, istedet for at serialisere objektet og gemmer det, giver de variabler
+vi skal bruge, med som argument i mRSL filen, vi slipper så for at gemme
+objektet (ie vi skal kun gemme 1 fil i stedet for 2). 
+Man kunne også lave submit og put i java og så submitte/putte filerne direkte,
+så slipper man helt for at gemme filer på disken. Dog bliver man så nødt til at
+submitte alle jobs på engang. Dette kan man slippe for hvis man første gemmer
+alle jobs på disken og så submitter dem løbende.. 
+Man kan dog også lave det som en daemon, der kører hele tiden og løbende
+submitter jobs, men hvad hvis den går ned, er det nemt at finde ud af hvor den
+er kommet til etc?
+
+Istedet for bare at kalde boards for boardX så kalde dem
+board-<size>-<maxsteps>-X.obj evt kun mens vi tester.
+
+== oneclick ==
+
+langsom til at sende resultatet til serveren hvis browseren dør mens den er ved
+at sende resultatet til serveren, er det ikke sikkert den når at smide hele
+resultatet tilbage til stderr, stdout, status, men jobbet står stadig markeret
+som finished (dette lader til at være blevet fixet... ) 
+
+evt skrive boardX med ud i stdout så vi kan tjekke hvilke boards der mangler, vi
+skal i så fald også huske hvor mange boards vi lavede. 
+
+oneclick applet'en cacher class filer, så hvis man har ændret i sin kode og
+uploadet nye class filer bliver man nødt til at lukke browseren helt ned og
+starte den op igen, hvis man vil have den til at loade de nye class filer, lader
+det umiddelbart til.. 
+
+oneclick applet'en kommer hele tiden med en popup fejl, hvis brugeren ikke har
+certificat (skal nok lige verificeres, var noget jeg fik at vide af Asser, da
+han legede resource for mig)
+
+== pak og submit/put jobs == 
+for f in `seq 0 48444`; do tar rvf boards.tar board$f.*; done
+gzip boards.tar
+migput -x -p boards.tar.gz boards
+
+== cancel alle submittede jobs == 
+(canceller egentlig _alle_ jobs.. ikke særlig effektivt.. 
+for f in `~/bin/migstatus.py | awk '/Job ID/ {print $3}'`; do ~/bin/migcancel.py $f; done
+
+== cancel alle queued jobs == 
+for f in `~/bin/migstatus.py | grep -B1 "Status: QUEUED" | awk '/Job ID/ {print $3}'`; do ~/bin/migcancel.py $f; done
+
+== MiG ting der kunne være go'e at have == 
+Job Status side ala. Files/Folders
+tingen, så man nemmere kan vælge flere jobs og cancelle/resubmitte.. og
+wildcards til migcancel.py ville også være en go ting, så man kunne lave en
+migcancel.py *14_37* fx.. 
+
+vis queued/cancelled/finished/executing/m.fl jobs ville også være en brugbar feature
+
+mulighed for at slette job helt, så ens jobstatus side ikke er så stor.. 
+
+migsubmit -p -x outputter mangler newlines.. 
+
+== mrsl ==
+Vi skal huske at sætte cputime højt nok? hvis den er for lav bliver jobbet
+stoppet af MiG serveren.. 
+
+== sammentælling af resultater == 
+~/bin/migcat.py *5_16_2007*.stdout | awk '/total/ {sum = sum + $2} END {printf "%.0f\n", sum}'
+hvor total kan vaere unique, total, boardtime og ^time
+
+
+== MiGClient.java ==
+
+zip filen bliver oprettet på disken, da httpclient putmethod vil have en inputstream
+pipedinput/output stream virker ikke, da disse skal køre i forskellige tråde
+ellers kan der opstå deadlocks (hvilket det gør, det er i hvert fald det jeg
+tror det gør).
+Det kan måske også være en fordel at gemme dem på disken, og så istedet for at
+lave en zip fil med 200k objekter og 200k mrsl filer, dele den op i nogle mindre
+"pakker" og så løbende submitte nye jobs, når de submittede er ved at være løst?
+bytearrayinput/outputstream var løsningen... 
+toString() fungerede ikke helt som jeg lige regnede med, mht object serialization
+
+== oneclick ==
+
+serialversionuid forkert => kastet exception, men job stadig finished, ikke failed
+
+hvis man lægger en ny class fil i sin jvm folder, så skal brugerne genstarte
+deres browser før de får den nye udgave.. 
+
+Den dræber nogen gange jobs, dette ser ud til at ske, hvis den lige har
+færdiggjort job <jobid>, og så (af en eller anden årsag) prøver at hente det
+_samme_ job igen, så bliver dette job (sjovt nok) slået ihjel af serveren, og så
+sleeper applet'en i 80s før den prøver igen.. 
+
+== migsubmitandextract ==
+
+output fra denne funktion sutter max .. :S
+ingen newlines.. og lidt spredt html hist og her.. 
+
+== benchmarks ==
+
+size 18 og 19(?.. omk 5 min og 40 min) - diverse maxsteps(?)
+c-udgave nqueens.c - ~/doc/uni/workspace/NQueens/src/main/java/nq
+java - direkte port - NQueensL - ~/doc/uni/workspace/NQueens/src/main/java/NQueensL
+java - parallel/rekursiv lokalt
+java - parallel/rekursiv MiG (flere ressourcer)
+java - parallel/iterativ lokalt
+java - parallel/iterativ MiG (flere ressourcer)
+
+køre hver test (i hvert fald lokale) flere gange, og tage et gennemsnit.
+
+c-udgave compilet med gcc -Os -O2 -o nq nqueens.c
+gcc (GCC) 4.1.2 (Ubuntu 4.1.2-0ubuntu4)
+
+== error ikke fanget == 
+
+checkpoint_request_url_str: https://mig-1.imada.sdu.dk/sid_redirect/7bc01a0e4ead439c63c84fd149eb93ac325fdf1809aedc23049c010890bf14bd/13768_6_2_2007__8_42_57_mig-1.imada.sdu.dk.0.NQueenJob.checkpoint.latest
+Exception in thread "Thread-18" java.lang.NoClassDefFoundError: CheckPointAction
+	at java.lang.Class.getDeclaredMethods0(Native Method)
+	at java.lang.Class.privateGetDeclaredMethods(Class.java:2427)
+	at java.lang.Class.getMethod0(Class.java:2670)
+	at java.lang.Class.getMethod(Class.java:1603)
+	at MiG.oneclick.Exe.getJobMethods(Exe.java:73)
+	at MiG.oneclick.Exe.run(Exe.java:236)
+	at java.lang.Thread.run(Thread.java:619)
+sendJobFinished
+
+
+== job kø ==
+når man smider en masse job i kø, vil folk der efterfølgende smider jobs i kø jo
+self komme bagest, dette er måske ikke så hensigtsmæssigt hvis vi smider  205k
+jobs i kø der skal tager omk 1300cpu år og de så kommer bag i køen.. efter os. 
+plus hvis/når vores jobs bliver stoppet før de er færdige, så komme de bag i
+køen igen så hvis andre folk har smidt en masse jobs i kø i mellemtiden så vil
+vores komme bagved dem.. en løsning kunne være at lave et vgrid til NQueen
+problemet og så lave en oneclick ressource der automatisk joiner dette vgrid.
+ligesom vi manualt har gjort i testfasen
