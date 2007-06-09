@@ -33,11 +33,6 @@
 \headheight 14.5pt                             %H<F8>jden af headeren
 \textwidth 5.87in                              %Tekstbredden
 
-\pagestyle{fancy}                              %Benyt fancyhdr-pakken
-\fancyhead[R]{\thepage\ af \pageref{LastPage}} %Skriv sidetallene som "x af y"
-\fancyhead[L]{N-dronning problemet i \mig}              %Headeren
-\fancyfoot[C]{}                                %Fjern sidetallet som er standard
-
 \oddsidemargin 0.2in                           %Venstre margin er 1in + dette tal
                                                %Med en textwidth p<E5> 5.87in og en
                                                %oddsidemargin p<E5> 0.2 bliver marginerne
@@ -45,7 +40,7 @@
 \font\chessfont=skak10
 \def\chs#1{{\chessfont#1}}
 
-
+\renewcommand{\thepage}{\roman{page}}
 
 \title{Bachelorprojekt\\N-dronning problemet i \mig}
 \author{Thomas Clement Mogensen \\ Frej Soya \\ Alex Esmann }
@@ -55,9 +50,15 @@
 
 \maketitle
 \tableofcontents
-
 \newpage
+
+\renewcommand{\thepage}{\arabic{page}}
+\pagestyle{fancy}                              %Benyt fancyhdr-pakken
+\fancyhead[R]{\thepage\ af \pageref{LastPage}} %Skriv sidetallene som "x af y"
+\fancyhead[L]{N-dronning problemet i \mig}              %Headeren
+\fancyfoot[C]{}                                %Fjern sidetallet som er standard
 \setcounter{page}{1}
+
 \abstract
 \begin{verse}
 	En del af indholdet af problemformulereringen fra synopsen flyttes til henholdsvis resumé, \ref{nqueenproblemet} og \ref{migogoneclick}. Selve synopsen inkluderes som bilag. Resuméet skal være ren gentagelse.
@@ -200,12 +201,8 @@ Dette er en øvre grænse, der oprettes ikke delbræt som ikke er gyldige\fixme{
 
 \textsc{Minimum instrusion Grid}, herefter \mig, er et grid-system der sigter efter at stille så få krav for deltagelse som muligt - både overfor brugere og ressourcer. I \mig-termiologi er en ressource en enhed der kan sættes til at beregne et problem. I mange andre gridsystemer benyttes speciel software til kommunikation mellem den enkelte ressource og gridet, undgår man helt dette mindskes kompleksiteten af det samlede system dramatisk. Omkostninger til den første opsætning og efterfølgende vedligeholdelse af systemet minimeres. \fixme{beskrivelse af anonymitet, sikkerhed, skalerbarhed}. \mig er beskrevet indgåede i \cite{simplemig,mig}.
 
-\mig\ giver brugeren mulighed for at få adgang til et stort antal beregningsressourcer, uden at skulle bekymre sig om hvor disse befinder sig, hvem der ejer dem, hvorvidt de hver især er istand til at løse den aktuelle opgave\footnote{Et givent problem kan f.eks. stille særlige krav til ressourcens arkitektur, eksisterende programmel, osv. }\fixme{footnote er der mere under osv?}. Her og i det nedenstående henviser udtrykket ""brugeren"" til en udvikler der ønsker at få beregnet et problem vha. \mig \fixme{mindre fjollet definition}. Brugeren præsenteres for en abstraktion af \mig, der fremstiller et kendt paradigme fra unix-systemer; et hjemmekatalog hvori brugeren kan placere sine data- og programfiler. Brugerens interaktion med \mig\ forgår via en række scripts der efterligner kendte kommandoer til manipulation af filer i hjemmekataloget, og introducerer kommandoer til at starte og stoppe job. Begge metoder giver mulighed for at udføre basale funktioner på \mig, såsom at igangsætte job, se status på tidligere jobs og give adgang til data-, program- og resultatfiler i hjemmekataloget. Et job sættes igang ved at køre kommandoen migsubmit med såkaldt mRSL-fil\footnote{\mig\ Resource Selector Language} der indeholder en beskrivelse af det job der skal afvikles. Beskrivelsen fortæller \mig\ hvilken programfil der skal køres, med hvilke parametre, hvor lang tid jobbet forventes at tage og eventuelle krav jobbet har til ressourcer der skal afvikle det. Et kørende job har adgang filerne i  hjemmekataloget. Resultatet af et job skal skrives til hjemmekataloget for senere at kunne aflæses af brugeren. For hvert job oprettes desuden 3 filer i hjemmekataloget. De indeholder hhv. exit-status, standard output og standard error, ganske som de kendes fra unix-systemer. 
+\mig\ giver brugeren mulighed for at få adgang til et stort antal beregningsressourcer, uden at skulle bekymre sig om hvor disse befinder sig, hvem der ejer dem, hvorvidt de hver især er istand til at løse den aktuelle opgave\footnote{Et givent problem kan f.eks. stille særlige krav til ressourcens arkitektur, eksisterende programmel, osv.}\fixme{er der mere under osv?}. Her og i det nedenstående henviser udtrykket ""brugeren"" til en udvikler der ønsker at få beregnet et problem vha. \mig \fixme{mindre fjollet definition}. Brugeren præsenteres for en abstraktion af \mig, der fremstiller et kendt paradigme fra unix-systemer; et hjemmekatalog hvori brugeren kan placere sine data- og programfiler. Brugerens interaktion med \mig\ forgår via en række scripts der efterligner kendte kommandoer til manipulation af filer i hjemmekataloget, og introducerer kommandoer til at starte og stoppe job. Begge metoder giver mulighed for at udføre basale funktioner på \mig, såsom at igangsætte job, se status på tidligere jobs og give adgang til data-, program- og resultatfiler i hjemmekataloget. Et job sættes igang ved at køre kommandoen migsubmit med såkaldt mRSL-fil\footnote{\mig\ Resource Selector Language} der indeholder en beskrivelse af det job der skal afvikles. Beskrivelsen fortæller \mig\ hvilken programfil der skal køres, med hvilke parametre, hvor lang tid jobbet forventes at tage og eventuelle krav jobbet har til ressourcer der skal afvikle det. Et kørende job har adgang filerne i  hjemmekataloget. Resultatet af et job skal skrives til hjemmekataloget for senere at kunne aflæses af brugeren. For hvert job oprettes desuden 3 filer i hjemmekataloget. De indeholder hhv. exit-status, standard output og standard error, ganske som de kendes fra unix-systemer. 
 Al den ovennævnte interaktion med \mig\ kan alternativt foregå gennem et særligt webinterface. 
-Vores system har flere dele, selve Grid delen er \mig\ som for os er en lukket boks
-Da en delopgave specifikt er at bruge og afprøve \oc\ som kører som en java Applet.
-
-TODO: Andre system ting?
 
 \subsection{\oc}\label{applet}
 \oc\ muliggører deltagelse i et \mig-grid uden andre forudsætninger end en webbrowser og java. Tilgengæld er denne metode begrænset til at afvikle programmer, der er tilgængelige som java-bytecode. Brug af \oc\ giver adgang til et enormt (potentielt) antal beregningsressourcer, hvilket er grunden til at benytte \oc\ i denne opgave.
@@ -230,13 +227,11 @@ Af disse er kun de to første af betydning for vores formål. Det bliver naturli
 Checkpoint foretages ved at serialisere det kørende job-objekt\footnote{\mig-applettens hoved objekt, der nedarver fra MiGJob-klassen} til en checkpoint-fil i hjemmekataloget på \mig. Det er altså kun objekt-variable der overlever på tværs af et checkpoint. I forhold til den rekursive backtrack-algoritme til NQueens er det værd at bemærke at kald-stakken naturligvis ikke gemmes.
 
 \section{Problemstørrelse og jobschedulering}
-\fixme{Hvorfor vil vi }
 Et centralt emne ved parallelisering af algoritmer er partitionering af de data der beregnes på. Den ideelle opdeling definerer vi som en opdeling der sikrer at følgende gælder:
 \begin{enumerate}
 	\item Alle job har samme problemstørrelse - dvs. job tager samme tid at beregne.\label{beregningstid}
 	\item Antallet af jobs er præcis lig antallet af ressourcer.\label{antal}
 	\item Repræsentationen af job og resultater har minimal størrelse.\label{jobbeskrivelse}
-	\fixme{Flere?}
 \end{enumerate} 
 Og med de yderligere antagelser at
 \begin{enumerate}
@@ -259,9 +254,6 @@ Vi kan sørge for at generere
 
 \fixme{beskriv vores løsning indgående}
 
-
-
-\fixme{Hvad kan vi så gøre i praksis?}
 \fixme{pointe : Antal job må (helst) aldrig blive mindre end antal resourcer}
 
 Idet både ressourcer og delproblemer er heterogene kan vi behandle dem som et samlet problem. Delopgaverne bliver så at sige bare endnu mere forskellige.
@@ -278,6 +270,8 @@ Denne løsning kan bedst karakteriseres som såkaldt \emph{statisk orkestration}
 
 For at afhjælpe dette problem kan joboprettelsen gøres mere dynamisk. Den indledende mængde delopgaver kan tilpasses det øjeblikkelige antal ressourcer. Herefter opdeles en eller flere af disse i mindre delopgaver, så snart der er ledige ressourcer. På denne måde sikres det at ingen beregningskraft står ubrugt hen. 
 Det bedste valg af job til genopdeling vil være det jo der kræver mest beregningstid, da dette vil resultere i den mindst mulige spredning i beregningsstørrelse for de alle opgaver efter opdelingen. På figur \ref{tabel:boardtimes} ser vi eksempler for beregningstiden for hver delopgave. Det er tydeligt at de følger et mønster, og at vi kan bestemme et indbyrdes størrelsesforhold mellem hhv. alle hjørne- og midtebræt. Dette giver os en god idé om hvilken delopgave det bedst kan betale sig at splitte op. Tilgengæld har vi ikke mulighed for at vide, om beregningen af denne opgave allerede er ved at være færdig. 
+
+Løsningen kører en separat tråd der checkpointing
 
 \section{Parallelisering af Takaken's nqueen I Java}
 
