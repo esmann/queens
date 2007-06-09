@@ -53,6 +53,9 @@ Den parallelle udgave af koden er i dette tilfælde her kørt med
 Den næste graf er den rekursive udgave af den parallele kode kørt med forskellig
 \texttt{maxSteps}. 
 
+I tabel \ref{tabel:noboards} kan det ses hvor mange boards der bliver genereret
+for forskellige $n$ og $maxSteps$. 
+
 \begin{figure}[h]
 \begin{center}
 \includegraphics{../benchmarks/b2.pdf}
@@ -72,27 +75,25 @@ Dette skyldes \fixme{ja.. hvad skyldes det.. }
 \fixme{hvor mange jobs bliver der lavet for de forskellige maxsteps, indsæt
 tabel?}
 \begin{table}
-\begin{center}
-\begin{tabular}{|c|c|c|c|c|c|}
-\hline N & maxSteps & boards & n & maxSteps & boards \\
-\hline 15 & 0 & 18 & 17 & 0 & 21\\
-\hline 15 & 1 & 173 & 17 & 1 & 243\\
-\hline 15 & 2 & 1310 & 17 & 2 & 2282 \\ 
-\hline 15 & 3 & 8349 & 17 & 3 & 18161\\
-\hline 15 & 4 & 43961 & 18 & 0 & 23   \\
-\hline 16 & 0 & 20 &    18 & 1 & 289  \\
-\hline 16 & 1 & 212 &   18 & 2 & 2983 \\
-\hline 16 & 2 & 1797 &  18 & 3 & 26204\\
-\hline 16 & 3 & 12840 & & &\\
-\hline 16 & 4 & 76224 & & & \\
-\hline
-\end{tabular}
-\caption{Antal Boards der bliver genereret}
-\label{table:noboards}
-\end{center}
+	\begin{center}
+		\begin{tabular}{|c|c|c|c|c|c|}
+			\hline N  & maxSteps  & boards & n  & maxSteps & boards \\
+			\hline 15 & 0         & 18     & 17 & 0        & 21     \\
+			\hline 15 & 1         & 173    & 17 & 1        & 243    \\
+			\hline 15 & 2         & 1310   & 17 & 2        & 2282   \\ 
+			\hline 15 & 3         & 8349   & 17 & 3        & 18161  \\
+			\hline 15 & 4         & 43961  & 18 & 0        & 23     \\
+			\hline 16 & 0         & 20     & 18 & 1        & 289    \\
+			\hline 16 & 1         & 212    & 18 & 2        & 2983   \\
+			\hline 16 & 2         & 1797   & 18 & 3        & 26204  \\
+			\hline 16 & 3         & 12840  &    &          &        \\
+			\hline 16 & 4         & 76224  &    &          &        \\
+			\hline
+		\end{tabular}
+		\caption{Antal Boards der bliver genereret}
+		\label{tabel:noboards}
+	\end{center}
 \end{table}
-
-
 
 Alle tests er i første omgang kørt 5 gange, dette blev gjort for at se om
 køretiden svingede meget, da dette ikke lader til at være tilfældet vil resten
@@ -143,7 +144,7 @@ det ses af søjle 18. Den rekursive kode kører en smule langsommere med
 \item[15], Parallel java port, \texttt{maxSteps}=0, iterativ, bigint, MiG
 \item[16], Parallel java port, \texttt{maxSteps}=1, rekursiv, bigint, MiG
 \item[17], Parallel java port, \texttt{maxSteps}=1, iterativ, bigint, MiG
-\item[18], Parallel java port, \texttt{maxSteps}=1, iterativ, bigint, rev9x 
+\item[18], Parallel java port, \texttt{maxSteps}=1, iterativ, bigint, rev107 
 \fixme{indsaet sidste tests her og opdatere graph}
 \end{itemize}
 
@@ -164,3 +165,53 @@ antallet af kald for den parallele og iterative kode også det samme som
 for c koden. Med $maxSteps>0$ får vi færre kald til backtrack, hvilket skyldes
 at en del af disse kald bliver lavet i forbindelse med oprettelsen af de ekstra
 boards. 
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline N  & kodebase 		  & middleboard & cornerboard & N  & kodebase      & middleboard & cornerboard \\
+\hline 15 & C kode   			&             &             & 17 & C kode        &             &             \\
+\hline 15 & Java          &             &             & 17 & Java          &             &             \\
+\hline 15 & Java rek. &             &             & 17 & Java rek. &             &             \\
+\hline 15 & Java ite. &             &             & 17 & Java ite. &             &             \\
+\hline 16 & C kode   			&             &             & 18 & C kode        &             &             \\
+\hline 16 & Java          &             &             & 18 & Java          &             &             \\
+\hline 16 & Java rek. &             &             & 18 & Java rek. &             &             \\
+\hline 16 & Java ite. &             &             & 18 & Java ite. &             &             \\
+\hline
+\end{tabular}
+\caption{Kald til backtrack}
+\label{table:backtrackkald}
+\end{center}
+\end{table}
+\fixme{indsæt tal (*07-01*)}
+
+\subsection{Jobstørrelse}
+
+Med jobstørrelse refererer vi til hvor lang tid det tager at løse et job, og
+ikke størrelsen på data. 
+Som det ses i \ref{tabel:jobsize}, varierer jobstørrelsen
+meget. Cornerboards er generelt ret små, mens middleboards er generelt er en del
+større. Det ses også i tabellen at jobstørrelsen afhænger af de bounds der er i
+henholdsvist MiddleBoard og CornerBoard. Hvis man øger $maxSteps$ og dermed får
+lavet flere jobs, ses det at de enkelte jobs bliver delt op i nogenlunde lige
+støre dele, den relative størrelse mellem det mindste og største jobs er dog
+stadig nogenlunde det samme. \fixme{lav en benchmark/beregning der viser dette?}
+
+\subsection{Generering af jobs}
+
+Generering og indsendelse af jobs afhænger tildels af den internetforbindelse
+man sidder på, da indsendelse jo går via internettet. De forskellige jobs vi har
+submitted til MiGrid har genereringen og indsendelse af jobs svinget fra xx til
+xx (se tabel \ref{tabel:jobgenerering}) \fixme{lav den fscking tabel og skriv de
+rigtige tal ind}. Langt den største del af tiden går også med at sende jobsne,
+da genereringen af jobs for større mængder jobs tager ca 0.01ms/job
+\begin{verbatim}
+18: 4, 6, 44, 280
+18: 23, 289, 2983, 26204
+18: 0.17, 0.02, 0.01, 0.01
+17: 4, 6, 23, 206, 1252
+17: 21, 243, 2282, 18161, 121116
+17: 0.19, 0.02, 0.01, 0.01, 0.01
+\end{verbatim}
+\fixme{lav det om til en tabel.. der}
