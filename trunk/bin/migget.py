@@ -183,17 +183,18 @@ src_list = sys.argv[1:-1]
 expanded_list = []
 for pattern in src_list:
     status, err, src_list = expand_name("path=" + pattern, server_flags, "true")
+    print src_list
     if err or status <> "0":
 
         # output warning/error message(s) from expand
         print sys.argv[0] + ": " + ' '.join(src_list)
 
         continue
-    expanded_list += src_list
-
+    expanded_list += [src.split('\t') for src in src_list]
+print expanded_list
 # Expand does not automatically split the outputlines, so they are still on
 # the src	dest form
-for line in expanded_list:
-    src, dest = line.split('	')
+for src, dest in expanded_list:
+    #src, dest = line.split('	')
     dst = target + os.sep + dest
     get_file(src, dst)
