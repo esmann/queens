@@ -219,13 +219,7 @@ En java-applet afvikles i et lukket miljø,
 
 
 \fixme{det er her checkpointing-mekanismen i \oc\ skal beskrives}
-
-\section{Paralellisering af Takaken's nqueen I Java}
-
-\subsection{Generelle implementeringsovervejelser}
-\subsubsection{Opdeling af opgaver}
-
-\subsubsection{Joboprettelse}
+\section{Problemstørrelse og jobschedulering}
 \fixme{Hvorfor vil vi }
 Et centralt emne ved paralellsering af algoritmer er partitionering af de data der beregnes på. Den ideelle opdeling definerer vi som en opdeling der sikrer at følgende gælder:
 \begin{enumerate}
@@ -266,6 +260,12 @@ Et NQueen-job består af en .mRSL-fil og en
 \begin{itemize}
 \item{Vi er nødt til at tage højde for at løsningen (antallet af løsinger) vil overstige hvad vi kan repræsentere som en 32bit værdi. }
 \end{itemize}
+
+\section{Paralellisering af Takaken's nqueen I Java}
+
+\subsection{Generelle implementeringsovervejelser}
+\subsubsection{Opdeling af opgaver}
+
 
 \subsubsection{Skemalægning af job}
 I \mig skemalægges afviklingen af job som en FIFO-kø. Dvs. at job afvikles i samme rækkefølge som de submittes til gridet. Ved udløb af tidsfristen for afvikling af jobbet placeres jobbet bagerst i køen. I forbindelse med 
