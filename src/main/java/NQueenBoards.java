@@ -1,14 +1,15 @@
 import java.util.LinkedList;
 import java.util.Queue;
+import java.math.BigInteger;
 
 public class NQueenBoards {
 	static Queue<Board2> boards = new LinkedList<Board2>();
 
 	private static int size;
 
-	private static int total;
+	private static BigInteger total = BigInteger.ZERO;
 
-	private static int unique;
+	private static BigInteger unique = BigInteger.ZERO;
 
 	private static int steps;
 
@@ -20,7 +21,7 @@ public class NQueenBoards {
 	/**
 	 * 
 	 */
-	static final long serialVersionUID = 71874518354897178L;
+	static final long serialVersionUID = -8001740274315680201L;
 
 	/**
 	 * @param args
@@ -37,7 +38,7 @@ public class NQueenBoards {
 		// size = Integer.parseInt(args[0]);
 		// maxSteps = Integer.parseInt(args[1]);
 
-		size = 17;
+		size = 8;
 		maxSteps = 1;
 		isRecursive = false;
 		
@@ -71,20 +72,27 @@ public class NQueenBoards {
 		for (steps = 0; steps < maxSteps; steps++) {
 			iterateOnetime();
 		}
-		
-		/*if(args[3] != ""){
-			MiGClient client = new MiGClient();
-			client.submitAndExtract(boards, "boards/", "test.zip", 0);
-		}*/
+			
+			//MiGClient client = new MiGClient();
+			//client.submitAndExtract(boards, "boards/", "test.zip", maxSteps, args[2]);
 		boardtime = System.currentTimeMillis();
 		//boardtime er den tid det tager at generere, pakke og uploade boards.
 		boardtime = boardtime - starttime;
 		//System.out.println("boardtime: " + boardtime);
 		for (Board2 board : boards) {
+			
 			board.setRecursive(isRecursive);
+			if(board.getType()=="cornerboard")
+				System.out.print("cornerboard: (" + board.getBound1() + "): ");
+			if(board.getType() == "middleboard")
+				System.out.print("middleboard: (" + board.getBound1() + ", " + board.getBound2() + ", " + board.getLastMask() + ", " + board.getEndBit() + "): ");
+
+			long jobtime = System.currentTimeMillis();	
 			board.backtrack();
-			total += board.getTotal();
-			unique += board.getUnique();
+			jobtime = System.currentTimeMillis() - jobtime;
+			System.out.println(jobtime);
+			total = total.add(board.getTotal());
+			unique = unique.add(board.getUnique());
 			// dout("-----");
 		}
 		endtime = System.currentTimeMillis();
@@ -93,7 +101,8 @@ public class NQueenBoards {
 		/*System.out.println("time: " + (endtime-starttime));
 		System.out.println("total: " + total);
 		System.out.println("Unique: " + unique);*/
-		System.out.println("backtrack iterations, corner - middle " + CornerBoard.getBacktrackCount() + " - " + MiddleBoard.getBacktrackCount());
+	//	System.out.println("backtrack iterations, corner - middle " + CornerBoard.getBacktrackCount() + " - " + MiddleBoard.getBacktrackCount());
+		//System.out.println("number of boards (" + maxSteps + ": " + boards.size());
 
 		/*
 		 * for (CornerBoard cb : boards) { System.out.println("------");

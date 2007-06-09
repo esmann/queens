@@ -2,6 +2,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.math.BigInteger;
 
 public abstract class Board2 implements Cloneable, Serializable {
 	
@@ -23,7 +24,11 @@ public abstract class Board2 implements Cloneable, Serializable {
 	private boolean recursive = false;
 
 	protected int MASK;
-
+	abstract int getBound1();
+	abstract int getBound2();
+	abstract String getType();
+	abstract String getLastMask();
+	abstract String getEndBit();
 	public static void dout(String s) {
 		// System.out.println(s);
 	}
@@ -64,6 +69,7 @@ public abstract class Board2 implements Cloneable, Serializable {
 			int rightDiagonal);
 
 	abstract void backtrackIterative();
+	abstract void countBacktrack();
 
 	public void backtrack() {
 
@@ -88,12 +94,12 @@ public abstract class Board2 implements Cloneable, Serializable {
 			backtrackIterative();
 		}
 		
-		System.out.println("Total Backtracking took(ms) :" + this.time);
+		//System.out.println("Total Backtracking took(ms) :" + this.time);
 	}
 
-	abstract int getUnique();
+	abstract BigInteger getUnique();
 
-	abstract int getTotal();
+	abstract BigInteger getTotal();
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
@@ -195,6 +201,7 @@ public abstract class Board2 implements Cloneable, Serializable {
 				// pattern
 				Board2 bnew = (Board2) this.clone();
 				bnew.setAndIncLine(selection);
+				//bnew.countBacktrack();
 				/*
 				 * if (bnew.isCompleteBoard()) { bnew.isSolution(); // FIXME we
 				 * should count solutions continue; }

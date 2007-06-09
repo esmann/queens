@@ -1,5 +1,6 @@
 import java.util.Collection;
 import java.util.LinkedList;
+import java.math.BigInteger;
 
 public class CornerBoard extends Board2 {
 
@@ -9,10 +10,13 @@ public class CornerBoard extends Board2 {
 	 */
 	private int bound1 = 2;
 
+	public int getBound2(){
+		return 0;
+	}
 	/**
 	 * Counts unique solutions that have 8 symetric solutions
 	 */
-	private int count8 = 0;
+	private BigInteger count8 = BigInteger.ZERO;
 
 	private static int backtrackcount= 0;
 	/**
@@ -26,7 +30,20 @@ public class CornerBoard extends Board2 {
 		setFirstLine(1);
 
 	}
-
+	public int getBound1(){
+		return bound1;
+	}
+	
+	public String getType(){
+		return "cornerboard";
+	}
+	
+	public String getLastMask(){
+		return "";
+	}
+	public String getEndBit(){
+		return "";
+	}
 	public Collection<Board2> init() {
 		Collection<Board2> boards = new LinkedList<Board2>();
 		CornerBoard bnew;
@@ -102,7 +119,7 @@ public class CornerBoard extends Board2 {
 
 			if (currentBoardLine == sizee) {
 				if (bitmap != 0) {
-					this.count8++;
+					this.count8 = this.count8.add(BigInteger.ONE);
 					//dout("Solution " + currentBoardLine);
 					bitmap = 0; // We take the only solution that exists
 				}
@@ -149,7 +166,7 @@ public class CornerBoard extends Board2 {
 		complete = true; 
 	}
 	
-	public static void countBacktrack() {
+	public void countBacktrack() {
 		backtrackcount += 1;
 	}
 	
@@ -160,7 +177,7 @@ public class CornerBoard extends Board2 {
 	public final void backtrackRecursive(final int y, final int left,
 			final int down, final int right) {
         countBacktrack();
-		//dout("BTCORNER y: " + y);
+        //dout("BTCORNER y: " + y);
 
 		/*
 		 * System.out.println("size: " + size); System.out.println("bound1: " +
@@ -178,7 +195,7 @@ public class CornerBoard extends Board2 {
 				// System.out.println("b1: " + y + ", " + left + ", " + down +
 				// ", " + right);
 //				System.out.println("SOLUTION!\n");
-				this.count8++;
+				this.count8 = this.count8.add(BigInteger.ONE);
 			}
 		} else {
 			if (y < bound1) {
@@ -197,12 +214,12 @@ public class CornerBoard extends Board2 {
 	}
 
 	@Override
-	int getTotal() {
-		return count8 * 8;
+	BigInteger getTotal() {
+		return count8.multiply(new BigInteger("8"));
 	}
 
 	@Override
-	int getUnique() {
+	BigInteger getUnique() {
 		// System.out.println("b1(" + Count8 + ")");
 		return count8;
 	}

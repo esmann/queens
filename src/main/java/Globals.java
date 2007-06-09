@@ -10,6 +10,7 @@ public class Globals
 	public static Board Board = new Board(); 
 	public static int Bound1;
 	public static int Bound2;
+	public static int b1iter, b2iter;
 
 	// Should be changed to BigInteger at some point
 	public static int Count8;

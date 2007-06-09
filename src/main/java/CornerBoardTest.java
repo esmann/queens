@@ -1,5 +1,6 @@
 import static org.junit.Assert.*;
 
+import java.math.BigInteger;
 import java.util.Timer;
 
 import org.junit.Test;
@@ -51,7 +52,7 @@ public class CornerBoardTest {
 		CornerBoard cboard = new CornerBoard(size);
 		cboard.setRecursive(recursive);
 
-		int total = 0;
+		BigInteger total = BigInteger.ZERO;
 		for (Board2 b : cboard.init()) {
 			
 
@@ -60,7 +61,7 @@ public class CornerBoardTest {
 			*/
 			b.backtrack();
 			//t.cancel(); // Doesn't kill currently running task...			
-			total += b.getTotal();
+			total = total.add(b.getTotal());
 	
 		}
 		assertEquals(expectedSolutions, total);
