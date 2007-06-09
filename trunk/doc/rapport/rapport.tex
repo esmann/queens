@@ -162,12 +162,12 @@ Bemærk at roden er række 0. Blade i dybde $N$ angiver mindst én løsning.}
 Dette er beskrevet af \cite{Zongyan02} og implementeret af takaken nqueen.c \ref{ckode}. Udover at repræsentere hver række på et skakbræt med en bitvektor, er idéen at der for hver række vedligeholdes en bitvektor \textbf{bitmap} for de pladser, hvor det er muligt at placere en dronning.  Tilladte pladser begrænses af tidliger placeringer, så der bruges 3 bitvektorer til holde styr på optagede pladser, \textbf{horisontal}, \textbf{venstrediagonal}  og \textbf{højrediagonal}.
 
 Efter hvert valg, hvor den valgte placering sættes i en bitvektor \textbf{bit}, udregnes de nye bitvektore igen med følgende operationer.$\gg og \ll$ angiver et logisk skift, således at der altid indføres et $0$.
-\begin{itemize}
+\begin{description}
 	\item[horisontal] $down \lor bit$ 
 	\item[venstrediagonal] $(venstrediagonal \lor bit) \ll 1$
 	\item[højrediagonal\footnote{Java bruger $>>>$ for logisk højre skift. For venstre er logisk og aritmetisk ækvivalent}] $(højrediagonal \lor bit) \gg 1$
 	\item[bitmap]	$bitmap = \lnot(venstre \lor horisontal \lor højre)$	
-\end{itemize}
+\end{description}
 
 Da træets højde er begrænset af $N$, er det maksimale pladsforbrug $antal\ bits\ per\ bitvektor \times antal\ af\ bitvektorer \times N$. For at håndtere N op til 32, kan vi nøjes med heltal der er repæsenteret af 32 bits til at repræsentere en bitvektor. Pladsforbruget for $N=26$ er så $32\times 26 \times 4 = 3328 bits$. Afhængig af implementation og arkitekturens ordstørrelse kan dette variere.
 
@@ -332,14 +332,14 @@ Som alternativ tilbyder \mig-grid at informere indsendere når dennes job er afs
 \end{verse}
 
 Den udviklede kildekode er organiseret i følgende filer:
-\begin{itemize}
+\begin{description}
 	\item[Board.java] 
 	\item[Board2.java] Basis-klasse for wrapper-klasser til backtrack
 	\item[CornerBoard.java] wrapper-klasse til backtrack for cornerboards
 	\item[MiddleBoard.java] wrapper-klasse til backtrack for middleboard
 	\item[CheckPointer.java] implementerer checkpointing
 	\item[CheckPointAction.java] implementerer checkpointing
-	\item[CornerBoardTest.java] unittests til CornerBoard
+	\item[CornerBoardBoardTest.java] unittests til CornerBoard
 	\item[MiddelBoardTest.java] unittests til MiddleBoard
 	\item[MiGClient.java] java-implementation af en del af \mig-grid-hjælpeprogrammerne
 	\item[MiGJob.java] klasse der beskriver et job og kan generere en .mRSL-fil
@@ -348,7 +348,7 @@ Den udviklede kildekode er organiseret i følgende filer:
 	\item[NQueenJob.java] hovedklassen for et \mig-grid-\oc-job. 
 	\item[NQueens.java] Testfil - Direkte java-port af Takakens c-kode. Kan køres som \oc\ job.
 	\item[NQueensL.java] Testfil - Direkte java-port af Takakens c-kode. Kan køres lokalt.
-\end{itemize}
+\end{description}
 
 Programmet kan afvikles lokalt på en enkelt maskine eller på \mig-grid,  
 
