@@ -45,7 +45,7 @@ public class NQueensL
 	public static void BackTrack1(int y, int left, int down, int right)//{{{
 	{
 		int bitmap, bit;
-		
+		//Globals.b1iter++;		
 		//Mask bliver brugt til at fjerne muligheden for spejlinger (?)
 		//left, down, right er de steder hvor der ikke kan staa noget (ie der staar allerede noget og spaerrer)
 		//bitmap er de mulige pladser vi har til raadighed
@@ -88,6 +88,7 @@ public class NQueensL
 	{
 		int bitmap;
 		int bit;
+		//Globals.b2iter++;		
 
 		bitmap = Globals.Mask & ~(left|down|right);
 		if(y==Globals.SizeE)
@@ -202,5 +203,6 @@ public class NQueensL
 				double time = stoptime-starttime;
 				
 				System.out.println(Globals.Size + ": " + Globals.Total + " " + Globals.Unique + " "  + (time/1000));
+				//System.out.println(Globals.b1iter + ", " + Globals.b2iter);
 	}//}}}
 }

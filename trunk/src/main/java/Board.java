@@ -6,7 +6,6 @@ public class Board
 	public static int BoardE;
 	public static int Board1;
 	public static int Board2;
-
 	public Board() {
 		
 	}

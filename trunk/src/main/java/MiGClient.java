@@ -113,7 +113,7 @@ public class MiGClient {
 	 * all in 1 zip file) (not implemented yet)
 	 */
 	public void submitAndExtract(Queue<Board2> boards, String destination,
-			String filename, int splitsize) {
+			String filename, int maxsteps, String rec) {
 
 		PutMethod httpput = new PutMethod("https://mig-1.imada.sdu.dk/"
 				+ destination + filename);
@@ -131,15 +131,14 @@ public class MiGClient {
 			int count = 0;
 			for (Board2 board : boards) {
 				// add board object to zipfile
-				out.putNextEntry(new ZipEntry("board" + board.size + "-"
+				out.putNextEntry(new ZipEntry("board" + board.size + "-" + maxsteps + "-" + rec + "-"
 						+ count + ".obj"));
 				ObjectOutputStream objout = new ObjectOutputStream(out);
 				objout.writeObject(board);
 				out.closeEntry();
-
 				// create and add mrsl file to zip file
 				MigJob job = new MigJob("NQueenJob boards/board" + board.size
-						+ "-" + count + ".obj", "board" + count + ".mrsl");
+						+ "-" + maxsteps + "-" + rec + "-" + count + ".obj", "board" + count + ".mrsl");
 				out.putNextEntry(new ZipEntry("board" + board.size + "-"
 						+ count + ".mrsl"));
 

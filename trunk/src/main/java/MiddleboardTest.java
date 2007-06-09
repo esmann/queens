@@ -3,7 +3,7 @@ import static org.junit.Assert.*;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
-
+import java.math.BigInteger;
 import org.junit.Test;
 
 public class MiddleboardTest {
@@ -51,10 +51,10 @@ public class MiddleboardTest {
 				board.setRecursive(false);
 				System.out.println("Board nr: " + i++ + " is backtracking:");
 				board.backtrack();
-				total += board.getTotal();
+				/*total += board.getTotal();
 				count2 += ((MiddleBoard) board).getCount2();
 				count4 += ((MiddleBoard) board).getCount4();
-				count8 += ((MiddleBoard) board).getCount8();
+				count8 += ((MiddleBoard) board).getCount8();*/
 			}
 			assertEquals(1515, count8);
 			assertEquals(18, count4);
@@ -79,16 +79,18 @@ public class MiddleboardTest {
 		MiddleBoard mboard = new MiddleBoard(size);
 		mboard.setRecursive(recursive);
 
-		int total = 0, count2 = 0, count4 = 0, count8 = 0;
+		//int total = 0, count2 = 0, count4 = 0, count8 = 0;
+		BigInteger total = BigInteger.ZERO, count2 = BigInteger.ZERO, count4 = BigInteger.ZERO, count8 = BigInteger.ZERO;
 		for (Board2 b : mboard.init()) {
 			b.backtrack();
 			if (!recursive)
 				b.backtrack(); // This way we test resume on a finished board
 			
-			total += b.getTotal();
-			count2 += ((MiddleBoard) b).getCount2();
-			count4 += ((MiddleBoard) b).getCount4();
-			count8 += ((MiddleBoard) b).getCount8();
+			total = total.add(b.getTotal());
+			count2 = count2.add(((MiddleBoard) b).getCount2());
+			count2 = count4.add(((MiddleBoard) b).getCount4());
+			count2 = count8.add(((MiddleBoard) b).getCount8());
+			
 		}
 		assertEquals(expectedCount8, count8);
 		assertEquals(expectedCount4, count4);

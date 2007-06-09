@@ -63,7 +63,7 @@ public class NQueenJob extends Job {
 
 	@Override
 	public void MiG_main(String[] argv) {
-
+		System.out.println("JOB START: " + System.currentTimeMillis());
 		Timer t = new Timer();
 
 		if (argv.length != 1)
@@ -118,7 +118,7 @@ public class NQueenJob extends Job {
 			if (board.useCheckpointing())
 				t.cancel();				
 		}
-
+		System.out.println("JOB SLUT: " + System.currentTimeMillis());
 	}
 
 	/**

@@ -1,6 +1,6 @@
 import java.util.Collection;
 import java.util.LinkedList;
-
+import java.math.BigInteger;
 public class MiddleBoard extends Board2 {
 	/**
 	 * 
@@ -14,7 +14,7 @@ public class MiddleBoard extends Board2 {
 
 	private int bound1, bound2;
 
-	private int count2, count8, count4;
+	private BigInteger count2 = BigInteger.ZERO, count8 = BigInteger.ZERO, count4 = BigInteger.ZERO;
 	
 	public static int backtrackcount = 0;
 
@@ -26,7 +26,12 @@ public class MiddleBoard extends Board2 {
 		LASTMASK = TOPBIT | 1;
 		ENDBIT = TOPBIT >> 1;
 	}
-
+	public String getLastMask(){
+		return java.lang.Integer.toBinaryString(LASTMASK);
+	}
+	public String getEndBit(){
+		return java.lang.Integer.toBinaryString(ENDBIT);
+	}
 	@Override
 	Collection<Board2> init() {
 		Collection<Board2> boards = new LinkedList<Board2>();
@@ -74,7 +79,6 @@ public class MiddleBoard extends Board2 {
 
 	@Override
 	public synchronized final void backtrackIterative() {
-
 		int bit;
 		int bitmap; // used for minimizing array lookups
 
@@ -175,7 +179,7 @@ public class MiddleBoard extends Board2 {
 
 	}
 	
-	public static void countBacktrack() {
+	public void countBacktrack() {
 		backtrackcount += 1;
 	}
 	
@@ -183,6 +187,18 @@ public class MiddleBoard extends Board2 {
 		return backtrackcount;
 	}
 
+	public int getBound1(){
+		return bound1;
+	}
+	
+	public int getBound2(){
+		return bound2;
+	}
+	
+	public String getType(){
+		return "middleboard";
+	}
+	
 	public void backtrackRecursive(int y, int left, int down, int right) {
         countBacktrack();
 		//System.out.println("backtrackMiddle");
@@ -240,7 +256,7 @@ public class MiddleBoard extends Board2 {
 					break;
 			}
 			if (own > sizee) {
-				count2++;
+				count2 = count2.add(BigInteger.ONE);
 				return;
 			}
 		}
@@ -258,7 +274,7 @@ public class MiddleBoard extends Board2 {
 					break;
 			}
 			if (own > sizee) {
-				count4++;
+				count4 = count4.add(BigInteger.ONE);
 				return;
 			}
 		}
@@ -277,31 +293,31 @@ public class MiddleBoard extends Board2 {
 					break;
 			}
 		}
-		count8++;
+		count8 = count8.add(BigInteger.ONE);
 
 	}
 
 	@Override
-	int getTotal() {
-		return this.count2 * 2 + this.count4 * 4 + this.count8 * 8;
+	BigInteger getTotal() {
+		return this.count2.multiply(new BigInteger("2")).add(this.count4.multiply(new BigInteger("4")).add(this.count8.multiply(new BigInteger("8"))));	
 	}
 
-	public int getCount8() {
+	public BigInteger getCount8() {
 		return count8;
 	}
 
-	public int getCount4() {
+	public BigInteger getCount4() {
 		return count4;
 	}
 
-	public int getCount2() {
+	public BigInteger getCount2() {
 		return count2;
 	}
 
 	@Override
-	int getUnique() {
+	BigInteger getUnique() {
 		// System.out.println("b2(" + this.Count2 + ", " + this.Count4 + ", " +
 		// this.Count8 + ")");
-		return this.count2 + this.count4 + this.count8;
+		return this.count2.add(this.count4.add(this.count8));
 	}
 }
