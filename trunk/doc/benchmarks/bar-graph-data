@@ -1,19 +1,18 @@
-1 c-kode 311.68
-2 java-18-port 374.682
-3 java-18-0-true-int 403.625
-4 java-18-1-true-int 406.065
-5 java-18-2-true-int 400.11
-6 java-18-3-true-int 402.1
-7 java-18-1-false-int 700.887
-8 java-18-1-true-bigint 414.238
-9 java-18-1-false-bigint 4817.64
-10 java-18-0-true-int-mig 388.346
-11 java-18-0-false-int-mig 585.820
-12 java-18-1-true-int-mig 447.968
-13 java-18-1-false-int-mig 609.134
-14 java-18-0-true-bigint-mig 378.138
-15 java-18-0-false-bigint-mig 5624.459
-16 java-18-1-true-bigint-mig 447.512
-17 java-18-1-false-bigint-mig 5581.597
-18 java-18-1-false-bigint-rev9x 736.157
-
+1 c-kode 311.68 0
+2 java-18-port 374.682 0
+3 java-18-0-true-int 403.625 0
+4 java-18-1-true-int 406.065 0
+5 java-18-2-true-int 400.11 0
+6 java-18-3-true-int 402.1 0
+7 java-18-1-false-int 700.887 0
+8 java-18-1-true-bigint 414.238 0
+9 java-18-1-false-bigint 4817.64 0
+10 java-18-0-true-int-mig 388.346 0
+11 java-18-0-false-int-mig 585.820 0
+12 java-18-1-true-int-mig 447.968 0
+13 java-18-1-false-int-mig 609.134 0
+14 java-18-0-true-bigint-mig 378.138 0
+15 java-18-0-false-bigint-mig 5624.459 0
+16 java-18-1-true-bigint-mig 447.512 0
+17 java-18-1-false-bigint-mig 5581.597 0
+18 java-18-1-false-bigint-rev9x 736.157 0

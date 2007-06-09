@@ -1,7 +1,5 @@
 //* overhead ved jobskifte
  //- timestamp ved jobstart/jobslut
-* checkpointtid ved at printe ud før/efter
-* kørsel med flere (3) ressourcer
 //* lokale test med n 15-18
 //	- c kode
 //	- java
@@ -13,10 +11,12 @@
 //	- java
 //	- java rekursiv
 //	- java iterativ
-* hvor lang tid bruges på det enkelte job (og hvad er bounds)
+//* hvor lang tid bruges på det enkelte job (og hvad er bounds)
 //* gør maxSteps en forskel
 //* hvor mange jobs laves afhængig af maxSteps .. heap fejl.. men stadig output
+* kørsel med flere (3) ressourcerr
+* checkpointtid ved at printe ud før/efter
 * hvad er tidsforbruget for genereringen
 * vi vil finde overhead på at køre en timertråd og afbryde beregningen, uden reelt
 	at lave noget checkpoint. Test et board, tæl checkpoints og sammenlign med tid
-	uden timertråd
+	uden timertråd (if suspended backtrack -> slutningen af den if.. )
