@@ -36,12 +36,12 @@ udskrivning af debug info til skærmen dog blevet kommenteret ud)
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics{../benchmarks/b1.pdf}
+\includegraphics{../benchmarks/lokal.pdf}
 \caption{insert proper caption here } 
-\label{plot:b1}
+\label{figur:lokal}
 \end{center}
 \end{figure}
-\fixme{caption}
+\fixme{caption, or no caption.. this graph is redundant information}
 
 Som det ses er C udgaven en smule hurtigere end den direkte java port, der igen
 er lidt hurtigere end den paralleliserede udgave af koden, når den kører
@@ -49,28 +49,26 @@ rekursivt. Den iterative udgave er væsentlig langsommere..
 
 Den parallelle udgave af koden er i dette tilfælde her kørt med
 \texttt{maxSteps} på 1. 
-
-Den næste graf er den rekursive udgave af den parallele kode kørt med forskellig
-\texttt{maxSteps}. 
-
-I tabel \ref{tabel:noboards} kan det ses hvor mange boards der bliver genereret
-for forskellige $n$ og $maxSteps$. 
-
 \begin{figure}[h]
 \begin{center}
-\includegraphics{../benchmarks/b2.pdf}
+\includegraphics{../benchmarks/maxsteps.pdf}
 \caption{insert proper caption here } 
-\label{plot:b2}
+\label{figur:maxsteps}
 \end{center}
 \end{figure}
-\fixme{caption}
 
-Som det ses, har det ikke den store indflydelse på performance, der er altså
-ikke det store overhead ved at generere en masse opgaver og løse dem bagefter,
-når det kører lokalt. 
+På figur \ref{figur:maxsteps} er vidst kørsler for $n=18$ for forskellige
+$maxSteps$. 
+Som det ses, har det ikke den store indflydelse på performance hvor stor
+$maxSteps$ er, der er altså ikke det store overhead ved at generere en masse
+opgaver og løse dem bagefter, når det kører lokalt. 
 
 Det skal også nævnes at for $maxSteps>n/2$ vil vores program regne forkert.
 Dette skyldes \fixme{ja.. hvad skyldes det.. }
+
+
+I tabel \ref{tabel:noboards} kan det ses hvor mange boards der bliver genereret
+for forskellige $n$ og $maxSteps$. 
 
 \fixme{hvor mange jobs bliver der lavet for de forskellige maxsteps, indsæt
 tabel?}
@@ -96,8 +94,16 @@ tabel?}
 \end{table}
 
 Alle tests er i første omgang kørt 5 gange, dette blev gjort for at se om
-køretiden svingede meget, da dette ikke lader til at være tilfældet vil resten
-af testene kun blive kørt 1 gang.. 
+køretiden svingede meget, da dette ikke lader til at være tilfældet (se figur
+\ref{figur:b1} vil resten af testene kun blive kørt 1 gang.. 
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics{../benchmarks/b1.pdf}
+\caption{insert proper caption here } 
+\label{figur:b1}
+\end{center}
+\end{figure}
 
 Nu skal vi så se på hvor hurtigt det kører når vi smider det efter MiGrid. 
 Disse tests er kørt med \texttt{maxSteps} 0 og 1.
@@ -109,45 +115,40 @@ i de næste tests er \texttt{int} skiftet ud med \texttt{BigInteger} (revision
 \clearpage
 Sammenligning af alle benchmarks
 
-\begin{figure}[h]
-\begin{center}
-\includegraphics{../benchmarks/b3.pdf}
-\caption{nsert proper caption here } 
-\label{plot:b3}
-\end{center}
-\end{figure}
-\fixme{caption}
-
-Som det ses på figur \ref{plot:b3} kører den iterative udgave af koden fra
-rev. 83 utroligt langsomt i forhold til foregående udgaver. 
-Dette skyldes en en linje kode, der ikke var blevet kommenteret ud. Denne linje
+Som det ses på figur \ref{figur:lokal} kører den iterative udgave af koden fra
+rev. 83 (med bigint) utroligt langsomt i forhold til foregående udgaver.  Dette
+skyldes en en linje kode, der ikke var blevet kommenteret ud. Denne linje
 konkatenerede to strenge. Uden denne linje kører koden væsentlig hurtigere, som
-det ses af søjle 18. Den rekursive kode kører en smule langsommere med
-\texttt{BigInteger} (søjle 4 mod søjle 8), hvor tiden stiger fra 406.xxx til
-414.xxx\fixme{indsaet rigtige tal}, hvilket svarer til en forøgelse på knap 2\%
+det kan ses på den sidste søjle i figur \ref{figur:lokal}
+
+
+Som det kan ses på figur \ref{figur:lokal} kører den rekursive kode en smule
+langsommere med \texttt{BigInteger} end med \texttt{int}, hvor tiden stiger fra
+406.xxx til 414.xxx\fixme{indsaet rigtige tal}, hvilket svarer til en forøgelse
+på knap 2\%
 
 \subsection{overhead ved jobskifte}
 
-I MiG\_main() metoden i NQueenJob laver vi et timestamp i starten og slutningen af metoden. 
-og kan så tage start tiden for et job og trække sluttiden for det foregående job
-fra, og man har så et estimat for hvor lang tid et jobskifte tager, vi har gjort
-dette for 8 jobs, og får så 7 estimater, gennemsnittet af dem bliver 18.455 sek. 
-Op til 15 af disse 18 sekunder, skyldes at oneclick applet'en sover i 15 sekunder. 
-Ved en kørsel med $n=18$ og $maxSteps=1$, hvor vi så får 289 jobs, giver det
-knap 89 minutter. 
+I MiG\_main() metoden i NQueenJob laver vi et timestamp i starten og slutningen
+af metoden.  og kan så tage start tiden for et job og trække sluttiden for det
+foregående job fra, og man har så et estimat for hvor lang tid et jobskifte
+tager, vi har gjort dette for 8 jobs, og får så 7 estimater, gennemsnittet af
+dem bliver 18.455 sek.  Op til 15 af disse 18 sekunder, skyldes at oneclick
+applet'en sover i 15 sekunder.  Ved en kørsel med $n=18$ og $maxSteps=1$, hvor
+vi så får 289 jobs, giver det knap 89 minutter. 
 
 \subsection{kald til backtrack}
-Hvis man ser på antallet af kald til backtrack de forskellige versioner laver, er de
-ens for c koden og den direkte java port, og hvis man kører med $maxSteps=0$ er
-antallet af kald for den parallele og iterative kode også det samme som
-for c koden. Med $maxSteps>0$ får vi færre kald til backtrack, hvilket skyldes
-at en del af disse kald bliver lavet i forbindelse med oprettelsen af de ekstra
-boards. 
+
+Hvis man ser på antallet af kald til backtrack de forskellige versioner laver,
+er de ens for c koden og den direkte java port, og hvis man kører med
+$maxSteps=0$ er antallet af kald for den parallele og iterative kode også det
+samme som for c koden (se tabel \ref{tabel:backtrackkald}. Med $maxSteps>0$ får
+vi færre kald til backtrack, hvilket skyldes at en del af disse kald bliver
+lavet i forbindelse med oprettelsen af de ekstra boards. 
 
 \begin{table}
 \begin{center}
 \begin{tabular}{|c|c|c|c|}
-\hline
 \hline 18 & C kode        &             &             \\
 \hline 18 & Java          &             &             \\
 \hline 18 & Java rek. &             &             \\
