@@ -207,7 +207,7 @@ Da en delopgave specifikt er at bruge og afprøve \oc\ som kører som en java Ap
 TODO: Andre system ting?
 
 \subsection{\oc}\label{applet}
-\oc\ muliggør deltagelse i et \mig-grid uden andre forudsætninger end en webbrowser og java. Tilgengæld er denne metode begrænset til at afvikle programmer, der er tilgængelige som java-bytecode. Brug af \oc\ giver adgang til et enormt (potentielt) antal beregningsressourcer, hvilket er grunden til at benytte \oc\ i denne opgave.
+\oc\ muliggører deltagelse i et \mig-grid uden andre forudsætninger end en webbrowser og java. Tilgengæld er denne metode begrænset til at afvikle programmer, der er tilgængelige som java-bytecode. Brug af \oc\ giver adgang til et enormt (potentielt) antal beregningsressourcer, hvilket er grunden til at benytte \oc\ i denne opgave.
 \oc\ er et framework til udvikling af java-appletter, der kan interagere med \mig\. Ved hjælp af \oc\ kan en hvilken som helst computer gøres til en \mig-ressource, unden nogen for for opsætning eller installation af programmel, hvilket gør det muligt for ganske alm. mennesker at bidrage regnekraft til gridet. Det eneste der kræves er en webbrowser der kan afvikle java-appletter. Implementerer man sit job som en java-applet vil det kunne afvikles på alle \oc-ressourcer, uden at skulle specificere særlige krav til arkitektur med videre. Til gengæld vil det være begrænset til kun at køre på \oc-ressourcer. 
 \oc\ er især interessant i forbindelse med hvad man kunne kalde sociale beregninger, det vil sige beregningsprojekter som almindelige mennesker kunne have interesse i at bidrage til, eller endog konkurrere om at bidrage mest til. Kendte eksempler på sådanne projekter er SETI@home og FOLDING@home. Når måling af tidsforbrug per resource bliver implementeret i \oc\ kunne man også  forestille sig et \mig-grid som en åben markedsplads hvor både virksomheder og privatpersoner kunne købe og sælge regnekraft gennem \mig\ uden at skulle bekymre sig om, eller have mulighed for at vide, hvor beregningerne reelt foretages eller hvad hvad der regnes på. \fixme{for meget blah-blah}
 
@@ -223,14 +223,14 @@ En java-applet afvikles i et lukket miljø, en såkaldt sandkasse, for at beskyt
 \end{itemize}
 
 Af disse er kun de to første af betydning for vores formål. Det bliver naturligvis et krav at alle delproblemer vi sender ud kan beregnes uden at bruge mere end 64MB hukommelse på klienten. Uden jni har vi ikke mulighed for måle på hvor meget reel cputid vores applet har fået tildelt, eller kende resourcens hastighed eller arkitektur. 
-
 \subsubsection{Checkpointing}
-\oc\ indeholder kode til oprettelse af checkpoints under kørslen af et job. 
+\oc\ indeholder kode til oprettelse af checkpoints under kørslen af et job. Et checkpoint er en gemt programtilstand, hvorfra det er muligt at fortsætte afviklingen. \oc\ indeholder desuden mekanismer til genetablering af programtilstanden fra et givent check. Når et \oc-job sendes til en ressource sendes det nyeste checkpoint med, hvis et sådant eksisterer, og \oc\ sørger for at genetablere tilstanden før eksekveringen af jobbet starter. Dette er præcis den funktionalitet vi behøver, for at kunne sikre at vi ikke behøver køre en beregning forfra når en ressource forsvinder.    
 
-\fixme{det er her checkpointing-mekanismen i \oc\ skal beskrives}
+Checkpoint foretages ved at serialisere det kørende job-objekt\footnote{\mig-applettens hoved objekt, der nedarver fra MiGJob-klassen} til en checkpoint-fil i hjemmekataloget på \mig. Det er altså kun objekt-variable der overlever på tværs af et checkpoint. I forhold til den rekursive backtrack-algoritme til NQueens er det værd at bemærke at kald-stakken naturligvis ikke gemmes.
+
 \section{Problemstørrelse og jobschedulering}
 \fixme{Hvorfor vil vi }
-Et centralt emne ved paralellsering af algoritmer er partitionering af de data der beregnes på. Den ideelle opdeling definerer vi som en opdeling der sikrer at følgende gælder:
+Et centralt emne ved parallelisering af algoritmer er partitionering af de data der beregnes på. Den ideelle opdeling definerer vi som en opdeling der sikrer at følgende gælder:
 \begin{enumerate}
 	\item Alle job har samme problemstørrelse - dvs. job tager samme tid at beregne.\label{beregningstid}
 	\item Antallet af jobs er præcis lig antallet af ressourcer.\label{antal}
