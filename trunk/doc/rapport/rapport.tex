@@ -203,7 +203,7 @@ Da træets højde er begrænset af $n$, er det maksimale pladsforbrug $antal\ bi
 
 \subsection{Takakens algoritme}\label{takalgo}
 
-For $Q(n)$ er mange løsninger spejlinger og roteringer af andre - og betragtes som en \textit{unik} løsning. Ved kun at betragte unikke løsninger, kan vi mindske antallet af blade i vores beslutningstræ \ref{fig:tree} til antallet af unikke løsninger, $S(n)$ og dermed mindske beregningstiden. I tabel \fixme{Tabel over Unikke løsninger vs. Totale antal løsninger} ses forskellen på antallet af unikke og totale løsninger. For hver løsning undersøges antallet af spejlinger og rotationer. Check funktion  \ref{nqueen.c} udfører dette.
+For $Q(n)$ er mange løsninger spejlinger og roteringer af andre - og betragtes som en \textit{unik} løsning. Ved kun at betragte unikke $S(n)$ løsninger, kan vi mindske antallet af blade i vores beslutningstræ (se figur \ref{fig:tree}). til antallet af unikke løsninger, $S(n)$ og dermed mindske beregningstiden. I tabel \fixme{Tabel over Unikke løsninger vs. Totale antal løsninger} ses forskellen på antallet af unikke og totale løsninger. For hver løsning undersøges antallet af spejlinger og rotationer. \textbf{check} funktion i takakens implementation \ref{nqueen.c} udfører dette.
 
 Takaken opdeler beregningen i to delproblemer. Et hvor den første dronning placeres i øverste hjørne, og et andet delproblem hvor dronningen i den første række placeres i kolonnen $n/2$ til $2$. 
 
