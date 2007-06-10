@@ -266,34 +266,26 @@ En java-applet afvikles i et lukket miljø, en såkaldt sandkasse, for at beskyt
 
 Af disse er kun de to første af betydning for vores formål. Det bliver naturligvis et krav at alle delproblemer vi sender ud kan beregnes uden at bruge mere end 64MB hukommelse på klienten. Uden jni har vi ikke mulighed for måle på hvor meget reel cputid vores applet har fået tildelt, eller kende ressourcens hastighed eller arkitektur. 
 \subsubsection{Checkpointing}
-\oc\ indeholder kode til oprettelse af checkpoints under kørslen af et job. Et checkpoint er en gemt programtilstand, hvorfra det er muligt at fortsætte afviklingen. \oc\ indeholder desuden mekanismer til genetablering af programtilstanden fra et givent check. Når et \oc-job sendes til en ressource sendes det nyeste checkpoint med, hvis et sådant eksisterer, og \oc\ sørger for at genetablere tilstanden før eksekveringen af jobbet starter. Dette er præcis den funktionalitet vi behøver, for at kunne sikre at vi ikke behøver køre en beregning forfra når en ressource forsvinder.    
-
+\oc\ indeholder kode til oprettelse af checkpoints under kørslen af et job. Et checkpoint er en gemt programtilstand, hvorfra det er muligt at fortsætte afviklingen. \oc\ indeholder desuden mekanismer til genetablering af programtilstanden fra et givent check. Når et \oc-job sendes til en ressource sendes det nyeste checkpoint med, hvis et sådant eksisterer, og \oc\ sørger for at genetablere tilstanden før eksekveringen af jobbet starter. Dette er præcis den funktionalitet vi behøver, for at kunne sikre at vi ikke behøver køre en beregning forfra når en ressource forlader gridet.    
 
 
 
 \section{Problemstørrelse og jobschedulering}
 Et centralt emne ved parallelisering af algoritmer er partitionering af de data der beregnes på. Den ideelle opdeling definerer vi som en opdeling der sikrer at følgende gælder:
 \begin{enumerate}
-	\item Alle job har samme problemstørrelse - dvs. job tager samme tid at beregne.\label{beregningstid}
-	\item Antallet af jobs er præcis lig antallet af ressourcer.\label{antal}
-	\item Repræsentationen af job og resultater har minimal størrelse.\label{jobbeskrivelse}
+	\item[1.] Alle job har samme problemstørrelse - dvs. job tager samme tid at beregne.\label{beregningstid}
+	\item[2.] Antallet af jobs er præcis lig antallet af ressourcer.\label{antal}
+	\item[3.] Repræsentationen af job og resultater har minimal størrelse.\label{jobbeskrivelse}
 \end{enumerate} 
 Og med de yderligere antagelser at
 \begin{enumerate}
-	\item Ressourcer er homogene
-	\item Ressourcer er permanente
+	\item[4.] Ressourcer er homogene
+	\item[5.] Ressourcer er permanente
 \end{enumerate}
+
 I denne ideelle situation opnåes maksimal udnyttelse af tilgængelige ressourcer, og samtidig minimalt overhead i forbindelse med jobskift og dataoverførsel.
 
-I praksis er disse krav meget svære at opfylde. \ref{beregningstid} er for \nq\ ikke det samme som størrelsen af de del-data der regnes på. 
-Som det ses på \ref{fig:todo} at beregningstiden for et delproblem stiger med antallet af løsninger i delproblemet. Vi kan altså ikke ikke ved opdeling af problemet kende de enkelte delproblemers beregningstid. Kunne vi det ville vi allerede kende antallet af løsninger. Istedet kan vi opdele problemet i dele med samme data-størrelse - dvs. samme antal dronninger mangler at blive placeret. 
-
-\fixme{hvad kan vi sige om om beregningstiden for problemer med samme data-størrelse? Øvre grænse for variationen i køretid?} \fixme{indsæt reference til benchmarks, der viser beregningstid for hvert delproblem, og skriv noget om hvad benchmarks viser vi kan regne med ifm. beregningstid} 
-
-Beregningstiden kompliceres yderligere af at delproblemerne skal beregnes på heterogene ressourcer, som vi ikke kan kende hastigheden af før delopgaven er færdigregnet. Heller ikke antallet af tilgængelige ressourcer (\ref{antal}) har vi ingen mulighed for at kende. Ydermere arver vi fra backtrack-algoritmen en opdeling af delproblemer i to typer, nemlig hjørnebræt og midtebræt. På grund af Takakens optimeringer har de to brættyper væsentligt forskellige beregningstider. 
-\fixme{kun på grund af Takakens optimeringer?} 
-
-I praksis gælder altså følgende:
+I praksis er disse antagelser ikke særligt meget om de ressourcer vi får stillet til rådighed. Vi er nødt til at regne 
 \begin{itemize}
 	\item Ressourcer er heterogene - både beregnings- og overførselstid. 
 	\item Ressourcer er flygtige
@@ -301,6 +293,19 @@ I praksis gælder altså følgende:
 	\item Delproblemer er heterogene
 	\
 \end{itemize}
+
+I det nedenstående vil vi undersøge hvordan vi kan nærme os den ideelle situation på trods af disse praktiske problemer. Vi definerer  $T_{oh}(r{i})$ som det samlede overhead, for ressourcen $r_{i}$, under beregning af Q(n) på gridet, dvs. al overførsels- og beregningstid der ikke bruges i selve algoritmen. $T_{idle}(r_{i})$ som den tid en uudnyttet ressource $r_{i}$ kunne have brugt på beregning af selve alogritmen, hvis den havde haft et job at køre. Og $T_{split}(Q(n))$ som den samlede tid for opsplitning af Q(n) i delproblemer, og $m$ antallet af ressourcer. Nu kan vi formulere dette som et ønske om at minimere udtrykket $(\sum_{i=1}^{m}{T_{oh}(r_{i}) + T_{idle}(r_{i})}) + T_{split}(Q(n))$ for alle tider $T$. Læg mærke til at dette udtryk ikke refererer til antallet af opgaver. Men i stedet til antallet af henholdsvis udnyttede og uudnyttede ressourcer.  
+
+\ref{beregningstid} er for \nq\ ikke det samme som størrelsen af de del-data der regnes på. 
+
+Som det ses på \ref{fig:todo} at beregningstiden for et delproblem stiger med antallet af løsninger i delproblemet. Vi kan altså ikke ikke ved opdeling af problemet kende de enkelte delproblemers beregningstid. Kunne vi det ville vi allerede kende antallet af løsninger. Istedet kan vi opdele problemet i dele med samme data-størrelse - dvs. samme antal dronninger mangler at blive placeret. 
+
+\fixme{hvad kan vi sige om om beregningstiden for problemer med samme data-størrelse? Øvre grænse for variationen i køretid?} \fixme{indsæt reference til benchmarks, der viser beregningstid for hvert delproblem, og skriv noget om hvad benchmarks viser vi kan regne med ifm. beregningstid} 
+
+Beregningstiden kompliceres yderligere af at delproblemerne skal beregnes på heterogene ressourcer, som vi ikke kan kende hastigheden af før delopgaven er færdigregnet. Heller ikke antallet af tilgængelige ressourcer (\ref{antal}) har vi ingen mulighed for at kende. Ydermere arver vi fra backtrack-algoritmen en opdeling af delproblemer i to typer, nemlig hjørnebræt og midtebræt. På grund af Takakens optimeringer har de to brættyper væsentligt forskellige beregningstider. 
+\fixme{kun på grund af Takakens optimeringer?} 
+
+
 
 
 
