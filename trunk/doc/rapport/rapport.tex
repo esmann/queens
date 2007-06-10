@@ -1,3 +1,18 @@
+% Glossary
+%
+% checkpoint =
+% overhead = 
+% resource = ressource
+% grid = grid
+% backtrack = 
+% board = bræt 
+% cornerboard = hjørnebræt (ikke ved kodehenvisning) 
+% middleboard = midterbræt (ikke ved kodehenvisning)
+% bitmap = bitmap
+% bound =
+% 
+
+
 \documentclass[pdf,draft,a4paper,10pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[danish]{babel}
@@ -221,7 +236,7 @@ Al den ovennævnte interaktion med \mig\ kan alternativt foregå gennem et særl
 \oc\ er et framework til udvikling af java-appletter, der kan interagere med \mig\. Ved hjælp af \oc\ kan en hvilken som helst computer gøres til en \mig-ressource, unden nogen for for opsætning eller installation af programmel, hvilket gør det muligt for ganske alm. mennesker at bidrage regnekraft til gridet. Det eneste der kræves er en webbrowser der kan afvikle java-appletter. Implementerer man sit job som en java-applet vil det kunne afvikles på alle \oc-ressourcer, uden at skulle specificere særlige krav til arkitektur med videre. Til gengæld vil det være begrænset til kun at køre på \oc-ressourcer. 
 \oc\ er især interessant i forbindelse med hvad man kunne kalde sociale beregninger, det vil sige beregningsprojekter som almindelige mennesker kunne have interesse i at bidrage til, eller endog konkurrere om at bidrage mest til. Kendte eksempler på sådanne projekter er SETI@home og FOLDING@home. Når måling af tidsforbrug per ressource bliver implementeret i \oc\ kunne man også  forestille sig et \mig-grid som en åben markedsplads hvor både virksomheder og privatpersoner kunne købe og sælge regnekraft gennem \mig\ uden at skulle bekymre sig om, eller have mulighed for at vide, hvor beregningerne reelt foretages eller hvad hvad der regnes på. \fixme{for meget blah-blah}
 
-\oc\ indeholder jave-klasser til læsning og skrivning af filer i \mig\-hjemmekataloget, 
+\oc\ indeholder java-klasser til læsning og skrivning af filer i \mig\-hjemmekataloget samt checkpointing af det kørende job. 
 
 Checkpoint foretages ved at serialisere det kørende job-objekt\footnote{\mig-applettens hoved objekt, der nedarver fra MiGJob-klassen} til en checkpoint-fil i hjemmekataloget på \mig. Det er altså kun objekt-variable der overlever på tværs af et checkpoint. I forhold til den rekursive backtrack-algoritme til \nq\ er det værd at bemærke at kald-stakken naturligvis ikke gemmes.
 
