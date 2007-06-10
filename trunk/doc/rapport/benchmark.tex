@@ -37,11 +37,10 @@ udskrivning af debug info til skærmen dog blevet kommenteret ud)
 \begin{figure}[h]
 \begin{center}
 \includegraphics{../benchmarks/lokal.pdf}
-\caption{insert proper caption here } 
+\caption{Sammenligning af de lokale test} 
 \label{figur:lokal}
 \end{center}
 \end{figure}
-\fixme{caption, or no caption.. this graph is redundant information}
 
 Som det ses er C udgaven en smule hurtigere end den direkte java port, der igen
 er lidt hurtigere end den paralleliserede udgave af koden, når den kører
@@ -111,7 +110,7 @@ tabel?}
 \begin{figure}[h]
 \begin{center}
 \includegraphics{../benchmarks/unikkevstotale.pdf}
-\caption{insert proper caption here } 
+\caption{Unikke og totale antal løßninger} 
 \label{figur:unikkevstotale}
 \end{center}
 \end{figure}
@@ -156,18 +155,18 @@ lavet i forbindelse med oprettelsen af de ekstra boards.
 
 \begin{table}
 \begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline 18 & C kode        &             &             \\
-\hline 18 & Java          &             &             \\
-\hline 18 & Java rek. &             &             \\
-\hline 18 & Java ite. &             &             \\
+\begin{tabular}{|c|c|c|}
+\hline kodebase  & hjørnebrædt & midtebrædt \\
+\hline C kode    &  748267           &  5293206           \\
+\hline Java      &  748267           &  5293206           \\
+\hline Java rek. &  748267           &  5293206           \\
+\hline Java ite. &  748267           &  5293206           \\
 \hline
 \end{tabular}
-\caption{Kald til backtrack}
+\caption{Kald til backtrack for $n=14$}
 \label{table:backtrackkald}
 \end{center}
 \end{table}
-\fixme{indsæt tal (*07-01*)}
 
 \subsection{Jobstørrelse}
 
@@ -189,14 +188,25 @@ submitted til MiGrid har genereringen og indsendelse af jobs svinget fra xx til
 xx (se tabel \ref{tabel:jobgenerering}) \fixme{lav den fscking tabel og skriv de
 rigtige tal ind}. Langt den største del af tiden går også med at sende jobsne,
 da genereringen af jobs for større mængder jobs tager ca 0.01ms/job
-\begin{verbatim}
-18: 4, 6, 44, 280
-18: 23, 289, 2983, 26204
-18: 0.17, 0.02, 0.01, 0.01
-17: 4, 6, 23, 206, 1252
-17: 21, 243, 2282, 18161, 121116
-17: 0.19, 0.02, 0.01, 0.01, 0.01
-\end{verbatim}
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline N & maxSteps & tid (ms) & brædt & tid (ms) /brædt \\
+\hline 17 & 0 & 4 & 21 & 0.19 \\
+\hline 17 & 1 & 6 & 243 & 0.02 \\
+\hline 17 & 2 & 23 & 2282 & 0.01 \\
+\hline 17 & 3 & 206 & 18161 & 0.01 \\
+\hline 17 & 4 & 1252 & 121116 & 0.01 \\
+\hline 18 & 0 & 4 & 23 & 0.17 \\
+\hline 18 & 1 & 6 & 239 & 0.02 \\
+\hline 18 & 2 & 44 & 2983 & 0.01 \\
+\hline 18 & 3 & 280 & 26204 & 0.01 \\
+\hline
+\end{tabular}
+\caption{Tid for generering af brædt}
+\label{table:boardgenering}
+\end{center}
+\end{table}
 \fixme{lav det om til en tabel.. der}
 
 \subsection{Kørsel på \mig}
