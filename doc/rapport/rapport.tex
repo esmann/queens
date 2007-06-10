@@ -259,30 +259,27 @@ Et job sættes igang ved at køre kommandoen \emph{migsubmit} med en såkaldt mR
 \oc\ muliggører deltagelse i et \mig-grid uden andre forudsætninger end en webbrowser og java. Tilgengæld er denne metode begrænset til at afvikle programmer, der er tilgængelige som java-bytecode. Brug af \oc\ giver adgang til et enormt (potentielt) antal beregningsressourcer, hvilket er grunden til at benytte \oc\ i denne opgave.
 
 \oc\ er en java-applet der muliggør afvikling af java-bytekode\footnote{Der nedarver fra MigJob} der kan interagere med \mig\. Ved hjælp af \oc\ kan en hvilken som helst computer gøres til en \mig-ressource, unden nogen for for opsætning eller installation af programmel, hvilket gør det muligt for ganske alm. mennesker at bidrage regnekraft til gridet. Det eneste der kræves er en webbrowser der kan afvikle java-appletter. Implementerer man sit job som en \oc-applet vil det kunne afvikles på alle \oc-ressourcer, uden at skulle specificere særlige krav til arkitektur med videre. Til gengæld vil det være begrænset til kun at køre på \oc-ressourcer. 
-\oc\ er især interessant i forbindelse med hvad man kunne kalde sociale beregninger, det vil sige beregningsprojekter som almindelige mennesker kunne have interesse i at bidrage til, eller endog konkurrere om at bidrage mest til. Kendte eksempler på sådanne projekter er SETI@home og FOLDING@home. Når måling af tidsforbrug per ressource bliver implementeret i \oc\ kunne man også  forestille sig et \mig-grid som en åben markedsplads hvor både virksomheder og privatpersoner kunne købe og sælge regnekraft gennem \mig\ uden at skulle bekymre sig om, eller have mulighed for at vide, hvor beregningerne reelt foretages eller hvad hvad der regnes på. \fixme{for meget blah-blah}
+\oc\ er især interessant i forbindelse med hvad man kunne kalde sociale beregninger, det vil sige beregningsprojekter som almindelige mennesker kunne have interesse i at bidrage til, eller endog konkurrere om at bidrage mest til. Kendte eksempler på sådanne projekter er SETI@home og FOLDING@home, begge udviklet med gridsystemet BOINC\cite{boinc}.
 
 \oc\ indeholder java-klasser til læsning og skrivning af filer i \mig\-hjemmekataloget samt checkpointing af det kørende job. 
 
-Checkpoint foretages ved at serialisere det kørende job-objekt\footnote{\mig-applettens hoved objekt, der nedarver fra MiGJob-klassen} til en checkpoint-fil i hjemmekataloget på \mig. Det er altså kun objekt-variable der overlever på tværs af et checkpoint. I forhold til den rekursive backtrack-algoritme til \nq\ er det værd at bemærke at kald-stakken naturligvis ikke gemmes.
+\subsubsection{Checkpointing}
+\oc\ indeholder kode til oprettelse af checkpoints under kørslen af et job. Et checkpoint er en gemt programtilstand, hvorfra det er muligt at fortsætte afviklingen. \oc\ indeholder desuden mekanismer til genetablering af programtilstanden fra et givent check. Når et \oc-job sendes til en ressource sendes det nyeste checkpoint med, hvis et sådant eksisterer, og \oc\ sørger for at genetablere tilstanden før eksekveringen af jobbet starter. Dette er præcis den funktionalitet vi behøver, for at kunne sikre at vi ikke behøver køre en beregning forfra når en ressource forlader gridet.
+Checkpoint foretages ved at serialisere det kørende job-objekt\footnote{\mig-applettens hoved objekt, der nedarver fra MiGJob-klassen} til en checkpoint-fil i hjemmekataloget på \mig. Det er altså kun objekt-grafen, med rod i MigJob-objektet, der overlever på tværs af et checkpoint. Hverken kald-stak eller programtæller gemmes på tværs af checkpoint.
 
 \subsubsection{\oc-specifikke begrænsninger}
 
 I forbindelse med udvikling og afprøvning af en \oc-applet skal man være opmærksom på at Class-filer caches af browserens java-plugin. Ændringer i implementeringen kan medføre fejl under afviklingen på ressourcer der bruger forældede class-filer, selvom \mig opfatter jobbet som udført uden fejl. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver opdatering af denne cache. Man kan altså riskikere at appletten får en undtagelse på serialVersionUID og derved markeres jobbet som færdigt, uden at være kommet til et resultat. En uhensigtsmæssighed i forbindelse med undtagelseshåndtering i basisklassen MigJob.java gør at jobbet alligevel vil se ud til at være afsluttet succesfuldt. Se afsnit \cite{bugs}. 
 
-En java-applet afvikles i et lukket miljø, en såkaldt sandkasse, for at beskytte den maskine der afvikler appletten. n række begrænsinger vi bliver nødt til at forholde os til
+En java-applet afvikles i et lukket miljø, en såkaldt sandkasse, for at beskytte den maskine der afvikler appletten. Der er en række begrænsinger vi bliver nødt til at forholde os til
 \begin{itemize}
 	\item Appletten kan maksimalt allokere 64MB hukommelse.
 	\item Java's JNI (Java Native Interfaces) kan ikke benyttes fra appletter. 
 	\item Ingen adgang til at læse/skrive lokale filer.
 	\item Appletten er begrænset til kun at kunne oprette netværksforbindelser til den ip-adresse den er hentet fra.
-	\item Ingen mulighed for at starte programmer på klient-maskinen.
-	\item \oc\ Kode/Mininum intrusion.
 \end{itemize}
 
-Af disse er kun de to første af betydning for vores formål. Det bliver naturligvis et krav at alle delproblemer vi sender ud kan beregnes uden at bruge mere end 64MB hukommelse på klienten. Uden jni har vi ikke mulighed for måle på hvor meget reel cputid vores applet har fået tildelt, eller kende ressourcens hastighed eller arkitektur. 
-\subsubsection{Checkpointing}
-\oc\ indeholder kode til oprettelse af checkpoints under kørslen af et job. Et checkpoint er en gemt programtilstand, hvorfra det er muligt at fortsætte afviklingen. \oc\ indeholder desuden mekanismer til genetablering af programtilstanden fra et givent check. Når et \oc-job sendes til en ressource sendes det nyeste checkpoint med, hvis et sådant eksisterer, og \oc\ sørger for at genetablere tilstanden før eksekveringen af jobbet starter. Dette er præcis den funktionalitet vi behøver, for at kunne sikre at vi ikke behøver køre en beregning forfra når en ressource forlader gridet.    
-
+Det bliver naturligvis et krav at alle delproblemer vi sender ud kan beregnes uden at bruge mere end 64MB hukommelse på klienten. Uden JNI har vi ikke mulighed for måle på hvor meget reel cputid vores applet har fået tildelt, eller kende ressourcens hastighed eller arkitektur.   
 
 
 \section{Problemstørrelse og jobschedulering}
@@ -317,14 +314,8 @@ Som det ses på \ref{fig:todo} at beregningstiden for et delproblem stiger med a
 
 \fixme{hvad kan vi sige om om beregningstiden for problemer med samme data-størrelse? Øvre grænse for variationen i køretid?} \fixme{indsæt reference til benchmarks, der viser beregningstid for hvert delproblem, og skriv noget om hvad benchmarks viser vi kan regne med ifm. beregningstid} 
 
-Beregningstiden kompliceres yderligere af at delproblemerne skal beregnes på heterogene ressourcer, som vi ikke kan kende hastigheden af før delopgaven er færdigregnet. Heller ikke antallet af tilgængelige ressourcer (\ref{antal}) har vi ingen mulighed for at kende. Ydermere arver vi fra backtrack-algoritmen en opdeling af delproblemer i to typer, nemlig hjørnebræt og midtebræt. På grund af Takakens optimeringer har de to brættyper væsentligt forskellige beregningstider. 
-\fixme{kun på grund af Takakens optimeringer?} 
+Beregningstiden kompliceres yderligere af at delproblemerne skal beregnes på heterogene ressourcer, som vi ikke kan kende hastigheden af før delopgaven er færdigregnet. Heller ikke antallet af tilgængelige ressourcer (\ref{antal}) har vi ingen mulighed for at kende. Ydermere resulterer Takakens algoritme, som genemgået i \ref{takalgo}, i en opdeling i delproblemer med væsentligt forskellige beregningstider.
 
-
-
-
-
-Vi kan sørge for at generere 
 
 \fixme{beskriv vores løsning indgående}
 
@@ -335,10 +326,8 @@ Idet både ressourcer og delproblemer er heterogene kan vi behandle dem som et s
 
 \fixme{Vi laver bræt med samme antal forudplacerede dronninger, og lader ønsket til antallet af bræt diktere antal forudplacerede dronninger - hvilke andre metoder kunne man benytte?}
 
-Et N-dronning-job består af en .mRSL-fil og en  
 \fixme{hvordan opretter vi job, hvad består et job af(serialize, mrsl)}
 
-\fixme{Vi er nødt til at tage højde for at løsningen (antallet af løsinger) vil overstige hvad vi kan repræsentere som en 32bit værdi.}
 
 Denne løsning kan bedst karakteriseres som såkaldt \emph{statisk orkestration}. Opdelingen i delproblemer er endeligt foretaget inden beregningen af delproblemer begynder. Som beskrevet er der et grundlæggende problem ved en statisk opdeling, nemlig at beregningen ikke kan tilpasse sig til en forøgelse af mængden af ressourcer. Istedet bliver man nødt til fra starten at generere nok opgaver til at kunne udnytte en eventuel ressourcetilgang. Samme problem opstår, på grund af heterogene ressourcer og opgaver, når antallet af delopgaver falder henimod slutningen af udregningen. 
 
