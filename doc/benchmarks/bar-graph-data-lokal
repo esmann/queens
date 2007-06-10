@@ -1,7 +1,6 @@
-1 c-kode 311.68 0
-2 java-18-port 374.682 0
-3 java-18-1-true-int 406.065 0
-4 java-18-1-false-int 700.887 0
-5 java-18-1-true-bigint 414.238 0
-6 java-18-1-false-bigint 4817.64 0
-7 java-18-1-false-bigint-rev9x 736.157 0
+1 c-kode 311.68 0 1.20
+2 java-18-port 374.682 0 1.00
+3 java-18-1-true-int 406.065 0 0.92
+4 java-18-1-false-int 700.887 0 0.53
+5 java-18-1-true-bigint 414.238 0 0.90
+6 java-18-1-false-bigint-rev9x 736.157 0 0.736
