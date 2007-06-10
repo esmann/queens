@@ -94,15 +94,15 @@ tabel?}
 
 \begin{table}
 	\begin{center}
-		\begin{tabular}{|c|c|c|}
-			\hline N & unikke & totale \\
-			\hline 15 & 285053 & 2279184 \\
-			\hline 16 & 1846955 & 14772512 \\
-			\hline 17 & 11977939 & 95815104  \\
-			\hline 18 & 83263591 & 666090624 \\
+		\begin{tabular}{|c|c|c|c|}
+			\hline N & unikke & totale & totale/unikke \\
+			\hline 15 & 285053 & 2279184 & 7.99565 \\
+			\hline 16 & 1846955 & 14772512 & 7.99831 \\
+			\hline 17 & 11977939 & 95815104  & 7.9993 \\
+			\hline 18 & 83263591 & 666090624 & 7.99978 \\
 			\hline
 		\end{tabular}
-		\caption{Antal Boards der bliver genereret}
+		\caption{Antal løsninger}
 		\label{tabel:unikkevstotale}
 	\end{center}
 \end{table}
@@ -110,27 +110,11 @@ tabel?}
 \begin{figure}[h]
 \begin{center}
 \includegraphics{../benchmarks/unikkevstotale.pdf}
-\caption{Unikke og totale antal løßninger} 
+\caption{Unikke og totale antal løsninger} 
 \label{figur:unikkevstotale}
 \end{center}
 \end{figure}
 
-Alle tests er i første omgang kørt 5 gange, dette blev gjort for at se om
-køretiden svingede meget, da dette ikke lader til at være tilfældet (se figur
-\ref{figur:b1} vil resten af testene kun blive kørt 1 gang.. 
-
-\begin{figure}[h]
-\begin{center}
-\includegraphics{../benchmarks/b1.pdf}
-\caption{insert proper caption here } 
-\label{figur:b1}
-\end{center}
-\end{figure}
-
-Nu skal vi så se på hvor hurtigt det kører når vi smider det efter MiGrid. 
-Disse tests er kørt med \texttt{maxSteps} 0 og 1.
-
-\fixme{indsaet en graf, eller bare resultaterne og henvis til b3?}
 De foregående tests er kørt med kode der bruger \texttt{int} til at gemme resultaterne,
 i de næste tests er \texttt{int} skiftet ud med \texttt{BigInteger} 
 Her er den rekursive test kørt på revision 83, og den iterative er kørt på
@@ -214,6 +198,29 @@ da genereringen af jobs for større mængder jobs tager ca 0.01ms/job
 Den reelle køretid på \mig findes ved at tage \texttt{Queued} tiden for det første job der er
 blevet sat i kø, og \texttt{Finished} tiden for det sidste job der er blevet
 færdigt, og så finde forskellen.
+
+På figur \ref{figur:mig} kan man se hvor lang beregningstiden er og hvor lang
+den reelle køretid er for $n=18$ og $maxSteps=0,1$. Ved $maxSteps=0$ ses det at
+den reelle køretid er næsten det dobbelte af beregningstiden. Når $maxSteps$
+bliver sat op til 1 og der dermed bliver genereret flere jobs, kommer der et
+noget større overhead, som det kan ses på figuren. På figuren ses det også at
+den reelle køretid for den iterative udgave er væsentlig højere end for den
+rekursive udgave. Dette skyldes at der har været sat 2 forskellige tests igang
+på samme tid, og nogle af de jobs fra den pågældende test er blevet stoppet og
+sat i kø igen. De er dermed kommet bagest i køen og først blevet kørt efter den
+anden test er færdig. 
+
+\fixme{beregn forholdet mellem den første og resten?}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics{../benchmarks/mig.pdf}
+\caption{NQueen kørt \mig} 
+\label{figur:mig}
+\end{center}
+\end{figure}
+
+
 
 \subsubsection{Overhead ved jobskifte}
 
