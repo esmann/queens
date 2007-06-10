@@ -177,12 +177,19 @@ Da træets højde er begrænset af $N$, er det maksimale pladsforbrug $antal\ bi
 
 \subsection{Takakens algoritme}\label{takalgo}
 
-Takaken opdeler beregningen i to delproblemer. Et hvor den første dronning placeres i øverste hjørne, og et andet delproblem hvor dronningen placeres i midten. Mange løsninger er reflektioner og roteringer af andre. Sådanne løsninger betragtes som en \textit{unik} løsning. En simpel test 
+For $Q(n)$ er mange løsninger reflektioner og roteringer af andre - og betragtes som en \textit{unik} løsning. Ved kun at betragte unikke løsninger kan vi mindste antallet af blade i vores beslutnings-træ \ref{fig:tree} til antallet af unikke løsninger, $S(n)$ og dermed mindske beregnings tiden. I tabel \fixme{Tabel over Unikke løsninger vs. Totale antal løsninger} ses forskellen på antallet af unikke og totale løsninger. For hver løsning undersøges antallet af reflektioner og rotationer. Check funktion  \ref{nqueens.c} udfører dette.
 
+Takaken opdeler beregningen i to delproblemer. Et hvor den første dronning placeres i øverste hjørne, og et andet delproblem hvor dronningen i den første række kan placeres i kolonnen $n/2 til 2$. 
 
+\begin{itemize}
+	
+\item Beskrivelse af hjørnebræt bound og dets implikationer
+\item Beskrivelse af de andre delproblemer og dets implikationer
+\item Husk at check ikke køres for hjørneproblemer = performance forskel
+\end{itemize}
 
+Disse optimeringer giver en hetorogen opdeling af delprobemer. Forholdet mellem antal løsninger og tid kan ses i \fixme{tabel/graf over antal løsinger og tid for hvert board}. Tidsforbrugt ved en profile kan ses \fixme{Java -Xprof kørses for n=1 til n=?, bliver Check= perrformance problem?}
 
-For løsninger med dronninger i hjørnet fjernes løsninger i kolonne 2 fra fra$2 \ldots n-2$. 
 
 \subsection{parrallelisering}
 
