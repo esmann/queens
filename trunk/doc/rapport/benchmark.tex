@@ -127,15 +127,6 @@ langsommere med \texttt{BigInteger} end med \texttt{int}, hvor tiden stiger fra
 406.xxx til 414.xxx\fixme{indsaet rigtige tal}, hvilket svarer til en forøgelse
 på knap 2\%
 
-\subsection{overhead ved jobskifte}
-
-I MiG\_main() metoden i NQueenJob laver vi et timestamp i starten og slutningen
-af metoden.  og kan så tage start tiden for et job og trække sluttiden for det
-foregående job fra, og man har så et estimat for hvor lang tid et jobskifte
-tager, vi har gjort dette for 8 jobs, og får så 7 estimater, gennemsnittet af
-dem bliver 18.455 sek.  Op til 15 af disse 18 sekunder, skyldes at oneclick
-applet'en sover i 15 sekunder.  Ved en kørsel med $n=18$ og $maxSteps=1$, hvor
-vi så får 289 jobs, giver det knap 89 minutter. 
 
 \subsection{kald til backtrack}
 
@@ -190,3 +181,19 @@ da genereringen af jobs for større mængder jobs tager ca 0.01ms/job
 17: 0.19, 0.02, 0.01, 0.01, 0.01
 \end{verbatim}
 \fixme{lav det om til en tabel.. der}
+
+\subsection{Kørsel på \mig}
+
+Den reelle køretid på \mig findes ved at tage \texttt{Queued} tiden for det første job der er
+blevet sat i kø, og \texttt{Finished} tiden for det sidste job der er blevet
+færdigt, og så finde difference.
+
+\subsubsection{overhead ved jobskifte}
+
+I MiG\_main() metoden i NQueenJob laver vi et timestamp i starten og slutningen
+af metoden.  og kan så tage start tiden for et job og trække sluttiden for det
+foregående job fra, og man har så et estimat for hvor lang tid et jobskifte
+tager, vi har gjort dette for 8 jobs, og får så 7 estimater, gennemsnittet af
+dem bliver 18.455 sek.  Op til 15 af disse 18 sekunder, skyldes at oneclick
+applet'en sover i 15 sekunder.  Ved en kørsel med $n=18$ og $maxSteps=1$, hvor
+vi så får 289 jobs, giver det knap 89 minutter. 
