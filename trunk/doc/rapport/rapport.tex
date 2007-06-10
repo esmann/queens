@@ -191,7 +191,7 @@ Takaken opdeler beregningen i to delproblemer. Et hvor den første dronning plac
 Disse optimeringer giver en hetorogen opdeling af delprobemer. Forholdet mellem antal løsninger og tid kan ses i \fixme{tabel/graf over antal løsinger og tid for hvert board}. Tidsforbrugt ved en profile kan ses \fixme{Java -Xprof kørses for n=1 til n=?, bliver Check= perrformance problem?}
 
 
-\subsection{parrallelisering}
+\subsection{parallelisering}
 
 Et bræt med en eller flere valgte linjer kan løses på samme måde med takakens algoritme. Hvert delbræt kan løses uafhængigt og antallet af løsninger for hvert bræt akkumuleres for at få det totale antal løsninger.
 Dette kan gentages for hver linje. Ved at oprette delbræt hvor M linjer allerede er valgt. Findes ca. (N-M)! delbræt skal der for N=26 vil der for M=3 være 26*25*24=15,600 delbræt.
