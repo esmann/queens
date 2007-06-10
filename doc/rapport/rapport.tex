@@ -28,6 +28,7 @@
 
 \newcommand{\mig}{MiG}
 \newcommand{\oc}{One-Click}
+\newcommand{\nq}{N-dronning-problemt}
 
 
 \headheight 14.5pt                             %H<F8>jden af headeren
@@ -55,7 +56,7 @@
 \renewcommand{\thepage}{\arabic{page}}
 \pagestyle{fancy}                              %Benyt fancyhdr-pakken
 \fancyhead[R]{\thepage\ af \pageref{LastPage}} %Skriv sidetallene som "x af y"
-\fancyhead[L]{N-dronning problemet i \mig}              %Headeren
+\fancyhead[L]{\nq\ i \mig}              %Headeren
 \fancyfoot[C]{}                                %Fjern sidetallet som er standard
 \setcounter{page}{1}
 
@@ -64,7 +65,7 @@
 	En del af indholdet af problemformulereringen fra synopsen flyttes til henholdsvis resumé, \ref{nqueenproblemet} og \ref{migogoneclick}. Selve synopsen inkluderes som bilag. Resuméet skal være ren gentagelse.
 \end{verse}
 \fixme{slet?}
-Projektets formål er ikke at beregne en løsning til N-dronning-problemet for $n=26$, hvilket problemets beregningsmæssige omfang kombineret med tids- og ressourcebegrænsninger udelukker i praksis. Men kun at muliggøre og forhåbentlig igangsætte denne beregning.
+Projektets formål er ikke at beregne en løsning til \nq\ for $n=26$, hvilket problemets beregningsmæssige omfang kombineret med tids- og ressourcebegrænsninger udelukker i praksis. Men kun at muliggøre og forhåbentlig igangsætte denne beregning.
 Vi vil ikke tage stilling til den benyttede algoritmes korrekthed eller effektivitet, men kun til den bedst mulige strategi for parallelisering. Partitionering af problemdata skal foregå på en fornuftig måde, med tanke på hvordan det forventes beregningsressourcerne opfører sig, men en decideret statisk undersøgelse af midlertidige \mig-ressourcers opførsel eller levetid vil ikke blive foretaget\footnote{Med ressourcers opførsel tænkes på den tid man kan forvente en bruger vil lade sin \oc-klient køre}. Fordele og ulemper ved \mig\ eller \oc\ i forhold til andre grid-systemer falder også udenfor opgavens omfang.
 
 Ved at at løse problemet for et lavere $n$ vil vi kunne estimere tiden og/eller antal CPU'er der skal bruges for at løse for $n=26$.
@@ -83,9 +84,9 @@ Ved at at løse problemet for et lavere $n$ vil vi kunne estimere tiden og/eller
 	Kortfattet konklusion på løsningen og processen
 \end{verse}
 
-\section{Nqueen-problemet}\label{nqueenproblemet}
+\section{\nq}\label{nqueenproblemet}
 
-NQueen problemet er finde antallet af måder man kan placere N dronninger på et et kvadratisk NxN bræt, således at ingen dronning kan slå en anden. Bemærk at vi skal finde alle løsninger $Q(n)$, og ikke bare finde alle løsninger - hvilket er et helt andet problem. Hidtil er der kun fundet løsninger for $n \in \{1,...,25\}$.\cite{sekvenser}. Derudover beskriver \cite{etsi} en manuelt distribueret løsning for $n=25$. Der findes desuden masser af referencer på \url{http://www.liacs.nl/home/kosters/nqueens.html} relateret til nqueen problemet. 
+\nq\ består i at finde antallet af måder man kan placere N dronninger på et et kvadratisk NxN bræt, således at ingen dronning kan slå en anden. Bemærk at vi skal finde alle løsninger $Q(n)$, og ikke bare finde alle løsninger - hvilket er et helt andet problem. Hidtil er der kun fundet løsninger for $n \in \{1,...,25\}$.\cite{sekvenser}. Derudover beskriver \cite{etsi} en manuelt distribueret løsning for $n=25$. Der findes desuden masser af referencer på \url{http://www.liacs.nl/home/kosters/nqueens.html} relateret til \nq. 
 
 \begin{figure}
 \begin{center}
@@ -103,14 +104,14 @@ NQueen problemet er finde antallet af måder man kan placere N dronninger på et
 \end{figure}
 
 
-Dette afsnit beskriver nqueen problemet i den grad det er fundet nødvendigt for parrallelisering af problemet på \mig. En kort beskrivelse af den overordnede algoritme og det backtracking paradigme beskrives i \ref{backtracking}. Repræsentation af skakbrættet som et bitmap, som beskrevet i \ref{bitmapmodellen}. Takaken's sekventielle udgave beskrives kort og implikationer af optimeringerne i \ref{takalgo}. 
+Dette afsnit beskriver \nq\ i den grad det er fundet nødvendigt for parrallelisering af problemet på \mig. En kort beskrivelse af den overordnede algoritme og det backtracking paradigme beskrives i \ref{backtracking}. Repræsentation af skakbrættet som et bitmap, som beskrevet i \ref{bitmapmodellen}. Takaken's sekventielle udgave beskrives kort og implikationer af optimeringerne i \ref{takalgo}. 
 
 
 \subsection{Backtracking}\label{backtracking}
 
-En simpel øvre grænse ses ved at der ikke kan placeres to dronninger på samme række eller kolonne. En løsning består altså af n forskellige dronninger hvor ingen må være på samme kolonne. Løsningen i \ref{fig:nq5eks} kan så noteres som en \textit{opstillings vektor} $24153$. Alle mulige opstillinger svarer altså til permutationer af ${1,\ldots,n}$. En brute force metode er så at checke alle mulige permutationer for at se om de er tilladte opstillinger.
+En simpel øvre grænse for \nq\ ses ved at der ikke kan placeres to dronninger på samme række eller kolonne. En løsning består altså af n forskellige dronninger hvor ingen må være på samme kolonne. Løsningen i \ref{fig:nq5eks} kan så noteres som en \textit{opstillingsvektor} $24153$. Alle mulige opstillinger svarer altså til permutationer af ${1,\ldots,n}$. En brute force metode er så at checke alle mulige permutationer for at se om de er tilladte opstillinger.
 
-Til kombinatoriske problemer bruges ofte backtracking. Backtracking gennemløber en permutering af opstillings vektoren  $(P_1,\ldots..mP_k)$ dybde-først, og undlader valg som ikke er gyldige. For nqueen vedligeholdes en stak $(P_1,\ldots..mP_k)$ over gennemløbet. Backtracking er yderlige beskrevet i \cite{Golomb72}.
+Til kombinatoriske problemer bruges ofte backtracking. Backtracking gennemløber en permutering af opstillingsvektoren  $(P_1,\ldots..P_k)$ dybde-først, og undlader valg som ikke er gyldige. For \nq\ vedligeholdes en stak $(P_1,\ldots..P_k)$ over gennemløbet. Backtracking er yderlige beskrevet i \cite{Golomb72}.
 
 \begin{itemize}
 \item Ved start er stakken tom. (Det er tilladt \textit{ikke} at placere en dronning)
@@ -120,7 +121,7 @@ Til kombinatoriske problemer bruges ofte backtracking. Backtracking gennemløber
 \end{itemize}
 Dette køres indtil der ikke er flere elementer at tilføje i trin 2.
 
-Dette kan visualiseres med et træ. Knuder angiver den valgte placering, mens kanter de mulige beslutninger el. valg der kan foretages.  Træet har en maksimal højde på $N$. Hvor højden for roden er 0. Antallet af børn er antallet af \textit{mulige} valg som ikke blokeres af tidligere placeringer. 
+Dette kan visualiseres med et træ. Knuder angiver den valgte placering, mens kanter angiver de mulige beslutninger el. valg der kan foretages.  Træet har en maksimal højde på $n$. Hvor højden for roden er 0. Antallet af børn er antallet af \textit{mulige} valg som ikke blokeres af tidligere placeringer. 
 
 \begin{figure}[!h]
 
@@ -158,7 +159,7 @@ Bemærk at roden er række 0. Blade i dybde $N$ angiver mindst én løsning.}
 
 \subsection{Bitmap-modellen}\label{bitmapmodellen}
 \begin{verse}
-	Beskrivelse af NQueen problemet som bitmaps / bit vektorer
+	Beskrivelse af \nq\ problemet som bitmaps / bit vektorer
 \end{verse}
 
 \fixme{Eksempel af et bræt med bitvektorer}
@@ -173,7 +174,7 @@ Efter hvert valg, hvor den valgte placering sættes i en bitvektor \textbf{bit},
 	\item[bitmap]	$bitmap = \lnot(venstre \lor horisontal \lor højre)$	
 \end{description}
 
-Da træets højde er begrænset af $N$, er det maksimale pladsforbrug $antal\ bits\ per\ bitvektor \times antal\ af\ bitvektorer \times N$. For at håndtere N op til 32, kan vi nøjes med heltal der er repæsenteret af 32 bits til at repræsentere en bitvektor. Pladsforbruget for $N=26$ er så $32\times 26 \times 4 = 3328 bits$. Afhængig af implementation og arkitekturens ordstørrelse kan dette variere.
+Da træets højde er begrænset af $n$, er det maksimale pladsforbrug $antal\ bits\ per\ bitvektor \times antal\ af\ bitvektorer \times N$. For at håndtere N op til 32, kan vi nøjes med heltal der er repæsenteret af 32 bits til at repræsentere en bitvektor. Pladsforbruget for $N=26$ er så $32\times 26 \times 4 = 3328 bits$. Afhængig af implementation og arkitekturens ordstørrelse kan dette variere.
 
 \subsection{Takakens algoritme}\label{takalgo}
 
@@ -204,6 +205,8 @@ Dette er en øvre grænse, der oprettes ikke delbræt som ikke er gyldige\fixme{
 	Her beskrives \mig-grid og \oc\ overordnet. Tekniske detaljer i forbindelse med brug af \mig-grid, og særligt udvikling af \oc-applikationer, identificeres. Dette afsnit henvender sig således kun til dig, der ikke allerede har kendskab til disse emner.  
 \end{verse}
 
+
+
 \subsection{Minimum intrusion Grid}\label{mig}
 
 \textsc{Minimum instrusion Grid}, herefter \mig, er et grid-system der sigter efter at stille så få krav for deltagelse som muligt - både overfor brugere og ressourcer. I \mig-termiologi er en ressource en enhed der kan sættes til at beregne et problem. I mange andre gridsystemer benyttes speciel software til kommunikation mellem den enkelte ressource og gridet, undgår man helt dette mindskes kompleksiteten af det samlede system dramatisk. Omkostninger til den første opsætning og efterfølgende vedligeholdelse af systemet minimeres. \fixme{beskrivelse af anonymitet, sikkerhed, skalerbarhed}. \mig er beskrevet indgåede i \cite{simplemig,mig}.
@@ -211,16 +214,25 @@ Dette er en øvre grænse, der oprettes ikke delbræt som ikke er gyldige\fixme{
 \mig\ giver brugeren mulighed for at få adgang til et stort antal beregningsressourcer, uden at skulle bekymre sig om hvor disse befinder sig, hvem der ejer dem, hvorvidt de hver især er istand til at løse den aktuelle opgave\footnote{Et givent problem kan f.eks. stille særlige krav til ressourcens arkitektur, eksisterende programmel, osv.}\fixme{er der mere under osv?}. Her og i det nedenstående henviser udtrykket ""brugeren"" til en udvikler der ønsker at få beregnet et problem vha. \mig \fixme{mindre fjollet definition}. Brugeren præsenteres for en abstraktion af \mig, der fremstiller et kendt paradigme fra unix-systemer; et hjemmekatalog hvori brugeren kan placere sine data- og programfiler. Brugerens interaktion med \mig\ forgår via en række scripts der efterligner kendte kommandoer til manipulation af filer i hjemmekataloget, og introducerer kommandoer til at starte og stoppe job. Begge metoder giver mulighed for at udføre basale funktioner på \mig, såsom at igangsætte job, se status på tidligere jobs og give adgang til data-, program- og resultatfiler i hjemmekataloget. Et job sættes igang ved at køre kommandoen migsubmit med såkaldt mRSL-fil\footnote{\mig\ Resource Language} der indeholder en beskrivelse af det job der skal afvikles. Beskrivelsen fortæller \mig\ hvilken programfil der skal køres, med hvilke parametre, hvor lang tid jobbet forventes at tage og eventuelle krav jobbet har til ressourcer der skal afvikle det. Et kørende job har adgang filerne i  hjemmekataloget. Resultatet af et job skal skrives til hjemmekataloget for senere at kunne aflæses af brugeren. For hvert job oprettes desuden 3 filer i hjemmekataloget. De indeholder hhv. exit-status, standard output og standard error, ganske som de kendes fra unix-systemer. 
 Al den ovennævnte interaktion med \mig\ kan alternativt foregå gennem et særligt webinterface. 
 
+
+
 \subsection{\oc}\label{applet}
 \oc\ muliggører deltagelse i et \mig-grid uden andre forudsætninger end en webbrowser og java. Tilgengæld er denne metode begrænset til at afvikle programmer, der er tilgængelige som java-bytecode. Brug af \oc\ giver adgang til et enormt (potentielt) antal beregningsressourcer, hvilket er grunden til at benytte \oc\ i denne opgave.
 \oc\ er et framework til udvikling af java-appletter, der kan interagere med \mig\. Ved hjælp af \oc\ kan en hvilken som helst computer gøres til en \mig-ressource, unden nogen for for opsætning eller installation af programmel, hvilket gør det muligt for ganske alm. mennesker at bidrage regnekraft til gridet. Det eneste der kræves er en webbrowser der kan afvikle java-appletter. Implementerer man sit job som en java-applet vil det kunne afvikles på alle \oc-ressourcer, uden at skulle specificere særlige krav til arkitektur med videre. Til gengæld vil det være begrænset til kun at køre på \oc-ressourcer. 
 \oc\ er især interessant i forbindelse med hvad man kunne kalde sociale beregninger, det vil sige beregningsprojekter som almindelige mennesker kunne have interesse i at bidrage til, eller endog konkurrere om at bidrage mest til. Kendte eksempler på sådanne projekter er SETI@home og FOLDING@home. Når måling af tidsforbrug per ressource bliver implementeret i \oc\ kunne man også  forestille sig et \mig-grid som en åben markedsplads hvor både virksomheder og privatpersoner kunne købe og sælge regnekraft gennem \mig\ uden at skulle bekymre sig om, eller have mulighed for at vide, hvor beregningerne reelt foretages eller hvad hvad der regnes på. \fixme{for meget blah-blah}
 
+\oc\ indeholder jave-klasser til læsning og skrivning af filer i \mig\-hjemmekataloget, 
+
+Checkpoint foretages ved at serialisere det kørende job-objekt\footnote{\mig-applettens hoved objekt, der nedarver fra MiGJob-klassen} til en checkpoint-fil i hjemmekataloget på \mig. Det er altså kun objekt-variable der overlever på tværs af et checkpoint. I forhold til den rekursive backtrack-algoritme til \nq\ er det værd at bemærke at kald-stakken naturligvis ikke gemmes.
+
+\subsubsection{\oc-specifikke begrænsninger}
+
+I forbindelse med udvikling og afprøvning af en \oc-applet skal man være opmærksom på at Class-filer caches af browserens java-plugin. Ændringer i implementeringen kan medføre fejl under afviklingen på ressourcer der bruger forældede class-filer, selvom \mig opfatter jobbet som udført uden fejl. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver opdatering af denne cache. Man kan altså riskikere at appletten får en undtagelse på serialVersionUID og derved markeres jobbet som færdigt, uden at være kommet til et resultat. En uhensigtsmæssighed i forbindelse med undtagelseshåndtering i basisklassen MigJob.java gør at jobbet alligevel vil se ud til at være afsluttet succesfuldt. Se afsnit \cite{bugs}. 
 
 En java-applet afvikles i et lukket miljø, en såkaldt sandkasse, for at beskytte den maskine der afvikler appletten. n række begrænsinger vi bliver nødt til at forholde os til
 \begin{itemize}
 	\item Appletten kan maksimalt allokere 64MB hukommelse.
-	\item Java's jni (Java Native Interfaces) kan ikke benyttes fra appletter. 
+	\item Java's JNI (Java Native Interfaces) kan ikke benyttes fra appletter. 
 	\item Ingen adgang til at læse/skrive lokale filer.
 	\item Appletten er begrænset til kun at kunne oprette netværksforbindelser til den ip-adresse den er hentet fra.
 	\item Ingen mulighed for at starte programmer på klient-maskinen.
@@ -231,7 +243,8 @@ Af disse er kun de to første af betydning for vores formål. Det bliver naturli
 \subsubsection{Checkpointing}
 \oc\ indeholder kode til oprettelse af checkpoints under kørslen af et job. Et checkpoint er en gemt programtilstand, hvorfra det er muligt at fortsætte afviklingen. \oc\ indeholder desuden mekanismer til genetablering af programtilstanden fra et givent check. Når et \oc-job sendes til en ressource sendes det nyeste checkpoint med, hvis et sådant eksisterer, og \oc\ sørger for at genetablere tilstanden før eksekveringen af jobbet starter. Dette er præcis den funktionalitet vi behøver, for at kunne sikre at vi ikke behøver køre en beregning forfra når en ressource forsvinder.    
 
-Checkpoint foretages ved at serialisere det kørende job-objekt\footnote{\mig-applettens hoved objekt, der nedarver fra MiGJob-klassen} til en checkpoint-fil i hjemmekataloget på \mig. Det er altså kun objekt-variable der overlever på tværs af et checkpoint. I forhold til den rekursive backtrack-algoritme til NQueens er det værd at bemærke at kald-stakken naturligvis ikke gemmes.
+
+
 
 \section{Problemstørrelse og jobschedulering}
 Et centralt emne ved parallelisering af algoritmer er partitionering af de data der beregnes på. Den ideelle opdeling definerer vi som en opdeling der sikrer at følgende gælder:
@@ -246,7 +259,7 @@ Og med de yderligere antagelser at
 	\item Ressourcer er permanente
 \end{enumerate}
 I denne ideelle situation opnåes maksimal udnyttelse af tilgængelige ressourcer, og samtidig minimalt overhead i forbindelse med jobskift og dataoverførsel.
-I praksis er disse krav meget svære at opfylde. \ref{beregningstid} er for Nqueen ikke det samme som størrelsen af de del-data der regnes på. Det gælder for Nqueen at et beregningstiden for et delproblem følger antallet af løsninger i delproblemet. Vi kan altså ikke ikke ved opdeling af problemet kende de enkelte delproblemers beregningstid. Kunne vi det ville vi allerede kende antallet af løsninger. Istedet kan vi opdele problemet i dele med samme data-størrelse - dvs. samme antal dronninger mangler at blive placeret. 
+I praksis er disse krav meget svære at opfylde. \ref{beregningstid} er for \nq\ ikke det samme som størrelsen af de del-data der regnes på. Som det ses på \ref{fig:intet delproblem gennemgår flere iterationer end et delproblem med færre løsninger} at beregningstiden for et delproblem stiger med antallet af løsninger i delproblemet. Vi kan altså ikke ikke ved opdeling af problemet kende de enkelte delproblemers beregningstid. Kunne vi det ville vi allerede kende antallet af løsninger. Istedet kan vi opdele problemet i dele med samme data-størrelse - dvs. samme antal dronninger mangler at blive placeret. 
 
 \fixme{hvad kan vi sige om om beregningstiden for problemer med samme data-størrelse? Øvre grænse for variationen i køretid?} \fixme{indsæt reference til benchmarks, der viser beregningstid for hvert delproblem, og skriv noget om hvad benchmarks viser vi kan regne med ifm. beregningstid} 
 
@@ -261,7 +274,9 @@ I praksis gælder altså følgende:
 	\item Delproblemer er heterogene
 	\
 \end{itemize}
- 
+
+
+
 Vi kan sørge for at generere 
 
 \fixme{beskriv vores løsning indgående}
@@ -273,7 +288,7 @@ Idet både ressourcer og delproblemer er heterogene kan vi behandle dem som et s
 
 \fixme{Vi laver bræt med samme antal forudplacerede dronninger, og lader ønsket til antallet af bræt diktere antal forudplacerede dronninger - hvilke andre metoder kunne man benytte?}
 
-Et NQueen-job består af en .mRSL-fil og en  
+Et N-dronning-job består af en .mRSL-fil og en  
 \fixme{hvordan opretter vi job, hvad består et job af(serialize, mrsl)}
 
 \fixme{Vi er nødt til at tage højde for at løsningen (antallet af løsinger) vil overstige hvad vi kan repræsentere som en 32bit værdi.}
@@ -295,9 +310,6 @@ Løsningen kører en separat tråd, der foretager checkpointing, og en timertrå
 I \mig skemalægges afviklingen af job som en FIFO-kø. Dvs. at job afvikles i samme rækkefølge som de submittes til gridet. Ved afbryding af jobbet eller ved udløb af tidsfristen for afvikling af jobbet placeres jobbet bagerst i køen.  
 
 
-\subsection{\oc-specifikke begrænsninger}
-
-I forbindelse med udvikling og afprøvning af en \oc-applet skal man være opmærksom på at Class-filer caches af browserens java-plugin. Ændringer i implementeringen kan medføre fejl under afviklingen på ressourcer der bruger forældede class-filer, selvom \mig opfatter jobbet som udført uden fejl. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver opdatering af denne cache. Man kan altså riskikere at appletten får en undtagelse på serialVersionUID og derved markeres jobbet som færdigt, uden at være kommet til et resultat. En uhensigtsmæssighed i forbindelse med undtagelseshåndtering i basisklassen MigJob.java gør at jobbet alligevel vil se ud til at være afsluttet succesfuldt. Se afsnit \cite{bugs}. 
 
 
 \subsubsection{Bugs og mangler}\label{bugs}
@@ -310,6 +322,8 @@ I forbindelse med udvikling og afprøvning af en \oc-applet skal man være opmæ
 	\item Webstart vil klart være at foretrække. Det er rigtigt at der kommer en certifikat fejl (https) - men så længe certifikat ikke er i browserens CA liste vil browseren i stedet komme med en advarsel.q
 \end{itemize}
 
+I forbindelse med udvikling og afprøvning af en \oc-applet skal man være opmærksom på at Class-filer caches af browserens java-plugin. Ændringer i implementeringen kan medføre fejl under afviklingen på ressourcer der bruger forældede class-filer, selvom \mig opfatter jobbet som udført uden fejl. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver opdatering af denne cache. Man kan altså riskikere at appletten får en undtagelse på serialVersionUID og derved markeres jobbet som færdigt, uden at være kommet til et resultat. En uhensigtsmæssighed i forbindelse med undtagelseshåndtering i basisklassen MigJob.java gør at jobbet alligevel vil se ud til at være afsluttet succesfuldt. Se afsnit \cite{bugs}. 
+
 
 \subsection{Konkrete implementeringsproblemer}
 \subsubsection{\mig\ job}\label{label}
@@ -319,7 +333,7 @@ I forbindelse med udvikling og afprøvning af en \oc-applet skal man være opmæ
 Fordi checkpointing gemmer ikke stack.
 
 \subsection{Resultatindsamling og -visning}
-En måde et holde styr på den samlede beregning af en løsning på n-dronning-problemet er, at have en vedligeholdelsesproces kørende, der sørger for at 
+En måde et holde styr på den samlede beregning af en løsning på \nq\ er, at have en vedligeholdelsesproces kørende, der sørger for at 
 \begin{itemize}
 	\item Genkøre fejlede job
 	\item Indsamle resultater fra færdige jobs
