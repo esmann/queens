@@ -27,19 +27,17 @@
 \usepackage{amssymb,amsmath}
 \usepackage{lscape}
 \usepackage{multicol}
-\usepackage[draft]{fixme}
+\usepackage[inline]{fixme}
 \usepackage{tikz}
 \usetikzlibrary{trees}
 %\usepackage{pgflibrarytikztrees}
 
 \usepackage[final]{listings}
 \usepackage{fancyvrb}
-
 \usepackage{wrapfig}                           %Mulighed for at wrappe tekst om figurer
 \usepackage{fancyhdr}                          %Flere muligheder med headere og footere
 \usepackage{lastpage}                          %Mulighed for at referere til sidste sidetal
 \usepackage[final]{hyperref}
-
 
 \newcommand{\mig}{MiG}
 \newcommand{\oc}{One-Click}
@@ -222,7 +220,7 @@ Dette er en øvre grænse, der oprettes ikke delbræt som ikke er gyldige\fixme{
 
 \section{\mig\ og \oc}\label{migogoneclick}
 \begin{verse}
-	Her beskrives \mig-grid og \oc\ overordnet. Tekniske detaljer i forbindelse med brug af \mig-grid, og særligt udvikling af \oc-applikationer, identificeres.  
+	Her beskrives \mig\ og \oc\ overordnet. Tekniske detaljer i forbindelse med brug af \mig, og særligt udvikling af \oc-applikationer, identificeres.  
 \end{verse}
 
 
@@ -250,10 +248,10 @@ Et job sættes igang ved at køre kommandoen \emph{migsubmit} med en såkaldt mR
 \fixme{flere referencer}
 
 \subsection{\oc}\label{applet}
-\oc\ muliggører deltagelse i et \mig-grid uden andre forudsætninger end en webbrowser og java. Tilgengæld er denne metode begrænset til at afvikle programmer, der er tilgængelige som java-bytecode. Brug af \oc\ giver adgang til et enormt (potentielt) antal beregningsressourcer, hvilket er grunden til at benytte \oc\ i denne opgave.
+\oc\ muliggører deltagelse i et \mig\ uden andre forudsætninger end en webbrowser og java. Tilgengæld er denne metode begrænset til at afvikle programmer, der er tilgængelige som java-bytecode. Brug af \oc\ giver adgang til et enormt (potentielt) antal beregningsressourcer, hvilket er grunden til at benytte \oc\ i denne opgave.
 
 \oc\ er en java-applet der muliggør afvikling af java-bytekode\footnote{Der nedarver fra MigJob} der kan interagere med \mig\. Ved hjælp af \oc\ kan en hvilken som helst computer gøres til en \mig-ressource, unden nogen for for opsætning eller installation af programmel, hvilket gør det muligt for ganske alm. mennesker at bidrage regnekraft til gridet. Det eneste der kræves er en webbrowser der kan afvikle java-appletter. Implementerer man sit job som en \oc-applet vil det kunne afvikles på alle \oc-ressourcer, uden at skulle specificere særlige krav til arkitektur med videre. Til gengæld vil det være begrænset til kun at køre på \oc-ressourcer. 
-\oc\ er især interessant i forbindelse med hvad man kunne kalde sociale beregninger, det vil sige beregningsprojekter som almindelige mennesker kunne have interesse i at bidrage til, eller endog konkurrere om at bidrage mest til. Kendte eksempler på sådanne projekter er SETI@home og FOLDING@home, begge udviklet med gridsystemet BOINC\cite{boinc}.
+\oc\ er især interessant i forbindelse med hvad man kunne kalde sociale beregninger, det vil sige beregningsprojekter som almindelige mennesker kunne have interesse i at bidrage til, eller endog konkurrere om at bidrage mest til. Kendte eksempler på sådanne projekter er SETI@home og FOLDING@home, begge udviklet med gridsystemet BOINC\cite{boinc}. \fixme{seti er boinc, folding er ikke}
 
 \oc\ indeholder java-klasser til læsning og skrivning af filer i \mig\-hjemmekataloget samt checkpointing af det kørende job. 
 
@@ -263,7 +261,10 @@ Checkpoint foretages ved at serialisere det kørende job-objekt\footnote{\mig-ap
 
 \subsubsection{\oc-specifikke begrænsninger}
 
-I forbindelse med udvikling og afprøvning af en \oc-applet skal man være opmærksom på at Class-filer caches af browserens java-plugin. Ændringer i implementeringen kan medføre fejl under afviklingen på ressourcer der bruger forældede class-filer, selvom \mig opfatter jobbet som udført uden fejl. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver opdatering af denne cache. Man kan altså riskikere at appletten får en undtagelse på serialVersionUID og derved markeres jobbet som færdigt, uden at være kommet til et resultat. En uhensigtsmæssighed i forbindelse med undtagelseshåndtering i basisklassen MigJob.java gør at jobbet alligevel vil se ud til at være afsluttet succesfuldt. Se afsnit \cite{bugs}. 
+I forbindelse med udvikling og afprøvning af en \oc-applet skal man være
+opmærksom på at Class-filer caches af browserens java-plugin. Ændringer i
+implementeringen kan medføre fejl under afviklingen på ressourcer der bruger
+forældede class-filer, selvom \mig\ opfatter jobbet som udført uden fejl. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver opdatering af denne cache. Man kan altså riskikere at appletten får en undtagelse på serialVersionUID og derved markeres jobbet som færdigt, uden at være kommet til et resultat. En uhensigtsmæssighed i forbindelse med undtagelseshåndtering i basisklassen MigJob.java gør at jobbet alligevel vil se ud til at være afsluttet succesfuldt. Se afsnit \cite{bugs}. 
 
 En java-applet afvikles i et lukket miljø, en såkaldt sandkasse, for at beskytte den maskine der afvikler appletten. Der er en række begrænsinger vi bliver nødt til at forholde os til
 \begin{itemize}
@@ -328,7 +329,7 @@ Beregningstiden kompliceres yderligere af at delproblemerne skal beregnes på he
 	Herunder vil vi, fortrinsvis ved at kigge på data for problemstørrelser for mindre $n$, forsøge at finde frem til en optimal opdeling at problemet for $n=26$.
 \end{verse}
 
-I \mig skemalægges afviklingen af job som en FIFO-kø. Dvs. at job afvikles i samme rækkefølge som de submittes til gridet. Ved afbryding af jobbet eller ved udløb af tidsfristen for afvikling af jobbet placeres jobbet bagerst i køen. 
+I \mig\ skemalægges afviklingen af job som en FIFO-kø. Dvs. at job afvikles i samme rækkefølge som de submittes til gridet. Ved afbryding af jobbet eller ved udløb af tidsfristen for afvikling af jobbet placeres jobbet bagerst i køen. 
 
 
 Denne løsning kan bedst karakteriseres som såkaldt \emph{statisk orkestration}. Opdelingen i delproblemer er endeligt foretaget inden beregningen af delproblemer begynder. Som beskrevet er der et grundlæggende problem ved en statisk opdeling, nemlig at beregningen ikke kan tilpasse sig til en forøgelse af mængden af ressourcer. Istedet bliver man nødt til fra starten at generere nok opgaver til at kunne udnytte en eventuel ressourcetilgang. Samme problem opstår, på grund af heterogene ressourcer og opgaver, når antallet af delopgaver falder henimod slutningen af udregningen. 
@@ -339,6 +340,7 @@ Det bedste valg af job til genopdeling vil være det jo der kræver mest beregni
 
 
 \section{Resultatindsamling og -visning}
+
 En måde et holde styr på den samlede beregning af en løsning på \nq\ er, at have en vedligeholdelsesproces kørende, der sørger for at 
 \begin{itemize}
 	\item Genkøre fejlede job
@@ -347,8 +349,20 @@ En måde et holde styr på den samlede beregning af en løsning på \nq\ er, at 
 \end{itemize}
 Dette program kan for eksempel være det samme der står for at oprette vores jobs i første omgang. Muligheden for at tilpasse ikke-kørte jobs på baggrund af informationer om gridets tilstand (antallet af tilgængelige ressourcer). 
 
-Som alternativ tilbyder \mig-grid at informere indsendere når dennes job er afsluttet, eksempelvis via email. Det vil være betydeligt enklere kun at foretage behandling af resultater hver gang et sådant er klar, uden at have et permanent indsamlingsprogram kører. Vi er dog stadig nødsaget til at håndtere fejl i det enkelte job eller rapporteringen af jobafslutning. 
+Som alternativ tilbyder \mig\ at informere indsendere når dennes job er afsluttet, eksempelvis via email. Det vil være betydeligt enklere kun at foretage behandling af resultater hver gang et sådant er klar, uden at have et permanent indsamlingsprogram kører. Vi er dog stadig nødsaget til at håndtere fejl i det enkelte job eller rapporteringen af jobafslutning. 
 \fixme{flyttes til afsnit \ref{mig}}
+eller man kan sætte sin .procmail el.lign op til automatisk at kalde et script der
+henter status/stdout/stderr filer og hive resultater ud og lægge sammen når der
+kommer en mail.
+
+Da der, på nuværende tidspunkt, ikke er nogen form for pointsystem i \mig/\oc,
+er der ikke den store chance for folk vil prøve at snyde for at være den der
+laver flest point. Hvis folk derfor sender forkerte resultater ind må det
+nærmere betegnes som sabotage, og ikke snyd. Måder man kan forhindre
+snyd/sabotage kan være at sende de samme jobs ud flere gange, og sammenligne
+resultater, eller foretage stikprøve kontrol hvor man selv regner nogle af
+jobsne ud og sammenligner resultatet. 
+\fixme{skal det stå her?}
 
 \section{Beskrivelse af implementeringen}\label{implementering}
 \begin{verse}
@@ -362,13 +376,16 @@ Kildekoden implemeterer en rekursiv og en iterativ udgave af Takakens algoritme,
 \begin{itemize}
 	\item Beskrivelse af hvordan vi checkpointer og lokal test af checkpoint 
 	\item Implementering af ssl-kommunikation og mig-hjælpeprogrammer 
-	\item Pladsforbrug for resultater, checkpoints(13 cpu-år * checkpoint hvert kvarter), job
+	\item Pladsforbrug for resultater, checkpoints(1300 cpu-år * checkpoint hvert kvarter), job
 	\item 
 \end{itemize}
 
 Den udviklede kildekode er organiseret i følgende filer:
 \begin{description}
-	\item[Board.java] 
+	\item[NQueens.java] Testfil - Direkte java-port af Takakens c-kode. Kan køres som \oc\ job.
+	\item[NQueensL.java] Testfil - Direkte java-port af Takakens c-kode. Kan køres lokalt.
+	\item[Board.java] Testfil - Hjælpeklasse til NQueens/NQueensL
+	\item[Globals.java] Testfil - Hjælpeklasse til NQueens/NQueensL
 	\item[Board2.java] Basis-klasse for wrapper-klasser til backtrack
 	\item[CornerBoard.java] wrapper-klasse til backtrack for cornerboards
 	\item[MiddleBoard.java] wrapper-klasse til backtrack for middleboard
@@ -376,15 +393,12 @@ Den udviklede kildekode er organiseret i følgende filer:
 	\item[CheckPointAction.java] implementerer checkpointing
 	\item[CornerBoardBoardTest.java] unittests til CornerBoard
 	\item[MiddelBoardTest.java] unittests til MiddleBoard
-	\item[MiGClient.java] java-implementation af en del af \mig-grid-hjælpeprogrammerne
+	\item[MiGClient.java] java-implementation af en del af \mig-hjælpeprogrammerne
 	\item[MiGJob.java] klasse der beskriver et job og kan generere en .mRSL-fil
 	\item[MiGSSLSocketFactory.java] hjælpeklasse til MiGClient-klassen
 	\item[NQueenBoards.java] Jobgeneratoren, parallel-nqueen-algoritme, der genererer delproblemer i form af boards, hvor de første $m$ dronninger allerede er placeret. 
-	\item[NQueenJob.java] hovedklassen for et \mig-grid-\oc-job. 
-	\item[NQueens.java] Testfil - Direkte java-port af Takakens c-kode. Kan køres som \oc\ job.
-	\item[NQueensL.java] Testfil - Direkte java-port af Takakens c-kode. Kan køres lokalt.
+	\item[NQueenJob.java] hovedklassen for et \mig-\oc-job. 
 \end{description}
-
 
 
 
@@ -425,10 +439,7 @@ På figur \ref{solrelativecount}
 	\item Webstart\footnote{Se \url{http://java.sun.com/products/javawebstart/}} vil foretrække frem for webapplets.
 \end{itemize}
 
-
-
 I forbindelse med udvikling og afprøvning af en \oc-applet skal man være opmærksom på at Class-filer caches af browserens java-plugin. Ændringer i implementeringen kan medføre fejl under afviklingen på ressourcer der bruger forældede class-filer, selvom \mig opfatter jobbet som udført uden fejl. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver opdatering af denne cache. Man kan altså riskikere at appletten får en undtagelse på serialVersionUID og derved markeres jobbet som færdigt, uden at være kommet til et resultat. En uhensigtsmæssighed i forbindelse med undtagelseshåndtering i basisklassen MigJob.java gør at jobbet alligevel vil se ud til at være afsluttet succesfuldt. 
-
 
 \fixme{Dette er stadig i noteform og måske redundant ifht. tidligere afsnit}
 langsom til at sende resultatet til serveren hvis browseren dør mens den er ved
@@ -441,7 +452,8 @@ det umiddelbart til..
 
 \oc applet'en kommer hele tiden med en popup fejl, hvis brugeren ikke har
 certificat (skal nok lige verificeres, var noget jeg fik at vide af Asser, da
-han legede ressource for \mig)
+han legede ressource for mig) \fixme{den kommer vidst nok ikke hele tiden, så
+vidt jeg husker, kun i starten}
 
 Job Status side ala. Files/Folders
 tingen, så man nemmere kan vælge flere jobs og cancelle/resubmitte.. og
