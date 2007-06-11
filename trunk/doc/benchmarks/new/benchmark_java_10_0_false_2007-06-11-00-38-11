@@ -1,0 +1,13 @@
+type time total unique
+cb 1 32 4
+cb 0 88 11
+cb 2 32 4
+cb 0 80 10
+cb 0 8 1
+cb 0 16 2
+cb 0 0 0
+mb 4 276 35
+mb 2 148 19
+mb 0 44 6
+mb 0 0 0
+10: 724 92 0.014 11
