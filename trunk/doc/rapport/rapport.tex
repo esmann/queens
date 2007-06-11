@@ -27,7 +27,7 @@
 \usepackage{amssymb,amsmath}
 \usepackage{lscape}
 \usepackage{multicol}
-\usepackage[draft,inline,nomargin,marginclue]{fixme}
+\usepackage[draft,inline,nomargin]{fixme}
 \usepackage{tikz}
 \usetikzlibrary{trees}
 %\usepackage{pgflibrarytikztrees}
@@ -100,7 +100,7 @@
 \label{fig:nq5eks}
 \end{figure}
 
-Dette afsnit beskriver \nq\ i den grad det er fundet nødvendigt for parrallelisering af problemet på \mig. En kort beskrivelse af den overordnede algoritme og backtracking paradigmet beskrives i \ref{backtracking}. Repræsentation af skakbrættet som et bitmap, er beskrevet i \ref{bitmapmodellen}. Takaken's sekventielle udgave\ref{nquuen.c} og implikationer af optimeringerne beskrives kort i \ref{takalgo} og \ref{parrallel}
+Dette afsnit beskriver \nq\ i den grad det er fundet nødvendigt for parrallelisering af problemet på \mig. En kort beskrivelse af den overordnede algoritme og backtracking paradigmet beskrives i \ref{backtracking}. Repræsentation af skakbrættet som et bitmap, er beskrevet i \ref{bitmapmodellen}. Takaken's sekventielle udgave\ref{nqueen.c} og implikationer af optimeringerne beskrives kort i \ref{takalgo} og \ref{parrallel}
 
 
 \subsection{Backtracking}\label{backtracking}
@@ -210,7 +210,7 @@ En normal fordeling af løsninger uden takakens optimeringer vil være distribue
 \label{fig:solutionspersekund}
 \end{figure}
 
-Det ses på figur \ref{midterandel} at andelen af løsninger for et bræt hvor den første dronning ikke placeres i et hjørne er over 90\% og stigende for større $n$. Sammenhold med figur \ref{solutionspersekund} kan vi se at antallet af løsninger er relateret til køretiden med samme faktor for forskellige $n$. Så hvis hvis der er over 90\% af løsninger i et delproblem vil det også tage over 90\% af tiden at optælle dem.
+Det ses på figur \ref{fig:midterandel} at andelen af løsninger for et bræt hvor den første dronning ikke placeres i et hjørne er over 90\% og stigende for større $n$. Sammenhold med figur \ref{fig:solutionspersekund} kan vi se at antallet af løsninger er relateret til køretiden med samme faktor for forskellige $n$. Så hvis hvis der er over 90\% af løsninger i et delproblem vil det også tage over 90\% af tiden at optælle dem.
 
 \subsection{Paralleliserings metode}\label{parrallel}
 
@@ -497,16 +497,12 @@ sendJobFinished
 \bibliography{rapport,nqueens}
 
 \appendix
-%\landscape
-%\tiny
-
-
-%\section{Kildekode}
-%\subsection{nqueens.c}\label{nqueen.c}
-%\verbatiminput{../../nqueens.c}
+\section{Kildekode}
 %\input{kode}
+\newpage
 \section{Synopsis}
-%\input{synopsis.tex}
+%\input{../synopsis/problemformulering.tex}
+%\input{../synopsis/afgraensninger.tex}
 
 
 %\input{benchmark-output.tex}
