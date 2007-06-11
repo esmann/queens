@@ -109,7 +109,8 @@ En øvre grænse for antallet af løsninger er O(n!). Det indses ved at der ikke
 
 Backtracking vil for \nq gennemløbe en permutering af opstillingsvektoren  $(p_1,p_2,\ldots..p_k)$, dybde-først, og \emph{undlade} valg $p_k \notin A_k$, hvor $A_k\subseteq \{1,\ldots,n\}$  som overholder nqueen problemet. 
 
-En overordnet algoritme for nqueen problemet kunne implementere opstillingsvektoren som en stak, og forløbe således:
+En overordnet algoritme for nqueen problemet kunne implementere opstillingsvektoren som en stak, og forløbe således
+
 \begin{itemize}
 \item Ved start er stakken tom. (Det er tilladt \emph{ikke} at placere en dronning)
 \item På stakken skubbes den tilladte placering, $p_k \in A_k$, hvor $p_k$ har den laveste værdi af alle elementer i $A_k$, $p_k$ fjernes derefter fra $A_k$.
@@ -410,21 +411,27 @@ Den udviklede kildekode er organiseret i følgende filer:
 
 
 
-\subsubsection{Resultatets størrelse}
+\subsubsection{Antallet af løsninger}
+\begin{figure}[h]
+\begin{center}
+\includegraphics{../benchmarks/resultatstorrelse.pdf}
+\caption{Figuren viser $Q(n)/Q(n-1)$ for $n=15\ldots25$. Det set faktor som er let stigende. Resultatet for $n=26$ kan formodes maximalt 15 gange større, for at være på den sikre side}
 
-\begin{figure}
-\caption{Forøgelse af antallet af resultater for $n=10\ldots18$}
-\label{solrelativecount}
+\label{fig:solrelativecount}
+\end{center}
 \end{figure}
 
 
-I en implementation med \texttt{java.Math.BigInteger} kan vi se at der vil være et performance tab på 2\% i forhold til brugen af af den primitive type \texttt{long} \fixme{Tabel med TidLong TidBiginter og ProcentForøgelse}. 
-På figur \ref{solrelativecount}
+
+I en implementation med \texttt{java.Math.BigInteger} kan vi se at der vil være et performance tab på 2\% i forhold til brugen af af den primitive type \texttt{int} \fixme{Tabel med Tid int Tid Long, Tid Biginter  og ProcentForøgelse}. 
+På figur \ref{fig:solrelativecount} ses at 
+
+
 
 
 \section{Afprøvning og benchmarking}
 %Benchmarking-delens fremmeste formål er at finde svar på en række spørgsmål inden udregningen sættes igang.
-%Reelt har vi kun en enkelt parameter vi kan skrue på, nemlig $m$ - antallet af dronninger vi placerer på hver board før vi genererer et \mig\ job til at regne videre på det board. 
+%Reelt har vi kun en enkelt parameter vi kan skrue på, nemlig $m$ - antallet af dronninger vi placerer på hver board før vi genererer et \mig\ job til at regne videre på det board. te
 %Hvilket forhold mellem 
 
 %\subsection{Takaken}
@@ -439,12 +446,15 @@ På figur \ref{solrelativecount}
 %\input{forbedringer.tex}
 
 \begin{description}
-	\item[Job fejler ikke hvis der kastes en kastes en \texttt{java.lang.Error}]  Java har både \texttt{Exceptions} og \texttt{Error} der begge er af typen \texttt{java.lang.Throwable}. \oc griber kun \texttt{Exceptions} som \oc og rapportere som at jobbet er succesfuldt afsluttet. Dette kan  
+	\item[Job fejler ikke hvis der kastes en kastes en \texttt{java.lang.Error}]  Java har både \texttt{Exceptions} og \texttt{Error} der begge er af typen{java.lang.Throwable}. \oc griber kun \texttt{Exceptions} som \oc og rapportere som at jobbet er succesfuldt afsluttet. Dette kan  
 	\item Ens job tvinges til at afhænge af MiG.nqueen.JoB
-	\item File I/O følger ikke Inputstream / Outputstream	
-	\item Brug af suns egen HTTP implementation. Brug i stedet http-commons fra Apache
-	\item Vi har glemt en masse 
-	\item Webstart\footnote{Se \url{http://java.sun.com/products/javawebstart/}} vil foretrække frem for webapplets.
+	\item Brug af suns egen HTTP implementation. Brug i stedet http-commons f
+	\item Input/Output til MiG hjemmedir ikke Inputstream / Outputstream objekter. Men wrapped i en klasse der repræsentere C/Python tankegang.
+
+	\item[Webstart] Webstart\footnote{Se \url{http://java.sun.com/products/javawebstart/}} er at foretrække frem for applets, da de startes seperat uden for browseren. Fra serversiden skal der bare generes en jnlp (xml) fil(se eksempel i \ref{jnlp}) i stedet for en html fil. Eksemplet gør brug af applet kombabilitet, men det er ikke nødvendigt at arve fra Applet klassen.
+	\item[Abstrakt job klasse] Det er en begræsningen af man skal arve fra \texttt{MiG.oneclick.JoB} klassen. Det gør det svært at teste en kode for korrekthed lokalt da Job selv arver fra \texttt{java.lang.Applet}
+	\itemn[CPU tid] Det er ikke mulig
+	
 \end{description}
 
 I forbindelse med udvikling og afprøvning af en \oc-applet skal man være opmærksom på at Class-filer caches af browserens java-plugin. Ændringer i implementeringen kan medføre fejl under afviklingen på ressourcer der bruger forældede class-filer, selvom \mig opfatter jobbet som udført uden fejl. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver opdatering af denne cache. Man kan altså riskikere at appletten får en undtagelse på serialVersionUID og derved markeres jobbet som færdigt, uden at være kommet til et resultat. En uhensigtsmæssighed i forbindelse med undtagelseshåndtering i basisklassen MigJob.java gør at jobbet alligevel vil se ud til at være afsluttet succesfuldt. 
@@ -494,6 +504,8 @@ sendJobFinished
 
 %\bibliographystyle{plainnat}
 
+
+
 \bibliography{rapport,nqueens}
 
 \appendix
@@ -503,6 +515,7 @@ sendJobFinished
 \section{Synopsis}
 %\input{../synopsis/problemformulering.tex}
 %\input{../synopsis/afgraensninger.tex}
+
 
 
 %\input{benchmark-output.tex}
