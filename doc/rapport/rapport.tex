@@ -296,50 +296,58 @@ Det bliver naturligvis et krav at alle delproblemer vi sender ud kan beregnes ud
 
 
 \section{Problemstørrelse og jobschedulering}
-Et centralt emne ved parallelisering af algoritmer er partitionering af de data der beregnes på. Den ideelle opdeling definerer vi som en opdeling der sikrer at følgende gælder:
+
+I det følgende benyttes disse forkortelser for ofte anvendte begreber.
+\begin{description}
+	\item[$Str_{job}$] Beregningsstørrelse for ét job.
+	\item[$Antal_{jobs}$] Antallet af job.
+	\item[$Hast_{ress}$] En ressources hastighed (f.eks. defineret som den tid det tager ressourcen at foretage en standardberegning)\footnote{En mere præcis definition af ressourcehastighed er ikke nødvendig her. Det vigtige er blot at værdien stiger for en langtsommere ressource}.
+	\item[$Antal_{ress}$] Antallet af ressourcer.  
+\end{description}
+Et centralt emne ved parallelisering af algoritmer er partitionering af de data der beregnes på. Den ideelle situation er at:
 \begin{enumerate}
-	\item[1.] Alle job har samme problemstørrelse - dvs. job tager samme tid at beregne.\label{beregningstid}
-	\item[2.] Antallet af jobs er præcis lig antallet af ressourcer.\label{antal}
-	\item[3.] Repræsentationen af job og resultater har minimal størrelse.\label{jobbeskrivelse}
-\end{enumerate} 
-Og med de yderligere antagelser at
-\begin{enumerate}
-	\item[4.] Ressourcer er homogene
-	\item[5.] Ressourcer er permanente
+	\item $Str_{job}$ er den samme for alle job. (Job er homogene) \label{beregningstid}
+	\item $Antal_{jobs}$ er præcis lig $Antal_{ress}$.\label{antal}
+	\item $Hast_{ress}$ er den samme for alle ressourcer. (Ressourcer er homogene) 
+	\item Ressourcer er permanente
+	\item Repræsentationen af job og resultater har minimal størrelse.\label{jobbeskrivelse}
 \end{enumerate}
 
-I denne ideelle situation opnåes maksimal udnyttelse af tilgængelige ressourcer, og samtidig minimalt overhead i forbindelse med jobskift og dataoverførsel.
+I denne ideelle situation opnås maksimal udnyttelse af tilgængelige ressourcer, og samtidig minimalt overhead i forbindelse med jobskift og dataoverførsel.
 
-I praksis er disse antagelser ikke særligt meget om de ressourcer vi får stillet til rådighed. Vi er nødt til at regne 
+I praksis er disse antagelser ikke særligt meget om de ressourcer vi får stillet til rådighed. Vi er nødt til at regne  
 \begin{itemize}
-	\item Ressourcer er heterogene - både beregnings- og overførselstid. 
-	\item Ressourcer er flygtige
-	\item Antallet af ressourcer varierer
-	\item Delproblemer er heterogene
-	\
+	\item $Hast_{ress}$ er ikke kendt for nogen ressourcer (Ressourcer er heterogene)  
+	\item Ressourcer er upålidelige
+	\item $Antal_{ress}$ varierer
+	\item Job er heterogene
 \end{itemize}
 
-I det nedenstående vil vi undersøge hvordan vi kan nærme os den ideelle situation på trods af disse praktiske problemer. Vi definerer  $T_{oh}(r{i})$ som det samlede overhead, for ressourcen $r_{i}$, under beregning af Q(n) på gridet, dvs. al overførsels- og beregningstid der ikke bruges i selve algoritmen. $T_{idle}(r_{i})$ som den tid en uudnyttet ressource $r_{i}$ kunne have brugt på beregning af selve alogritmen, hvis den havde haft et job at køre. Og $T_{split}(Q(n))$ som den samlede tid for opsplitning af Q(n) i delproblemer, og $m$ antallet af ressourcer. Nu kan vi formulere dette som et ønske om at minimere udtrykket $(\sum_{i=1}^{m}{T_{oh}(r_{i}) + T_{idle}(r_{i})}) + T_{split}(Q(n))$ for alle tider $T$. Læg mærke til at dette udtryk ikke refererer til antallet af opgaver. Men i stedet til antallet af henholdsvis udnyttede og uudnyttede ressourcer.  
+Idet der arbejdes med heterogene ressourcer kan det minimale overhead ikke opnås. Antager man at $Antal_{ress}$ er kendt vil det mindst mulige, samlede overhead opnås ved at have $Antal_{jobs} = Antal_{ress}$. Spildtiden vil til gengæld være stor. Den vil være summen af forskellene i beregningstid op til den langsommeste ressource, for alle ressourcer. Og den samlede beregning vil tage samme tid som det største job.
 
-\ref{beregningstid} er for \nq\ ikke det samme som størrelsen af de del-data der regnes på. 
+Antager man igen at antallet af ressourcer er kendt, vil man, med en jobmængde der er større end ressourcemængden, få en mere jævn udnyttelse af ressourcerne. Jo større antallet af job i forhold til ressourcer, desto mere jævnt bliver ressourcerne brugt. Dette er netop fordi jobstørrelsen falder når antallet af job stiger. Worst-case for spildtid er tilfældet hvor der kun er et job tilbage at beregne, og dette job netop det største. I dette tilfælde vil spildtiden mindst være antallet af ressource - 1 * størrelsen af det største job.
 
-Som det ses på \ref{fig:todo} at beregningstiden for et delproblem stiger med antallet af løsninger i delproblemet. Vi kan altså ikke ikke ved opdeling af problemet kende de enkelte delproblemers beregningstid. Kunne vi det ville vi allerede kende antallet af løsninger. Istedet kan vi opdele problemet i dele med samme data-størrelse - dvs. samme antal dronninger mangler at blive placeret. 
+Det essentielle er helt at undgå ubenyttede ressourcer, uden at komme til at skrue for meget op for antallet af job, og derved øge overheadet.
+
+Idet både ressourcer og job er heterogene kan de behandles som et samlet problem. Er den maksimale forskel i hastighed mellem to ressourcer T (målt ved den tid ressourcen er om at regne en standardopgave), og den maksimale forskel i størrelse mellem to job T' vil vores spildte i eksemplet overfor pludselig være $T'*T *$ antallet af ressourcer -1.
+
+
+%I det nedenstående vil vi undersøge hvordan vi kan nærme os den ideelle situation på trods af disse praktiske problemer. Vi definerer  $T_{oh}(r{i})$ som det samlede overhead, for ressourcen $r_{i}$, under beregning af Q(n) på gridet, dvs. al overførsels- og beregningstid der ikke bruges i selve algoritmen. $T_{idle}(r_{i})$ som den tid en uudnyttet ressource $r_{i}$ kunne have brugt på beregning af selve alogritmen, hvis den havde haft et job at køre. Og $T_{split}(Q(n))$ som den samlede tid for opsplitning af Q(n) i delproblemer, og $m$ antallet af ressourcer. Nu kan vi formulere dette som et ønske om at minimere udtrykket $(\sum_{i=1}^{m}{T_{oh}(r_{i}) + T_{idle}(r_{i})}) + T_{split}(Q(n))$ for alle tider $T$. Læg mærke til at dette udtryk ikke refererer til antallet af opgaver. Men i stedet til antallet af henholdsvis udnyttede og uudnyttede ressourcer.  
+
+
+Som det ses på \ref{fig:todo} at beregningstiden for et delproblem stiger med antallet af løsninger i delproblemet. Vi kan altså ikke ikke ved opdeling af problemet kende de enkelte delproblemers beregningstid. Istedet kan vi opdele problemet i dele med samme data-størrelse - dvs. samme antal dronninger mangler at blive placeret. 
 
 \fixme{hvad kan vi sige om om beregningstiden for problemer med samme data-størrelse? Øvre grænse for variationen i køretid?} \fixme{indsæt reference til benchmarks, der viser beregningstid for hvert delproblem, og skriv noget om hvad benchmarks viser vi kan regne med ifm. beregningstid} 
 
 Beregningstiden kompliceres yderligere af at delproblemerne skal beregnes på heterogene ressourcer, som vi ikke kan kende hastigheden af før delopgaven er færdigregnet. Heller ikke antallet af tilgængelige ressourcer (\ref{antal}) har vi ingen mulighed for at kende. Ydermere resulterer Takakens algoritme, som genemgået i \ref{takalgo}, i en opdeling i delproblemer med væsentligt forskellige beregningstider.
 
 
-\fixme{beskriv vores løsning indgående}
+\section{Opdeling af opgaver i praksis}
+\begin{verse}
+	Herunder vil vi, fortrinsvis ved at kigge på data for problemstørrelser for mindre $n$, forsøge at finde frem til en optimal opdeling at problemet for $n=26$.
+\end{verse}
 
-\fixme{pointe : Antal job må (helst) aldrig blive mindre end antal ressourcer}
-
-Idet både ressourcer og delproblemer er heterogene kan vi behandle dem som et samlet problem. Delopgaverne bliver så at sige bare endnu mere forskellige.
-\fixme{pointe : den største forøgelse at samlet beregningstid vil forekomme hvis den langtsommeste ressource får den største delopgave når alle andre opgaver er regnet}
-
-\fixme{Vi laver bræt med samme antal forudplacerede dronninger, og lader ønsket til antallet af bræt diktere antal forudplacerede dronninger - hvilke andre metoder kunne man benytte?}
-
-\fixme{hvordan opretter vi job, hvad består et job af(serialize, mrsl)}
+I \mig skemalægges afviklingen af job som en FIFO-kø. Dvs. at job afvikles i samme rækkefølge som de submittes til gridet. Ved afbryding af jobbet eller ved udløb af tidsfristen for afvikling af jobbet placeres jobbet bagerst i køen. 
 
 
 Denne løsning kan bedst karakteriseres som såkaldt \emph{statisk orkestration}. Opdelingen i delproblemer er endeligt foretaget inden beregningen af delproblemer begynder. Som beskrevet er der et grundlæggende problem ved en statisk opdeling, nemlig at beregningen ikke kan tilpasse sig til en forøgelse af mængden af ressourcer. Istedet bliver man nødt til fra starten at generere nok opgaver til at kunne udnytte en eventuel ressourcetilgang. Samme problem opstår, på grund af heterogene ressourcer og opgaver, når antallet af delopgaver falder henimod slutningen af udregningen. 
@@ -347,41 +355,9 @@ Denne løsning kan bedst karakteriseres som såkaldt \emph{statisk orkestration}
 For at afhjælpe dette problem kan joboprettelsen gøres mere dynamisk. Den indledende mængde delopgaver kan tilpasses det øjeblikkelige antal ressourcer. Herefter opdeles en eller flere af disse i mindre delopgaver, så snart der er ledige ressourcer. På denne måde sikres det at ingen beregningskraft står ubrugt hen. 
 Det bedste valg af job til genopdeling vil være det jo der kræver mest beregningstid, da dette vil resultere i den mindst mulige spredning i beregningsstørrelse for de alle opgaver efter opdelingen. På figur \ref{tabel:boardtimes} ser vi eksempler for beregningstiden for hver delopgave. Det er tydeligt at de følger et mønster, og at vi kan bestemme et indbyrdes størrelsesforhold mellem hhv. alle hjørne- og midtebræt. Dette giver os en god idé om hvilken delopgave det bedst kan betale sig at splitte op. Tilgengæld har vi ikke mulighed for at vide, om beregningen af denne opgave allerede er ved at være færdig. 
 
-Løsningen kører en separat tråd, der foretager checkpointing, og en timertråd, der giver giver beregningen besked om at afgive cpu'en til checkpointtråden, når den når et sikkert sted.
-
-\section{Parallelisering af Takaken's nqueen I Java}
-
-\subsection{Generelle implementeringsovervejelser}
-\subsubsection{Opdeling af opgaver}
 
 
-\subsubsection{Skemalægning af job}
-I \mig skemalægges afviklingen af job som en FIFO-kø. Dvs. at job afvikles i samme rækkefølge som de submittes til gridet. Ved afbryding af jobbet eller ved udløb af tidsfristen for afvikling af jobbet placeres jobbet bagerst i køen.  
-
-
-
-
-\subsubsection{Bugs og mangler}\label{bugs}
-\begin{itemize}
-	\item Et job fejler ikke hvis jobbet kaster en java.lang.Error (Forskellig fra Java.lang.Exception, begge har dog typen java.lang.Throwable)
-	\item Ens job tvinges til at afhænge af MiG.nqueen.JoB
-	\item File I/O følger ikke Inputstream / Outputstream	
-	\item Brug af suns egen HTTP implementation. Brug i stedet http-commons fra Apache
-	\item Vi har glemt en masse 
-	\item Webstart vil klart være at foretrække. Det er rigtigt at der kommer en certifikat fejl (https) - men så længe certifikat ikke er i browserens CA liste vil browseren i stedet komme med en advarsel.q
-\end{itemize}
-
-I forbindelse med udvikling og afprøvning af en \oc-applet skal man være opmærksom på at Class-filer caches af browserens java-plugin. Ændringer i implementeringen kan medføre fejl under afviklingen på ressourcer der bruger forældede class-filer, selvom \mig opfatter jobbet som udført uden fejl. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver opdatering af denne cache. Man kan altså riskikere at appletten får en undtagelse på serialVersionUID og derved markeres jobbet som færdigt, uden at være kommet til et resultat. En uhensigtsmæssighed i forbindelse med undtagelseshåndtering i basisklassen MigJob.java gør at jobbet alligevel vil se ud til at være afsluttet succesfuldt. Se afsnit \cite{bugs}. 
-
-
-\subsection{Konkrete implementeringsproblemer}
-\subsubsection{\mig\ job}\label{label}
-\subsubsection{Iterative udgave}
-\subsection{Checkpoint}
-
-Fordi checkpointing gemmer ikke stack.
-
-\subsection{Resultatindsamling og -visning}
+\section{Resultatindsamling og -visning}
 En måde et holde styr på den samlede beregning af en løsning på \nq\ er, at have en vedligeholdelsesproces kørende, der sørger for at 
 \begin{itemize}
 	\item Genkøre fejlede job
@@ -391,15 +367,23 @@ En måde et holde styr på den samlede beregning af en løsning på \nq\ er, at 
 Dette program kan for eksempel være det samme der står for at oprette vores jobs i første omgang. Muligheden for at tilpasse ikke-kørte jobs på baggrund af informationer om gridets tilstand (antallet af tilgængelige ressourcer). 
 
 Som alternativ tilbyder \mig-grid at informere indsendere når dennes job er afsluttet, eksempelvis via email. Det vil være betydeligt enklere kun at foretage behandling af resultater hver gang et sådant er klar, uden at have et permanent indsamlingsprogram kører. Vi er dog stadig nødsaget til at håndtere fejl i det enkelte job eller rapporteringen af jobafslutning. 
+\fixme{flyttes til afsnit \ref{mig}}
 
-- Frej Lad \mig sende en mail pr. færdigt job? Og så et job der checker 'jævnligt' at alle mails er modtaget?
-
-
-
-\section{Implementeringens struktur}\label{implementeringensstruktur}
+\section{Beskrivelse af implementeringen}\label{implementering}
 \begin{verse}
-	Følgende er ment som en læsevejledning til programmets kildekode, såvel som en vejledning til afvikling af programmet med forskellige formål. 
+	Følgende er ment som en beskrivelse af den læsevejledning til programmets kildekode, såvel som en vejledning til afvikling af programmet med forskellige formål. 
 \end{verse}
+
+Den udviklede kildekode er beregnet til at undersøge hvordan \nq\ paralleliseres. Hovedformålet er at kunne afvikle prøvekørsler, der vil give en forståelse af den optimale jobopdeling- og scheduleringsstruktur for $n=26$.
+
+Kildekoden implemeterer en rekursiv og en iterativ udgave af Takakens algoritme, som beskrevet i afsnit \ref{takalgo}, og giver mulighed for enten at afvikle disse lokalt eller indsende dem som job til \mig. Den lokale afvikling er så vidt muligt den samme kode som hvad der afvikles i \oc. Dette er med henblik på at sikre korrekthed og kunne foretage flest mulige test lokalt, før de køres på gridet. 
+
+\begin{itemize}
+	\item Beskrivelse af hvordan vi checkpointer og lokal test af checkpoint 
+	\item Implementering af ssl-kommunikation og mig-hjælpeprogrammer 
+	\item Pladsforbrug for resultater, checkpoints(13 cpu-år * checkpoint hvert kvarter), job
+	\item 
+\end{itemize}
 
 Den udviklede kildekode er organiseret i følgende filer:
 \begin{description}
@@ -420,9 +404,6 @@ Den udviklede kildekode er organiseret i følgende filer:
 	\item[NQueensL.java] Testfil - Direkte java-port af Takakens c-kode. Kan køres lokalt.
 \end{description}
 
-Programmet kan afvikles lokalt på en enkelt maskine eller på \mig-grid,  
-
-
 
 \section{Afprøvning og benchmarking}
 %Benchmarking-delens fremmeste formål er at finde svar på en række spørgsmål inden udregningen sættes igang.
@@ -439,6 +420,19 @@ Programmet kan afvikles lokalt på en enkelt maskine eller på \mig-grid,
 \input{benchmark.tex}
 \section{Forbedringer til \oc\ og \mig}
 %\input{forbedringer.tex}
+
+\begin{itemize}
+	\item Et job fejler ikke hvis jobbet kaster en java.lang.Error (Forskellig fra Java.lang.Exception, begge har dog typen java.lang.Throwable)
+	\item Ens job tvinges til at afhænge af MiG.nqueen.JoB
+	\item File I/O følger ikke Inputstream / Outputstream	
+	\item Brug af suns egen HTTP implementation. Brug i stedet http-commons fra Apache
+	\item Vi har glemt en masse 
+	\item Webstart vil klart være at foretrække. Det er rigtigt at der kommer en certifikat fejl (https) - men så længe certifikat ikke er i browserens CA liste vil browseren i stedet komme med en advarsel.q
+\end{itemize}
+
+I forbindelse med udvikling og afprøvning af en \oc-applet skal man være opmærksom på at Class-filer caches af browserens java-plugin. Ændringer i implementeringen kan medføre fejl under afviklingen på ressourcer der bruger forældede class-filer, selvom \mig opfatter jobbet som udført uden fejl. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver opdatering af denne cache. Man kan altså riskikere at appletten får en undtagelse på serialVersionUID og derved markeres jobbet som færdigt, uden at være kommet til et resultat. En uhensigtsmæssighed i forbindelse med undtagelseshåndtering i basisklassen MigJob.java gør at jobbet alligevel vil se ud til at være afsluttet succesfuldt. 
+
+
 \fixme{Dette er stadig i noteform og måske redundant ifht. tidligere afsnit}
 langsom til at sende resultatet til serveren hvis browseren dør mens den er ved
 at sende resultatet til serveren, er det ikke sikkert den når at smide hele
