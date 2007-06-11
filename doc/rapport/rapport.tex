@@ -410,7 +410,7 @@ Den udviklede kildekode er organiseret i følgende filer:
 \end{figure}
 
 
-I en implementation med \texttt{java.Math.BigInteger} kan vi se at der vil være et performance tab på 2\% i forhold til brugen af af den primitive type \textt{long} \fixme{Tabel med TidLong TidBiginter og ProcentForøgelse}. 
+I en implementation med \texttt{java.Math.BigInteger} kan vi se at der vil være et performance tab på 2\% i forhold til brugen af af den primitive type \texttt{long} \fixme{Tabel med TidLong TidBiginter og ProcentForøgelse}. 
 På figur \ref{solrelativecount}
 
 
@@ -430,14 +430,14 @@ På figur \ref{solrelativecount}
 \section{Forbedringer til \oc\ og \mig}
 %\input{forbedringer.tex}
 
-\begin{Description}
-	\item[Job fejler ikke hvis der kastes en kastes en \texttt{java.lang.Error}]  Java har både \textt{Exceptions} og \textt{Error} der begge er af typen{java.lang.Throwable}. \oc griber kun \textt{Exceptions} som \oc og rapportere som at jobbet er succesfuldt afsluttet. Dette kan  
+\begin{description}
+	\item[Job fejler ikke hvis der kastes en kastes en \texttt{java.lang.Error}]  Java har både \texttt{Exceptions} og \texttt{Error} der begge er af typen \texttt{java.lang.Throwable}. \oc griber kun \texttt{Exceptions} som \oc og rapportere som at jobbet er succesfuldt afsluttet. Dette kan  
 	\item Ens job tvinges til at afhænge af MiG.nqueen.JoB
 	\item File I/O følger ikke Inputstream / Outputstream	
 	\item Brug af suns egen HTTP implementation. Brug i stedet http-commons fra Apache
 	\item Vi har glemt en masse 
 	\item Webstart\footnote{Se \url{http://java.sun.com/products/javawebstart/}} vil foretrække frem for webapplets.
-\end{itemize}
+\end{description}
 
 I forbindelse med udvikling og afprøvning af en \oc-applet skal man være opmærksom på at Class-filer caches af browserens java-plugin. Ændringer i implementeringen kan medføre fejl under afviklingen på ressourcer der bruger forældede class-filer, selvom \mig opfatter jobbet som udført uden fejl. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver opdatering af denne cache. Man kan altså riskikere at appletten får en undtagelse på serialVersionUID og derved markeres jobbet som færdigt, uden at være kommet til et resultat. En uhensigtsmæssighed i forbindelse med undtagelseshåndtering i basisklassen MigJob.java gør at jobbet alligevel vil se ud til at være afsluttet succesfuldt. 
 
