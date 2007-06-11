@@ -12,12 +12,11 @@
 % bound =
 % 
 
-
 \documentclass[pdf,draft,a4paper,11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[danish]{babel}
 \usepackage{natbib}
-\usepackage{a4}
+
 \bibliographystyle{dk-plainnat}
 
 
@@ -47,10 +46,10 @@
 \newcommand{\nq}{N-dronning-problemet}
 
 
-%\headheight 14.5pt                             %H<F8>jden af headeren
-%\textwidth 5.87in                              %Tekstbredden
+\headheight 14.5pt                             %H<F8>jden af headeren
+\textwidth 5.87in                              %Tekstbredden
 
-%\oddsidemargin 0.2in                           %Venstre margin er 1in + dette tal
+\oddsidemargin 0.2in                           %Venstre margin er 1in + dette tal
                                                %Med en textwidth p<E5> 5.87in og en
                                                %oddsidemargin p<E5> 0.2 bliver marginerne
                                                %lige store p<E5> A4 som er 8,27in bredt
@@ -124,13 +123,13 @@ Dette afsnit beskriver \nq\ i den grad det er fundet nødvendigt for parrallelis
 
 \subsection{Backtracking}\label{backtracking}
 
-En øvre grænse for antallet af løsninger er O(n!). Det indses ved at der ikke kan placeres to dronninger på samme række eller kolonne. En løsning består altså af maximalt $n$ (max antal rækker) forskellige dronninger, hvor ingen må være i samme kolonne. Løsningen i \ref{fig:nq5eks} kan så noteres som en \textit{opstillingsvektor} $2,4,1,5,3$, hvor værdien svarer til indekset på den kolonne dronningen er placeret i. Alle opstillinger svarer til alle  permutationer af ${1,\ldots,n}$. En naiv brute force metode vil være at lave alle mulige permutationer, og derefter se om der er tilladte opstillinger.
+En øvre grænse for antallet af løsninger er O(n!). Det indses ved at der ikke kan placeres to dronninger på samme række eller kolonne. En løsning består altså af maximalt $n$ (max antal rækker) forskellige dronninger, hvor ingen må være i samme kolonne. Løsningen i \ref{fig:nq5eks} kan så noteres som en \emph{opstillingsvektor} $2,4,1,5,3$, hvor værdien svarer til indekset på den kolonne dronningen er placeret i. Alle opstillinger svarer til alle  permutationer af ${1,\ldots,n}$. En naiv brute force metode vil være at lave alle mulige permutationer, og derefter se om der er tilladte opstillinger.
 
-Backtracking vil for \nq gennemløbe en permutering af opstillingsvektoren  $(p_1,p_2,\ldots..p_k)$, dybde-først, og \textit{undlade} valg $p_k \notin A_k$, hvor $A_k\subseteq \{1,\ldots,n\}$  som overholder nqueen problemet. 
+Backtracking vil for \nq gennemløbe en permutering af opstillingsvektoren  $(p_1,p_2,\ldots..p_k)$, dybde-først, og \emph{undlade} valg $p_k \notin A_k$, hvor $A_k\subseteq \{1,\ldots,n\}$  som overholder nqueen problemet. 
 
 En overordnet algoritme for nqueen problemet kunne implementere opstillingsvektoren som en stak, og forløbe således:
 \begin{itemize}
-\item Ved start er stakken tom. (Det er tilladt \textit{ikke} at placere en dronning)
+\item Ved start er stakken tom. (Det er tilladt \emph{ikke} at placere en dronning)
 \item På stakken skubbes den tilladte placering, $p_k \in A_k$, hvor $p_k$ har den laveste værdi af alle elementer i $A_k$, $p_k$ fjernes derefter fra $A_k$.
 \item Hvis den partielle løsning $(p_1,\ldots,p_{i-1})$ ikke har et $p_i \in A_i$, prøves et nyt valg for $p_{i-1} \in A_{i-1}$, hvis dette ikke findes prøves der for $i-2$ og så fremdeles. 
 \item Hvis $i=k$ har vi en løsning,  og der backtrackes som ovenfor.
@@ -138,9 +137,11 @@ En overordnet algoritme for nqueen problemet kunne implementere opstillingsvekto
 Dette køres indtil der ikke er flere elementer at tilføje en tom stak.
 Backtracking teknikker og introduktion er bl.a. beskrevet af \cite{Golomb72}.
 
-Stakkens tilstand kan visualiseres med et træ. Knuder angiver den valgte placering, mens kanter angiver de mulige valg der kan foretages.  Træet har en maksimal højde på $n$. Hvor højden for roden er "0". Antallet af børn er antallet af \textit{mulige} valg som ikke blokeres af tidligere placeringer. 
+Stakkens tilstand kan visualiseres med et træ. Knuder angiver den valgte placering, mens kanter angiver de mulige valg der kan foretages.  Træet har en maksimal højde på $n$. Hvor højden for roden er "0". Antallet af børn er antallet af \emph{mulige} valg som ikke blokeres af tidligere placeringer. 
 
 \begin{figure}[!h]
+\begin{center}
+	
 
 \begin{tikzpicture}[node distance=2cm]
 \tikzstyle{level 1}=[sibling distance=0.5cm]
@@ -170,8 +171,10 @@ Stakkens tilstand kan visualiseres med et træ. Knuder angiver den valgte placer
 \caption{
 Dette beslutningstræ viser backtracking efter at $2$ er valgt i række $1$. Blade i dybde $n$ angiver én løsning. Bemærk at roden er række 0.}
 \label{fig:tree}
+\end{center}
 \end{figure}
 
+Jo højere oppe i træet vi fjerne et valg, jo større er det deltræ der vil blive fjernet.
 
 \subsection{Bitmap-modellen}\label{bitmapmodellen}
 
@@ -204,24 +207,33 @@ Da træets højde er begrænset af $n$, er det maksimale pladsforbrug $antal\ bi
 
 \subsection{Takakens algoritme}\label{takalgo}
 
-For $Q(n)$ er mange løsninger spejlinger og roteringer af andre - og betragtes som en \textit{unik} løsning. Ved kun at betragte unikke $S(n)$ løsninger, kan vi mindske antallet af blade i vores beslutningstræ (se figur \ref{fig:tree}). til antallet af unikke løsninger, $S(n)$ og dermed mindske beregningstiden. I tabel \fixme{Tabel over Unikke løsninger vs. Totale antal løsninger} ses forskellen på antallet af unikke og totale løsninger. For hver løsning undersøges antallet af spejlinger og rotationer. \textbf{check} funktion i takakens implementation \ref{nqueen.c} udfører dette.
+For $Q(n)$ er mange løsninger spejlinger og roteringer af andre - og betragtes som en \emph{unik} løsning. Ved kun at finde unikke $S(n)$ løsninger og undgå de valg af placeringer der fører til løsninger som kan findes ved rotationer og spejlinger. Så kan vi fjerne store deltræer i vores beslutningstræ (se figur \ref{fig:tree}) og dermed mindske beregningstiden betragteligt. I tabel \fixme{Tabel over Unikke løsninger vs. Totale antal løsninger} ses forskellen på antallet af unikke og totale løsninger. For hver løsning undersøges antallet af spejlinger og rotationer. \textbf{check()} funktion i takakens implementation \ref{nqueen.c} udfører dette. Derudover deles problemet op i to seperate i to delproblemer. 
 
-Takaken opdeler beregningen i to delproblemer. Et hvor den første dronning placeres i øverste hjørne, og et andet delproblem hvor dronningen i den første række placeres i kolonnen $n/2$ til $2$. 
+\begin{description}
+	\item[Hjørnebræt] dronningen er i første række er placeret i kolonne $1$.
+	\item[Midterbræt] dronningen er i første række placeret i kolonnerne $2$  til og med $\lfloor n/2 \rfloor$.
+\end{description}
 
-\begin{itemize}
-	
-\item Beskrivelse af hjørnebræt bound og dets implikationer
-\item Beskrivelse af de andre delproblemer og dets implikationer
-\item Husk at check ikke køres for hjørneproblemer = performance forskel
-\end{itemize}
-
-Disse optimeringer giver en hetorogen opdeling af delprobemer. Forholdet mellem antal løsninger og tid kan ses i \fixme{tabel/graf over antal løsinger og tid for hvert board}. Tidsforbrugt ved en profile kan ses \fixme{Java -Xprof kørses for n=1 til n=?, bliver Check= perrformance problem?}
+En normal fordeling af løsninger uden takakens optimeringer vil være distribueret således, at for lige n kan det totale antal løsninger udregnes som summen af løsningener fra 1 \ldots n/2 multipla 2. Takakens optimeringer vil dog forandre denne fordeling. For 
 
 
-\subsection{Parallelisering}\label{parrallel}
+\begin{figure}
+\caption{Andelen af løsninger for midterbræt for $n=10\ldots18$.}
+\label{fig:midterandel}
+\end{figure}
 
-Et bræt med en eller flere valgte linjer kan løses på samme måde med takakens algoritme. Hvert delbræt kan løses uafhængigt og antallet af løsninger for hvert bræt akkumuleres for at få det totale antal løsninger.
-Dette kan gentages for hver linje. Ved at oprette delbræt hvor M linjer allerede er valgt. Findes ca. (N-M)! delbræt skal der for N=26 vil der for M=3 være 26*25*24=15,600 delbræt.
+
+\begin{figure}
+\caption{Løsninger pr. sekund for $n=10\ldots18$}
+\label{fig:solutionspersekund}
+\end{figure}
+
+Det ses på figur \ref{midterandel} at andelen af løsninger for et bræt hvor den første dronning ikke placeres i et hjørne er over 90\% og stigende for større $n$. Sammenhold med figur \ref{solutionspersekund} kan vi se at antallet af løsninger er relateret til køretiden med samme faktor for forskellige $n$. Så hvis hvis der er over 90\% af løsninger i et delproblem vil det også tage 90\% af tiden at finde dem. 
+
+
+\subsection{Paralleliserings metode}\label{parrallel}
+
+Et bræt med en eller flere valgte linjer kan løses på samme måde med takakens algoritme. Hvert delbræt kan løses uafhængigt og antallet af løsninger og for hvert bræt akkumuleres for at få det totale antal løsninger. Dette kan gentages for hver linje. 
 
 Dette er en øvre grænse, der oprettes ikke delbræt som ikke er gyldige\fixme{not true}. Derudover er der i takakens kode optimeringer så der kun findes unikke løsninger (som så kan roteres og eller spejles) 
 
@@ -481,7 +493,7 @@ sendJobFinished
 %\section{Kildekode}
 %\subsection{nqueens.c}\label{nqueen.c}
 %\verbatiminput{../../nqueens.c}
-\input{kode}
+%\input{kode}
 \section{Synopsis}
 %\input{synopsis.tex}
 
