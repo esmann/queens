@@ -267,7 +267,7 @@ Checkpoint foretages ved at serialisere det kørende job-objekt\footnote{\mig-ap
 I forbindelse med udvikling og afprøvning af en \oc-applet skal man være
 opmærksom på at Class-filer caches af browserens java-plugin. Ændringer i
 implementeringen kan medføre fejl under afviklingen på ressourcer der bruger
-forældede class-filer, selvom \mig\ opfatter jobbet som udført uden fejl. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver opdatering af denne cache. Man kan altså riskikere at appletten får en undtagelse på serialVersionUID og derved markeres jobbet som færdigt, uden at være kommet til et resultat. En uhensigtsmæssighed i forbindelse med undtagelseshåndtering i basisklassen MigJob.java gør at jobbet alligevel vil se ud til at være afsluttet succesfuldt. Se afsnit \cite{bugs}. 
+forældede class-filer, selvom \mig\ opfatter jobbet som udført uden fejl. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver opdatering af denne cache. Man kan altså riskikere at appletten får en undtagelse på serialVersionUID og derved markeres jobbet som færdigt, uden at være kommet til et resultat. En uhensigtsmæssighed i forbindelse med undtagelseshåndtering i basisklassen MigJob.java gør at jobbet alligevel vil se ud til at være afsluttet succesfuldt. Se afsnit \cite{forbedringer}. 
 
 En java-applet afvikles i et lukket miljø, en såkaldt sandkasse, for at beskytte den maskine der afvikler appletten. Der er en række begrænsinger vi bliver nødt til at forholde os til
 \begin{itemize}
@@ -304,7 +304,7 @@ Som det ses på figur \ref{fig:tidstigermedloesninger} stiger beregningstiden fo
 
 \begin{figure}
 
-\caption{beregningstiden for et delproblem med antallet af løsninger}
+\caption{beregningstiden for et delproblem stiger med antallet af løsninger}
 \label{fig:tidstigermedloesninger}
 \end{figure}
 
@@ -371,7 +371,6 @@ snyd/sabotage kan være at sende de samme jobs ud flere gange, og sammenligne
 resultater, eller foretage stikprøve kontrol hvor man selv regner nogle af
 jobsne ud og sammenligner resultatet. 
 
-\fixme{skal det stå her?}
 
 \section{Beskrivelse af implementeringen}\label{implementering}
 \begin{verse}
@@ -436,7 +435,7 @@ På figur \ref{solrelativecount}
 %\subsection{MiGrid}
 
 \input{benchmark.tex}
-\section{Forbedringer til \oc\ og \mig}
+\section{Forbedringer til \oc\ og \mig}\label{forbedringer}
 %\input{forbedringer.tex}
 
 \begin{description}
