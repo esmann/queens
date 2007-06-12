@@ -519,6 +519,7 @@ Kildekoden implemeterer en rekursiv og en iterativ udgave af Takakens algoritme,
 \fixme{Det skal også nævnes at for $maxSteps>n/2$ vil vores program regne forkert, fordi den parallelle Dette skyldes ?}
 
 Den udviklede kildekode er organiseret i følgende filer:
+
 \begin{description}
 	\item[NQueenBoards.java] jobgeneratoren, parallel-nqueen-algoritme, der genererer delproblemer i form af boards, hvor de første $m$ dronninger allerede er placeret. 
 	\item[CornerBoard.java] klasse til backtrack for cornerboards
@@ -565,12 +566,18 @@ xx-xx \fixme{indsæt linjenumre}
 
 \subsection{CornerBoard.java}
 
-
 \subsection{MiddleBoard.java}
 
 \subsection{Board2}
 
 \subsection{NQueenJob}
+
+NQueenJob i sig selv laver ikke så meget, den indlæser et serialiseret objekt
+enten det der er specificeret som argument, eller det som er blevet checkpointet
+tidligere. Herefter ser den efter om objektet gerne vil have at der laves
+checkpoints, og i så fald starter checkpointing. Derefter kalder den objektets
+backtrack() metode. Når beregningen er færdig stopper den checkpointing og
+skriver resultatet til stdout.
 
 \subsection{CheckPointer.java}
 
@@ -580,7 +587,7 @@ xx-xx \fixme{indsæt linjenumre}
 
 Disse kildekode filer indeholder vores først "port" af Takakens kode til java,
 og er så vidt muligt en copy/paste af Takakens kode, og er derfor ikke særlig
-interessant. 
+interessante. 
 
 \subsection{MiGClient, MiGJob, MiGSSLSocketFactory}
 
