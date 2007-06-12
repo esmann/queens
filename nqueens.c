@@ -10,7 +10,6 @@ int  SIZE, SIZEE;
 int  BOARD[MAXSIZE], *BOARDE, *BOARD1, *BOARD2;
 int  MASK, TOPBIT, SIDEMASK, LASTMASK, ENDBIT;
 int  BOUND1, BOUND2;
-
 unsigned long long   COUNT8, COUNT4, COUNT2;
 unsigned long long   TOTAL, UNIQUE;
 
@@ -89,7 +88,7 @@ void Check(void)
 void Backtrack2(int y, int left, int down, int right)
 {
     int  bitmap, bit;
-                //Display();
+		//Display();
     bitmap = MASK & ~(left | down | right);
     if (y == SIZEE) {
         if (bitmap) {
@@ -121,7 +120,6 @@ void Backtrack2(int y, int left, int down, int right)
 void Backtrack1(int y, int left, int down, int right)
 {
     int  bitmap, bit;
-
     bitmap = MASK & ~(left | down | right);
     if (y == SIZEE) {
         if (bitmap) {
@@ -192,6 +190,5 @@ int main(int argc, char ** argv)
       SIZE=atoi(argv[1]);
     NQueens();
     printf("%2d:  %lld  %lld\n", SIZE, TOTAL, UNIQUE);
-	
     return 0;
 }
