@@ -1,6 +1,5 @@
 import java.util.Collection;
 import java.util.LinkedList;
-import java.math.BigInteger;
 
 public class CornerBoard extends Board2 {
 
@@ -16,9 +15,9 @@ public class CornerBoard extends Board2 {
 	/**
 	 * Counts unique solutions that have 8 symetric solutions
 	 */
-	private BigInteger count8 = BigInteger.ZERO;
+	private long count8 = 0;
 
-	private static int backtrackcount= 0;
+	private static long backtrackcount= 0;
 	/**
 	 * Creates a new CornerBoard
 	 * 
@@ -119,7 +118,7 @@ public class CornerBoard extends Board2 {
 
 			if (currentBoardLine == sizee) {
 				if (bitmap != 0) {
-					this.count8 = this.count8.add(BigInteger.ONE);
+					this.count8++;
 					//dout("Solution " + currentBoardLine);
 					bitmap = 0; // We take the only solution that exists
 				}
@@ -170,7 +169,7 @@ public class CornerBoard extends Board2 {
 		backtrackcount += 1;
 	}
 	
-	public static int getBacktrackCount() {
+	public static long getBacktrackCount() {
 		return backtrackcount;
 	}
 
@@ -195,7 +194,7 @@ public class CornerBoard extends Board2 {
 				// System.out.println("b1: " + y + ", " + left + ", " + down +
 				// ", " + right);
 //				System.out.println("SOLUTION!\n");
-				this.count8 = this.count8.add(BigInteger.ONE);
+				this.count8++;
 			}
 		} else {
 			if (y < bound1) {
@@ -214,12 +213,12 @@ public class CornerBoard extends Board2 {
 	}
 
 	@Override
-	BigInteger getTotal() {
-		return count8.multiply(new BigInteger("8"));
+	long getTotal() {
+		return count8*8;
 	}
 
 	@Override
-	BigInteger getUnique() {
+	long getUnique() {
 		// System.out.println("b1(" + Count8 + ")");
 		return count8;
 	}

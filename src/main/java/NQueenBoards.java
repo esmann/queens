@@ -1,15 +1,14 @@
 import java.util.LinkedList;
 import java.util.Queue;
-import java.math.BigInteger;
 
 public class NQueenBoards {
 	static Queue<Board2> boards = new LinkedList<Board2>();
 
 	private static int size;
 
-	private static BigInteger total = BigInteger.ZERO;
+	private static long total = 0;
 
-	private static BigInteger unique = BigInteger.ZERO;
+	private static long unique = 0;
 
 	private static int steps;
 
@@ -73,35 +72,35 @@ public class NQueenBoards {
 			iterateOnetime();
 		}
 			
-			//MiGClient client = new MiGClient();
-			//client.submitAndExtract(boards, "boards/", "test.zip", maxSteps, args[2]);
+			MiGClient client = new MiGClient();
+			client.submitAndExtract(boards, "boards/", "test.zip", maxSteps, args[2]);
 		boardtime = System.currentTimeMillis();
 		//boardtime er den tid det tager at generere, pakke og uploade boards.
 		boardtime = boardtime - starttime;
 		//System.out.println("boardtime: " + boardtime);
-		for (Board2 board : boards) {
-			
+		//System.out.println("boardsize: " + boards.size());
+		//System.out.println("type time total unique");
+		/*for (Board2 board : boards) {
 			board.setRecursive(isRecursive);
 			if(board.getType()=="cornerboard")
-				System.out.print("cornerboard: (" + board.getBound1() + "): ");
+				System.out.print("cb ");
 			if(board.getType() == "middleboard")
-				System.out.print("middleboard: (" + board.getBound1() + ", " + board.getBound2() + ", " + board.getLastMask() + ", " + board.getEndBit() + "): ");
-
+				System.out.print("mb ");
 			long jobtime = System.currentTimeMillis();	
 			board.backtrack();
 			jobtime = System.currentTimeMillis() - jobtime;
-			System.out.println(jobtime);
-			total = total.add(board.getTotal());
-			unique = unique.add(board.getUnique());
+			System.out.println(jobtime + " " + board.getTotal() + " " + board.getUnique());
+			total += board.getTotal();
+			unique += board.getUnique();
 			// dout("-----");
-		}
+		}*/
 		endtime = System.currentTimeMillis();
 		float time = endtime-starttime;
-		System.out.println(size + ": " + total + " " + unique + " " + time/1000);
+		System.out.println(size + ": " + total + " " + unique + " " + time/1000 + " " + boards.size());
 		/*System.out.println("time: " + (endtime-starttime));
 		System.out.println("total: " + total);
 		System.out.println("Unique: " + unique);*/
-	//	System.out.println("backtrack iterations, corner - middle " + CornerBoard.getBacktrackCount() + " - " + MiddleBoard.getBacktrackCount());
+		//System.out.println("backtrack iterations, corner - middle " + CornerBoard.getBacktrackCount() + " - " + MiddleBoard.getBacktrackCount());
 		//System.out.println("number of boards (" + maxSteps + ": " + boards.size());
 
 		/*
