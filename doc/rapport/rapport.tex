@@ -29,7 +29,8 @@
 \usepackage{multicol}
 \usepackage[draft,inline,nomargin,silent]{fixme}
 \usepackage{tikz}
-\usetikzlibrary{trees}
+\usetikzlibrary{trees,backgrounds,shapes,snakes}
+\tikzstyle{every picture}+=[remember picture]
 %\usepackage{pgflibrarytikztrees}
 \usepackage[final]{listings}
 \usepackage{fancyvrb}
@@ -127,8 +128,11 @@ Backtracking teknikker og introduktion er bl.a. beskrevet af \cite{Golomb72}.
 
 Stakkens tilstand kan visualiseres med et træ. Knuder angiver den valgte placering, mens kanter angiver de mulige valg der foretages. Træet har en maksimal højde på $n$. Hvor højden for roden er "0". Antallet af børn er antallet af \emph{mulige} valg som ikke blokeres af tidligere placeringer. 
 
+
+
 \begin{figure}[!h]
 \begin{center}
+	
 	
 
 \begin{tikzpicture}[node distance=2cm]
@@ -291,6 +295,42 @@ Det bliver naturligvis et krav at alle delproblemer vi sender ud kan beregnes ud
 
 \section{Problemstørrelse og jobschedulering}\label{opdelingogschedulering}
 
+
+
+\begin{figure}[!h]
+\begin{center}
+
+\begin{tikzpicture}%[show background grid]
+%\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+
+
+\draw[snake=brace,very thick] (-0.6,-3.25) --
+        node [draw=none,left=0.5em,fill=none]{$spildtid$}(-0.6,-2.5) ;
+\draw[snake=brace,very thick] (0.6,-3.75) --
+        node [draw=none,right=0.5em,fill=none]{$ventetid$}(0.6,-4.75) ;
+
+\tikzstyle{every node} = [rounded corners,draw, very thick,fill=blue!20,shade]
+\begin{scope}
+\path (0,0) node[circle] {$ressource$};
+\path (0,-2) node[rectangle,minimum height=1cm] {$Job$};
+\path (0,-3.5) node[rectangle] {$Job$};
+\end{scope}
+%\draw[fill,gray] (0,-3.5) circle (1.5pt);
+%\draw[fill,gray] (0,-3.66666) circle (1.5pt);
+%\draw[fill,gray] (0,-3.83333) circle (1.5pt);
+
+\begin{scope}
+\path (3,-0) node[circle] {$ressource$};
+\path (3,-2) node[rectangle,minimum height=1cm] {$Job$};
+\path (3,-4) node[rectangle,minimum height=1.5cm] {$Job$};
+\end{scope}        
+%\draw[thick,dashed,<->] (4,-4) -- (4,-1);
+
+\end{tikzpicture}		
+\caption{Insert proper caption here}
+	
+\end{center}
+\end{figure}
 
 
 I det følgende benyttes disse forkortelser for ofte anvendte begreber.
