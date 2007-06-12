@@ -13,7 +13,7 @@ public class NQueenJob extends Job {
 	 * 
 	 */
 	// private static final long serialVersionUID = -6693387052709608747L;
-	private static final int CHECKPOINT_INTERVAL = 5 * 1000;
+	private static final int CHECKPOINT_INTERVAL = 15 * 1000 * 60;
 
 	private Board2 board;
 

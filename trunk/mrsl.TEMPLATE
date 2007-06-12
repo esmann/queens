@@ -19,8 +19,5 @@ JVM_BYTECODE
 ::SANDBOX::
 1
 
-::VGRID::
-NQueen
-
 ::PROJECT::
 NQueen_Test

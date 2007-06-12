@@ -9,13 +9,22 @@ inden udregningen sættes igang. Vi præsenterer her resultaterne af en lang ræ
 
 \subsection{Lokale tests}
 
-%\fixme{fjern referencer til revisioner. Skift ud med "her bruges bigint", "her bruges long", osv}
+Vi har 3 forskellige udgaver af koden
+\begin{description}
+\item[1] En direkte port, der ikke er parallelliseret.
+\item[2] En parallelliseret udgave, der kører rekursivt.
+\item[3] En parallelliseret udgave, der kører iterativt.
+\end{description}
+\fixme{referencer til ovenstående? skal de beskrives yderligere}
 
-\fixme{fix labels på figur 8 og 9}
-
-%\fixme{Tilføj en definition af "kode-udgaver", f.eks. "den paralleliserede udgave"}
-
-%\fixme{Tilføj definition af maxSteps, referer til \ref{parallel}}
+I dette afsnit vil der ind i mellem blive referet til noget vi har kaldt
+\texttt{maxSteps}. \texttt{maxSteps} er en variabel man kan skrue på for at
+ændre antallet af boards der bliver genereret. Den angiver mange dronninger vi
+forud placerer på vores bræt. Det skal dog bemærkes at der er forskel på hvor
+mange bræt MiddleBoard og CornerBoard genererer ud fra \texttt{maxSteps}, der
+bliver genereret flere CornerBoards, da der allerede fra start er placeret en
+dronning i hjørnet.
+\fixme{Tilføj definition af maxSteps, referer til \ref{parallel}}
 
 Vi starter med at teste de forskellige udgaver af koden lokalt, så vi har en
 baseline at sammenligne med.
@@ -36,8 +45,7 @@ alex@roadrunner:~/temp/queens/src/main/java$ gcc --version
 gcc (GCC) 4.1.2 (Ubuntu 4.1.2-0ubuntu4)
 \end{verbatim}
 
-De første tests er kørt på revision 77 (i forbindelse med den iterative test er
-udskrivning af debug info til skærmen dog blevet kommenteret ud)
+I de første test der brugt int til resultaterne i java-koden. 
 
 \begin{figure}[h]
 \begin{center}
@@ -53,10 +61,11 @@ rekursivt. Den iterative udgave er væsentlig langsommere..
 
 Den parallelle udgave af koden er i dette tilfælde her kørt med
 \texttt{maxSteps} på 1. 
+
 \begin{figure}[h]
 \begin{center}
 \includegraphics{../benchmarks/maxsteps.pdf}
-\caption{insert proper caption here } 
+\caption{NQueens for $n=18$ og $maxSteps=0..3$, kørt med den rekursive java-kode} 
 \label{figur:maxsteps}
 \end{center}
 \end{figure}
@@ -73,8 +82,6 @@ opgaver og løse dem bagefter, når det kører lokalt.
 I tabel \ref{tabel:noboards} kan det ses hvor mange boards der bliver genereret
 for forskellige $n$ og $maxSteps$. 
 
-\fixme{hvor mange jobs bliver der lavet for de forskellige maxsteps, indsæt
-tabel?}
 \begin{table}
 	\begin{center}
 		\begin{tabular}{|c|c|c|c|c|c|}
@@ -119,28 +126,36 @@ tabel?}
 \end{center}
 \end{figure}
 
-De foregående tests er kørt med kode der bruger \texttt{int} til at gemme resultaterne,
+Som før nævnt er de foregående tests er kørt med java-kode der bruger \texttt{int} til at gemme resultaterne,
 i de næste tests er \texttt{int} skiftet ud med \texttt{BigInteger} 
-Her er den rekursive test kørt på revision 83, og den iterative er kørt på
-revision 9x. At den iterative er kørt på en anden revision skyldes at der i den
-iterative kode var en debug linje der ikke var blevet kommenteret ud, der gjorde
-at koden kørte utroligt langsomt.
 
 Som det kan ses på figur \ref{figur:lokal} kører den rekursive kode en smule
 langsommere med \texttt{BigInteger} end med \texttt{int}, hvor tiden stiger fra
 406.065 til 414.238, hvilket svarer til en forøgelse
-på knap 2\% \fixme{hva' med den iterative}
+på knap 2\%. For den iterative udgave af koden stiger tiden fra 700.887 til
+736.157, hvilket svarer til en forøgelse på 5\% 
 
+Til sidst har vi kørt java-kode, hvor der bliver brugt \texttt{longs} til
+resultaterne. Disse kørsler lægger sig mellem \texttt{int} og
+\texttt{BigInteger}
 
 \subsection{kald til backtrack}
 
-Hvis man ser på antallet af kald til backtrack de forskellige versioner laver,
-er de ens for c koden og den direkte java port, og hvis man kører med
-$maxSteps=0$ er antallet af kald for den parallele og iterative kode også det
-samme som for c koden (se tabel \ref{tabel:backtrackkald}. Med $maxSteps>0$ får
-vi færre kald til backtrack, hvilket skyldes at en del af disse kald bliver
+For at sammenligne om de forskellige udgaver af koden, laver det samme antal
+beregninger, kan man i c-koden og de første 2 udgaver af java-koden
+\ref{kodeudgaver}, tælle antallet af kald til backtrack og sammenligne dem.  I
+den iterative udgave er det i stedet antallet af iterationer i while loopet på
+linie xx i \ref{kode:middleboard} og linie xx i \ref{kode:cornerboard}
+\fixme{indsæt linie numre}. Hvis man gør dette med $maxSteps=0$ for vores kode,
+kan man se at antallet af iterationer/kald til backtrack er det samme (se tabel
+\ref{tabel:backtrackkald}. Som tidligere nævnt kører den iterative kode
+væsentligt langsommere end den rekursive. Dette skyldes altså ikke at der bliver
+lavet flere iterationer, men derimod at mængden af arbejde der udføres hver
+iteration er væsentlig større. Man kunne derfor kigge på hvordan koden i while
+loop'et kan optimeres Det skal dog lige nævnes, at med $maxSteps>0$ får vi færre
+kald til backtrack/iterationer, hvilket skyldes at en del af disse kald bliver
 lavet i forbindelse med oprettelsen af de ekstra boards. 
-\fixme{Definition af antal af iterationer er antal kald til den rekursive, og antal løkke-iterationer i den iterative. Det er muligvis interressant pga. performance forklaring.}
+
 \begin{table}
 \begin{center}
 \begin{tabular}{|c|c|c|}
@@ -166,15 +181,17 @@ større. Det ses også i tabellen at jobstørrelsen afhænger af de bounds der e
 henholdsvist MiddleBoard og CornerBoard. Hvis man øger $maxSteps$ og dermed får
 lavet flere jobs, ses det at de enkelte jobs bliver delt op i nogenlunde lige
 støre dele, den relative størrelse mellem det mindste og største jobs er dog
-stadig nogenlunde det samme. \fixme{lav en benchmark/beregning der viser dette?}
-\fixme{Antallet af jobs er gentagelse fra 1.3/1.4}
+stadig nogenlunde det samme. \fixme{lav en benchmark/beregning der viser dette?
+er lavet, men hvordan viser man det smartest, en stor tabel eller graf?}
+\fixme{Antallet af jobs er gentagelse fra 1.3/1.4.. Er det?}
+
 \subsection{Generering af jobs}
 
-Det skal bemærkes at indsendelse af jobs afhænger af nethastigheden. De forskellige jobs vi har
-submitted til \mig\ har genereringen og indsendelse af jobs svinget fra xx til
-xx (se tabel \ref{tabel:jobgenerering}) \fixme{lav den fscking tabel og skriv de
-rigtige tal ind}. Langt den største del af tiden går også med at sende jobsne,
-da genereringen af jobs for større mængder jobs tager ca 0.01ms/job
+Det skal bemærkes at indsendelse af jobs afhænger af nethastigheden. Tiden for
+generering og indsendelse af de forskellige jobs har svinget fra 4ms til 1252ms (se tabel
+\ref{tabel:jobgenerering}. Langt den største de laf tiden går også med at sende
+jobsne da genereringen af jobs for større mængder jobs tager ca 0.01ms/job
+
 \begin{table}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
@@ -194,14 +211,15 @@ da genereringen af jobs for større mængder jobs tager ca 0.01ms/job
 \label{table:boardgenering}
 \end{center}
 \end{table}
-\fixme{lav det om til en tabel.. der}
 
 \subsection{Kørsel på \mig}
 
 Den reelle køretid på \mig findes ved at tage \texttt{Queued} tiden for det første job der er
 blevet sat i kø, og \texttt{Finished} tiden for det sidste job der er blevet
 færdigt, og så finde forskellen.
-\fixme{Det ikke interessant at finde køretiden for den første Queued til den sidste Finished.}
+\fixme{Det ikke interessant at finde køretiden for den første Queued til den
+sidste Finished. Hvorfor ikke? det er da ret interessant hvor lang tid det tager
+at løse problemet, og hvor meget man kan blive buttfucked i \mig s køsystem}
 På figur \ref{figur:mig} kan man se hvor lang beregningstiden er og hvor lang
 den reelle køretid er for $n=18$ og $maxSteps=0,1$. Ved $maxSteps=0$ ses det at
 den reelle køretid er næsten det dobbelte af beregningstiden. Når $maxSteps$
@@ -211,8 +229,8 @@ den reelle køretid for den iterative udgave er væsentlig højere end for den
 rekursive udgave. Dette skyldes at der har været sat 2 forskellige tests igang
 på samme tid, og nogle af de jobs fra den pågældende test er blevet stoppet og
 sat i kø igen. De er dermed kommet bagest i køen og først blevet kørt efter den
-anden test er færdig. 
-\fixme{beregn forholdet mellem den første og resten?}
+anden test er færdig. Det skal lige nævnes at disse tests alle er kørt med kun 1
+ressource.
 
 \begin{figure}[h]
 \begin{center}

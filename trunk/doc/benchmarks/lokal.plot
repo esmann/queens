@@ -3,7 +3,7 @@ set out "lokal.pdf"
 set autoscale
 unset log
 unset label
-set xrange [0:7]
+set xrange [0:9]
 set y2range [0:2]
 set ytics auto nomirror
 unset xtics
