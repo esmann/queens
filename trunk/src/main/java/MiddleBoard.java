@@ -1,5 +1,6 @@
 import java.util.Collection;
 import java.util.LinkedList;
+
 public class MiddleBoard extends Board2 {
 	/**
 	 * 
@@ -14,7 +15,7 @@ public class MiddleBoard extends Board2 {
 	private int bound1, bound2;
 
 	private long count2 = 0, count8 = 0, count4 = 0;
-	
+
 	public static long backtrackcount = 0;
 
 	public MiddleBoard(int size) {
@@ -25,12 +26,15 @@ public class MiddleBoard extends Board2 {
 		LASTMASK = TOPBIT | 1;
 		ENDBIT = TOPBIT >> 1;
 	}
-	public String getLastMask(){
+
+	public String getLastMask() {
 		return java.lang.Integer.toBinaryString(LASTMASK);
 	}
-	public String getEndBit(){
+
+	public String getEndBit() {
 		return java.lang.Integer.toBinaryString(ENDBIT);
 	}
+
 	@Override
 	Collection<Board2> init() {
 		Collection<Board2> boards = new LinkedList<Board2>();
@@ -89,8 +93,8 @@ public class MiddleBoard extends Board2 {
 			if (suspendBacktrack) {
 				//dout("DETECTED a suspend request");
 				long now = System.currentTimeMillis();
-				long diff = now-begin;
-				
+				long diff = now - begin;
+
 				time += diff;
 				// Don't add previous time spent again
 				begin = System.currentTimeMillis();
@@ -101,11 +105,11 @@ public class MiddleBoard extends Board2 {
 						e.printStackTrace();
 					}
 				}
-				
+
 				if (exitAfterCheckpoint) // testing purposes only					
 					return;
 			}
-			
+
 			bitmap = this.MASK
 					& ~(isOccupiedLeftDiagonal[currentBoardLine]
 							| isOccupiedHorizontal[currentBoardLine] | isOccupiedRightDiagonal[currentBoardLine]);
@@ -173,33 +177,33 @@ public class MiddleBoard extends Board2 {
 
 		}
 		// We have finished board calculation
-		time += System.currentTimeMillis()-begin;
-		complete = true; 
+		time += System.currentTimeMillis() - begin;
+		complete = true;
 
 	}
-	
+
 	public void countBacktrack() {
 		backtrackcount += 1;
 	}
-	
+
 	public static long getBacktrackCount() {
 		return backtrackcount;
 	}
 
-	public int getBound1(){
+	public int getBound1() {
 		return bound1;
 	}
-	
-	public int getBound2(){
+
+	public int getBound2() {
 		return bound2;
 	}
-	
-	public String getType(){
+
+	public String getType() {
 		return "middleboard";
 	}
-	
+
 	public void backtrackRecursive(int y, int left, int down, int right) {
-        countBacktrack();
+		countBacktrack();
 		//System.out.println("backtrackMiddle");
 
 		int bitmap;
@@ -298,7 +302,7 @@ public class MiddleBoard extends Board2 {
 
 	@Override
 	long getTotal() {
-		return count2*2 + count4*4 + count8*8;
+		return count2 * 2 + count4 * 4 + count8 * 8;
 	}
 
 	public long getCount8() {
@@ -317,6 +321,6 @@ public class MiddleBoard extends Board2 {
 	long getUnique() {
 		// System.out.println("b2(" + this.Count2 + ", " + this.Count4 + ", " +
 		// this.Count8 + ")");
-		return this.count2+this.count4+this.count8;
+		return this.count2 + this.count4 + this.count8;
 	}
 }

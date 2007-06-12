@@ -114,9 +114,9 @@ public class NQueenJob extends Job {
 		} catch (FileException ex) {
 			err("error: fileexception");
 			err(ex.toString());
-		} finally {			
+		} finally {
 			if (board.useCheckpointing())
-				t.cancel();				
+				t.cancel();
 		}
 		System.out.println("JOB SLUT: " + System.currentTimeMillis());
 	}

@@ -4,12 +4,12 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public abstract class Board2 implements Cloneable, Serializable {
-	
-	
-	//ONLY USED FOR TESTING CHECKPOINTING DO NOT USE THIS ELSEWHERE!
+
+	// ONLY USED FOR TESTING CHECKPOINTING DO NOT USE THIS ELSEWHERE!
 	protected boolean exitAfterCheckpoint = false;
+
 	protected boolean complete = false;
-	
+
 	protected int size;
 
 	protected long time = 0;
@@ -23,11 +23,17 @@ public abstract class Board2 implements Cloneable, Serializable {
 	private boolean recursive = false;
 
 	protected int MASK;
+
 	abstract int getBound1();
+
 	abstract int getBound2();
+
 	abstract String getType();
+
 	abstract String getLastMask();
+
 	abstract String getEndBit();
+
 	public static void dout(String s) {
 		// System.out.println(s);
 	}
@@ -41,7 +47,7 @@ public abstract class Board2 implements Cloneable, Serializable {
 	protected int top = -1;
 
 	public Board2(int size) {
-		
+
 		this.size = size;
 		this.sizee = size - 1;
 		board = new int[size + 1];
@@ -68,11 +74,10 @@ public abstract class Board2 implements Cloneable, Serializable {
 			int rightDiagonal);
 
 	abstract void backtrackIterative();
+
 	abstract void countBacktrack();
 
 	public void backtrack() {
-
-		
 
 		// Save original currenboardLine to top
 		if (top == -1) {
@@ -80,11 +85,10 @@ public abstract class Board2 implements Cloneable, Serializable {
 		} else {
 			System.out.println("Board detected resume");
 			System.out.println("Has already spent cputime (ms):" + time);
-			if (isRecursive()) 
-				throw new Error("Can not resume when backtracking recursively");			
+			if (isRecursive())
+				throw new Error("Can not resume when backtracking recursively");
 		}
-		
-		
+
 		if (isRecursive()) {
 			// System.out.println(this.toString());
 			backtrackRecursive(top, isOccupiedLeftDiagonal[top],
@@ -92,8 +96,8 @@ public abstract class Board2 implements Cloneable, Serializable {
 		} else {
 			backtrackIterative();
 		}
-		
-		//System.out.println("Total Backtracking took(ms) :" + this.time);
+
+		// System.out.println("Total Backtracking took(ms) :" + this.time);
 	}
 
 	abstract long getUnique();
@@ -200,7 +204,7 @@ public abstract class Board2 implements Cloneable, Serializable {
 				// pattern
 				Board2 bnew = (Board2) this.clone();
 				bnew.setAndIncLine(selection);
-				//bnew.countBacktrack();
+				// bnew.countBacktrack();
 				/*
 				 * if (bnew.isCompleteBoard()) { bnew.isSolution(); // FIXME we
 				 * should count solutions continue; }
@@ -215,14 +219,16 @@ public abstract class Board2 implements Cloneable, Serializable {
 		}
 		return boards;
 	}
+
 	/**
-	 * A board could be resumed, if 
-	 * isComplete() == true no further computation can be done 
-	 *
+	 * A board could be resumed, if isComplete() == true no further computation
+	 * can be done
+	 * 
 	 */
 	public boolean isComplete() {
 		return complete;
 	}
+
 	public void suspendBacktrack(boolean b) {
 		suspendBacktrack = b;
 	}

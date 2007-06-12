@@ -8,11 +8,10 @@ import org.junit.Test;
 
 public class MiddleboardTest {
 	// format is size,total solutions,count8,count4,count2 { 4, 2, 0, 0, 1 },
-	static int[][] solutions = {  { 5, 2, 0, 0, 1 },
-			{ 6, 4, 0, 1, 0 }, { 7, 24, 2, 2, 0 }, { 8, 76, 9, 1, 0 },
-			{ 9, 240, 28, 4, 0 }, { 12, 12200, 1515, 18, 4 } };
-	
-	
+	static int[][] solutions = { { 5, 2, 0, 0, 1 }, { 6, 4, 0, 1, 0 },
+			{ 7, 24, 2, 2, 0 }, { 8, 76, 9, 1, 0 }, { 9, 240, 28, 4, 0 },
+			{ 12, 12200, 1515, 18, 4 } };
+
 	@Test(timeout = 10000)
 	public void testMiddleBoard() {
 
@@ -52,9 +51,9 @@ public class MiddleboardTest {
 				System.out.println("Board nr: " + i++ + " is backtracking:");
 				board.backtrack();
 				/*total += board.getTotal();
-				count2 += ((MiddleBoard) board).getCount2();
-				count4 += ((MiddleBoard) board).getCount4();
-				count8 += ((MiddleBoard) board).getCount8();*/
+				 count2 += ((MiddleBoard) board).getCount2();
+				 count4 += ((MiddleBoard) board).getCount4();
+				 count8 += ((MiddleBoard) board).getCount8();*/
 			}
 			assertEquals(1515, count8);
 			assertEquals(18, count4);
@@ -85,12 +84,12 @@ public class MiddleboardTest {
 			b.backtrack();
 			if (!recursive)
 				b.backtrack(); // This way we test resume on a finished board
-			
+
 			total = total.add(b.getTotal());
 			count2 = count2.add(((MiddleBoard) b).getCount2());
 			count2 = count4.add(((MiddleBoard) b).getCount4());
 			count2 = count8.add(((MiddleBoard) b).getCount8());
-			
+
 		}
 		assertEquals(expectedCount8, count8);
 		assertEquals(expectedCount4, count4);

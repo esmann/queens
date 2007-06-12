@@ -520,23 +520,77 @@ Kildekoden implemeterer en rekursiv og en iterativ udgave af Takakens algoritme,
 
 Den udviklede kildekode er organiseret i følgende filer:
 \begin{description}
+	\item[NQueenBoards.java] jobgeneratoren, parallel-nqueen-algoritme, der genererer delproblemer i form af boards, hvor de første $m$ dronninger allerede er placeret. 
+	\item[CornerBoard.java] klasse til backtrack for cornerboards
+	\item[MiddleBoard.java] lasse til backtrack for middleboard
+	\item[CheckPointer.java] implementerer checkpointing
+	\item[CheckPointActionMiG.java] implementerer checkpointing
+	\item[Board2.java] Basis-klasse for wrapper-klasser til backtrack
+	\item[NQueenJob.java] hovedklassen for et \mig-\oc-job. 
+	\item[MiGSSLSocketFactory.java] hjælpeklasse til MiGClient-klassen
+	\item[MiGClient.java] java-implementation af en del af \mig-hjælpeprogrammerne
+	\item[MiGJob.java] klasse der beskriver et job og kan generere en .mRSL-fil
+	\item[CornerBoardBoardTest.java] unittests til CornerBoard
+	\item[MiddelBoardTest.java] unittests til MiddleBoard
 	\item[NQueens.java] Testfil - Direkte java-port af Takakens c-kode. Kan køres som \oc\ job.
 	\item[NQueensL.java] Testfil - Direkte java-port af Takakens c-kode. Kan køres lokalt.
 	\item[Board.java] Testfil - Hjælpeklasse til NQueens/NQueensL
 	\item[Globals.java] Testfil - Hjælpeklasse til NQueens/NQueensL
-	\item[Board2.java] Basis-klasse for wrapper-klasser til backtrack
-	\item[CornerBoard.java] wrapper-klasse til backtrack for cornerboards
-	\item[MiddleBoard.java] wrapper-klasse til backtrack for middleboard
-	\item[CheckPointer.java] implementerer checkpointing
-	\item[CheckPointAction.java] implementerer checkpointing
-	\item[CornerBoardBoardTest.java] unittests til CornerBoard
-	\item[MiddelBoardTest.java] unittests til MiddleBoard
-	\item[MiGClient.java] java-implementation af en del af \mig-hjælpeprogrammerne
-	\item[MiGJob.java] klasse der beskriver et job og kan generere en .mRSL-fil
-	\item[MiGSSLSocketFactory.java] hjælpeklasse til MiGClient-klassen
-	\item[NQueenBoards.java] Jobgeneratoren, parallel-nqueen-algoritme, der genererer delproblemer i form af boards, hvor de første $m$ dronninger allerede er placeret. 
-	\item[NQueenJob.java] hovedklassen for et \mig-\oc-job. 
 \end{description}
+
+\subsection{NQueenBoards.java}
+
+NQueenBoards er hovedklassen, omend det er begrænset hvor meget der egentlig
+bliver gjort i den. Den opretter et nyt CornerBoard objekt (se
+\ref{cornerboard}) og et nyt MiddleBoard objekt (se \ref{middleboard})
+kører deres init metode og tilføjer outputtet herfra blivet stoppet på en hægtet
+liste. 
+herefter bliver iterateOneLine kørt \texttt{maxSteps} gange
+
+\texttt{maxSteps} er en variabel man kan skrue på for at
+ændre antallet af boards der bliver genereret. Den angiver mange dronninger vi
+forud placerer på vores bræt. Det skal dog bemærkes at der er forskel på hvor
+mange bræt MiddleBoard og CornerBoard genererer ud fra \texttt{maxSteps}, der
+bliver genereret flere CornerBoards, da der allerede fra start er placeret en
+dronning i hjørnet.
+
+På nuværende tidspunkt er der en lille mængde manuelt arbejde i det. Som det ser
+ud for øjeblikket er der 2 muligheder i NQueenBoards, som også kan kombineres. 
+Man kan vælge at submitte jobsne direkte (P.t. er denne funktion dog lavet om
+til at gemme zip filen lokalt da MiG ikke er glad for at submit and extracte en
+zip fil med over 12000 jobs). Man kan også få NQueenBoards til at beregne
+resultatet (kun en god ide for ikke alt for store værdier af $n$). Disse 2
+muligheder vælger man ved at ud/indkommentere henholdsvis linje xx-xx og linje
+xx-xx \fixme{indsæt linjenumre}
+
+\subsection{CornerBoard.java}
+
+
+\subsection{MiddleBoard.java}
+
+\subsection{Board2}
+
+\subsection{NQueenJob}
+
+\subsection{CheckPointer.java}
+
+\subsection{CheckPointActionMiG.java}
+
+\subsection{NQueens, NQueensL, Board, Globals}
+
+Disse kildekode filer indeholder vores først "port" af Takakens kode til java,
+og er så vidt muligt en copy/paste af Takakens kode, og er derfor ikke særlig
+interessant. 
+
+\subsection{MiGClient, MiGJob, MiGSSLSocketFactory}
+
+Disse klasser er lavet for at kunne lave \mig-jobs og submitte dem direkte uden
+at manuelt skulle køre migput/migsubmit. 
+
+\subsection{CornerBoardTest, MiddleBoardTest}
+
+Disse to klasser er lavet for nemt at kunne teste CornerBoard og MiddleBoard
+hver gang der var blevet lavet ændringer i dem. 
 
 
 \fixme{Sortér kildefiler efter vigtighed. Skriv derefter uddybende til de øverste.}
@@ -640,14 +694,13 @@ sendJobFinished
 
 \appendix
 \section{Kildekode}
-%\input{kode}
+\input{kode}
 \newpage
 \section{Synopsis}
 %\input{../synopsis/problemformulering.tex}
 %\input{../synopsis/afgraensninger.tex}
 
 \fixme{er benchmark output filer nødvendige at sætte ind i rapporten.. det ville fylde AAAALLT for meget og tage lang tid at lave da der er mange filer}
-
 %\input{benchmark-output.tex}
 %\begin{multicols}{2}[\section{\LaTeX kildekode}]
 %\section*{Skabelon.tex}
