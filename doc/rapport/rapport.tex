@@ -288,72 +288,6 @@ En java-applet afvikles i et lukket miljø, en såkaldt sandkasse, for at beskyt
 
 Det bliver naturligvis et krav at alle delproblemer vi sender ud kan beregnes uden at bruge mere end 64MB hukommelse på klienten. Uden JNI har vi ikke mulighed for måle cputid.
 
-\subsection{Forbedringer til \oc\ og \mig}\label{forbedringer}
-%\input{forbedringer.tex}
-
-\begin{description}
-	\item[Job fejler ikke hvis der kastes en kastes en \texttt{java.lang.Error}]  Java har både \texttt{Exceptions} og \texttt{Error} der begge er af typen \texttt{java.lang.Throwable}. \oc griber kun \texttt{Exceptions} som \oc og rapportere som at jobbet er succesfuldt afsluttet. Dette kan  
-	\item Ens job tvinges til at afhænge af MiG.nqueen.JoB
-	\item File I/O følger ikke Inputstream / Outputstream	
-	\item Brug af suns egen HTTP implementation. Brug i stedet http-commons fra Apache
-	\item Vi har glemt en masse 
-	\item Webstart\footnote{Se \url{http://java.sun.com/products/javawebstart/}} vil foretrække frem for webapplets.
-\end{description}
-
-I forbindelse med udvikling og afprøvning af en \oc-applet skal man være opmærksom på at Class-filer caches af browserens java-plugin. Ændringer i implementeringen kan medføre fejl under afviklingen på ressourcer der bruger forældede class-filer, selvom \mig opfatter jobbet som udført uden fejl. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver opdatering af denne cache. Man kan altså riskikere at appletten får en undtagelse på serialVersionUID og derved markeres jobbet som færdigt, uden at være kommet til et resultat. En uhensigtsmæssighed i forbindelse med undtagelseshåndtering i basisklassen MigJob.java gør at jobbet alligevel vil se ud til at være afsluttet succesfuldt. 
-
-\fixme{atomisk fil-operationer/låse ville give mulighed for InterResourceCommunication. ;-) Skal implementeres i \mig}
-
-\fixme{Dette er stadig i noteform og måske redundant ifht. tidligere afsnit}
-langsom til at sende resultatet til serveren hvis browseren dør mens den er ved
-at sende resultatet til serveren, er det ikke sikkert den når at smide hele
-
-\oc applet'en cacher class filer, s hvis man har ænret i sin kode og
-uploadet nye class filer bliver man nødt til at lukke browseren helt ned og
-starte den op igen, hvis man vil have den til at loade de nye class filer, lader
-det umiddelbart til.. 
-
-\oc applet'en kommer hele tiden med en popup fejl, hvis brugeren ikke har
-certificat (skal nok lige verificeres, var noget jeg fik at vide af Asser, da
-han legede ressource for mig) \fixme{den kommer vidst nok ikke hele tiden, så
-vidt jeg husker, kun i starten}
-
-Job Status side ala. Files/Folders
-tingen, så man nemmere kan vælge flere jobs og cancelle/resubmitte.. og
-wildcards til migcancel.py ville også være en go ting, så man kunne lave en
-migcancel.py *14\_37* fx.. 
-
-vis queued/cancelled/finished/executing/m.fl jobs ville også være en brugbar feature
-
-mulighed for at slette job helt, så ens jobstatus side ikke er så stor.. eller
-"pensionere" dem
-
-Den dræber nogen gange jobs, dette ser ud til at ske, hvis den lige har
-færdiggjort job <jobid>, og så (af en eller anden årsag) prøver at hente det
-\_samme\_ job igen, så bliver dette job (sjovt nok) slået ihjel af serveren, og
-så sleeper applet'en i 80s før den prøver igen.. 
-
-Errors bliver ikke fanget
-\begin{verbatim}
-checkpoint_request_url_str: https://mig-1.imada.sdu.dk/sid_redirect/7bc01a0e4ead439c63c84fd149eb93ac325fdf1809aedc23049c010890bf14bd/13768_6_2_2007__8_42_57_mig-1.imada.sdu.dk.0.NQueenJob.checkpoint.latest
-Exception in thread "Thread-18" java.lang.NoClassDefFoundError: CheckPointAction
-	at java.lang.Class.getDeclaredMethods0(Native Method)
-	at java.lang.Class.privateGetDeclaredMethods(Class.java:2427)
-	at java.lang.Class.getMethod0(Class.java:2670)
-	at java.lang.Class.getMethod(Class.java:1603)
-	at MiG.oneclick.Exe.getJobMethods(Exe.java:73)
-	at MiG.oneclick.Exe.run(Exe.java:236)
-	at java.lang.Thread.run(Thread.java:619)
-sendJobFinished
-\end{verbatim}
-
-I forbindelse med udvikling og afprøvning af en \oc-applet skal man være
-opmærksom på at Class-filer caches af browserens java-plugin. Ændringer i
-implementeringen kan medføre fejl under afviklingen på ressourcer der bruger
-forældede class-filer, selvom \mig\ opfatter jobbet som udført uden fejl. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver opdatering af denne cache. Man kan altså riskikere at appletten får en undtagelse på serialVersionUID og derved markeres jobbet som færdigt, uden at være kommet til et resultat. En uhensigtsmæssighed i forbindelse med undtagelseshåndtering i basisklassen MigJob.java gør at jobbet alligevel vil se ud til at være afsluttet succesfuldt.
-
-\fixme{omrokering af afsnit og sletning af gentagelser.}
-
 
 \section{Problemstørrelse og jobschedulering}\label{opdelingogschedulering}
 
@@ -509,7 +443,7 @@ Den udviklede kildekode er organiseret i følgende filer:
 
 \fixme{Sortér kildefiler efter vigtighed. Skriv derefter uddybende til de øverste.}
 
-\subsubsection{Antallet af løsninger}
+\subsection{Antallet af løsninger}
 \begin{figure}[h]
 \begin{center}
 \includegraphics{../benchmarks/resultatstorrelse.pdf}
@@ -535,19 +469,22 @@ I en implementation med \texttt{java.Math.BigInteger} kan vi se at der vil være
 
 \input{benchmark.tex}
 
-\begin{description}
-	\item[Job fejler ikke hvis der kastes en kastes en \texttt{java.lang.Error}]  Java har både \texttt{Exceptions} og \texttt{Error} der begge er af typen{java.lang.Throwable}. \oc griber kun \texttt{Exceptions} som \oc og rapportere som at jobbet er succesfuldt afsluttet. Dette kan  
-	\item Ens job tvinges til at afhænge af MiG.nqueen.JoB
-	\item Brug af suns egen HTTP implementation. Brug i stedet http-commons f
-	\item Input/Output til MiG hjemmedir ikke Inputstream / Outputstream objekter. Men wrapped i en klasse der repræsentere C/Python tankegang.
+\section{Forbedringer til \oc\ og \mig}\label{forbedringer}
 
+\begin{description}
+	\item[Job fejler ikke hvis der kastes en kastes en \texttt{java.lang.Error}]  Java har både \texttt{Exceptions} og \texttt{Error} der begge er af typen \texttt{java.lang.Throwable}. \oc griber kun \texttt{Exceptions} som \oc og rapportere som at jobbet er succesfuldt afsluttet. Dette kan  
+	\item Ens job tvinges til at afhænge af MiG.nqueen.JoB	
+	\item Brug af suns egen HTTP implementation. Brug i stedet http-commons fra Apache
+	\item Vi har glemt en masse 
+	\item Input/Output til MiG hjemmedir ikke Inputstream / Outputstream objekter. Men wrapped i en klasse der repræsentere C/Python tankegang.
 	\item[Webstart] Webstart\footnote{Se \url{http://java.sun.com/products/javawebstart/}} er at foretrække frem for applets, da de startes seperat uden for browseren. Fra serversiden skal der bare generes en jnlp (xml) fil(se eksempel i \ref{jnlp}) i stedet for en html fil. Eksemplet gør brug af applet kombabilitet, men det er ikke nødvendigt at arve fra Applet klassen.
 	\item[Abstrakt job klasse] Det er en begræsningen af man skal arve fra \texttt{MiG.oneclick.JoB} klassen. Det gør det svært at teste en kode for korrekthed lokalt da Job selv arver fra \texttt{java.lang.Applet}
-	\item[CPU tid] Det er ikke mulig
-	
+	\item[CPU tid] Det er ikke muligt
 \end{description}
 
 I forbindelse med udvikling og afprøvning af en \oc-applet skal man være opmærksom på at Class-filer caches af browserens java-plugin. Ændringer i implementeringen kan medføre fejl under afviklingen på ressourcer der bruger forældede class-filer, selvom \mig opfatter jobbet som udført uden fejl. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver opdatering af denne cache. Man kan altså riskikere at appletten får en undtagelse på serialVersionUID og derved markeres jobbet som færdigt, uden at være kommet til et resultat. En uhensigtsmæssighed i forbindelse med undtagelseshåndtering i basisklassen MigJob.java gør at jobbet alligevel vil se ud til at være afsluttet succesfuldt. 
+
+\fixme{atomisk fil-operationer/låse ville give mulighed for InterResourceCommunication. ;-) Skal implementeres i \mig}
 
 \fixme{Dette er stadig i noteform og måske redundant ifht. tidligere afsnit}
 langsom til at sende resultatet til serveren hvis browseren dør mens den er ved
@@ -562,6 +499,7 @@ det umiddelbart til..
 certificat (skal nok lige verificeres, var noget jeg fik at vide af Asser, da
 han legede ressource for mig) \fixme{den kommer vidst nok ikke hele tiden, så
 vidt jeg husker, kun i starten}
+
 
 Job Status side ala. Files/Folders
 tingen, så man nemmere kan vælge flere jobs og cancelle/resubmitte.. og
@@ -591,6 +529,10 @@ Exception in thread "Thread-18" java.lang.NoClassDefFoundError: CheckPointAction
 	at java.lang.Thread.run(Thread.java:619)
 sendJobFinished
 \end{verbatim}
+
+
+\fixme{omrokering af afsnit og sletning af gentagelser.}
+
 
 %\bibliographystyle{plainnat}
 
