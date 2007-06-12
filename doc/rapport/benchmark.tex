@@ -1,8 +1,5 @@
 Benchmarking-delens fremmeste formål er at finde svar på en række spørgsmål
-inden udregningen sættes igang.  Reelt har vi kun en enkelt parameter vi kan
-skrue på, nemlig $m$ - antallet af dronninger vi placerer på hver board før vi
-genererer et mig job til at regne videre på det board.  Hvilket forhold mellem 
-\fixme{what?}
+inden udregningen sættes igang. Vi præsenterer her resultaterne af en lang række prøvekørsler, hver med en kort beskrivelse af omstændigheder omkring kørslen og de udledninger vi har foretaget på baggrund af resultatet. Prøvekørslerne refereres fra de foregående afsnit, hvor det er relevant.
 %\subsection{Takaken}
 %\subsection{Java port}
 %\subsection{Java port v2}
@@ -11,6 +8,14 @@ genererer et mig job til at regne videre på det board.  Hvilket forhold mellem
 %\subsection{MiGrid}
 
 \subsection{Lokale tests}
+
+%\fixme{fjern referencer til revisioner. Skift ud med "her bruges bigint", "her bruges long", osv}
+
+\fixme{fix labels på figur 8 og 9}
+
+%\fixme{Tilføj en definition af "kode-udgaver", f.eks. "den paralleliserede udgave"}
+
+%\fixme{Tilføj definition af maxSteps, referer til \ref{parallel}}
 
 Vi starter med at teste de forskellige udgaver af koden lokalt, så vi har en
 baseline at sammenligne med.
@@ -24,7 +29,7 @@ alex@roadrunner:~/temp/queens/src/main/java$ javac -version
 javac 1.5.0_11
 \end{verbatim}
 
-C koden er kompilet med \texttt{gcc -Os -O2 -o nq nqueens.c}
+C koden er kompilet med \texttt{gcc -O2 -o nq nqueens.c}
 
 \begin{verbatim}
 alex@roadrunner:~/temp/queens/src/main/java$ gcc --version
@@ -56,14 +61,13 @@ Den parallelle udgave af koden er i dette tilfælde her kørt med
 \end{center}
 \end{figure}
 
-På figur \ref{figur:maxsteps} er vidst kørsler for $n=18$ for forskellige
+På figur \ref{figur:maxsteps} er vist kørsler for $n=18$ for forskellige
 $maxSteps$. 
 Som det ses, har det ikke den store indflydelse på performance hvor stor
 $maxSteps$ er, der er altså ikke det store overhead ved at generere en masse
 opgaver og løse dem bagefter, når det kører lokalt. 
 
-Det skal også nævnes at for $maxSteps>n/2$ vil vores program regne forkert.
-Dette skyldes \fixme{ja.. hvad skyldes det.. }
+
 
 
 I tabel \ref{tabel:noboards} kan det ses hvor mange boards der bliver genereret
@@ -136,7 +140,7 @@ $maxSteps=0$ er antallet af kald for den parallele og iterative kode også det
 samme som for c koden (se tabel \ref{tabel:backtrackkald}. Med $maxSteps>0$ får
 vi færre kald til backtrack, hvilket skyldes at en del af disse kald bliver
 lavet i forbindelse med oprettelsen af de ekstra boards. 
-
+\fixme{Definition af antal af iterationer er antal kald til den rekursive, og antal løkke-iterationer i den iterative. Det er muligvis interressant pga. performance forklaring.}
 \begin{table}
 \begin{center}
 \begin{tabular}{|c|c|c|}
@@ -163,12 +167,11 @@ henholdsvist MiddleBoard og CornerBoard. Hvis man øger $maxSteps$ og dermed få
 lavet flere jobs, ses det at de enkelte jobs bliver delt op i nogenlunde lige
 støre dele, den relative størrelse mellem det mindste og største jobs er dog
 stadig nogenlunde det samme. \fixme{lav en benchmark/beregning der viser dette?}
-
+\fixme{Antallet af jobs er gentagelse fra 1.3/1.4}
 \subsection{Generering af jobs}
 
-Generering og indsendelse af jobs afhænger tildels af den internetforbindelse
-man sidder på, da indsendelse jo går via internettet. De forskellige jobs vi har
-submitted til MiGrid har genereringen og indsendelse af jobs svinget fra xx til
+Det skal bemærkes at indsendelse af jobs afhænger af nethastigheden. De forskellige jobs vi har
+submitted til \mig\ har genereringen og indsendelse af jobs svinget fra xx til
 xx (se tabel \ref{tabel:jobgenerering}) \fixme{lav den fscking tabel og skriv de
 rigtige tal ind}. Langt den største del af tiden går også med at sende jobsne,
 da genereringen af jobs for større mængder jobs tager ca 0.01ms/job
@@ -198,7 +201,7 @@ da genereringen af jobs for større mængder jobs tager ca 0.01ms/job
 Den reelle køretid på \mig findes ved at tage \texttt{Queued} tiden for det første job der er
 blevet sat i kø, og \texttt{Finished} tiden for det sidste job der er blevet
 færdigt, og så finde forskellen.
-
+\fixme{Det ikke interessant at finde køretiden for den første Queued til den sidste Finished.}
 På figur \ref{figur:mig} kan man se hvor lang beregningstiden er og hvor lang
 den reelle køretid er for $n=18$ og $maxSteps=0,1$. Ved $maxSteps=0$ ses det at
 den reelle køretid er næsten det dobbelte af beregningstiden. Når $maxSteps$
@@ -209,7 +212,6 @@ rekursive udgave. Dette skyldes at der har været sat 2 forskellige tests igang
 på samme tid, og nogle af de jobs fra den pågældende test er blevet stoppet og
 sat i kø igen. De er dermed kommet bagest i køen og først blevet kørt efter den
 anden test er færdig. 
-
 \fixme{beregn forholdet mellem den første og resten?}
 
 \begin{figure}[h]
@@ -232,6 +234,6 @@ foregående job fra, og man har så et estimat for hvor lang tid et jobskifte
 tager, vi har gjort dette for 8 jobs, og får så 7 estimater, gennemsnittet af
 dem bliver 18.455 sek.  Op til 15 af disse 18 sekunder, skyldes at oneclick
 applet'en sover i 15 sekunder.  Ved en kørsel med $n=18$ og $maxSteps=1$, hvor
-vi så får 289 jobs, giver det knap 89 minutter. En del af dette overhead vil
+vi så får 289 jobs, giver det knap 89 minutter ved kørsel på én ressource. En del af dette overhead vil
 selvfølgelig blive "gemt", når der er flere ressourcer der kører samtidigt.
 
