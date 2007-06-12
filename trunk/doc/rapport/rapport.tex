@@ -253,11 +253,12 @@ Det ses let at , inklusiv takakens optimeringer.  Hvert delbræt kan løses uafh
 
 \textsc{Minimum instrusion Grid}, herefter \mig, er et grid-system der sigter efter at stille så få krav for deltagelse som muligt - både overfor brugere og ressourcer. I \mig-terminologi er en ressource en enhed der kan sættes til at beregne et problem. I mange andre gridsystemer benyttes ekstra software på den enkelte ressource. Undgår man helt dette mindskes kompleksiteten af det samlede system dramatisk. 
 
-\fixme{beskrivelse af anonymitet!, Det er vigtigt fordi det begrænser os, vi kan ikke vide noget om ressourcers hastighed, matche jobs til ressourcer(, osv?)}
+Desuden implementerer \mig\ en model der sikrer fuldstændig anonymitet, det er umuligt for ressourcer at vide hvor de job de regner på kommer fra, og umuligt for brugere af vide hvor deres job afvikles. Få krav til deltagelse, anonymitet, sikkerhed\footnote{Baseret på ssl-certifikater} og skalerbarhed er hovedprincipperne bag \mig. Lige præcis til vores formål ligger der dog en begrænsning i den fuldstændige anonymitet. Vi er vi ude af stand til at parre specifikke job med specifikke ressourcer. En sådan mulighed kunne ellers danne basis for en alternativ løsning på scheduleringen af heterogene job, se afsnit \ref{opdelingogschedulering}. 
+%\fixme{beskrivelse af anonymitet!, Det er vigtigt fordi det begrænser os, vi kan ikke vide noget om ressourcers hastighed, matche jobs til ressourcer(, osv?)}
 
-\fixme{Kort om sikkerhed i \mig}
+%\fixme{Kort om sikkerhed i \mig}
 
-\fixme{kort om skalerbarhed i \mig}
+%\fixme{kort om skalerbarhed i \mig}
 
 \mig\ giver brugeren mulighed for at få adgang til et stort antal beregningsressourcer, uden at skulle bekymre sig om 
 \begin{itemize}
@@ -289,7 +290,7 @@ Implementerer man sit problem i en \oc-applet vil det kunne afvikles på alle \o
 
 \subsubsection{Checkpointing}
 \oc\ indeholder kode til oprettelse af checkpoints under kørslen af et job. Et checkpoint er en gemt programtilstand, hvorfra det er muligt at fortsætte afviklingen. \oc\ indeholder desuden mekanismer til genetablering af programtilstanden fra et givent checkpoint. Når et \oc-job sendes til en ressource sendes det nyeste checkpoint med, hvis et sådant eksisterer, og \oc\ sørger for at genetablere tilstanden før eksekveringen af jobbet starter. Dette er præcis den funktionalitet vi behøver for at kunne sikre, at vi ikke behøver køre en beregning forfra, når en ressource forlader gridet.
-Checkpoint foretages ved at serialisere det kørende job-objekt\footnote{\mig-applettens hoved objekt, der nedarver fra MiGJob-klassen} til hjemmekataloget på \mig. Det er altså kun objekt-grafen, med rod i MigJob-objektet og eventuelle åbne filer, 
+Checkpoint foretages ved at serialisere det kørende job-objekt\footnote{\mig-applettens hoved objekt, der nedarver fra MiGJob-klassen} til hjemmekataloget på \mig. Det er altså kun objekt-grafen, med rod i MigJob-objektet, og eventuelle åbne filer, 
 \fixme{Er det buffere for åbne filer eller noget andet?}
 der overlever på tværs af et checkpoint. Hverken kald-stak eller programtæller gemmes på tværs af checkpoint.
 
@@ -303,7 +304,7 @@ En java-applet afvikles i et lukket miljø, en såkaldt sandkasse, for at beskyt
 \end{itemize}
 
 Det bliver naturligvis et krav at alle delproblemer vi sender ud kan beregnes uden at bruge mere end 64MB hukommelse på klienten. Uden JNI har vi ikke mulighed for måle cputid.
-
+\fixme{Som BV siger : I bør skrive noget om at One-Click ikke er applikations specifik som BOINC}
 
 \section{Problemstørrelse og jobschedulering}\label{opdelingogschedulering}
 
@@ -451,6 +452,8 @@ Den løsning der er implementeret, i forbindelse med denne opgave, kan bedst kar
 
 For at afhjælpe dette problem kan joboprettelsen gøres mere dynamisk. Den indledende mængde delopgaver kan tilpasses det øjeblikkelige antal ressourcer. Herefter opdeles en eller flere af disse i mindre delopgaver, så snart der er ledige ressourcer. På denne måde sikres det at ingen beregningskraft står ubrugt hen. 
 Det bedste valg af job til genopdeling vil være det der kræver mest beregningstid, da dette vil resultere i den mindst mulige spredning i beregningsstørrelse for de alle opgaver efter opdelingen\footnote{Idet alle nye opgaver vil være mindre end det oprindelige, men ingen vil være mindre end den mindste der ville oprettes hvis vi valgte en anden end den største til opdeling.}. På figur \ref{tabel:boardtimes} ser vi eksempler for beregningstiden for hver delopgave. Det er tydeligt at de følger et mønster, og at vi kan bestemme et indbyrdes størrelsesforhold mellem hhv. alle hjørne- og midterbræt. Dette giver os en god idé om hvilken delopgave det bedst kan betale sig at splitte op. Tilgengæld har vi ikke mulighed for at vide, om beregningen af denne opgave allerede er ved at være færdig, hvorfor en opsplitning ville være uhensigtsmæssig. 
+
+
 
 \fixme{Hvorfor kan det alligevel give mening at gå efter den største? Hvis det altså kan...}
 
