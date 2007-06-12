@@ -119,22 +119,34 @@ public class MiGClient {
 				+ destination + filename);
 
 		ZipOutputStream out = null;
-
+		ObjectOutputStream objout = null;
 		try {
 			// create zipfile on disk (do we really _have_ to do that?)
-			// out = new ZipOutputStream(new FileOutputStream("temp.zip"));
+			
 
 			// ByteArrayOutStream is a stream backed by a bytearray (duh? ;))
-			ByteArrayOutputStream bout = new ByteArrayOutputStream();
-			out = new ZipOutputStream(bout);
-
+			// ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			//out = new ZipOutputStream(bout);
+			
+			
 			int count = 0;
-			for (Board2 board : boards) {
+			int filecount = 0;
+			for (Board2 board : boards) {				
+				if ((count %  1000) == 0) {
+					filecount++;
+					if (count != 0) {
+						out.close();
+					}					
+					out = new ZipOutputStream(new FileOutputStream("NQ-" + board.size +"-" + maxsteps + "-" + filecount +  ".zip" ));
+				
+				}
+				
 				// add board object to zipfile
 				out.putNextEntry(new ZipEntry("board" + board.size + "-" + maxsteps + "-" + rec + "-"
 						+ count + ".obj"));
-				ObjectOutputStream objout = new ObjectOutputStream(out);
+				objout = new ObjectOutputStream(out);				
 				objout.writeObject(board);
+				
 				out.closeEntry();
 				// create and add mrsl file to zip file
 				MigJob job = new MigJob("NQueenJob boards/board" + board.size
@@ -144,11 +156,12 @@ public class MiGClient {
 
 				out.write(job.toString().getBytes());
 				out.closeEntry();
-
 				count++;
-			}
+			
+				
+			}			
 			out.close();
-
+/*
 			InputStreamRequestEntity entity = null;
 
 			// entity = new InputStreamRequestEntity(new
@@ -173,6 +186,7 @@ public class MiGClient {
 
 				}
 			}
+			*/
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -185,5 +199,6 @@ public class MiGClient {
 			// System.out.println(response);
 			httpput.releaseConnection();
 		}
+		
 	}
 }
