@@ -137,7 +137,7 @@ public class MiGSSLSocketFactory extends HttpSecureProtocol {
 				default:
 					System.out.println("Did not recognize setting: " + line);
 				}
-				
+
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -145,10 +145,10 @@ public class MiGSSLSocketFactory extends HttpSecureProtocol {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {			
+		} finally {
 			try {
 				in.close();
-			} catch (IOException e) {			
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}

@@ -13,6 +13,7 @@ import MiG.oneclick.Job;
 
 public class CheckPointer extends TimerTask {
 	private Board2 board;
+
 	private CheckPointAction action;
 
 	/**
@@ -33,13 +34,14 @@ public class CheckPointer extends TimerTask {
 		boolean result;
 		System.out.println("CHECKPOINT TASK STARTED");
 		board.suspendBacktrack(true);
-		synchronized (board) { // We don't want backtrack to corrup our snapshot
+		synchronized (board) { // We don't want backtrack to corrup our
+			// snapshot
 			System.out.println("DOING CHECKPOINT");
 			result = action.doCheckpoint();
 			System.out.println("Checkpointing finished with: "
 					+ (result ? "sucess" : "failure"));
 			board.suspendBacktrack(false);
-			board.notify(); //board is wait()'ing for us!
+			board.notify(); // board is wait()'ing for us!
 		}
 	}
 }

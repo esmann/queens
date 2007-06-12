@@ -122,71 +122,65 @@ public class MiGClient {
 		ObjectOutputStream objout = null;
 		try {
 			// create zipfile on disk (do we really _have_ to do that?)
-			
 
 			// ByteArrayOutStream is a stream backed by a bytearray (duh? ;))
 			// ByteArrayOutputStream bout = new ByteArrayOutputStream();
-			//out = new ZipOutputStream(bout);
-			
-			
+			// out = new ZipOutputStream(bout);
+
 			int count = 0;
 			int filecount = 0;
-			for (Board2 board : boards) {				
-				if ((count %  1000) == 0) {
+			for (Board2 board : boards) {
+				if ((count % 1000) == 0) {
 					filecount++;
 					if (count != 0) {
 						out.close();
-					}					
-					out = new ZipOutputStream(new FileOutputStream("NQ-" + board.size +"-" + maxsteps + "-" + filecount +  ".zip" ));
-				
+					}
+					out = new ZipOutputStream(new FileOutputStream("NQ-"
+							+ board.size + "-" + maxsteps + "-" + filecount
+							+ ".zip"));
+
 				}
-				
+
 				// add board object to zipfile
-				out.putNextEntry(new ZipEntry("board" + board.size + "-" + maxsteps + "-" + rec + "-"
-						+ count + ".obj"));
-				objout = new ObjectOutputStream(out);				
+				out.putNextEntry(new ZipEntry("board" + board.size + "-"
+						+ maxsteps + "-" + rec + "-" + count + ".obj"));
+				objout = new ObjectOutputStream(out);
 				objout.writeObject(board);
-				
+
 				out.closeEntry();
 				// create and add mrsl file to zip file
 				MigJob job = new MigJob("NQueenJob boards/board" + board.size
-						+ "-" + maxsteps + "-" + rec + "-" + count + ".obj", "board" + count + ".mrsl");
+						+ "-" + maxsteps + "-" + rec + "-" + count + ".obj",
+						"board" + count + ".mrsl");
 				out.putNextEntry(new ZipEntry("board" + board.size + "-"
 						+ count + ".mrsl"));
 
 				out.write(job.toString().getBytes());
 				out.closeEntry();
 				count++;
-			
-				
-			}			
-			out.close();
-/*
-			InputStreamRequestEntity entity = null;
 
-			// entity = new InputStreamRequestEntity(new
-			// FileInputStream("temp.zip"));
-			entity = new InputStreamRequestEntity(new ByteArrayInputStream(bout
-					.toByteArray()));
-
-			httpput.setRequestEntity(entity);
-			httpput.setRequestHeader("Content-Type", "submitandextract");
-			httpclient.executeMethod(httpput);
-			response = httpput.getResponseBodyAsString();
-			FileOutputStream jobidout;
-
-			jobidout = new FileOutputStream("test-"
-					+ System.currentTimeMillis());
-			String[] output = response.split("\n");
-			for (String line : output) {
-				if (line.contains("assigned")) {
-					jobidout.write(line.split(" ")[0].getBytes());
-					jobidout.write("\n".getBytes());
-					// System.out.println(line.split(" ")[0]);
-
-				}
 			}
-			*/
+			out.close();
+			/*
+			 * InputStreamRequestEntity entity = null;
+			 *  // entity = new InputStreamRequestEntity(new //
+			 * FileInputStream("temp.zip")); entity = new
+			 * InputStreamRequestEntity(new ByteArrayInputStream(bout
+			 * .toByteArray()));
+			 * 
+			 * httpput.setRequestEntity(entity);
+			 * httpput.setRequestHeader("Content-Type", "submitandextract");
+			 * httpclient.executeMethod(httpput); response =
+			 * httpput.getResponseBodyAsString(); FileOutputStream jobidout;
+			 * 
+			 * jobidout = new FileOutputStream("test-" +
+			 * System.currentTimeMillis()); String[] output =
+			 * response.split("\n"); for (String line : output) { if
+			 * (line.contains("assigned")) { jobidout.write(line.split("
+			 * ")[0].getBytes()); jobidout.write("\n".getBytes()); //
+			 * System.out.println(line.split(" ")[0]);
+			 *  } }
+			 */
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -199,6 +193,6 @@ public class MiGClient {
 			// System.out.println(response);
 			httpput.releaseConnection();
 		}
-		
+
 	}
 }

@@ -15,16 +15,10 @@ Vi har 3 forskellige udgaver af koden
 \item[2] En parallelliseret udgave, der kører rekursivt.
 \item[3] En parallelliseret udgave, der kører iterativt.
 \end{description}
-\fixme{referencer til ovenstående? skal de beskrives yderligere}
 
+Disse udgaver er beskrevet mere indgående i afsnit \ref{implementering}
 I dette afsnit vil der ind i mellem blive referet til noget vi har kaldt
-\texttt{maxSteps}. \texttt{maxSteps} er en variabel man kan skrue på for at
-ændre antallet af boards der bliver genereret. Den angiver mange dronninger vi
-forud placerer på vores bræt. Det skal dog bemærkes at der er forskel på hvor
-mange bræt MiddleBoard og CornerBoard genererer ud fra \texttt{maxSteps}, der
-bliver genereret flere CornerBoards, da der allerede fra start er placeret en
-dronning i hjørnet.
-\fixme{Tilføj definition af maxSteps, referer til \ref{parallel}}
+\texttt{maxSteps}. \texttt{maxSteps} er beskrevet mere i \ref{cornerboard} 
 
 Vi starter med at teste de forskellige udgaver af koden lokalt, så vi har en
 baseline at sammenligne med.
@@ -174,23 +168,20 @@ lavet i forbindelse med oprettelsen af de ekstra boards.
 \subsection{Jobstørrelse}
 
 Med jobstørrelse refererer vi til hvor lang tid det tager at løse et job, og
-ikke størrelsen på data. 
-Som det ses i \ref{tabel:jobsize}, varierer jobstørrelsen
-meget. Cornerboards er generelt ret små, mens middleboards er generelt er en del
-større. Det ses også i tabellen at jobstørrelsen afhænger af de bounds der er i
-henholdsvist MiddleBoard og CornerBoard. Hvis man øger $maxSteps$ og dermed får
-lavet flere jobs, ses det at de enkelte jobs bliver delt op i nogenlunde lige
-støre dele, den relative størrelse mellem det mindste og største jobs er dog
-stadig nogenlunde det samme. \fixme{lav en benchmark/beregning der viser dette?
-er lavet, men hvordan viser man det smartest, en stor tabel eller graf?}
-\fixme{Antallet af jobs er gentagelse fra 1.3/1.4.. Er det?}
+ikke størrelsen på data.  Som det ses i \ref{tabel:jobsize}, varierer
+jobstørrelsen meget. Cornerboards er generelt ret små, mens middleboards er
+generelt er en del større. Det ses også i tabellen at jobstørrelsen afhænger af
+de bounds der er i henholdsvist MiddleBoard og CornerBoard. Hvis man øger
+$maxSteps$ og dermed får lavet flere jobs, ses det at de enkelte jobs bliver
+delt op i nogenlunde lige store dele.
 
 \subsection{Generering af jobs}
 
 Det skal bemærkes at indsendelse af jobs afhænger af nethastigheden. Tiden for
-generering og indsendelse af de forskellige jobs har svinget fra 4ms til 1252ms (se tabel
-\ref{tabel:jobgenerering}. Langt den største de laf tiden går også med at sende
-jobsne da genereringen af jobs for større mængder jobs tager ca 0.01ms/job
+generering og indsendelse af de forskellige jobs har svinget fra 4ms til 1252ms
+(se tabel \ref{tabel:jobgenerering}. Langt den største de laf tiden går også med
+at sende jobsne da genereringen af jobs for større mængder jobs tager ca
+0.01ms/job
 
 \begin{table}
 \begin{center}
@@ -214,31 +205,38 @@ jobsne da genereringen af jobs for større mængder jobs tager ca 0.01ms/job
 
 \subsection{Kørsel på \mig}
 
-Den reelle køretid på \mig findes ved at tage \texttt{Queued} tiden for det første job der er
-blevet sat i kø, og \texttt{Finished} tiden for det sidste job der er blevet
-færdigt, og så finde forskellen.
-\fixme{Det ikke interessant at finde køretiden for den første Queued til den
-sidste Finished. Hvorfor ikke? det er da ret interessant hvor lang tid det tager
-at løse problemet, og hvor meget man kan blive buttfucked i \mig s køsystem}
-På figur \ref{figur:mig} kan man se hvor lang beregningstiden er og hvor lang
-den reelle køretid er for $n=18$ og $maxSteps=0,1$. Ved $maxSteps=0$ ses det at
-den reelle køretid er næsten det dobbelte af beregningstiden. Når $maxSteps$
-bliver sat op til 1 og der dermed bliver genereret flere jobs, kommer der et
-noget større overhead, som det kan ses på figuren. På figuren ses det også at
-den reelle køretid for den iterative udgave er væsentlig højere end for den
-rekursive udgave. Dette skyldes at der har været sat 2 forskellige tests igang
-på samme tid, og nogle af de jobs fra den pågældende test er blevet stoppet og
-sat i kø igen. De er dermed kommet bagest i køen og først blevet kørt efter den
-anden test er færdig. Det skal lige nævnes at disse tests alle er kørt med kun 1
-ressource.
+Den tid det tager at løse problemet på \mig\ fra start til slut findes ved at
+tage \texttt{Queued} tiden for det første job der er blevet sat i kø, og
+\texttt{Finished} tiden for det sidste job der er blevet færdigt, og så finde
+forskellen.  På figur \ref{figur:mig} og figur \ref{figur:mig1} kan man se hvor lang beregningstiden er og
+hvor lang den reelle tid er for $n=18$ og $maxSteps=0,1$. Ved $maxSteps=0$
+ses det at den reelle tid er næsten det dobbelte af beregningstiden. Når
+$maxSteps$ bliver sat op til 1 og der dermed bliver genereret flere jobs, kommer
+der et noget større overhead, som det kan ses på figuren. På figuren ses det
+også at den reelle tid for den iterative udgave er væsentlig højere end for
+den rekursive udgave. Dette skyldes at der har været sat 2 forskellige tests
+igang på samme tid, og nogle af de jobs fra den pågældende test er blevet
+stoppet og sat i kø igen. De er dermed kommet bagest i køen og først blevet kørt
+efter den anden test er færdig. Det skal lige nævnes at disse tests alle er kørt
+med kun 1 ressource.
 
 \begin{figure}[h]
 \begin{center}
 \includegraphics{../benchmarks/mig.pdf}
-\caption{NQueen kørt på \mig, for $n=18$ og $maxSteps=0,1$, true er den
+\caption{NQueen kørt på \mig, for $n=18$ og $maxSteps=0$, true er den
 rekursive udgave og false den iterative. Reel står for tiden fra det første job
 blev queued til det sidste job er finished}
 \label{figur:mig}
+\end{center}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics{../benchmarks/mig1.pdf}
+\caption{NQueen kørt på \mig, for $n=18$ og $maxSteps=1$, true er den
+rekursive udgave og false den iterative. Reel står for tiden fra det første job
+blev queued til det sidste job er finished}
+\label{figur:mig1}
 \end{center}
 \end{figure}
 

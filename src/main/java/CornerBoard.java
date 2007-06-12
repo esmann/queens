@@ -9,15 +9,17 @@ public class CornerBoard extends Board2 {
 	 */
 	private int bound1 = 2;
 
-	public int getBound2(){
+	public int getBound2() {
 		return 0;
 	}
+
 	/**
 	 * Counts unique solutions that have 8 symetric solutions
 	 */
 	private long count8 = 0;
 
-	private static long backtrackcount= 0;
+	private static long backtrackcount = 0;
+
 	/**
 	 * Creates a new CornerBoard
 	 * 
@@ -29,20 +31,23 @@ public class CornerBoard extends Board2 {
 		setFirstLine(1);
 
 	}
-	public int getBound1(){
+
+	public int getBound1() {
 		return bound1;
 	}
-	
-	public String getType(){
+
+	public String getType() {
 		return "cornerboard";
 	}
-	
-	public String getLastMask(){
+
+	public String getLastMask() {
 		return "";
 	}
-	public String getEndBit(){
+
+	public String getEndBit() {
 		return "";
 	}
+
 	public Collection<Board2> init() {
 		Collection<Board2> boards = new LinkedList<Board2>();
 		CornerBoard bnew;
@@ -89,16 +94,16 @@ public class CornerBoard extends Board2 {
 		int bit;
 		int bitmap; // used for minimizing array lookups
 		long begin = System.currentTimeMillis();
-//		 for lines above 'top' queen placement is predetermined
+		//		 for lines above 'top' queen placement is predetermined
 		while (currentBoardLine >= top) {
 			countBacktrack();
 			//dout("CurrentBoardLine: " + currentBoardLine);
-			
+
 			if (suspendBacktrack) {
 				//dout("DETECTED a suspend request");
 				long now = System.currentTimeMillis();
-				long diff = now-begin;
-				
+				long diff = now - begin;
+
 				time += diff;
 				// Don't add previous time spent again
 				begin = System.currentTimeMillis();
@@ -108,7 +113,7 @@ public class CornerBoard extends Board2 {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-				}	
+				}
 				if (exitAfterCheckpoint) // testing purposes only					
 					return;
 			}
@@ -161,28 +166,28 @@ public class CornerBoard extends Board2 {
 			}
 		}
 		// We have finished board calculation
-		time += System.currentTimeMillis()-begin;
-		complete = true; 
+		time += System.currentTimeMillis() - begin;
+		complete = true;
 	}
-	
+
 	public void countBacktrack() {
 		backtrackcount += 1;
 	}
-	
+
 	public static long getBacktrackCount() {
 		return backtrackcount;
 	}
 
 	public final void backtrackRecursive(final int y, final int left,
 			final int down, final int right) {
-        countBacktrack();
-        //dout("BTCORNER y: " + y);
+		countBacktrack();
+		//dout("BTCORNER y: " + y);
 
 		/*
 		 * System.out.println("size: " + size); System.out.println("bound1: " +
 		 * bound1); System.out.println("MASK: " + this.MASK);
 		 */
-        
+
 		int bitmap, bit;
 
 		bitmap = this.MASK & ~(left | down | right);
@@ -193,7 +198,7 @@ public class CornerBoard extends Board2 {
 				// board[y] = bitmap;
 				// System.out.println("b1: " + y + ", " + left + ", " + down +
 				// ", " + right);
-//				System.out.println("SOLUTION!\n");
+				//				System.out.println("SOLUTION!\n");
 				this.count8++;
 			}
 		} else {
@@ -214,7 +219,7 @@ public class CornerBoard extends Board2 {
 
 	@Override
 	long getTotal() {
-		return count8*8;
+		return count8 * 8;
 	}
 
 	@Override

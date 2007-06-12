@@ -17,7 +17,9 @@ public class CheckPointTest implements Serializable {
 	private static final int CHECKPOINT_INTERVAL = 10 * 1000;
 
 	class CheckPointActionMock implements CheckPointAction {
-		public CheckPointActionMock() {}
+		public CheckPointActionMock() {
+		}
+
 		public boolean doCheckpoint() {
 			System.out.println("Doing fake local Checkpoint to disk");
 			try {
@@ -33,7 +35,8 @@ public class CheckPointTest implements Serializable {
 	}
 
 	@Test
-	public void testCheckpoint() throws FileNotFoundException, IOException, ClassNotFoundException {
+	public void testCheckpoint() throws FileNotFoundException, IOException,
+			ClassNotFoundException {
 
 		testHelper(16, 13027600, 1628075, 734, 32);
 
@@ -53,7 +56,8 @@ public class CheckPointTest implements Serializable {
 
 	}
 
-	void testHelper(int... args) throws FileNotFoundException, IOException, ClassNotFoundException {
+	void testHelper(int... args) throws FileNotFoundException, IOException,
+			ClassNotFoundException {
 		if (args.length != 5)
 			fail("Must get five ints");
 
@@ -75,26 +79,27 @@ public class CheckPointTest implements Serializable {
 		for (Board2 b : mboard.init()) {
 			while (!b.isComplete()) {
 				Timer t = new Timer("Boards timer nr: " + i++);
-				
-				t.schedule(new CheckPointer(b,new CheckPointActionMock()),
+
+				t.schedule(new CheckPointer(b, new CheckPointActionMock()),
 						CHECKPOINT_INTERVAL, CHECKPOINT_INTERVAL);
-				
-				b.backtrack();			
+
+				b.backtrack();
 				t.cancel();
-				
+
 				boolean result = true;
 				// Write the object....
 				ObjectOutputStream oos;
 				oos = new ObjectOutputStream(new FileOutputStream(
 						"checkpointed-board.ser"));
-				oos.writeObject((MiddleBoardMock)b);
+				oos.writeObject((MiddleBoardMock) b);
 				oos.close();
-				
-//				read it back.. duh :)
-				ObjectInputStream ois = new ObjectInputStream(new FileInputStream("checkpointed-board.ser"));				
+
+				//				read it back.. duh :)
+				ObjectInputStream ois = new ObjectInputStream(
+						new FileInputStream("checkpointed-board.ser"));
 				b = (MiddleBoardMock) ois.readObject();
 				ois.close();
-			
+
 			}
 
 			total = total.add(b.getTotal());
