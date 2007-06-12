@@ -1,6 +1,5 @@
 import java.util.Collection;
 import java.util.LinkedList;
-import java.math.BigInteger;
 public class MiddleBoard extends Board2 {
 	/**
 	 * 
@@ -14,9 +13,9 @@ public class MiddleBoard extends Board2 {
 
 	private int bound1, bound2;
 
-	private BigInteger count2 = BigInteger.ZERO, count8 = BigInteger.ZERO, count4 = BigInteger.ZERO;
+	private long count2 = 0, count8 = 0, count4 = 0;
 	
-	public static int backtrackcount = 0;
+	public static long backtrackcount = 0;
 
 	public MiddleBoard(int size) {
 		super(size);
@@ -183,7 +182,7 @@ public class MiddleBoard extends Board2 {
 		backtrackcount += 1;
 	}
 	
-	public static int getBacktrackCount() {
+	public static long getBacktrackCount() {
 		return backtrackcount;
 	}
 
@@ -256,7 +255,7 @@ public class MiddleBoard extends Board2 {
 					break;
 			}
 			if (own > sizee) {
-				count2 = count2.add(BigInteger.ONE);
+				count2++;
 				return;
 			}
 		}
@@ -274,7 +273,7 @@ public class MiddleBoard extends Board2 {
 					break;
 			}
 			if (own > sizee) {
-				count4 = count4.add(BigInteger.ONE);
+				count4++;
 				return;
 			}
 		}
@@ -293,31 +292,31 @@ public class MiddleBoard extends Board2 {
 					break;
 			}
 		}
-		count8 = count8.add(BigInteger.ONE);
+		count8++;
 
 	}
 
 	@Override
-	BigInteger getTotal() {
-		return this.count2.multiply(new BigInteger("2")).add(this.count4.multiply(new BigInteger("4")).add(this.count8.multiply(new BigInteger("8"))));	
+	long getTotal() {
+		return count2*2 + count4*4 + count8*8;
 	}
 
-	public BigInteger getCount8() {
+	public long getCount8() {
 		return count8;
 	}
 
-	public BigInteger getCount4() {
+	public long getCount4() {
 		return count4;
 	}
 
-	public BigInteger getCount2() {
+	public long getCount2() {
 		return count2;
 	}
 
 	@Override
-	BigInteger getUnique() {
+	long getUnique() {
 		// System.out.println("b2(" + this.Count2 + ", " + this.Count4 + ", " +
 		// this.Count8 + ")");
-		return this.count2.add(this.count4.add(this.count8));
+		return this.count2+this.count4+this.count8;
 	}
 }

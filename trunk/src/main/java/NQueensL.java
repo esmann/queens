@@ -61,8 +61,8 @@ public class NQueensL
 		}
 		else
 		{
-			// Begrænsninger af løsninger, bound1 bliver sat i 
-			// anden iteration (første iteration sætter droningen i hjørnet)
+			// Begraensninger af loesninger, bound1 bliver sat i 
+			// anden iteration (foerste iteration saetter droningen i hjoernet)
 			
 			if(y < Globals.Bound1)
 			{

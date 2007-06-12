@@ -2,7 +2,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.math.BigInteger;
 
 public abstract class Board2 implements Cloneable, Serializable {
 	
@@ -97,9 +96,9 @@ public abstract class Board2 implements Cloneable, Serializable {
 		//System.out.println("Total Backtracking took(ms) :" + this.time);
 	}
 
-	abstract BigInteger getUnique();
+	abstract long getUnique();
 
-	abstract BigInteger getTotal();
+	abstract long getTotal();
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
