@@ -13,13 +13,12 @@
 % 
 
 \documentclass[draft,a4paper,11pt]{article}
+\usepackage{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[danish]{babel}
 \usepackage{natbib}
 
 \bibliographystyle{dk-plainnat}
-
-
 
 \usepackage{url}
 \usepackage[final]{graphicx}
@@ -39,15 +38,16 @@
 \usepackage{lastpage}                          %Mulighed for at referere til sidste sidetal
 \usepackage[final]{hyperref}
 
+
+
 \newcommand{\mig}{MiG}
 \newcommand{\oc}{One-Click}
 \newcommand{\nq}{N-dronning-problemet}
 
+%\headheight 14.5pt                             %H<F8>jden af headeren
+%\textwidth 5.87in                              %Tekstbredden
 
-\headheight 14.5pt                             %H<F8>jden af headeren
-\textwidth 5.87in                              %Tekstbredden
-
-\oddsidemargin 0.2in                           %Venstre margin er 1in + dette tal
+%\oddsidemargin 0.2in                           %Venstre margin er 1in + dette tal
                                                %Med en textwidth p<E5> 5.87in og en
                                                %oddsidemargin p<E5> 0.2 bliver marginerne
                                                %lige store p<E5> A4 som er 8,27in bredt
@@ -128,12 +128,21 @@ Backtracking teknikker og introduktion er bl.a. beskrevet af \cite{Golomb72}.
 
 Stakkens tilstand kan visualiseres med et træ. Knuder angiver den valgte placering, mens kanter angiver de mulige valg der foretages. Træet har en maksimal højde på $n$. Hvor højden for roden er "0". Antallet af børn er antallet af \emph{mulige} valg som ikke blokeres af tidligere placeringer. 
 
+\begin{figure}[!h]
+\begin{center}
+
+\begin{tikzpicture}
+\end{tikzpicture}
+	
+\end{center}
+\end{figure}
+
 
 
 \begin{figure}[!h]
 \begin{center}
 	
-	
+
 
 \begin{tikzpicture}[node distance=2cm]
 \tikzstyle{level 1}=[sibling distance=0.5cm]
@@ -166,7 +175,7 @@ Dette beslutningstræ viser backtracking når $2$ er valgt i række $1$. Blade i
 \end{center}
 \end{figure}
 
-Jo højere oppe i træet vi fjerner et valg, jo større er det deltræ der vil blive fjernet.
+%Jo højere oppe i træet vi fjerner et valg, jo større er det deltræ der vil blive fjernet.
 
 \subsection{Bitmap-modellen}\label{bitmapmodellen}
 
@@ -197,37 +206,40 @@ Efter hvert valg, hvor den valgte placering sættes i en bitvektor \textbf{bit},
 
 Da træets højde er begrænset af $n$, er det maksimale pladsforbrug $antal\ bits\ per\ bitvektor \times antal\ af\ bitvektorer \times n$. For at håndtere N op til 32, kan vi nøjes med 32 bits til at repræsentere en bitvektor. Pladsforbruget for $n=26$ er så $32\times 26 \times 4 = 3328\ bits$. Afhængig af implementationen og arkitekturens ordstørrelse vil dette variere. 
 
-\subsection{Takakens algoritme}\label{takalgo}
+\subsection{Takakens optimeringer}\label{takalgo}
 
 Mange løsninger er spejlinger og roteringer af andre - det totale antal løsninger kan afgøres ud fra antallet af unikke \emph{løsninger}. Ved kun at finde unikke $S(n)$ løsninger og undgå de valg af placeringer der fører til løsninger som kan findes ved rotationer og spejlinger. Så kan vi fjerne store deltræer i vores beslutningstræ (se figur \ref{fig:tree}) og dermed mindske beregningstiden betragteligt.
 
- I tabel \ref{tabel:unikkevstotale}, s.\pageref{tabel:unikkevstotale}, ses forskellen på antallet af unikke og totale løsninger. For hver løsning undersøges antallet af spejlinger og rotationer. \textbf{check()} funktion i Takakens implementation \ref{nqueen.c} udfører dette. Derudover deles problemet op i to seperate typer delproblemer. 
+I tabel \ref{tabel:unikkevstotale}, s.\pageref{tabel:unikkevstotale}, ses forskellen på antallet af unikke og totale løsninger. For hver løsning undersøges antallet af spejlinger og rotationer. \textbf{check()} funktion i Takakens implementation \ref{nqueen.c} udfører dette. 
+ 
+Da der er forskellige måder at finde rotationer og spejlinger afhængig af dronninges placering i række 1. Optimeringerne er derfor delt op i to tilfælde
 
 \begin{description}
 	\item[Hjørnebræt] dronningen er i første række er placeret i kolonne $1$.
 	\item[Midterbræt] dronningen er i første række placeret i kolonnerne $2$  til og med $\lfloor n/2 \rfloor$.
 \end{description}
 
-En fordeling af løsninger uden Takakens optimeringer vil være distribueret således, at for lige n kan det totale antal løsninger udregnes som summen af løsningenerne, for de delproblemer, hvor første dronning er placeret hhv. kolonne 1 \ldots n/2 ganget med 2. Se \cite{etsi} side 7. 
-\fixme{Beskriv evt. med lidt matematik istedet.}
- Takakens optimeringer vil dog forandre denne fordeling. 
+Den første placering\footnote{For hjørnebræt er dette række 2, netop fordi den første dronning skal være placeret i hjørnet} af en dronning bestemmer hvilke valg vi kan undgå, og dermed mængden af deltræ vi kan fjerne. Da der er forskellige optimeringer, \emph{bounds}, vil der være forskel på andelen af løsninger afhængig af bounds som set på figur \ref{fig:midterandel}
 
 \begin{figure}
 \caption{Andelen af løsninger for midterbræt for $n=10\ldots18$.}
 \label{fig:midterandel}
 \end{figure}
 
-
 \begin{figure}
 \caption{Løsninger pr. sekund for $n=10\ldots18$}
 \label{fig:solutionspersekund}
 \end{figure}
 
-Det ses på figur \ref{fig:midterandel} at andelen af løsninger for bræt hvor den første dronning ikke placeres i et hjørne er over 90\% og stigende for større $n$. Sammenholdt med figur \ref{fig:solutionspersekund} kan vi se at antallet af løsninger er relateret til køretiden med samme faktor for forskellige $n$. Hvis ca. 90\% af løsningerne findes i ét delproblem vil det også tage ca. 90\% af tiden at beregne dette delproblem.
+Det ses på figur \ref{fig:midterandel} at andelen af løsninger for bræt hvor den første dronning ikke placeres i et hjørne er over 90\% og stigende for større $n$. Sammenholdt med figur \ref{fig:solutionspersekund} kan vi se at antallet af løsninger er relateret til køretiden med samme faktor for forskellige $n$. Hvis ca. 90\% af løsningerne findes i ét delproblem vil det også tage ca. 90\% af tiden at beregne dette delproblem. \fixme{flyt til andet afsnit}
 
 \subsection{Paralleliserings metode}\label{parallel}
 
-Et bræt med en eller flere forvalgte rækker kan løses på samme måde med Takakens algoritme. Hvert delbræt kan løses uafhængigt og antallet af løsninger for hvert bræt akkumuleres for at få det totale antal løsninger. Dette kan gentages for hver række. 
+
+En fordeling af løsninger uden Takakens optimeringer vil være distribueret således, at for lige n kan det totale antal løsninger udregnes som summen af løsningenerne, for de delproblemer, hvor første dronning er placeret hhv. kolonne 1 \ldots n/2 ganget med 2. Se \cite{etsi} side 7. 
+\fixme{Beskriv evt. med lidt matematik istedet.} Takakens optimeringer vil dog forandre denne fordeling. 
+
+Det ses let at , inklusiv takakens optimeringer.  Hvert delbræt kan løses uafhængigt og antallet af løsninger for hvert bræt akkumuleres for at få det totale antal løsninger. Selve da takakens optimeringer fjerne mulige valg afhængig af den første placering
 
 \fixme{Den første placering afgør hvilke deltræer der fjernes, ... , BOUNDS}
 
