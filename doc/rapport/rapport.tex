@@ -219,7 +219,7 @@ Da der er forskellige måder at finde rotationer og spejlinger afhængig af dron
 	\item[Midterbræt] dronningen er i første række placeret i kolonnerne $2$  til og med $\lfloor n/2 \rfloor$.
 \end{description}
 
-Den første placering \footnote{For hjørnebræt er dette række 2, fordi den første dronning skal være placeret i hjørnet} af en dronning bestemmer hvilke valg vi kan undgå,\emph{bounds}, og dermed mængden af deltræ vi kan fjerne. Derfor vil der være forskel på andelen af løsninger som set på figur \ref{fig:midterandel}. Sammenholdt med figur\ref{fig:tidsvssol} kan vi se at antallet af forholdet mellem antallet af løsninger ca. angiver forholdet mellem beregningstiden af to bræt.
+Den første placering \footnote{For hjørnebræt er dette række 2, fordi den første dronning skal være placeret i hjørnet} af en dronning bestemmer hvilke valg vi kan undgå, og dermed mængden af det deltræ vi kan fjerne. Derfor vil der være forskel på andelen af løsninger som set på figur \ref{fig:midterandel}. Sammenholdt med figur \ref{fig:tidsvssol} kan vi se, forholdet mellem antallet af løsninger ca. angiver forholdet mellem beregningstiden bræt.
 
 \begin{figure}
 \includegraphics{../benchmarks/middleandel.pdf}
@@ -344,93 +344,60 @@ Det bliver naturligvis et krav at alle delproblemer vi sender ud kan beregnes ud
 
 I det følgende benyttes disse forkortelser for ofte anvendte begreber.
 \begin{description}
-	\item[$JobSZ_{i}$] Beregningsstørrelsen for et job $i$.
-	\item[$ResSpeed_{i}$] Hatigheden af ressource $i$.
-	\item[$\#Job$] Antallet af job.
-	\item[$\#Ress$] Antallet af ressourcer.  
+	\item[$T$] Beregningstiden for én opgaver på én ressource.  
+	\item[\texttt{\#Job}] Antallet af job.
+	\item[\texttt{\#Ress}] Antallet af ressourcer.  
 \end{description}
 
-Desuden defineres \emph{spildtid} som den tid en ressource benytter til at sende resultater og hente nye job. Det er denne tid der kunne spares hvis jobbets beregningstid svarede til den tid ressourcen er tilgængelig. Omvendt defineres \emph{ventetid} som den tid en ressource ikke benyttes, fordi der ikke er job klar til beregning. Se også figur \ref{fig:spildtidventetid}.
+Desuden defineres \emph{spildtid} som den tid en ressource benytter til at sende resultater og hente nye job. Denne tid kan spares hvis jobbets beregningstid svarede til den tid ressourcen er tilgængelig. Omvendt defineres \emph{ventetid} som den tid en ressource ikke benyttes, fordi der ikke er job klar til beregning. Se også figur \ref{fig:spildtidventetid}.
 
 Et centralt emne ved parallelisering af algoritmer er partitionering af de data der beregnes på. Vi kan forestille os en ideel situation, hvor:
 \begin{enumerate}
-	\item $\texttt{JobSZ}_{job}$ er den samme for alle job. (Job er homogene). \label{beregningstid}
+	\item Job er homogene. \label{beregningstid}
 	\item $\texttt{\#Job}$ er præcis lig $\texttt{\#Ress}$.\label{antal}
-	\item $\texttt{ResSpeed}_{ress}$ er den samme for alle ressourcer. (Ressourcer er homogene). 
+	\item Ressourcer er homogene. 
 	\item Ressourcer er permanente.
 	\item Repræsentationen af job og resultater har minimal størrelse.\label{jobbeskrivelse}
 \end{enumerate}
 
 I denne, ideelle situation, opnås maksimal udnyttelse af tilgængelige ressourcer - der er ingen \emph{ventetid}. Samtidig minimeres \emph{spildtiden} i forbindelse med jobskift og dataoverførsel.
  
-Som det ses på figur \ref{fig:tidstigermedloesninger} stiger beregningstiden for et delproblem med antallet af løsninger i delproblemet. Vi kan altså ikke, ved opdeling af problemet, kende de enkelte delproblemers beregningstid. I stedet kan vi opdele problemet i dele med samme data-størrelse - hvilket i praksis vil sige at samme antal dronninger mangler at blive placeret. 
+Som beskrevet i afsnit \ref{takalgo}, stiger beregningstiden for et delproblem med antallet af løsninger i delproblemet. Vi kan altså ikke, ved opdeling af problemet, kende de enkelte delproblemers beregningstid. I stedet kan vi opdele problemet i dele med samme data-størrelse - hvilket i praksis vil sige at samme antal dronninger mangler at blive placeret. 
 
-\begin{figure}
-
-\caption{beregningstiden for et delproblem stiger med antallet af løsninger}
-\label{fig:tidstigermedloesninger}
-\end{figure}
-
-Beregningstiden kompliceres yderligere af at delproblemerne skal beregnes på heterogene ressourcer, som vi ikke kan kende hastigheden af før delopgaven er færdigregnet. Heller ikke antallet af $\texttt{\#Ress}$ har vi mulighed for at kende. Ydermere resulterer Takakens algoritme, som genemgået i \ref{takalgo}, i en opdeling i delproblemer med væsentligt forskellige beregningstider.
+Beregningstiden kompliceres yderligere af at delproblemerne skal beregnes på heterogene ressourcer, som vi ikke kan kende hastigheden af før delopgaven er færdigregnet. Heller ikke $\texttt{\#Ress}$ har vi mulighed for at kende. 
 
 Den reelle situation er altså langt fra den ovennævnte ideelle. Problemet bliver at finde den opdeling af job der bringer beregningstiden nærmest den fra den ideelle situation, og at gøre dette indenfor følgende rammer:
 \begin{itemize}
-	\item $\texttt{ResSpeed}_{ress}$ er ikke kendt for nogen ressourcer (Ressourcer er heterogene).  
+	\item Ressourcer er heterogene.
 	\item Ressourcer er upålidelige.
 	\item $\texttt{\#Ress}$ varierer.
-	\item $\texttt{JobSZ}_{job}$ varierer (Job er heterogene).
+	\item Job er heterogene.
 \end{itemize}
 
-Herunder antages at job er homogene, da det gør beskrivelsen væsentligt mindre kompliceret. Senere vil vi se, at denne antagelse faktisk ikke påvirker de generelle problemstillinger, men blot reducerer deres størrelsesorden.
+Idet både ressourcer og job er heterogene kan de ses som et samlet problem, blot af en anden størrelsesorden. fixme{reference til kasse-figur}
+Da der arbejdes med heterogene ressourcer kan den minimale \emph{spildtid} ikke opnås. 
+Antager man at $\texttt{\#Ress}$ er fast vil det mindst mulige, samlede \emph{spildtid} opnås ved at have $\texttt{\#Job} = \texttt{\#Ress}$. \emph{ventetiden} vil til gengæld være stor. 
 
-Idet der arbejdes med heterogene ressourcer kan den minimale \emph{spildtid} ikke opnås. 
-Antager man at $\texttt{\#Ress}$ er kendt vil det mindst mulige, samlede \emph{spildtid} opnås ved at have $\texttt{\#Job} = \texttt{\#Ress}$. \emph{ventetiden} vil til gengæld være stor. 
-
-Den vil være summen af forskellene i beregningstider op til den langsommeste ressource, for alle ressourcer.
-\footnote{$\texttt{ResSpeed}_{max} = max(\texttt{ResSpeed}_{1}, \ldots ,\texttt{ResSpeed}_{\#\texttt{ress}})$.}
+\emph{Ventetiden} vil være summen af forskellene i beregningstider op til den langsommeste ressource, for alle ressourcer.   
  
 \begin{displaymath}
-	\sum_{i=1}^{\texttt{\#Ress}}\texttt{JobSZ} \times \frac{1}{\texttt{ResSpeed}_{max}} - 
-	\texttt{JobSZ} \times \frac{1}{\texttt{ResSpeed}_{i}}
+	\sum_{i=1}^{\texttt{\#Ress}} T_{max} - T_{i} 
 \end{displaymath}
 
-Den samlede beregningtid vil være $\texttt{JobSZ} \times \frac{1}{\texttt{RessSpeed}_{min}} $.
-\footnote{$\texttt{ResSpeed}_{min} = min(\texttt{ResSpeed}_{1}, \ldots ,\texttt{ResSpeed}_{\#\texttt{ress}})$.} 
-
-Antager man igen at $\texttt{\#Ress}$ er kendt, vil man, med en jobmængde der er større end ressourcemængden, få en mere jævn udnyttelse af ressourcerne. Jo større $\texttt{\#Job}$ i forhold til $\texttt{\#Ress}$, desto mere jævnt bliver ressourcerne brugt, og desto mindre bliver den sammenlagte \emph{ventetid} Dette er netop fordi den jobstørrelsen falder når antallet af job stiger. 
+Antager man igen at $\texttt{\#Ress}$ er fast, vil man, med en jobmængde der er større end ressourcemængden, få en mere jævn udnyttelse af ressourcerne. Jo større $\texttt{\#Job}$ i forhold til $\texttt{\#Ress}$, des mere jævnt bliver ressourcerne brugt, og des mindre bliver den sammenlagte \emph{ventetid}. Dette er netop fordi den jobstørrelsen falder når antallet af job stiger. 
 
 Når $\texttt{\#Job} > \texttt{\#Ress}$ vil det værste tilfælde for \emph{ventetid} opstår, når der kun er et job tilbage at beregne, og dette job netop er det største. I dette tilfælde vil \emph{ventetiden} mindst være 
 \[
-\texttt{\#Job} - 1 * max(JobSZ_{1}, ... , JobSZ_{\#job})
+T_{max} \times \#Ress -1
 \]
 .
 
 
-I det ovenstående er ikke medregnet at job også er heterogene. Idet både ressourcer og job er heterogene kan de ses som et samlet problem. 
 
 %Er den maksimale forskel i hastighed, $maxdif_{h} = Hast_{r}$ - $Hast_{q}$, mellem to vilkårlige ressourcer $r$ og $q$, og den maksimale forskel i beregningsstørrelse $maxdif_{str} = Str_{j}$ - $Str_{k}$ mellem to job $j$ og $k$, 
+Jo mere homogene vores job er, des bedre kan vi tilpasse \texttt{\#Job} så vi minimerer både \emph{vente}- og \emph{spildtid}. 
 
-Medregnes det at job er heterogene, vil \emph{ventetiden} i det værste tilfælde, hvor der kun er det største job tilbage, pludselig mindst være
-
-%\begin{displaymath}
-%	\sum_{i=1}^{\texttt{\#Ress}}\texttt{JobSZ} \times \frac{1}{\texttt{ResSpeed}_{max}} - 
-%	\texttt{JobSZ} \times \frac{1}{\texttt{ResSpeed}_{i}}
-%\end{displaymath}
-
-%når vi antager $\texttt{\#Ress} = \texttt{\#Job}$, og mindst
-
-\begin{displaymath}
-	\texttt{\#Ress} - 1 \times \texttt{JobSZ}_{max} \times \frac{1}{\texttt{ResSpeed}_{max}}
-\end{displaymath}
-
-%$\texttt{JobSZ}_{max} \times \frac{1}{\texttt{ResSpeed}_{min}} \times \#\texttt{Ress} - 1$\footnote{
-%hvor $\texttt{JobSZ}_{max} = max( \texttt{JobSZ}_{1}, \ldots ,\texttt{JobSZ}_{\#\texttt{job}})$ 
-%og $\texttt{ResSpeed}_{min} = min(\texttt{ResSpeed}_{1}, \ldots ,\texttt{ResSpeed}_{\#\texttt{ress})}$}.
-
-Dette er en stor faktor-forøgelse i forhold til situationen, hvor job er homogene. Konklusionen på 
-disse udregninger er, at jo mere homogene vores job er, jo bedre kan vi tilpasse \texttt{\#Job} så vi minimerer både \emph{vente}- og \emph{spildtid}. 
-
-Uanset jobstørrelser, er det essentielle, at undgå ubenyttede ressourcer, uden at komme til at skrue for meget op for antallet af job, og derved øge overheadet.
+Uanset jobstørrelser, er det essentielle, at undgå ubenyttede ressourcer, uden at komme til at skrue for meget op for antallet af job, og derved øge \emph{ventetiden}.
 
 %\fixme{Beregning af spildtid skal være summation. "Beregningerne" skal generelt gøres klarere. Husk at ressourcehastighed ikke længere er i tid. Brug havelåge til at markere antal.}
 
@@ -447,7 +414,7 @@ I \mig\ skemalægges afviklingen af job som en FIFO-kø. Dvs. at job afvikles i 
 Den løsning der er implementeret, i forbindelse med denne opgave, kan bedst karakteriseres som såkaldt \emph{statisk orkestration}. Idet opdelingen i delproblemer er endeligt foretaget inden beregningen af delproblemer begynder. Som beskrevet i afsnit \ref{opdelingogschedulering} er der et grundlæggende problem ved en statisk opdeling, nemlig at beregningen ikke kan tilpasse sig til en forøgelse af mængden af ressourcer. Istedet bliver man nødt til fra starten at generere nok opgaver til at kunne udnytte en eventuel ressourcetilgang. Samme problem opstår, på grund af heterogene ressourcer og opgaver, når antallet af delopgaver falder henimod slutningen af udregningen. 
 
 For at afhjælpe dette problem kan joboprettelsen gøres mere dynamisk. Den indledende mængde delopgaver kan tilpasses det øjeblikkelige antal ressourcer. Herefter opdeles en eller flere af disse i mindre delopgaver, så snart der er ledige ressourcer. På denne måde sikres det at ingen beregningskraft står ubrugt hen. 
-Det bedste valg af job til genopdeling vil være det der kræver mest beregningstid, da dette vil resultere i den mindst mulige spredning i beregningsstørrelse for de alle opgaver efter opdelingen\footnote{Idet alle nye opgaver vil være mindre end det oprindelige, men ingen vil være mindre end den mindste der ville oprettes hvis vi valgte en anden end den største til opdeling.}. På figur \ref{tabel:boardtimes} ser vi eksempler for beregningstiden for hver delopgave. Det er tydeligt at de følger et mønster, og at vi kan bestemme et indbyrdes størrelsesforhold mellem hhv. alle hjørne- og midterbræt. Dette giver os en god idé om hvilken delopgave det bedst kan betale sig at splitte op. Tilgengæld har vi ikke mulighed for at vide, om beregningen af denne opgave allerede er ved at være færdig, hvorfor en opsplitning ville være uhensigtsmæssig. 
+Det bedste valg af job til genopdeling vil være det der kræver mest beregningstid, da dette vil resultere i den mindst mulige spredning i beregningsstørrelse for de alle opgaver efter opdelingen\footnote{Idet alle nye opgaver vil være mindre end det oprindelige, men ingen vil være mindre end den mindste der ville oprettes hvis vi valgte en anden end den største til opdeling.}. På figur \ref{fig:tidsvssol} ser vi eksempler for beregningstiden for hver delopgave. Det er tydeligt at de følger et mønster, og at vi kan bestemme et indbyrdes størrelsesforhold mellem hhv. alle hjørne- og midterbræt. Dette giver os en god idé om hvilken delopgave det bedst kan betale sig at splitte op. Tilgengæld har vi ikke mulighed for at vide, om beregningen af denne opgave allerede er ved at være færdig, hvorfor en opsplitning ville være uhensigtsmæssig. 
 
 
 
@@ -489,21 +456,19 @@ jobsne ud og sammenligner resultatet.
 \label{solrelativecount}
 \end{figure}
 
-%\fixme{Tabel med TidLong TidBiginter og ProcentForøgelse}. 
 
-\begin{table}
+\begin{figure}[h]
 \begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline  & int & long & bigint \\
-\hline rekursiv & 406.065 & 403.178 & 414.238 \\
-\hline iterativ & 700.887 & 714.718 & 736.157 \\
-\hline
-\end{tabular}
-\caption{Sammenligning af kørsler med int, long og BigInteger}
+\includegraphics{../benchmarks/resultatstorrelse.pdf}
+\caption{Figuren viser $Q(n)/Q(n-1)$ for $n=15\ldots25$. Det set faktor som er let stigende. Resultatet for $n=26$ kan formodes maximalt 15 gange større, for at være på den sikre side}
+\label{figur:loesningfaktor}
 \end{center}
-\end{table}
+\end{figure}
+
+
 
 På figur \ref{solrelativecount} ses
+På figur \ref{figur:loesningfaktor} ses
 
 
 \section{Beskrivelse af implementeringen}\label{implementering}
@@ -609,15 +574,6 @@ hver gang der var blevet lavet ændringer i dem.
 
 \fixme{Sortér kildefiler efter vigtighed. Skriv derefter uddybende til de øverste.}
 
-\subsection{Antallet af løsninger}
-\begin{figure}[h]
-\begin{center}
-\includegraphics{../benchmarks/resultatstorrelse.pdf}
-\caption{Figuren viser $Q(n)/Q(n-1)$ for $n=15\ldots25$. Det set faktor som er let stigende. Resultatet for $n=26$ kan formodes maximalt 15 gange større, for at være på den sikre side}
-\end{center}
-\end{figure}
-
-I en implementation med \texttt{java.Math.BigInteger} kan vi se at der vil være et performance tab på 2\% i forhold til brugen af af den primitive type \texttt{long} 
 
 
 \section{Afprøvning og benchmarking}\label{benchmarks}
@@ -714,7 +670,6 @@ Her beskriver vi nogle muligheder vi synes vi manglet i \mig grænseflade.
 %\input{../synopsis/problemformulering.tex}
 %\input{../synopsis/afgraensninger.tex}
 
-\fixme{er benchmark output filer nødvendige at sætte ind i rapporten.. det ville fylde AAAALLT for meget og tage lang tid at lave da der er mange filer}
 %\input{benchmark-output.tex}
 %\begin{multicols}{2}[\section{\LaTeX kildekode}]
 %\section*{Skabelon.tex}
