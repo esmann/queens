@@ -7,7 +7,7 @@ unset label
 set xrange [0:5]
 set ytics auto nomirror
 unset xtics
-set title "NQueens (Size 18)"
+set title "NQueens (N=18)"
 set xlabel ""
 set ylabel "Time (seconds)"
 unset yzeroaxis 
