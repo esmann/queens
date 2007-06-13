@@ -112,7 +112,7 @@ Dette afsnit beskriver \nq\ i den grad det er fundet nødvendigt for parallelise
 
 \subsection{Backtracking}\label{backtracking}
 
-En øvre grænse for antallet af løsninger er O(n!). Det kan ses ved, at der ikke kan placeres to dronninger på samme række eller kolonne. Dette betyder, at når der er placeret én dronning, kan de resterende dronninger placeres i n-1 kolonner, og så fremdeles. Løsningen i \ref{fig:nq5eks} kan så noteres som en \emph{opstillingsvektor} $\{2,5,3,1,4\}$, hvor værdien svarer til indekset på den kolonne dronningen er placeret i. Alle opstillinger svarer til permutationer af $\{1,\ldots,n\}$. En naiv brute force metode vil være at gennemgå alle mulige permutationer, og derefter se om der er tilladte opstillinger.
+En øvre grænse for antallet af løsninger er O(n!). Det kan ses ved, at der ikke kan placeres to dronninger på samme række eller kolonne. Dette betyder, at når der er placeret én dronning, kan de resterende dronninger placeres i n-1 kolonner, og så fremdeles. Løsningen på figur \ref{fig:nq5eks} kan så noteres som en \emph{opstillingsvektor} $\{2,5,3,1,4\}$, hvor værdien svarer til indekset på den kolonne dronningen er placeret i. Alle opstillinger svarer til permutationer af $\{1,\ldots,n\}$. En naiv brute force metode vil være at gennemgå alle mulige permutationer, og derefter se om der er tilladte opstillinger.
 
 Backtracking vil for \nq\ gennemløbe permuteringer af opstillingsvektoren  $(p_1,p_2,\ldots..p_k)$, dybde-først, og \emph{kun} vælge de $p_i \in A_i$, hvor $A_i\subseteq \{1,\ldots,n\}$ der er tilladte placeringer. 
 
@@ -191,13 +191,13 @@ Dette beslutningstræ viser backtracking når $2$ er valgt i række $1$. Blade i
 \hline
 \end{tabular}
 \end{center}
-\caption{Samme eksempel som i figur \ref{fig:nq5eks}, men med en direkte binær repræsentation. En sat bit i en bitvektors position $i$ angiver en placering af en dronning i kolonne $i$.}
+\caption{Samme eksempel som i figur \ref{fig:nq5eks}, men i binær repræsentation. En sat bit i en bitvektors position $i$ angiver en placering af en dronning i kolonne $i$.}
 \label{fig:nq5eksbitmap}
 \end{figure}
 
-Idéen er beskrevet af \cite{Zongyan02} og implementeret af Takaken \ref{nqueenc}. Udover at repræsentere hver række på et skakbræt med en bitvektor, vedligeholdes for hver række  en bitvektor \textbf{bitmap} for de pladser, hvor det er muligt at placere en dronning.  Tilladte pladser begrænses af tidligere placeringer, så der bruges 3 bitvektorer til holde styr på optagede pladser, \textbf{horisontal}, \textbf{venstrediagonal}  og \textbf{højrediagonal}.
+Idéen er beskrevet af \cite{Zongyan02} og implementeret af Takaken \ref{nqueenc}. Udover at repræsentere hver række på et skakbræt med en bitvektor, vedligeholdes der for hver række  en bitvektor \textbf{bitmap} for de pladser, hvor det er muligt at placere en dronning. Tilladte pladser begrænses af tidligere placeringer, så der bruges 3 bitvektorer til holde styr på optagede pladser, \textbf{horisontal}, \textbf{venstrediagonal}  og \textbf{højrediagonal}.
 
-Efter hvert valg, hvor den valgte placering sættes i en bitvektor \textbf{bit}, udregnes de nye bitvektorer igen med følgende operationer. ($\gg og \ll$ angiver et logisk skift, således at der altid indføres et $0$ fra henholdsvis højre og venstre).
+Efter hvert valg, hvor den valgte placering sættes i bitvektor \textbf{bit}, udregnes de nye bitvektorer igen med følgende operationer. ($\gg og \ll$ angiver et logisk skift, således at der altid indføres et $0$ fra henholdsvis højre og venstre).
 \begin{description}
 	\item[horisontal] $down \lor bit$ 
 	\item[venstrediagonal] $(venstrediagonal \lor bit) \ll 1$
@@ -210,9 +210,9 @@ Da træets højde er begrænset af $n$, er det maksimale pladsforbrug $antal\ bi
 
 \subsection{Takakens optimeringer}\label{takalgo}
 
-Mange løsninger er spejlinger og roteringer af andre - det totale antal løsninger kan afgøres ud fra antallet af unikke \emph{løsninger}. Ved kun at finde unikke løsninger, $S(n)$, og undgå de valg af placeringer der fører til løsninger som kan findes ved rotationer og spejlinger. Så kan vi fjerne store deltræer i vores beslutningstræ (se figur \ref{fig:tree}) og dermed mindske beregningstiden betragteligt.
+Mange løsninger er spejlinger og roteringer af andre - det totale antal løsninger kan afgøres ud fra antallet af unikke \emph{løsninger}. Ved kun at finde unikke løsninger, $S(n)$, og undgå valg af placeringer, der fører til løsninger som kan findes ved rotationer og spejlinger. Så kan vi fjerne store deltræer i vores beslutningstræ (se figur \ref{fig:tree}) og dermed mindske beregningstiden betragteligt.
 
-I tabel \ref{tabel:unikkevstotale}, s.\pageref{tabel:unikkevstotale}, ses forskellen på antallet af unikke og totale løsninger. For hver løsning undersøges antallet af spejlinger og rotationer. \textbf{check()}-funktionen i Takakens implementation, afsnit \ref{nqueenc}, udfører dette. 
+I tabel \ref{tabel:unikkevstotale}, side \pageref{tabel:unikkevstotale}, ses forskellen på antallet af unikke og totale løsninger. For hver løsning undersøges antallet af spejlinger og rotationer. \textbf{check()}-funktionen i Takakens implementation, afsnit \ref{nqueenc}, udfører dette. 
  
 Der er forskellige måder at finde rotationer og spejlinger afhængig af dronningens placering i række 1. Optimeringerne er derfor delt op i to tilfælde
 
@@ -221,7 +221,7 @@ Der er forskellige måder at finde rotationer og spejlinger afhængig af dronnin
 	\item[Midterbræt] dronningen er i første række placeret i kolonnerne $2$  til og med $\lfloor n/2 \rfloor$.
 \end{description}
 
-Den første placering \footnote{For hjørnebræt er dette række 2, fordi den første dronning altid vil være placeret i hjørnet} af en dronning bestemmer hvilke valg vi kan undgå, og dermed mængden af det deltræ vi kan fjerne. Derfor vil der være forskel på andelen af løsninger som set på figur \ref{fig:midterandel}. Sammenholdt med figur \ref{fig:tidsvssol} kan vi se, forholdet mellem antallet af løsninger ca. angiver forholdet mellem beregningstiden bræt.
+Den første placering\footnote{For hjørnebræt er dette række 2, fordi den første dronning altid vil være placeret i hjørnet} af en dronning bestemmer hvilke valg vi kan undgå, og dermed mængden af det deltræ vi kan fjerne. Derfor vil der være forskel på andelen af løsninger som set på figur \ref{fig:midterandel}. Sammenholdt med figur \ref{fig:tidsvssol} kan vi se, at forholdet mellem antallet af løsninger ca. angiver forholdet for beregningstiden.
 
 \begin{figure}
 \includegraphics{../benchmarks/middleandel.pdf}
@@ -285,16 +285,17 @@ Et job sættes i gang ved at køre kommandoen \emph{migsubmit} med en såkaldt m
 \oc\ er en java-applet der muliggør deltagelse i \mig, uden andre forudsætninger end en webbrowser og java. Tilgengæld er denne metode begrænset til at afvikle programmer, der er tilgængelige som java-bytekode. Brug af \oc\ giver adgang til et enormt (potentielt) antal beregningsressourcer, da det gør det muligt for ganske alm. mennesker at bidrage regnekraft til gridet.
 
 Implementerer man sit problem i en \oc-applet vil det kunne afvikles på alle \oc-ressourcer, uden at skulle specificere særlige krav til arkitektur med videre. Til gengæld vil det være begrænset til kun at køre på \oc-ressourcer.
-\oc\ er især interessant i forbindelse med hvad man kunne kalde sociale beregninger, det vil sige beregningsprojekter som almindelige mennesker kunne have interesse i at bidrage til, eller endog konkurrere om at bidrage mest til. Kendte eksempler på sådanne projekter er SETI@home (BOINC) og FOLDING@home. Til forskel fra disse, sammenlignelige projekter, er \oc\ ikke applikationsspecifikt. \oc-udviklere kan implementere nye projekter og få dem kørt, uden at der skal foretages nogen ændringer på ressourcesiden. Alt hvad der er specifikt for applikationen sendes med jobbet til \oc-ressourcen. Omvendt kan en \oc-ressource ikke bestemme hvilke job-typer den vil afvikle eller hvilke projekter den vil deltage i.
+\oc\ er især interessant i forbindelse med hvad man kan kalde sociale beregninger - beregningsprojekter som almindelige mennesker kunne have interesse i at bidrage til, eller endog konkurrere om at bidrage mest til. Kendte eksempler på sådanne projekter er SETI@home (BOINC) og FOLDING@home. Til forskel fra disse, sammenlignelige projekter, er \oc\ ikke applikationsspecifikt. \oc-udviklere kan implementere nye projekter og få dem kørt, uden at der skal foretages nogen ændringer på ressourcesiden. Alt hvad der er specifikt for applikationen sendes med jobbet til \oc-ressourcen. Omvendt kan en \oc-ressource ikke bestemme hvilke job-typer den vil afvikle eller hvilke projekter den vil deltage i.
 
 \oc\ indeholder java-klasser til læsning og skrivning af filer i hjemmekataloget på \mig\, samt checkpointing af det kørende job. 
 
 \subsubsection{Checkpointing}
 \oc\ indeholder kode til oprettelse af checkpoints under kørslen af et job. Et checkpoint er en gemt programtilstand, hvorfra det er muligt at fortsætte afviklingen. \oc\ indeholder desuden mekanismer til genetablering af programtilstanden fra et givent checkpoint. Når et \oc-job sendes til en ressource, sendes det nyeste checkpoint med, hvis et sådant eksisterer. \oc\ sørger så for at genetablere tilstanden før eksekveringen af jobbet starter. Dette er præcis den funktionalitet vi behøver for at kunne sikre, at vi ikke skal køre en beregning forfra, når en ressource forlader gridet.
+
 Checkpoint foretages ved at serialisere det kørende job-objekt\footnote{\mig-applettens hoved objekt, der nedarver fra MiGJob-klassen} til hjemmekataloget på \mig. Det er altså kun objekt-grafen, med rod i MigJob-objektet, og eventuelle åbne filer, der overlever på tværs af et checkpoint. Hverken kald-stak eller programtæller overlever.
 
 \subsubsection{\oc-specifikke begrænsninger}\label{begraensninger}
-En java-applet afvikles i et lukket miljø, en såkaldt sandkasse, for at beskytte den maskine der afvikler appletten. En applet skal desuden overholde \texttt{Applet security model}\footnote{\url{http://java.sun.com/sfaq/}}. Dette giver en række begrænsinger vi bliver nødt til at forholde os til
+En java-applet afvikles i et lukket miljø, en såkaldt sandkasse, for at beskytte den maskine der afvikler appletten. En applet skal desuden overholde \texttt{Applet security model}\footnote{\url{http://java.sun.com/sfaq/}}. Dette giver en række begrænsninger vi bliver nødt til at forholde os til
 \begin{itemize}
 	\item Appletten kan maksimalt allokere 64MB hukommelse.
 	\item Java's JNI (Java Native Interfaces) kan ikke benyttes fra appletter. 
@@ -410,11 +411,11 @@ Et centralt emne ved parallelisering af algoritmer er partitionering af de data 
 
 I denne, ideelle situation, opnås maksimal udnyttelse af tilgængelige ressourcer - der er ingen \emph{ventetid}. Samtidig minimeres \emph{spildtiden} i forbindelse med jobskift og dataoverførsel.
  
-Som beskrevet i afsnit \ref{takalgo}, stiger beregningstiden for et delproblem med antallet af løsninger i delproblemet. Vi kan altså ikke, ved opdeling af problemet, kende de enkelte delproblemers beregningstid. I stedet kan vi opdele problemet i dele med samme data-størrelse - hvilket i praksis vil sige at samme antal dronninger mangler at blive placeret. 
+Som beskrevet i afsnit \ref{takalgo}, stiger beregningstiden for et delproblem med antallet af løsninger i delproblemet. Vi kan altså ikke, ved opdeling af problemet, kende de enkelte delproblemers beregningstid. I stedet kan vi opdele problemet i dele med samme data-størrelse - hvilket i praksis vil sige, at samme antal dronninger mangler at blive placeret. 
 
-Beregningstiden kompliceres yderligere af at delproblemerne skal beregnes på heterogene ressourcer, som vi ikke kan kende hastigheden af før delopgaven er færdigregnet. Heller ikke $\texttt{\#Ress}$ har vi mulighed for at kende. 
+Beregningstiden kompliceres yderligere af, at delproblemerne skal beregnes på heterogene ressourcer, som vi ikke kan kende hastigheden af før delopgaven er færdigregnet. Heller ikke $\texttt{\#Ress}$ har vi mulighed for at kende. 
 
-Den reelle situation er altså langt fra den ovennævnte ideelle. Problemet bliver at finde den opdeling af job der bringer beregningstiden nærmest den fra den ideelle situation, og at gøre dette indenfor følgende rammer:
+Den reelle situation er altså langt fra den ovennævnte ideelle. Problemet bliver at finde den opdeling af job, der bringer beregningstiden nærmest den fra den ideelle situation, og at gøre dette indenfor følgende rammer:
 \begin{itemize}
 	\item Ressourcer er heterogene.
 	\item Ressourcer er upålidelige.
@@ -422,7 +423,7 @@ Den reelle situation er altså langt fra den ovennævnte ideelle. Problemet bliv
 	\item Job er heterogene.
 \end{itemize}
 
-Idet både ressourcer og job er heterogene kan de ses som et samlet problem, blot af en anden størrelsesorden. Figur \ref{fig:lillekassestorkasse} illustrerer hvordan beregningstiden firdobles når jobstørrelsen fordobles og hastigheden halveres.
+Idet både ressourcer og job er heterogene, kan de ses som et samlet problem, blot af en anden størrelsesorden. Figur \ref{fig:lillekassestorkasse} illustrerer hvordan beregningstiden firdobles når jobstørrelsen fordobles og hastigheden halveres.
 Da der arbejdes med heterogene ressourcer kan den minimale \emph{spildtid} ikke opnås. 
 Antager man at $\texttt{\#Ress}$ er fast vil det mindst mulige, samlede \emph{spildtid} opnås ved at have $\texttt{\#Job} = \texttt{\#Ress}$. \emph{ventetiden} vil til gengæld være stor. 
 
@@ -453,7 +454,6 @@ Uanset jobstørrelser, er det essentielle, at undgå ubenyttede ressourcer, uden
 
 
 \section{Opdeling af opgaver i praksis}\label{opdelingipraksis}
-	Herunder vil vi, fortrinsvis ved at kigge på data for problemstørrelser for mindre $n$, forsøge at finde frem til en optimal opdeling af problemet for $n=26$.
 
 I \mig\ skemalægges afviklingen af job som en FIFO-kø. Dvs. at job afvikles i samme rækkefølge som de submittes til gridet. Ved afbryding af jobbet eller ved udløb af tidsfristen for afvikling af jobbet placeres jobbet bagerst i køen. 
 
@@ -463,7 +463,7 @@ Den løsning der er implementeret, i forbindelse med denne opgave, kan bedst kar
 
 \subsection{Dynamisk tilrettelæggelse}
 
-For at afhjælpe dette problem kan antallet af job styres dynamisk. Den indledende mængde job kan tilpasses det øjeblikkelige antal ressourcer. Herefter opdeles en eller flere af disse i mindre delopgaver, så snart der er ledige ressourcer.  Det sikrer at ingen der $ventetid$ ved en forøgelse af ressourcer. Implementeringen af dette vil kræve en ekstra process der overvåger \mig. En sådan process vil være kompliceret i forhold til mængden af kode for at løse selve problemet.
+For at afhjælpe dette problem kan antallet af job styres dynamisk. Den indledende mængde job kan tilpasses det øjeblikkelige antal ressourcer. Herefter opdeles en eller flere af disse i mindre delopgaver, så snart der er ledige ressourcer.  Det sikrer at der ingen $ventetid$ er ved en forøgelse af ressourcer. Implementeringen af dette vil kræve en ekstra process der overvåger \mig. En sådan process vil være kompliceret at implementere.
 
 \subsection{Fast antal ressourcer}
 
@@ -471,13 +471,13 @@ En simplificering af problemet, er at antage et loft over antallet af ressourcer
 
 \subsection{Fremtidige muligheder}
 
-På figur \ref{fig:tidsvssol} (s. \pageref{fig:tidsvssol} ser vi eksempler for beregningstiden for hver delopgave. Det er tydeligt at de følger et mønster, og at vi kan bestemme et indbyrdes størrelsesforhold mellem alle midterbræt. Dette giver os en god idé om hvilken delopgave det bedst kan betale sig at splitte op.
+På figur \ref{fig:tidsvssol}, side \pageref{fig:tidsvssol} ser vi eksempler for beregningstiden for hver delopgave. Det er tydeligt at de følger et mønster, og at vi kan bestemme et indbyrdes størrelsesforhold mellem alle midterbræt. Dette giver os en god idé om hvilken delopgave det bedst kan betale sig at splitte op.
 
 Alternativet til den dynamiske joboprettelse er en statisk, hvor spredningen af beregningsstørrelser for delproblemer forsøges minimeret ud fra antagelser om fordelingen af løsninger i delproblemerne. Disse antagelser kan vi kun retfærdiggøre ud fra vores viden om fordelingen for mindre $n$. 
 
-For den løsning som er sat i gang, er det kun de 1. 1000 jobs som er sat i gang. Det skyldes at \mig  fejler ved store antal jobindsendelser (se afsnit \ref{forbedringer} (s. \pageref{forbedringer}). 
+For den løsning som er sat i gang, er det kun de første 1000 jobs der er sat i gang. Det skyldes at \mig\  fejler ved store antal jobindsendelser (se afsnit \ref{forbedringer}, side \pageref{forbedringer}). 
 
-Første prioritet bør dog være at sekventielle beregning i java koden. Det kan ses på figur \ref{figur:lokal} (s. \pageref{figur:lokal}). Hvor langsom den nuværende implementation er i forhold til den oprindelige java udgave.
+Første prioritet er at forbedre den sekventielle beregning i java koden. Det kan ses på figur \ref{figur:lokal}, side \pageref{figur:lokal}. Hvor langsom den nuværende implementation er i forhold til den oprindelige java udgave.
    
 \section{Resultathåndtering}\label{resultatindsamling}
 \subsection{Indsamling og visning}
@@ -562,7 +562,7 @@ Den udviklede kildekode er organiseret i følgende filer:
 NQueenBoards er hovedklassen, om end det er begrænset hvor meget der egentlig
 bliver gjort i den. Den opretter et nyt CornerBoard objekt (se
 \ref{cornerboard}) og et nyt MiddleBoard objekt (se \ref{middleboard})
-kører deres init metode og tilføjer outputtet herfra blevet stoppet på en hægtet
+kører deres init metode og outputtet herfra blevet stoppet på en hægtet
 liste. 
 herefter bliver iterateOneLine kørt \texttt{maxSteps} gange
 
@@ -582,7 +582,7 @@ resultatet (kun en god ide for ikke alt for store værdier af $n$). Disse 2
 muligheder vælger man ved at ud/indkommentere henholdsvis linje 73-74 og linje
 83-96 
 
-\subsection{Board2}
+\subsection{Board2.java}
 
 Board2 er en abstract klasse der, hvor diverse funktionalitet, der er fælles for
 Corner- og MiddleBoard er implementeret.
@@ -607,7 +607,7 @@ I samme stil som CornerBoard, er MiddleBoard tilsvarende Backtrack2 fra
 backtrackRecursive er den samme som Backtrack2 fra \ref{nqueenc} og
 backtrackIterative er ændret således at vi kan lave checkpoints.
 
-\subsection{NQueenJob}
+\subsection{NQueenJob.java}
 
 NQueenJob i sig selv laver ikke så meget, den indlæser et serialiseret objekt
 enten det der er specificeret som argument, eller det som er blevet checkpointet
@@ -625,19 +625,19 @@ til at lave checkpoint, og når backtrackIterative så kommer til et sted hvor d
 kan lave checkpoint, gør den dette og bagefter fortsætter den så, mens vi venter
 endnu 15 min. osv. osv. 
 
-\subsection{NQueens, NQueensL, Board, Globals}
+\subsection{NQueens.java, NQueensL.java, Board.java, Globals.java}
 
 Disse kildekode filer indeholder vores først "port" af Takakens kode til java,
 og er så vidt muligt en copy/paste af Takakens kode, og er derfor ikke særlig
 interessante. 
 
-\subsection{MiGClient, MiGJob, MiGSSLSocketFactory}
+\subsection{MiGClient.java, MiGJob.java, MiGSSLSocketFactory.java}
 
 Disse klasser er lavet for at kunne lave \mig-job og indsende dem direkte uden
 at manuelt skulle køre migput/migsubmit. Den ville eventuelt kunne udvides til
 også at foretage overvågning/resultatopsamling af \mig-kørsler.
 
-\subsection{CornerBoardTest, MiddleBoardTest}
+\subsection{CornerBoardTest.java, MiddleBoardTest.java}
 
 Disse to klasser er lavet for nemt at kunne teste CornerBoard og MiddleBoard
 hver gang der var blevet lavet ændringer i dem. 
