@@ -1,4 +1,4 @@
-set terminal pdf fname "Helvetica" fsize "4"
+set terminal pdf fname "enhanced" fname "Helvetica"  fsize "8pt"
 set out "unikkevstotale.pdf"
 set autoscale
 set title "Unikke vs Totale løsninger"

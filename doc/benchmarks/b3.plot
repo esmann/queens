@@ -1,4 +1,4 @@
-set terminal pdf fname "Helvetica" fsize "4"
+set terminal pdf fname "enhanced" fname "Helvetica"  fsize "8pt"
 set out "b3.pdf"
 set autoscale
 unset log
