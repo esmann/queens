@@ -454,18 +454,27 @@ Uanset jobstørrelser, er det essentielle, at undgå ubenyttede ressourcer, uden
 
 I \mig\ skemalægges afviklingen af job som en FIFO-kø. Dvs. at job afvikles i samme rækkefølge som de submittes til gridet. Ved afbryding af jobbet eller ved udløb af tidsfristen for afvikling af jobbet placeres jobbet bagerst i køen. 
 
-Den løsning der er implementeret, i forbindelse med denne opgave, kan bedst karakteriseres som såkaldt \emph{statisk orkestration}. I det opdelingen i delproblemer er endeligt foretaget inden beregningen af delproblemer begynder. Som beskrevet i afsnit \ref{opdelingogschedulering} er der et grundlæggende problem ved en statisk opdeling, nemlig at beregningen ikke kan tilpasse sig til en forøgelse af mængden af ressourcer. I stedet bliver man nødt til fra starten at generere nok opgaver til at kunne udnytte en eventuel ressourcetilgang. Samme problem opstår, på grund af heterogene ressourcer og opgaver, når antallet af delopgaver falder henimod slutningen af udregningen. 
+\subsection{Statisk tilrettelæggelse}
+Den løsning der er implementeret, i forbindelse med denne opgave, kan bedst karakteriseres som såkaldt \emph{statisk orkestration}. I det opdelingen i delproblemer er endeligt foretaget inden beregningen af delproblemer begynder. Som beskrevet i afsnit \ref{opdelingogschedulering} er der et grundlæggende problem ved en statisk opdeling, nemlig at beregningen ikke kan tilpasse sig til en forøgelse af mængden af ressourcer. I stedet bliver man nødt til fra starten at generere nok opgaver til at kunne udnytte en eventuel ressourcetilgang. Samme problem opstår, på grund af heterogene ressourcer og jobstørrelse, når antallet af job falder henimod slutningen af udregningen. 
 
-For at afhjælpe dette problem kan joboprettelsen gøres mere dynamisk. Den indledende mængde delopgaver kan tilpasses det øjeblikkelige antal ressourcer. Herefter opdeles en eller flere af disse i mindre delopgaver, så snart der er ledige ressourcer. På denne måde sikres det at ingen beregningskraft står ubrugt hen. 
-Det bedste valg af job til genopdeling vil være det der kræver mest beregningstid, da dette vil resultere i den mindst mulige spredning i beregningsstørrelse for alle opgaver efter opdelingen\footnote{Idet alle nye opgaver vil være mindre end det oprindelige, men ingen vil være mindre end den mindste der blev oprettes, hvis vi valgte en anden end den største til opdeling.}. På figur \ref{fig:tidsvssol} ser vi eksempler for beregningstiden for hver delopgave. Det er tydeligt at de følger et mønster, og at vi kan bestemme et indbyrdes størrelsesforhold mellem alle midterbræt. Dette giver os en god idé om hvilken delopgave det bedst kan betale sig at splitte op. Tilgengæld har vi ikke mulighed for at vide, om beregningen af denne opgave allerede er ved at være færdig, og en opsplitning ville være uhensigtsmæssig. 
+\subsection{Dynamisk tilrettelæggelse}
 
-Alternativet til den dynamiske joboprettelse er en statisk, hvor spredningen af beregningsstørrelser for delproblemer forsøges minimeret ud fra antagelser om fordelingen af løsninger i delproblemerne. Disse antagelser kan vi kun retfærdiggøre ud fra vores viden om fordelingen for mindre $n$. Det er altså den samme viden om fordelinger vi gør brug af her, som i den dynamiske model. Her opdeler vi blot de (formodet) mest beregningstunge problemer fra starten. Vi sparer altså overvågning af projektet, men foretager til gengæld opdelinger før vi er sikre på at vi har det overskud af ressourcer, der gør dem fordelagtige.    
+For at afhjælpe dette problem kan antallet af job styres dynamisk. Den indledende mængde job kan tilpasses det øjeblikkelige antal ressourcer. Herefter opdeles en eller flere af disse i mindre delopgaver, så snart der er ledige ressourcer.  Det sikrer at ingen der $ventetid$ ved en forøgelse af ressourcer. Implementeringen af dette vil kræve en ekstra process der overvåger \mig. En sådan process vil være kompliceret i forhold til mængden af kode for at løse selve problemet.
 
-\fixme{Fixed? Beskriv den anden mulighed : at gøre job-genereringen mere intelligent, så vi kan være sikre på at få job der ikke har ligeså forskellige størrelser.}
+\subsection{Fast antal ressourcer}
 
-\fixme{hvad kan vi sige om om beregningstiden for problemer med samme data-størrelse? Øvre grænse for variationen i køretid? Indsæt reference til benchmarks, der viser beregningstid for hvert delproblem, og skriv noget om hvad benchmarks viser vi kan regne med ifm. beregningstid}
+En simplificering af problemet, er at antage et loft over antallet af ressourcer, som beskrevet i afsnit \ref{opdelingogschedulering}. Antagelsen konsekvens er at der altid er nok opgaver, indtil slutningen af beregningen.  Her undgås overvågningen af ressourcer indtil vi løber tør for opgaver. Det er beskrevet i foregående afsnit og er netop et kompromis $ventetid$ og $spildtid$.
 
+\subsection{Fremtidige muligheder}
 
+På figur \ref{fig:tidsvssol} (s. \pageref{fig:tidsvssol} ser vi eksempler for beregningstiden for hver delopgave. Det er tydeligt at de følger et mønster, og at vi kan bestemme et indbyrdes størrelsesforhold mellem alle midterbræt. Dette giver os en god idé om hvilken delopgave det bedst kan betale sig at splitte op.
+
+Alternativet til den dynamiske joboprettelse er en statisk, hvor spredningen af beregningsstørrelser for delproblemer forsøges minimeret ud fra antagelser om fordelingen af løsninger i delproblemerne. Disse antagelser kan vi kun retfærdiggøre ud fra vores viden om fordelingen for mindre $n$. 
+
+For den løsning som er sat i gang, er det kun de 1. 1000 jobs som er sat igang. Det skyldes at \mig  fejler ved store antal job indesendelser (se afsnit \ref{forbedringer} (s. \pageref{forbedringer}). 
+
+Første prioritet bør dog være at sekventielle bereniging i java koden. Det kan ses på figur \ref{figur:lokal} (s. \pageref{figur:lokal}). Hvor langsom den nuværende implementation er i forhold til den oprindelige java udgave.
+   
 \section{Resultathåndtering}\label{resultatindsamling}
 \subsection{Indsamling og visning}
 En måde et holde styr på den samlede beregning af et problem på \mig\ er, at have en vedligeholdelsesproces kørende, der sørger for at 
