@@ -4,10 +4,9 @@ set autoscale
 unset border
 set xtics nomirror
 set ytics nomirror
-set title  'Andel af løsninger for forskellige midterbræt'
 set xrange[1:9]
 set xlabel 'Placeringen af dronning i første række'
-set ylabel 'Andel af løsninger i %'
+set ylabel 'Procentvis andel af løsninger'
 plot 'middleandel.data' index 0 with linespoints title 'N=12', \
 	'middleandel.data' index 1 with linespoints  title 'N=13' , \
 	'middleandel.data' index 2 with linespoints  title 'N=14', \
