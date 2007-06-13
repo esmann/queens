@@ -495,17 +495,13 @@ resultater, eller foretage stikprøve kontrol hvor man selv regner nogle af
 jobsne ud og sammenligner resultatet. 
 
 \subsection{Resultatets størrelse}
-\fixme{Argumentér for at vi ikke kommer over 64-bit.}
-\begin{figure}
-\caption{Forøgelse af antallet af resultater for $n=10\ldots18$}
-\label{solrelativecount}
-\end{figure}
-
+For at sikre at vi ikke får overløb ved brug 64-bit tokomplement heltal, undersøges udviklingen af resultaterne for lavere n.
+På figur \ref{figur:maxantal}} ses det at den maximale positive værdi for \texttt{long} er en faktor \~1000-500  større end løsningen for n=25. Samtidig viser figur \ref{figur:loesningfaktor}, at man kan formode resultatet for $n=26$ er ~10 gange større end for $n=25$. Denne forskel vurderes signifikant nok til at vi kan regne n=26 ud for 64-bit tokomplement heltal.
 
 \begin{figure}[h!]
 \begin{center}
 \includegraphics{../benchmarks/resultatstorrelse.pdf}
-\caption{Figuren viser $Q(n)/Q(n-1)$ for $n=15\ldots25$. Det set faktor som er let stigende. Resultatet for $n=26$ kan formodes maximalt 15 gange større, for at være på den sikre side}
+\caption{Figuren viser $Q(n)/Q(n-1)$ for $n=15\ldots25$. Der ses faktor som stabiliseres og er let stigende. $n=26$ kan altså formodes at være ca. 26 gange større}
 \label{figur:loesningfaktor}
 \end{center}
 \end{figure}
@@ -513,13 +509,11 @@ jobsne ud og sammenligner resultatet.
 \begin{figure}[h!]
 \begin{center}
 \includegraphics{../benchmarks/maxantal.pdf}
-\caption{Viser antallet af løsninger på en logaritmisk skala. Derudover er Java's \texttt{long} og \texttt{int} maximale positive værdi inkluderet. Det ses at løsningen for Q(25) er en faktor mindre end \texttt{long}}
+\caption{Viser antallet af løsninger på en logaritmisk skala. Derudover er Java's \texttt{long} og \texttt{int} maximale positive værdi inkluderet. Det ses at løsningen for Q(25) er ca. en faktor 400 mindre end \texttt{long} i Java.}
 \label{figur:maxantal}
 \end{center}
 \end{figure}
 
-På figur \ref{solrelativecount} ses
-På figur \ref{figur:loesningfaktor} ses
 
 
 \section{Beskrivelse af implementeringen}\label{implementering}
