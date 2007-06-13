@@ -369,6 +369,28 @@ Det bliver naturligvis et krav at alle delproblemer vi sender ud kan beregnes ud
 \end{center}
 \end{figure}
 
+%Square beregningstid
+\begin{figure}[!h]
+\begin{center}
+
+\begin{tikzpicture}%[show background grid]
+\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+\tikzstyle{every node} = [draw]
+
+
+\draw (0,0) node[rectangle,minimum height=3cm,minimum width=3cm] {$T_1$};
+\draw (-0.75,-0.75) node[rectangle,minimum height=1.5cm,minimum width=1.5cm] {$T_2$};
+
+\draw[->] (-1.25,-1.75) -- node[draw=none,below=0.5em]{Hastighed} (2,-1.75);
+\draw[->] (-1.75,-1.25) -- node[draw=none,left=0.5em]{Jobstørrelse} (-1.75,2);
+
+\end{tikzpicture}		
+\caption{Illustration af både ressource hastighed og job størrelse variere. Arealet er beregningstiden} 
+\end{center}
+\end{figure}
+
+
+
 
 I det følgende benyttes disse forkortelser for ofte anvendte begreber.
 \begin{description}
