@@ -74,7 +74,7 @@ public class CheckPointTest implements Serializable {
 		mboard.setRecursive(false);
 		mboard.enableExitAfterCheckPoint(); // TESTING PURPOSES ONLY
 
-		BigInteger total = BigInteger.ZERO, count2 = BigInteger.ZERO, count4 = BigInteger.ZERO, count8 = BigInteger.ZERO;
+		long total = 0, count2 = 0, count4 = 0, count8 = 0;
 		int i = 0;
 		for (Board2 b : mboard.init()) {
 			while (!b.isComplete()) {
@@ -102,10 +102,10 @@ public class CheckPointTest implements Serializable {
 
 			}
 
-			total = total.add(b.getTotal());
-			count2 = count2.add(((MiddleBoard) b).getCount2());
-			count4 = count4.add(((MiddleBoard) b).getCount4());
-			count8 = count8.add(((MiddleBoard) b).getCount8());
+			total = total + b.getTotal();
+			count2 = count2 + (((MiddleBoard) b).getCount2());
+			count4 = count4 +(((MiddleBoard) b).getCount4());
+			count8 = count8 + (((MiddleBoard) b).getCount8());
 		}
 		assertEquals(expectedCount8, count8);
 		assertEquals(expectedCount4, count4);

@@ -127,7 +127,6 @@ public class CornerBoard extends Board2 {
 					//dout("Solution " + currentBoardLine);
 					bitmap = 0; // We take the only solution that exists
 				}
-
 			} else {
 				if (currentBoardLine < bound1) {
 					bitmap |= 2;
@@ -159,7 +158,7 @@ public class CornerBoard extends Board2 {
 
 			isOccupiedLeftDiagonal[currentBoardLine + 1] = (isOccupiedLeftDiagonal[currentBoardLine] | bit) << 1;
 			isOccupiedHorizontal[currentBoardLine + 1] = (isOccupiedHorizontal[currentBoardLine] | bit);
-			isOccupiedRightDiagonal[currentBoardLine + 1] = (isOccupiedRightDiagonal[currentBoardLine] | bit) >> 1;
+			isOccupiedRightDiagonal[currentBoardLine + 1] = (isOccupiedRightDiagonal[currentBoardLine] | bit) >>> 1;
 
 			if (currentBoardLine >= top) {
 				currentBoardLine++; // Go to child/Next line
@@ -212,7 +211,7 @@ public class CornerBoard extends Board2 {
 				board[y] = bit;
 				bitmap ^= board[y];
 				backtrackRecursive(y + 1, (left | bit) << 1, down | bit,
-						(right | bit) >> 1);
+						(right | bit) >>> 1);
 			}
 		}
 	}

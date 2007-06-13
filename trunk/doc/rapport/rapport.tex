@@ -228,11 +228,9 @@ Den første placering \footnote{For hjørnebræt er dette række 2, fordi den f�
 
 \begin{figure}
 \includegraphics{../benchmarks/tidsandel.pdf}
-\caption{Kørt for den iterative, fixme:caption}
+\caption{Grafen viser en sammenhæng mellem andelen af løsninger.}
 \label{fig:tidsvssol}
 \end{figure}
-
-Det ses på figur/tabel FIXME at andelen af løsninger for bræt hvor den første dronning ikke placeres i et hjørne er over 90\% og stigende for større $n$, Det samme gælder for køretiden. Så hvis ca. 90\% af løsningerne findes i ét delproblem vil det også tage ca. 90\% af tiden at beregne dette delproblem. \fixme{flyt til benchmarks, og lav tabel der viser vi skal bare have at 90\% af køretiden er i middlebræt (og samme for køretiden??), jvnf. amdahls lov at vi ikke gider optimere hjørnebræt}
 
 \subsection{Paralleliseringsmetode}\label{parallel}
 
@@ -686,11 +684,13 @@ Java har både \texttt{Exceptions} og \texttt{Error} der begge er af typen \text
 Konkret har vi oplevet dette problem ved følgende \texttt{Error}-typer:
 \begin{description}
 	\item[UnsupportedClassVersionError]	Fejlen opstår fordi den benyttede jvm-version på ressource-maskinen er mindre end bytekodens version.
-	\item[serialVersionUID]	Fejlen opstår når ændringer i klasse-filer ændrer klassens serialVersionUID. Den opstår kun fordi vi læser serialiserede klasser ind fra hjemmekataloget, og disse kan være serialiseret fra en nyere version af klassen, end den der findes i ressourcens \texttt{ClassLoader}-cache. 
 	\item[NoClassDefFoundError]	Fejlen opstod fordi en klasse-fil manglede i hjemmekataloget.  
 \end{description}
 
-Løsningen må være at \texttt{MiG.oneclick.Job} altid griber \texttt{java.lang.Error} og fortæller \mig\ at jobbet fejlede.
+En Løsningen må være at \texttt{MiG.oneclick.Job} altid griber \texttt{java.lang.Error} og fortæller \mig\ at jobbet fejlede.
+
+\subsection*{Mulighed for at fejle i \oc-applet}
+Job kode i \oc har ingen mulighed for at fejle således at \mig rapportere status som \emph{FAILED}. De nødvendige funktioner er private for klassen, og \texttt{MiG\_main()} metodens signatur forhindrer at der kan kastes fejl. Et eksempel på en uoprettelig fejl opstår når ændringer i klasse-filer ændrer klassens serialVersionUUID, og indlæsninger kaster en \texttt{ClassNotFoundException}.
 
 \subsubsection*{Timeout ved \texttt{submitandextract}}
 \texttt{submitandextract} kan fejle når antallet af job er for stort. Request timer ud før vi får listen med jobid tilbage. Derefter er der ingen sikker måde at vide hvilke id'er de indsendte job har fået tildelt. 
