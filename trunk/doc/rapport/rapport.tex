@@ -468,7 +468,7 @@ Alternativet til den dynamiske joboprettelse er en statisk, hvor spredningen af 
 
 \section{Resultathåndtering}\label{resultatindsamling}
 \subsection{Indsamling og visning}
-En måde et holde styr på den samlede beregning af en løsning på \nq\ er, at have en vedligeholdelsesproces kørende, der sørger for at 
+En måde et holde styr på den samlede beregning af et problem på \mig\ er, at have en vedligeholdelsesproces kørende, der sørger for at 
 \begin{itemize}
 	\item Genkøre fejlede job.
 	\item Indsamle resultater fra færdige job.
@@ -489,6 +489,7 @@ nærmere betegnes som sabotage, og ikke snyd. Måder man kan forhindre
 snyd/sabotage kan være at sende de samme job ud flere gange, og sammenligne
 resultater, eller foretage stikprøve kontrol hvor man selv regner nogle af
 jobbene ud og sammenligner resultatet. 
+På grund af anonymitet kan vi ikke sende to ens job ud til beregning på to forskellige ressourcer, hvilket ellers ville være en god måde at verificere resultatet på. Vi kan heller ikke f.eks. foretage en stikprøve per ressource. 
 
 \subsection{Resultatets størrelse}
 For at sikre at vi ikke får overløb ved brug 64-bit tokomplement heltal, undersøges udviklingen af resultaterne for lavere n.
@@ -676,7 +677,7 @@ Før den endelige kørsel for $n=26$ bør følgende optimeringer foretages:
 
 \section{Forslag til forbedringer af \oc\ og \mig}\label{forbedringer}
 
-Under arbejdet med \mig\ og især \oc\ er vi stødt på en ræekke problemer og uhensigtsmæssigheder. Her vil vi skitseres disse kort, og forsøge at komme med løsningsforslag hvor det er relevant. Forbedringsforslagene er opstillet i nogenlunde prioriteret rækkefølge.
+Under arbejdet med \mig\ og især \oc\ er vi stødt på en række problemer og uhensigtsmæssigheder. Her vil vi skitseres disse kort, og forsøge at komme med løsningsforslag hvor det er relevant. Forbedringsforslagene er opstillet i nogenlunde prioriteret rækkefølge.
 
 \subsubsection*{Job fejler ikke hvis der kastes en \texttt{java.lang.Error}}
 Java har både \texttt{Exceptions} og \texttt{Error} der begge er af typen \texttt{java.lang.Throwable}. \oc griber kun \texttt{Exceptions}, med det resultat at når der opstår en \texttt{java.lang.Error} rapporteres jobbet som succesfuldt afsluttet. 
@@ -689,15 +690,15 @@ Konkret har vi oplevet dette problem ved følgende \texttt{Error}-typer:
 
 En Løsningen må være at \texttt{MiG.oneclick.Job} altid griber \texttt{java.lang.Error} og fortæller \mig\ at jobbet fejlede.
 
-\subsection*{Mulighed for at fejle i \oc-applet}
+\subsubsection*{Mulighed for at fejle i \oc-applet}
 Job kode i \oc har ingen mulighed for at fejle således at \mig rapportere status som \emph{FAILED}. De nødvendige funktioner er private for klassen, og \texttt{MiG\_main()} metodens signatur forhindrer at der kan kastes fejl. Et eksempel på en uoprettelig fejl opstår når ændringer i klasse-filer ændrer klassens serialVersionUUID, og indlæsninger kaster en \texttt{ClassNotFoundException}.
 
 \subsubsection*{Timeout ved \texttt{submitandextract}}
-\texttt{submitandextract} kan fejle når antallet af job er for stort. Request timer ud før vi får listen med jobid tilbage. Derefter er der ingen sikker måde at vide hvilke id'er de indsendte job har fået tildelt. 
+\texttt{submitandextract} kan fejle når antallet af job er for stort. Requesten timer ud før vi får listen med jobid tilbage. Derefter er der ingen sikker måde at vide hvilke id'er de indsendte job har fået tildelt. 
 Problemet kan skyldes at listen først opbygges efter alle job er behandlet. Svaret med listen af jobid burde så i stedet sendes løbende. Alternativt kunne submitandextract med det samme svare med en kvittering - et id for den samlede \texttt{submitandextract}. Med denne kvittering kunne man senere slå de enkelte id'er op, eller referere til hele gruppen af job (f.eks. i forbindelse med \texttt{cancel}).
 
 \subsubsection*{Tvungen nedarvning fra \texttt{MiG.oneclick.Job}}
-Vi ser det som en begræsningen af man skal arve fra \texttt{MiG.oneclick.JoB}, idet denne selv arver fra \texttt{java.lang.Applet}. Det besværliggør udviklingen af kode der både kan køres på \mig\ og lokalt i fobindelse med test. Flytning af eksisterende java-kode til \oc\ ville også være nemmere uden dette krav.
+Vi ser det som en begræsningen af man skal arve fra \texttt{MiG.oneclick.JoB}, idet denne selv arver fra \texttt{java.lang.Applet}. Det besværliggør udviklingen af kode der både kan køres på \mig\ og lokalt i forbindelse med test. Flytning af eksisterende java-kode til \oc\ ville også være nemmere uden dette krav.
 
 Løsningen kunne være i stedet at definere \texttt{MiG.oneclick.Job} som en \texttt{abstract} klasse. 
 
@@ -715,7 +716,7 @@ Fra serversiden skal der bare generes en jnlp (xml) fil(se eksempel i \ref{jnlp}
 Atomiske fil-operationer eller mulighed for låse på filer i \mig-hjemmekataloget ville give både \oc- og alm. \mig-job mulighed for at foretage basal \texttt{IPC}\footnote{Inter Process Communication}, og stadig bevare fuld anonymitet. 
 
 \subsubsection*{Brug af HTTP-implementationen \texttt{org.apache.commons.httpclient}}
-Vores erfaring er at \texttt{org.apache.commons.httpclient} er langt mere stabil end Suns egen implementation. Under alle omstændigheder ville det være muligt at distribuere en fast version af \texttt{org.apache.commons.httpclient} med \oc, benytter man suns kan der være forskelle mellem forskellige jvm-versioner.
+Vores erfaring er at \texttt{org.apache.commons.httpclient} er langt mere stabil end Suns egen implementation. Under alle omstændigheder ville det være muligt at distribuere en fast version af \texttt{org.apache.commons.httpclient} med \oc, benytter man Suns kan der være forskelle mellem forskellige jvm-versioner.
 
 \subsubsection*{Forslag til (meget) små forbedringer af \mig brugergrænseflade}
 
