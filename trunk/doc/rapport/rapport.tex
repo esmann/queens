@@ -628,69 +628,69 @@ I en implementation med \texttt{java.Math.BigInteger} kan vi se at der vil være
 
 \input{benchmark.tex}
 
-\section{Forbedringer til \oc\ og \mig}\label{forbedringer}
+\section{Forslag til forbedringer af \oc\ og \mig}\label{forbedringer}
 
+Under arbejdet med \mig\ og især \oc\ er vi stødt på en ræekke problemer og uhensigtsmæssigheder. Her vil vi skitseres disse kort, og forsøge at komme med løsningsforslag hvor det er relevant. Forbedringsforslagene er opstillet i nogenlunde prioriteret rækkefølge.
+
+\subsubsection*{Job fejler ikke hvis der kastes en \texttt{java.lang.Error}]}
+Java har både \texttt{Exceptions} og \texttt{Error} der begge er af typen \texttt{java.lang.Throwable}. \oc griber kun \texttt{Exceptions}, med det resultat at når der opstår en \texttt{java.lang.Error} rapporteres jobbet som succesfuldt afsluttet. 
+
+Konkret har vi oplevet dette problem ved følgende \texttt{Error}-typer:
 \begin{description}
-	\item[Job fejler ikke hvis der kastes en kastes en \texttt{java.lang.Error}]  Java har både \texttt{Exceptions} og \texttt{Error} der begge er af typen \texttt{java.lang.Throwable}. \oc griber kun \texttt{Exceptions} som \oc og rapportere som at jobbet er succesfuldt afsluttet. Dette kan  
-	\item Ens job tvinges til at afhænge af MiG.nqueen.JoB	
-	\item Brug af suns egen HTTP implementation. Brug i stedet http-commons fra Apache
-	\item Vi har glemt en masse 
-	\item Input/Output til MiG hjemmedir ikke Inputstream / Outputstream objekter. Men wrapped i en klasse der repræsentere C/Python tankegang.
-	\item[Webstart] Webstart\footnote{Se \url{http://java.sun.com/products/javawebstart/}} er at foretrække frem for applets, da de startes seperat uden for browseren. Fra serversiden skal der bare generes en jnlp (xml) fil(se eksempel i \ref{jnlp}) i stedet for en html fil. Eksemplet gør brug af applet kombabilitet, men det er ikke nødvendigt at arve fra Applet klassen.
-	\item[Abstrakt job klasse] Det er en begræsningen af man skal arve fra \texttt{MiG.oneclick.JoB} klassen. Det gør det svært at teste en kode for korrekthed lokalt da Job selv arver fra \texttt{java.lang.Applet}
-	\item[CPU tid] Det er ikke muligt
+	\item[UnsupportedClassVersionError]	Fejlen opstår fordi den benyttede jvm-version på ressource-maskinen er mindre end bytekodens version.
+	\item[serialVersionUID]	Fejlen opstår når ændringer i klasse-filer ændrer klassens serialVersionUID. Den opstår kun fordi vi læser serialiserede klasser ind fra hjemmekataloget, og disse kan være serialiseret fra en nyere version af klassen, end den der findes i ressourcens \texttt{ClassLoader}-cache. 
+	\item[NoClassDefFoundError]	Fejlen opstod fordi en klasse-fil manglede i hjemmekataloget.  
+\end{desription}
+
+Løsningen må være at \texttt{MiG.oneclick.Job} altid griber \texttt{java.lang.Error} og fortæller \mig\ at jobbet fejlede.
+
+\subsubsection*{Timeout ved \texttt{submitandextract}}
+\texttt{submitandextract} kan fejle når antallet af job er for stort. Request timer ud før vi får listen med jobid tilbage. Derefter er der ingen sikker måde at vide hvilke id'er de indsendte job har fået tildelt. 
+Problemet kan skyldes at listen først opbygges efter alle job er behandlet. Svaret med listen af jobid burde så i stedet sendes løbende. Alternativt kunne submitandextract med det samme svare med en kvittering - et id for den samlede \texttt{submitandextract}. Med denne kvittering kunne man senere slå de enkelte id'er op, eller referere til hele gruppen af jobs (f.eks. i forbindelse med \texttt{cancel}).
+
+\subsubsection*{Tvungen nedarvning fra \texttt{MiG.oneclick.Job}}
+Vi ser det som en begræsningen af man skal arve fra \texttt{MiG.oneclick.JoB}, idet denne selv arver fra \texttt{java.lang.Applet}. Det besværliggør udviklingen af kode der både kan køres på \mig\ og lokalt i fobindelse med test. Flytning af eksisterende java-kode til \oc\ ville også være nemmere uden dette krav.
+
+Løsningen kunne være i stedet at definere \texttt{MiG.oneclick.Job} som en \texttt{abstract} klasse. 
+
+\subsubsection*{\texttt{MiG.oneclick.file} opfører sig ikke som en alm. Stream} 
+Hvis I/O i \oc\ fulgte javas paradigme med \texttt{InputStream} og \texttt{OutputStream} ville eksisterende java-kode være nemmere at flytte til \oc.
+
+\subsubsection*{Brug af Webstart}
+Webstart\footnote{Se \url{http://java.sun.com/products/javawebstart/}} kunne overvejes frem for appletter. De startes seperat, uden for browseren. 
+
+Benyttede \oc\ Webstart ville det desuden være muligt at sætte de dedikerede \mig-ressourcer til at behandle java-bytekode-job via Webstart, uden at behøve et grafisk miljø. Man ville således få adgang til flere ressourcer end nu, hvor \oc-job er begrænsede til de mere sporadiske \oc-ressourcer.   
+
+Fra serversiden skal der bare generes en jnlp (xml) fil(se eksempel i \ref{jnlp}) i stedet for en html fil. Eksemplet gør brug af applet kombabilitet, men det er ikke nødvendigt at arve fra \texttt{Applet}-klassen.
+
+\subsubsection*{Atomisk fil-operationer}
+Atomiske fil-operationer eller mulighed for låse på filer i \mig-hjemmekataloget ville give både \oc- og alm. \mig-job mulighed for at foretage basal \texttt{IPC}\footnote{Inter Process Communication}, og stadig bevare fuld anonymitet. 
+
+\subsubsection*{Brug af HTTP-implementationen \texttt{org.apache.commons.httpclient}}
+Vores erfaring er at \texttt{org.apache.commons.httpclient} er langt mere stabil end Suns egen implementation. Under alle omstændigheder ville det være muligt at distribuere en fast version af \texttt{org.apache.commons.httpclient} med \oc, benytter man suns kan der være forskelle mellem forskellige jvm-versioner.
+
+\subsubsection*{Forslag til (meget) små forbedringer af \mig brugergrænseflade}
+
+Her beskriver vi nogle muligheder vi synes vi manglet i \mig grænseflade.
+\begin{description}
+	\item[Udvidet jobvisning]
+	Opdeling af jobvisning, i webgrænsefladen, så man kun ser hhv. \texttt{queued}, \texttt{cancelled}, \texttt{finished}, \texttt{executing}, osv. Vi synes oftest det er job med en specifik status man leder efter.
+	\item[Job Status side a la Files/Folders] 
+	Grænseflade til \texttt{cancel} og \texttt{re-submit} af flere job af gangen. Mulighed for wildcard argumenter til kommandoen \texttt{migcancel}.
 \end{description}
 
-I forbindelse med udvikling og afprøvning af en \oc-applet skal man være opmærksom på at Class-filer caches af browserens java-plugin. Ændringer i implementeringen kan medføre fejl under afviklingen på ressourcer der bruger forældede class-filer, selvom \mig opfatter jobbet som udført uden fejl. Ændringer i class-filer, der betyder opdatering af serialVersionUID, kræver opdatering af denne cache. Man kan altså riskikere at appletten får en undtagelse på serialVersionUID og derved markeres jobbet som færdigt, uden at være kommet til et resultat. En uhensigtsmæssighed i forbindelse med undtagelseshåndtering i basisklassen MigJob.java gør at jobbet alligevel vil se ud til at være afsluttet succesfuldt. 
-
-\fixme{atomisk fil-operationer/låse ville give mulighed for InterResourceCommunication. ;-) Skal implementeres i \mig}
-
-\fixme{Dette er stadig i noteform og måske redundant ifht. tidligere afsnit}
-langsom til at sende resultatet til serveren hvis browseren dør mens den er ved
-at sende resultatet til serveren, er det ikke sikkert den når at smide hele
-
-\oc applet'en cacher class filer, s hvis man har ænret i sin kode og
-uploadet nye class filer bliver man nødt til at lukke browseren helt ned og
-starte den op igen, hvis man vil have den til at loade de nye class filer, lader
-det umiddelbart til.. 
-
-\oc applet'en kommer hele tiden med en popup fejl, hvis brugeren ikke har
-certificat (skal nok lige verificeres, var noget jeg fik at vide af Asser, da
-han legede ressource for mig) \fixme{den kommer vidst nok ikke hele tiden, så
-vidt jeg husker, kun i starten}
-
-
-Job Status side ala. Files/Folders
-tingen, så man nemmere kan vælge flere jobs og cancelle/resubmitte.. og
-wildcards til migcancel.py ville også være en go ting, så man kunne lave en
-migcancel.py *14\_37* fx.. 
-
-vis queued/cancelled/finished/executing/m.fl jobs ville også være en brugbar feature
-
-mulighed for at slette job helt, så ens jobstatus side ikke er så stor.. eller
-"pensionere" dem
-
-Den dræber nogen gange jobs, dette ser ud til at ske, hvis den lige har
-færdiggjort job <jobid>, og så (af en eller anden årsag) prøver at hente det
-\_samme\_ job igen, så bliver dette job (sjovt nok) slået ihjel af serveren, og
-så sleeper applet'en i 80s før den prøver igen.. 
-
-Errors bliver ikke fanget
-\begin{verbatim}
-checkpoint_request_url_str: https://mig-1.imada.sdu.dk/sid_redirect/7bc01a0e4ead439c63c84fd149eb93ac325fdf1809aedc23049c010890bf14bd/13768_6_2_2007__8_42_57_mig-1.imada.sdu.dk.0.NQueenJob.checkpoint.latest
-Exception in thread "Thread-18" java.lang.NoClassDefFoundError: CheckPointAction
-	at java.lang.Class.getDeclaredMethods0(Native Method)
-	at java.lang.Class.privateGetDeclaredMethods(Class.java:2427)
-	at java.lang.Class.getMethod0(Class.java:2670)
-	at java.lang.Class.getMethod(Class.java:1603)
-	at MiG.oneclick.Exe.getJobMethods(Exe.java:73)
-	at MiG.oneclick.Exe.run(Exe.java:236)
-	at java.lang.Thread.run(Thread.java:619)
-sendJobFinished
-\end{verbatim}
-
-
-\fixme{omrokering af afsnit og sletning af gentagelser.}
+%\begin{verbatim}
+%checkpoint_request_url_str: https://mig-1.imada.sdu.dk/sid_redirect/7bc01a0e4ead439c63c84fd149eb93ac325fdf1809aedc23049c010890bf14bd/13768_6_2_2007__8_42_57_mig-1.imada.sdu.dk.0.NQueenJob.checkpoint.latest
+%Exception in thread "Thread-18" java.lang.NoClassDefFoundError: CheckPointAction
+%	at java.lang.Class.getDeclaredMethods0(Native Method)
+%	at java.lang.Class.privateGetDeclaredMethods(Class.java:2427)
+%	at java.lang.Class.getMethod0(Class.java:2670)
+%	at java.lang.Class.getMethod(Class.java:1603)
+%	at MiG.oneclick.Exe.getJobMethods(Exe.java:73)
+%	at MiG.oneclick.Exe.run(Exe.java:236)
+%	at java.lang.Thread.run(Thread.java:619)
+%sendJobFinished
+%\end{verbatim}
 
 
 %\bibliographystyle{plainnat}
