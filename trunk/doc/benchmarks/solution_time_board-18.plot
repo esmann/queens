@@ -1,4 +1,4 @@
-set terminal pdf fname "Helvetica" fsize "4"
+set terminal pdf fname "enhanced" fname "Helvetica"  fsize "8pt"
 set out "solution-time-board-18.pdf"
 set autoscale
 set ytics auto nomirror

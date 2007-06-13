@@ -1,4 +1,4 @@
-set terminal pdf fname "Helvetica" fsize "4"
+set terminal pdf fname "enhanced" fname "Helvetica"  fsize "8pt"
 set out "middleandel.pdf"
 set autoscale	
 unset border
