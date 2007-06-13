@@ -250,7 +250,7 @@ Selve parallelisering er yderst simpel. Hvert delbræt kan løses uafhængigt ef
 \textsc{Minimum instrusion Grid}, herefter \mig, er et grid-system der sigter mod at stille så få krav for deltagelse som muligt - både overfor brugere og ressourcer. I \mig-terminologi er en ressource en enhed der kan sættes til at beregne et problem. Mange andre gridsystemer benytter ekstra software på den enkelte ressource, men undgår man helt dette, mindskes kompleksiteten af det samlede system dramatisk. 
 
 \mig\ implementerer en model der sikrer fuldstændig anonymitet - det er umuligt for ressourcer at vide hvor de job de regner på kommer fra, og umuligt for brugere af vide hvor deres job afvikles. Få krav til deltagelse, anonymitet, sikkerhed\footnote{Baseret på ssl-certifikater} og skalerbarhed er hovedprincipperne bag \mig. Lige præcis til vores formål ligger der dog en begrænsning i den fuldstændige anonymitet. Vi er vi ude af stand til at parre specifikke job med specifikke ressourcer. En sådan mulighed kunne ellers danne basis for en alternativ løsning på scheduleringen af heterogene job, som beskrevet i afsnit \ref{opdelingogschedulering}. 
-%\fixme{beskrivelse af anonymitet!, Det er vigtigt fordi det begrænser os, vi kan ikke vide noget om ressourcers hastighed, matche jobs til ressourcer(, osv?)}
+%\fixme{beskrivelse af anonymitet!, Det er vigtigt fordi det begrænser os, vi kan ikke vide noget om ressourcers hastighed, matche job til ressourcer(, osv?)}
 
 %\fixme{Kort om sikkerhed i \mig}
 
@@ -271,7 +271,7 @@ Begge metoder giver mulighed for at udføre følgende basale funktioner på \mig
 \begin{itemize}
 	\item Igangsatte job.
 
-	\item Se status på tidligere jobs.
+	\item Se status på tidligere job.
 
 	\item Få adgang til data-, program- og resultatfiler i hjemmekataloget. 
 \end{itemize}
@@ -472,25 +472,25 @@ Alternativet til den dynamiske joboprettelse er en statisk, hvor spredningen af 
 \subsection{Indsamling og visning}
 En måde et holde styr på den samlede beregning af en løsning på \nq\ er, at have en vedligeholdelsesproces kørende, der sørger for at 
 \begin{itemize}
-	\item Genkøre fejlede job
-	\item Indsamle resultater fra færdige jobs
-	\item Muliggøre løbende projektstatus og offentliggørelse af resultater 
+	\item Genkøre fejlede job.
+	\item Indsamle resultater fra færdige job.
+	\item Muliggøre løbende projektstatus og offentliggørelse af resultater. 
 \end{itemize}
-Dette program kan for eksempel være det samme der står for at oprette vores jobs i første omgang. 
+Dette program kan for eksempel være det samme, der står for at oprette vores job i første omgang. 
 
 En enkel metode kunne være at lade \mig\ sende e-mail når job er færdige, og så sætte .procmail el.lign op til automatisk at kalde et script der henter status/stdout/stderr filer og hive resultater ud og lægge sammen når der
 kommer en mail.
 
-Yderligere kunne det være interessant at have mulighed for at tilpasse ikke-kørte jobs på baggrund af informationer om gridets tilstand (antallet af tilgængelige ressourcer). Dette er en praktisk måde at implementere den dynamiske joboprettelse der beskrives i afsnit \ref{opdelingipraksis}. 
+Yderligere kunne det være interessant at have mulighed for at tilpasse ikke-kørte job på baggrund af informationer om gridets tilstand (antallet af tilgængelige ressourcer). Dette er en praktisk måde at implementere den dynamiske joboprettelse der beskrives i afsnit \ref{opdelingipraksis}. 
 
 \subsection{Verifikation}
 Da der, på nuværende tidspunkt, ikke er nogen form for pointsystem i \mig/\oc,
 er der ikke den store chance for folk vil prøve at snyde for at være den der
 laver flest point. Hvis folk derfor sender forkerte resultater ind må det
 nærmere betegnes som sabotage, og ikke snyd. Måder man kan forhindre
-snyd/sabotage kan være at sende de samme jobs ud flere gange, og sammenligne
+snyd/sabotage kan være at sende de samme job ud flere gange, og sammenligne
 resultater, eller foretage stikprøve kontrol hvor man selv regner nogle af
-jobsne ud og sammenligner resultatet. 
+jobbene ud og sammenligner resultatet. 
 
 \subsection{Resultatets størrelse}
 For at sikre at vi ikke får overløb ved brug 64-bit tokomplement heltal, undersøges udviklingen af resultaterne for lavere n.
@@ -563,9 +563,9 @@ dronning i hjørnet.
 
 På nuværende tidspunkt er der en lille mængde manuelt arbejde i det. Som det ser
 ud for øjeblikket er der 2 muligheder i NQueenBoards, som også kan kombineres. 
-Man kan vælge at submitte jobsne direkte (P.t. er denne funktion dog lavet om
+Man kan vælge at submitte jobbene direkte (P.t. er denne funktion dog lavet om
 til at gemme zip filen lokalt da MiG ikke er glad for at submit and extracte en
-zip fil med over 12000 jobs). Man kan også få NQueenBoards til at beregne
+zip fil med over 12000 job). Man kan også få NQueenBoards til at beregne
 resultatet (kun en god ide for ikke alt for store værdier af $n$). Disse 2
 muligheder vælger man ved at ud/indkommentere henholdsvis linje 73-74 og linje
 83-96 
@@ -619,7 +619,7 @@ interessante.
 
 \subsection{MiGClient, MiGJob, MiGSSLSocketFactory}
 
-Disse klasser er lavet for at kunne lave \mig-jobs og submitte dem direkte uden
+Disse klasser er lavet for at kunne lave \mig-job og submitte dem direkte uden
 at manuelt skulle køre migput/migsubmit. Den ville eventuelt kunne udvides til
 også at foretage overvågning/resultatopsamling af \mig-kørsler.
 
@@ -693,7 +693,7 @@ Løsningen må være at \texttt{MiG.oneclick.Job} altid griber \texttt{java.lang
 
 \subsubsection*{Timeout ved \texttt{submitandextract}}
 \texttt{submitandextract} kan fejle når antallet af job er for stort. Request timer ud før vi får listen med jobid tilbage. Derefter er der ingen sikker måde at vide hvilke id'er de indsendte job har fået tildelt. 
-Problemet kan skyldes at listen først opbygges efter alle job er behandlet. Svaret med listen af jobid burde så i stedet sendes løbende. Alternativt kunne submitandextract med det samme svare med en kvittering - et id for den samlede \texttt{submitandextract}. Med denne kvittering kunne man senere slå de enkelte id'er op, eller referere til hele gruppen af jobs (f.eks. i forbindelse med \texttt{cancel}).
+Problemet kan skyldes at listen først opbygges efter alle job er behandlet. Svaret med listen af jobid burde så i stedet sendes løbende. Alternativt kunne submitandextract med det samme svare med en kvittering - et id for den samlede \texttt{submitandextract}. Med denne kvittering kunne man senere slå de enkelte id'er op, eller referere til hele gruppen af job (f.eks. i forbindelse med \texttt{cancel}).
 
 \subsubsection*{Tvungen nedarvning fra \texttt{MiG.oneclick.Job}}
 Vi ser det som en begræsningen af man skal arve fra \texttt{MiG.oneclick.JoB}, idet denne selv arver fra \texttt{java.lang.Applet}. Det besværliggør udviklingen af kode der både kan køres på \mig\ og lokalt i fobindelse med test. Flytning af eksisterende java-kode til \oc\ ville også være nemmere uden dette krav.
