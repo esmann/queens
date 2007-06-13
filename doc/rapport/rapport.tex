@@ -1,4 +1,18 @@
-\documentclass[a4paper,11pt]{article}
+% Glossary
+%
+% checkpoint =
+% overhead = 
+% resource = ressource
+% grid = grid
+% backtrack = 
+% board = bræt 
+% cornerboard = hjørnebræt (ikke ved kodehenvisning) 
+% middleboard = midte(r)bræt (ikke ved kodehenvisning)
+% bitmap = bitmap
+% bound =
+% 	
+
+\documentclass[final,a4paper,11pt]{article}
 \usepackage{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[danish]{babel}
@@ -53,7 +67,7 @@
 
 \maketitle
 \tableofcontents
-\listoffixmes
+%\listoffixmes
 \newpage
 
 \renewcommand{\thepage}{\arabic{page}}
@@ -585,7 +599,8 @@ backtrackRecursive er den samme som Backtrack1 fra den oprindelige c-kode. Da vi
 gerne vil have mulighed for at lave checkpoints, er der blevet lavet en iterativ
 udgave af backtrackRecursive, dette skyldes at checkpoint ikke gemmer kaldstak
 og programtæller, så vi ville ikke kunne starte op fra et checkpoint med
-backtrackRecursive.
+backtrackRecursive. 
+%\fixme{beskrivelse af iterativ udgave}
 
 \subsection{MiddleBoard.java}
 
@@ -605,7 +620,7 @@ skriver resultatet til stdout.
 
 \subsection{CheckPointer.java, CheckPointActionMiG.java}
 
-\fixme{Beskrivelse af hvordan vi checkpointer og de lokale tests af checkpoint}
+%\fixme{Beskrivelse af hvordan vi checkpointer og de lokale tests af checkpoint}
 Disse 2 klasser bliver brugt til at lave checkpoints. Hovedideen bag vores
 checkpointing er at vi venter i 15 min, derefter siger vi så at nu er vi klar
 til at lave checkpoint, og når backtrackIterative så kommer til et sted hvor den
@@ -656,9 +671,7 @@ Før den endelige kørsel for $n=26$ bør følgende optimeringer foretages:
 \end{description}
 
 
-\fixme{Skriv derefter uddybende til de øverste.}
-
-
+%\fixme{Skriv derefter uddybende til de øverste.}
 
 
 \section{Afprøvning og benchmarking}\label{benchmarks}
@@ -752,7 +765,7 @@ Her beskriver vi nogle muligheder vi synes mangler i \mig-grænseflade.
 \appendix
 \input{kode}
 \newpage
-\section{Synopsis}
+%\section{Synopsis}
 
 
 \begin{landscape}
