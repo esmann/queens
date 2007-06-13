@@ -510,14 +510,7 @@ Kildekoden implemeterer en rekursiv og en iterativ udgave af Takakens algoritme,
 
 \fixme{Beskriv hvorfor vi har en iterativ udgave af T's algoritme. (Det er fordi kaldstakken forsvinder under checkpointing.)}
 
-
 \fixme{Beskrivelse af hvordan vi checkpointer og de lokale tests af checkpoint}
-
-\fixme{Implementering af ssl-kommunikation og mig-hjælpeprogrammer (Det er gjort)} 
-
-\fixme{Pladsforbrug for resultater, checkpoints(1300 cpu-år * checkpoint hvert kvarter). Regn ud hvor meget det fylder over tid. Graf over cpu-tid / størrelse}
-
-\fixme{Det skal også nævnes at for $maxSteps>n/2$ vil vores program regne forkert, fordi den parallelle Dette skyldes ?}
 
 Den udviklede kildekode er organiseret i følgende filer:
 
@@ -565,11 +558,27 @@ resultatet (kun en god ide for ikke alt for store værdier af $n$). Disse 2
 muligheder vælger man ved at ud/indkommentere henholdsvis linje xx-xx og linje
 xx-xx \fixme{indsæt linjenumre}
 
+\subsection{Board2}
+
+Board2 er en abstract klasse
+
 \subsection{CornerBoard.java}
+
+CornerBoard er egentlig et andet, og måske lidt mere sigende navn, end
+Backtrack1 fra \ref{nqueensc}. De 2 vigtigste dele af denne klasse er
+backtrackRecursive og backtrackIterative. backtrackRecursive er den samme som
+Backtrack1 fra den oprindelige c-kode. Da vi gerne vil have mulighed for at lave
+checkpoints, er der blevet lavet en iterativ udgave af backtrackRecursive, dette
+skyldes at checkpoint ikke gemmer kaldstack og programtæller, så vi ville ikke
+kunne starte op fra et checkpoint med backtrackRecursive. \fixme{beskrivelse af
+iterativ udgave}
 
 \subsection{MiddleBoard.java}
 
-\subsection{Board2}
+I samme stil som CornerBoard, er MiddleBoard tilsvarende Backtrack2 fra
+\ref{nqueens}. Her har vi igen en backtrackRecursive og backtrackIterative, hvor
+backtrackRecursive er den samme som Backtrack2 fra \ref{nqueens} og
+backtrackIterative er ændret således at vi kan lave checkpoints.
 
 \subsection{NQueenJob}
 
@@ -580,9 +589,9 @@ checkpoints, og i så fald starter checkpointing. Derefter kalder den objektets
 backtrack() metode. Når beregningen er færdig stopper den checkpointing og
 skriver resultatet til stdout.
 
-\subsection{CheckPointer.java}
+\subsection{CheckPointer.java, CheckPointActionMiG.java}
 
-\subsection{CheckPointActionMiG.java}
+Disse 2 klasser bliver brugt til at lave checkpoints
 
 \subsection{NQueens, NQueensL, Board, Globals}
 
@@ -593,12 +602,28 @@ interessante.
 \subsection{MiGClient, MiGJob, MiGSSLSocketFactory}
 
 Disse klasser er lavet for at kunne lave \mig-jobs og submitte dem direkte uden
-at manuelt skulle køre migput/migsubmit. 
+at manuelt skulle køre migput/migsubmit. Den ville eventuelt kunne udvides til
+også at foretage overvågning/resultatopsamling af \mig-kørsler.
 
 \subsection{CornerBoardTest, MiddleBoardTest}
 
 Disse to klasser er lavet for nemt at kunne teste CornerBoard og MiddleBoard
 hver gang der var blevet lavet ændringer i dem. 
+
+\subsection{Problemer med implementeringen}
+
+Så vidt vi har kunnet se, rydder \mig ikke op i checkpoints, og sletter de
+gamle. Dette ville måske kunne skabe problemer. Et checkpoint fylder for os omk
+1.7Kb. Pt. laver vi et checkpoint hvert kvarter. Hvis man regner med at
+løsningen for $n=26$ vil tage omk 26 gange så langt tid at finde som for $n=25$
+bliver dette i sidste ende til omkring 80Gb. Ydermere, hvis man har mange
+ressourcer kørende parallelt ville der hurtigt kunne blive akkumuleret en masse
+checkpoints. 
+
+Et andet problem med vores implementation er at den regner forkert når
+$maxSteps>n/2$. Vi har ikke umiddelbart fundet en forklaring på hvorfor, men da
+vi ikke vil komme op på en $maxSteps$ større end 3 måske 4 for $n=26$ har vi
+ikke kigget yderligere på det.
 
 \fixme{Sortér kildefiler efter vigtighed. Skriv derefter uddybende til de øverste.}
 
