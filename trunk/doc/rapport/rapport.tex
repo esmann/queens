@@ -56,8 +56,8 @@
 
 \renewcommand{\thepage}{\roman{page}}
 
-\title{Bachelorprojekt\\N-dronning problemet i \mig}
-\author{Thomas Clement Mogensen \\ Frej Soya \\ Alex Esmann }
+\title{Bachelorprojekt\\N-dronning problemet i \mig\footnote{Forsideillustration: se side \pageref{fig:action}}}
+\author{Thomas Clement Mogensen \\ Freja Soy \\ Alex Esmann}
 \usepackage{amsmath}
 
 \begin{document}
@@ -82,10 +82,6 @@ Afslutningsvis kommer vi i afsnit \ref{forbedringer} med en række forslag til f
 
 Implementationen er foretaget fortrinsvis med henblik på at foretage test og benchmarks for $n<26$ og derved afdække karakteristika ved algoritmen, der kan benyttes til at bestemme de bedst mulige praktiske valg for $n=26$. Disse løsninger beskrives i afsnit \ref{opdelingipraksis}, \ref{resultatindsamling} og \ref{implementering}, og vil nemt kunne implementeres i den udviklede kode før den endelige kørsel af $n=26$.
 
-\subsection*{Konklusion}\label{konklusion}
-\begin{verse}
- Rapporten omhandler
-\end{verse}
 
 \section{\nq}\label{nqueenproblemet}
 
@@ -646,7 +642,20 @@ $maxSteps>n/2$. Vi har ikke umiddelbart fundet en forklaring på hvorfor, men da
 vi ikke vil komme op på en $maxSteps$ større end 3 måske 4 for $n=26$ har vi
 ikke kigget yderligere på det.
 
+\subsection{Optimeringer af java-koden}
+Før den endelige kørsel for $n=26$ bør følgende optimeringer foretages:
+
+\begin{description}
+	\item[Serialiserede objekter erstattes af argumenter]
+	De serialiserede \texttt{Board}-objekter var en nem måde at få oprette opgaver på en måde der både kunne bruges på i \oc\ og til lokale tests. Brugte vi istedet blot parametre direkte i \texttt{mRSL}-filen ville vi spare en masse overførselstid. Både ved indsendelse af job og ved jobskift på ressourcerne.  
+	\item[Al brug af \texttt{Array} undgåes]
+	Vi benytter en række \texttt{Array}s til at simulere en stak for de oprindelige argumenter til \texttt{backtrack}. Enhver tilgang til et \texttt{Array} betyder i java at der fortages en \texttt{BoundsCheck}. Brugte vi i stedet en f.eks. en hægtet liste ville vi kunne undgå dette.
+	 
+\end{description}
+
+
 \fixme{Skriv derefter uddybende til de øverste.}
+
 
 
 
@@ -740,6 +749,16 @@ Her beskriver vi nogle muligheder vi synes vi manglet i \mig grænseflade.
 \input{kode}
 \newpage
 \section{Synopsis}
+
+
+\begin{landscape}
+\begin{figure}
+\includegraphics{actionshot.pdf}
+\caption{\nq\ for 26 på \oc.}
+\label{fig:action}
+\end{figure}
+\end{landscape}
+
 %\input{../synopsis/problemformulering.tex}
 %\input{../synopsis/afgraensninger.tex}
 
@@ -748,6 +767,5 @@ Her beskriver vi nogle muligheder vi synes vi manglet i \mig grænseflade.
 %\section*{Skabelon.tex}
 %\verbatiminput{skabelon.tex}
 %\end{multicols}
-
 
 \end{document}
