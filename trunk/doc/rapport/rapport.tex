@@ -599,7 +599,6 @@ at manuelt skulle køre migput/migsubmit.
 Disse to klasser er lavet for nemt at kunne teste CornerBoard og MiddleBoard
 hver gang der var blevet lavet ændringer i dem. 
 
-
 \fixme{Sortér kildefiler efter vigtighed. Skriv derefter uddybende til de øverste.}
 
 \subsection{Antallet af løsninger}
@@ -632,7 +631,7 @@ I en implementation med \texttt{java.Math.BigInteger} kan vi se at der vil være
 
 Under arbejdet med \mig\ og især \oc\ er vi stødt på en ræekke problemer og uhensigtsmæssigheder. Her vil vi skitseres disse kort, og forsøge at komme med løsningsforslag hvor det er relevant. Forbedringsforslagene er opstillet i nogenlunde prioriteret rækkefølge.
 
-\subsubsection*{Job fejler ikke hvis der kastes en \texttt{java.lang.Error}]}
+\subsubsection*{Job fejler ikke hvis der kastes en \texttt{java.lang.Error}}
 Java har både \texttt{Exceptions} og \texttt{Error} der begge er af typen \texttt{java.lang.Throwable}. \oc griber kun \texttt{Exceptions}, med det resultat at når der opstår en \texttt{java.lang.Error} rapporteres jobbet som succesfuldt afsluttet. 
 
 Konkret har vi oplevet dette problem ved følgende \texttt{Error}-typer:
@@ -640,7 +639,7 @@ Konkret har vi oplevet dette problem ved følgende \texttt{Error}-typer:
 	\item[UnsupportedClassVersionError]	Fejlen opstår fordi den benyttede jvm-version på ressource-maskinen er mindre end bytekodens version.
 	\item[serialVersionUID]	Fejlen opstår når ændringer i klasse-filer ændrer klassens serialVersionUID. Den opstår kun fordi vi læser serialiserede klasser ind fra hjemmekataloget, og disse kan være serialiseret fra en nyere version af klassen, end den der findes i ressourcens \texttt{ClassLoader}-cache. 
 	\item[NoClassDefFoundError]	Fejlen opstod fordi en klasse-fil manglede i hjemmekataloget.  
-\end{desription}
+\end{description}
 
 Løsningen må være at \texttt{MiG.oneclick.Job} altid griber \texttt{java.lang.Error} og fortæller \mig\ at jobbet fejlede.
 
