@@ -381,15 +381,13 @@ Det bliver naturligvis et krav at alle delproblemer vi sender ud kan beregnes ud
 \draw (0,0) node[rectangle,minimum height=3cm,minimum width=3cm] {$T_1$};
 \draw (-0.75,-0.75) node[rectangle,minimum height=1.5cm,minimum width=1.5cm] {$T_2$};
 
-\draw[->] (-1.25,-1.75) -- node[draw=none,below=0.5em]{Hastighed} (2,-1.75);
+\draw[->] (-1.25,-1.75) -- node[draw=none,below=0.5em]{$\frac{1}{Hastighed}$} (2,-1.75);
 \draw[->] (-1.75,-1.25) -- node[draw=none,left=0.5em]{Jobstørrelse} (-1.75,2);
 
 \end{tikzpicture}		
-\caption{Illustration af både ressource hastighed og job størrelse variere. Arealet er beregningstiden} 
+\caption{Illustration af at både ressourcehastighed og jobstørrelse variere. Arealet er beregningstiden. Bemærk at beregningstiden stiger med faldende ressourcehastighed}\label{fig:lillekassestorkasse} 
 \end{center}
 \end{figure}
-
-
 
 
 I det følgende benyttes disse forkortelser for ofte anvendte begreber.
@@ -424,7 +422,7 @@ Den reelle situation er altså langt fra den ovennævnte ideelle. Problemet bliv
 	\item Job er heterogene.
 \end{itemize}
 
-Idet både ressourcer og job er heterogene kan de ses som et samlet problem, blot af en anden størrelsesorden. fixme{reference til kasse-figur}
+Idet både ressourcer og job er heterogene kan de ses som et samlet problem, blot af en anden størrelsesorden. Figur \ref{fig:lillekassestorkasse} illustrerer hvor hurtigt beregningstiden vokser.
 Da der arbejdes med heterogene ressourcer kan den minimale \emph{spildtid} ikke opnås. 
 Antager man at $\texttt{\#Ress}$ er fast vil det mindst mulige, samlede \emph{spildtid} opnås ved at have $\texttt{\#Job} = \texttt{\#Ress}$. \emph{ventetiden} vil til gengæld være stor. 
 
@@ -461,16 +459,14 @@ Uanset jobstørrelser, er det essentielle, at undgå ubenyttede ressourcer, uden
 
 I \mig\ skemalægges afviklingen af job som en FIFO-kø. Dvs. at job afvikles i samme rækkefølge som de submittes til gridet. Ved afbryding af jobbet eller ved udløb af tidsfristen for afvikling af jobbet placeres jobbet bagerst i køen. 
 
-Den løsning der er implementeret, i forbindelse med denne opgave, kan bedst karakteriseres som såkaldt \emph{statisk orkestration}. Idet opdelingen i delproblemer er endeligt foretaget inden beregningen af delproblemer begynder. Som beskrevet i afsnit \ref{opdelingogschedulering} er der et grundlæggende problem ved en statisk opdeling, nemlig at beregningen ikke kan tilpasse sig til en forøgelse af mængden af ressourcer. Istedet bliver man nødt til fra starten at generere nok opgaver til at kunne udnytte en eventuel ressourcetilgang. Samme problem opstår, på grund af heterogene ressourcer og opgaver, når antallet af delopgaver falder henimod slutningen af udregningen. 
+Den løsning der er implementeret, i forbindelse med denne opgave, kan bedst karakteriseres som såkaldt \emph{statisk orkestration}. Idet opdelingen i delproblemer er endeligt foretaget inden beregningen af delproblemer begynder. Som beskrevet i afsnit \ref{opdelingogschedulering} er der et grundlæggende problem ved en statisk opdeling, nemlig at beregningen ikke kan tilpasse sig til en forøgelse af mængden af ressourcer. I stedet bliver man nødt til fra starten at generere nok opgaver til at kunne udnytte en eventuel ressourcetilgang. Samme problem opstår, på grund af heterogene ressourcer og opgaver, når antallet af delopgaver falder henimod slutningen af udregningen. 
 
 For at afhjælpe dette problem kan joboprettelsen gøres mere dynamisk. Den indledende mængde delopgaver kan tilpasses det øjeblikkelige antal ressourcer. Herefter opdeles en eller flere af disse i mindre delopgaver, så snart der er ledige ressourcer. På denne måde sikres det at ingen beregningskraft står ubrugt hen. 
-Det bedste valg af job til genopdeling vil være det der kræver mest beregningstid, da dette vil resultere i den mindst mulige spredning i beregningsstørrelse for de alle opgaver efter opdelingen\footnote{Idet alle nye opgaver vil være mindre end det oprindelige, men ingen vil være mindre end den mindste der ville oprettes hvis vi valgte en anden end den største til opdeling.}. På figur \ref{fig:tidsvssol} ser vi eksempler for beregningstiden for hver delopgave. Det er tydeligt at de følger et mønster, og at vi kan bestemme et indbyrdes størrelsesforhold mellem hhv. alle hjørne- og midterbræt. Dette giver os en god idé om hvilken delopgave det bedst kan betale sig at splitte op. Tilgengæld har vi ikke mulighed for at vide, om beregningen af denne opgave allerede er ved at være færdig, hvorfor en opsplitning ville være uhensigtsmæssig. 
+Det bedste valg af job til genopdeling vil være det der kræver mest beregningstid, da dette vil resultere i den mindst mulige spredning i beregningsstørrelse for de alle opgaver efter opdelingen\footnote{Idet alle nye opgaver vil være mindre end det oprindelige, men ingen vil være mindre end den mindste der ville oprettes hvis vi valgte en anden end den største til opdeling.}. På figur \ref{fig:tidsvssol} ser vi eksempler for beregningstiden for hver delopgave. Det er tydeligt at de følger et mønster, og at vi kan bestemme et indbyrdes størrelsesforhold mellem hhv. alle hjørne- og midterbræt. Dette giver os en god idé om hvilken delopgave det bedst kan betale sig at splitte op. Tilgengæld har vi ikke mulighed for at vide, om beregningen af denne opgave allerede er ved at være færdig, hvorfor en opsplitning ville være uhensigtsmæssig. Dette har vi dog ingen mulighed for at vide noget om.
 
+Alternativet til den dynamiske joboprettelse er en statisk, hvor spredningen af beregningsstørrelser for delproblemer forsøges minimeret ud fra antagelser om fordelingen af løsninger i delproblemerne. Disse antagelser kan vi kun retfærdiggøre ud fra vores viden om fordelingen for mindre $n$. Det er altså den samme viden om fordelinger vi gør brug af her, som i den dynamiske model. Her opdeler vi blot de (formodet) mest beregningstunge problemer fra starten. Vi sparer altså overvågning af projektet, men foretager til gengæld opdelinger før vi er sikre på at vi har det overskud af ressourcer, der gør dem fordelagtige.    
 
-
-\fixme{Hvorfor kan det alligevel give mening at gå efter den største? Hvis det altså kan...}
-
-\fixme{Beskriv den anden mulighed : at gøre job-genereringen mere intelligent, så vi kan være sikre på at få job der ikke har ligeså forskellige størrelser.}
+\fixme{Fixed? Beskriv den anden mulighed : at gøre job-genereringen mere intelligent, så vi kan være sikre på at få job der ikke har ligeså forskellige størrelser.}
 
 \fixme{hvad kan vi sige om om beregningstiden for problemer med samme data-størrelse? Øvre grænse for variationen i køretid? Indsæt reference til benchmarks, der viser beregningstid for hvert delproblem, og skriv noget om hvad benchmarks viser vi kan regne med ifm. beregningstid}
 
