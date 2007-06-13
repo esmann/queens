@@ -200,6 +200,7 @@ Efter hvert valg, hvor den valgte placering sættes i en bitvektor \textbf{bit},
 	\item[bitmap]	$bitmap = \lnot(venstre \lor horisontal \lor højre)$	
 \end{description}
 
+
 Da træets højde er begrænset af $n$, er det maksimale pladsforbrug $antal\ bits\ per\ bitvektor \times antal\ af\ bitvektorer \times n$. For at håndtere N op til 32, kan vi nøjes med 32 bits til at repræsentere en bitvektor. Pladsforbruget for $n=26$ er så $32\times 26 \times 4 = 3328\ bits$. Afhængig af implementationen og arkitekturens ordstørrelse vil dette variere. 
 
 \subsection{Takakens optimeringer}\label{takalgo}
@@ -499,7 +500,7 @@ jobsne ud og sammenligner resultatet.
 \end{figure}
 
 
-\begin{figure}[h]
+\begin{figure}[h!]
 \begin{center}
 \includegraphics{../benchmarks/resultatstorrelse.pdf}
 \caption{Figuren viser $Q(n)/Q(n-1)$ for $n=15\ldots25$. Det set faktor som er let stigende. Resultatet for $n=26$ kan formodes maximalt 15 gange større, for at være på den sikre side}
@@ -507,7 +508,13 @@ jobsne ud og sammenligner resultatet.
 \end{center}
 \end{figure}
 
-
+\begin{figure}[h!]
+\begin{center}
+\includegraphics{../benchmarks/maxantal.pdf}
+\caption{Viser antallet af løsninger på en logaritmisk skala. Derudover er Java's \texttt{long} og \texttt{int} maximale positive værdi inkluderet. Det ses at løsningen for Q(25) er en faktor mindre end \texttt{long}}
+\label{figur:maxantal}
+\end{center}
+\end{figure}
 
 På figur \ref{solrelativecount} ses
 På figur \ref{figur:loesningfaktor} ses
