@@ -188,11 +188,11 @@ Dette beslutningstræ viser backtracking når $2$ er valgt i række $1$. Blade i
 \hline
 \end{tabular}
 \end{center}
-\caption{Samme eksempel som i \ref{fig:nq5eks}, men med en direkte binær repræsentation. En sat bit i en bitvektors position $i$ angiver en placering af en dronning i kolonne $i$.}
+\caption{Samme eksempel som i figur \ref{fig:nq5eks}, men med en direkte binær repræsentation. En sat bit i en bitvektors position $i$ angiver en placering af en dronning i kolonne $i$.}
 \label{fig:nq5eksbitmap}
 \end{figure}
 
-Idéen er beskrevet af \cite{Zongyan02} og implementeret af Takaken \ref{nqueen.c}. Udover at repræsentere hver række på et skakbræt med en bitvektor, vedligeholdes for hver række  en bitvektor \textbf{bitmap} for de pladser, hvor det er muligt at placere en dronning.  Tilladte pladser begrænses af tidligere placeringer, så der bruges 3 bitvektorer til holde styr på optagede pladser, \textbf{horisontal}, \textbf{venstrediagonal}  og \textbf{højrediagonal}.
+Idéen er beskrevet af \cite{Zongyan02} og implementeret af Takaken \ref{nqueenc}. Udover at repræsentere hver række på et skakbræt med en bitvektor, vedligeholdes for hver række  en bitvektor \textbf{bitmap} for de pladser, hvor det er muligt at placere en dronning.  Tilladte pladser begrænses af tidligere placeringer, så der bruges 3 bitvektorer til holde styr på optagede pladser, \textbf{horisontal}, \textbf{venstrediagonal}  og \textbf{højrediagonal}.
 
 Efter hvert valg, hvor den valgte placering sættes i en bitvektor \textbf{bit}, udregnes de nye bitvektorer igen med følgende operationer. ($\gg og \ll$ angiver et logisk skift, således at der altid indføres et $0$ fra henholdsvis højre og venstre).
 \begin{description}
@@ -203,18 +203,18 @@ Efter hvert valg, hvor den valgte placering sættes i en bitvektor \textbf{bit},
 \end{description}
 
 
-Da træets højde er begrænset af $n$, er det maksimale pladsforbrug $antal\ bits\ per\ bitvektor \times antal\ af\ bitvektorer \times n$. For at håndtere N op til 32, kan vi nøjes med 32 bits til at repræsentere en bitvektor. Pladsforbruget for $n=26$ er så $32\times 26 \times 4 = 3328\ bits$. Afhængig af implementationen og arkitekturens ordstørrelse vil dette variere. 
+Da træets højde er begrænset af $n$, er det maksimale pladsforbrug $antal\ bits\ per\ bitvektor \times antal\ af\ bitvektorer \times n$. For at håndtere n op til 32, kan vi nøjes med 32 bits til at repræsentere en bitvektor. Pladsforbruget for $n=26$ er så $32\times 26 \times 4 = 3328\ bits$. Afhængig af implementationen og arkitekturens ordstørrelse vil dette variere. 
 
 \subsection{Takakens optimeringer}\label{takalgo}
 
-Mange løsninger er spejlinger og roteringer af andre - det totale antal løsninger kan afgøres ud fra antallet af unikke \emph{løsninger}. Ved kun at finde unikke $S(n)$ løsninger og undgå de valg af placeringer der fører til løsninger som kan findes ved rotationer og spejlinger. Så kan vi fjerne store deltræer i vores beslutningstræ (se figur \ref{fig:tree}) og dermed mindske beregningstiden betragteligt.
+Mange løsninger er spejlinger og roteringer af andre - det totale antal løsninger kan afgøres ud fra antallet af unikke \emph{løsninger}. Ved kun at finde unikke løsninger, $S(n)$, og undgå de valg af placeringer der fører til løsninger som kan findes ved rotationer og spejlinger. Så kan vi fjerne store deltræer i vores beslutningstræ (se figur \ref{fig:tree}) og dermed mindske beregningstiden betragteligt.
 
-I tabel \ref{tabel:unikkevstotale}, s.\pageref{tabel:unikkevstotale}, ses forskellen på antallet af unikke og totale løsninger. For hver løsning undersøges antallet af spejlinger og rotationer. \textbf{check()} funktion i Takakens implementation \ref{nqueen.c} udfører dette. 
+I tabel \ref{tabel:unikkevstotale}, s.\pageref{tabel:unikkevstotale}, ses forskellen på antallet af unikke og totale løsninger. For hver løsning undersøges antallet af spejlinger og rotationer. \textbf{check()} funktion i Takakens implementation, afsnit \ref{nqueenc}, udfører dette. 
  
-Da der er forskellige måder at finde rotationer og spejlinger afhængig af dronninges placering i række 1. Optimeringerne er derfor delt op i to tilfælde
+Der er forskellige måder at finde rotationer og spejlinger afhængig af dronninges placering i række 1. Optimeringerne er derfor delt op i to tilfælde
 
 \begin{description}
-	\item[Hjørnebræt] dronningen er i første række er placeret i kolonne $1$.
+	\item[Hjørnebræt] dronningen er i første række placeret i kolonne $1$.
 	\item[Midterbræt] dronningen er i første række placeret i kolonnerne $2$  til og med $\lfloor n/2 \rfloor$.
 \end{description}
 
@@ -496,7 +496,7 @@ jobsne ud og sammenligner resultatet.
 
 \subsection{Resultatets størrelse}
 For at sikre at vi ikke får overløb ved brug 64-bit tokomplement heltal, undersøges udviklingen af resultaterne for lavere n.
-På figur \ref{figur:maxantal}} ses det at den maximale positive værdi for \texttt{long} er en faktor \~1000-500  større end løsningen for n=25. Samtidig viser figur \ref{figur:loesningfaktor}, at man kan formode resultatet for $n=26$ er ~10 gange større end for $n=25$. Denne forskel vurderes signifikant nok til at vi kan regne n=26 ud for 64-bit tokomplement heltal.
+På figur \ref{figur:maxantal} ses det at den maximale positive værdi for \texttt{long} er en faktor \~1000-500  større end løsningen for n=25. Samtidig viser figur \ref{figur:loesningfaktor}, at man kan formode resultatet for $n=26$ er ~10 gange større end for $n=25$. Denne forskel vurderes signifikant nok til at vi kan regne n=26 ud for 64-bit tokomplement heltal.
 
 \begin{figure}[h!]
 \begin{center}
