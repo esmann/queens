@@ -231,7 +231,7 @@ Den første placering \footnote{For hjørnebræt er dette række 2, fordi den f�
 
 \begin{figure}
 \includegraphics{../benchmarks/tidsandel.pdf}
-\caption{Grafen viser en sammenhæng mellem andelen af løsninger.}
+\caption{Procentvis fordeling af af tid og antal løsninger. Kun for midterbræt. Der ses en pænt sammenhæng mellem fordelingen af løsninger og beregningstiden.}
 \label{fig:tidsvssol}
 \end{figure}
 
@@ -529,9 +529,7 @@ På figur \ref{figur:maxantal} ses det at den maximale positive værdi for \text
 
 \section{Beskrivelse af implementeringen}\label{implementering}
 	
-	Følgende er ment som en beskrivelse af, og læsevejledning til programmets
-	kildekode, såvel som en vejledning til afvikling af programmet med forskellige
-	formål. 
+Selve koden er i appendix \ref{kode2222}. En online udgave er at finde på \url{på http://code.google.com/p/nueens/}.
 
 Den udviklede kildekode er beregnet til at undersøge hvordan \nq\ paralleliseres. Hovedformålet er at kunne afvikle prøvekørsler, der vil give en forståelse af den optimale jobopdeling- og scheduleringsstruktur for $n=26$.
 
@@ -763,7 +761,7 @@ Her beskriver vi nogle muligheder vi synes mangler i \mig-grænseflade.
 \bibliography{rapport,nqueens}
 
 \appendix
-\input{kode}
+\input{kode}\label{kode2222}
 \newpage
 %\section{Synopsis}
 
