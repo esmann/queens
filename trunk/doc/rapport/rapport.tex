@@ -109,7 +109,7 @@ Dette afsnit beskriver \nq\ i den grad det er fundet nødvendigt for parallelise
 
 \subsection{Backtracking}\label{backtracking}
 
-En øvre grænse for antallet af løsninger er O(n!). Det indses ved at der ikke kan placeres to dronninger på samme række eller kolonne. Dette betyder, at når der er placeret én dronning, kan de resterende dronninger placeres i n-1 kolonner, og så fremdeles. Løsningen i \ref{fig:nq5eks} kan så noteres som en \emph{opstillingsvektor} $\{2,5,3,1,4\}$, hvor værdien svarer til indekset på den kolonne dronningen er placeret i. Alle opstillinger svarer til permutationer af $\{1,\ldots,n\}$. En naiv brute force metode vil være at gennemgå alle mulige permutationer, og derefter se om der er tilladte opstillinger.
+En øvre grænse for antallet af løsninger er O(n!). Det kan ses ved, at der ikke kan placeres to dronninger på samme række eller kolonne. Dette betyder, at når der er placeret én dronning, kan de resterende dronninger placeres i n-1 kolonner, og så fremdeles. Løsningen i \ref{fig:nq5eks} kan så noteres som en \emph{opstillingsvektor} $\{2,5,3,1,4\}$, hvor værdien svarer til indekset på den kolonne dronningen er placeret i. Alle opstillinger svarer til permutationer af $\{1,\ldots,n\}$. En naiv brute force metode vil være at gennemgå alle mulige permutationer, og derefter se om der er tilladte opstillinger.
 
 Backtracking vil for \nq\ gennemløbe permuteringer af opstillingsvektoren  $(p_1,p_2,\ldots..p_k)$, dybde-først, og \emph{kun} vælge de $p_i \in A_i$, hvor $A_i\subseteq \{1,\ldots,n\}$ der er tilladte placeringer. 
 
@@ -209,7 +209,7 @@ Da træets højde er begrænset af $n$, er det maksimale pladsforbrug $antal\ bi
 
 Mange løsninger er spejlinger og roteringer af andre - det totale antal løsninger kan afgøres ud fra antallet af unikke \emph{løsninger}. Ved kun at finde unikke løsninger, $S(n)$, og undgå de valg af placeringer der fører til løsninger som kan findes ved rotationer og spejlinger. Så kan vi fjerne store deltræer i vores beslutningstræ (se figur \ref{fig:tree}) og dermed mindske beregningstiden betragteligt.
 
-I tabel \ref{tabel:unikkevstotale}, s.\pageref{tabel:unikkevstotale}, ses forskellen på antallet af unikke og totale løsninger. For hver løsning undersøges antallet af spejlinger og rotationer. \textbf{check()} funktion i Takakens implementation, afsnit \ref{nqueenc}, udfører dette. 
+I tabel \ref{tabel:unikkevstotale}, s.\pageref{tabel:unikkevstotale}, ses forskellen på antallet af unikke og totale løsninger. For hver løsning undersøges antallet af spejlinger og rotationer. \textbf{check()}-funktionen i Takakens implementation, afsnit \ref{nqueenc}, udfører dette. 
  
 Der er forskellige måder at finde rotationer og spejlinger afhængig af dronninges placering i række 1. Optimeringerne er derfor delt op i to tilfælde
 
@@ -218,38 +218,38 @@ Der er forskellige måder at finde rotationer og spejlinger afhængig af dronnin
 	\item[Midterbræt] dronningen er i første række placeret i kolonnerne $2$  til og med $\lfloor n/2 \rfloor$.
 \end{description}
 
-Den første placering \footnote{For hjørnebræt er dette række 2, fordi den første dronning skal være placeret i hjørnet} af en dronning bestemmer hvilke valg vi kan undgå, og dermed mængden af det deltræ vi kan fjerne. Derfor vil der være forskel på andelen af løsninger som set på figur \ref{fig:midterandel}. Sammenholdt med figur \ref{fig:tidsvssol} kan vi se, forholdet mellem antallet af løsninger ca. angiver forholdet mellem beregningstiden bræt.
+Den første placering \footnote{For hjørnebræt er dette række 2, fordi den første dronning altid vil være placeret i hjørnet} af en dronning bestemmer hvilke valg vi kan undgå, og dermed mængden af det deltræ vi kan fjerne. Derfor vil der være forskel på andelen af løsninger som set på figur \ref{fig:midterandel}. Sammenholdt med figur \ref{fig:tidsvssol} kan vi se, forholdet mellem antallet af løsninger ca. angiver forholdet mellem beregningstiden bræt.
 
 \begin{figure}
 \includegraphics{../benchmarks/middleandel.pdf}
-\caption{Bemærk at dette kun er \% af det totale antal løsninger for midterbræt. Det ses at antallet af løsninger falder drastisk for start placeringer der nærmer sig midten.}
+\caption{Bemærk at dette kun er \% af det totale antal løsninger for midterbræt. Det ses at antallet af løsninger falder drastisk for start-placeringer der nærmer sig midten.}
 \label{fig:midterandel}
 \end{figure}
 
 \begin{figure}
 \includegraphics{../benchmarks/tidsandel.pdf}
-\caption{Kørt for den iterative, fixme caption}
+\caption{Kørt for den iterative, fixme:caption}
 \label{fig:tidsvssol}
 \end{figure}
 
 Det ses på figur/tabel FIXME at andelen af løsninger for bræt hvor den første dronning ikke placeres i et hjørne er over 90\% og stigende for større $n$, Det samme gælder for køretiden. Så hvis ca. 90\% af løsningerne findes i ét delproblem vil det også tage ca. 90\% af tiden at beregne dette delproblem. \fixme{flyt til benchmarks, og lav tabel der viser vi skal bare have at 90\% af køretiden er i middlebræt (og samme for køretiden??), jvnf. amdahls lov at vi ikke gider optimere hjørnebræt}
 
-\subsection{Paralleliserings metode}\label{parallel}
+\subsection{Paralleliseringsmetode}\label{parallel}
 
-Selve parrallelisering er yderst simpel. Hvert delbræt kan løses uafhængigt efter at den første dronning er placeret, og deraf bounds. Antallet af løsninger for hvert bræt akkumuleres for at få det totale antal løsninger. Ved kun at vælge forudvælge samme antal rækker, vil vi opnå meget skæv fordeling af opgaver, jvnf. figur \ref{fig:midterandel}. Dette problem er yderligere beskrevet i afsnit \ref{opdelingipraksis}.
+Selve parallelisering er yderst simpel. Hvert delbræt kan løses uafhængigt efter at den første dronning er placeret. Antallet af løsninger for hvert bræt akkumuleres for at få det totale antal løsninger. Ved kun at forudvælge samme antal rækker, vil vi opnå en meget skæv fordeling af opgaver, jvf. figur \ref{fig:midterandel}. Dette problem er yderligere behandlet i afsnit \ref{opdelingipraksis}.
 
 %Fordelingen af løsninger, når Takakens optimeringer ikke, er forskellig . Se \cite{etsi} side 7. 
 %\fixme{Beskriv evt. med lidt matematik istedet.}. Det ses på figur \ref{fig:midterandel} og \ref{fig:tidsvssol}} at Takakens %%%optimeringer vil forandre denne både for antallet af løsninger og køretid. \fixme{rigtigt afsnit?)
 
 \section{\mig\ og \oc}\label{migogoneclick}
 
-	Her beskrives \mig\ og \oc\ overordnet. Afsnit \ref{mig} giver en introduktion til mulighederne i \mig. Afsnit \ref{oneclick} og \ref{begraensninger} beskriver muligheder for, og begrænsninger ifm. udvikling af \oc-applikationer. \mig\ er beskrevet i \cite{simplemig,mig}, en introduktion til udvikling med \oc\ findes i 'Developer wiki' på \url{migrid.org}\footnote{Kun tilgængeligt for registrerede \mig-udviklere}.
+	Her beskrives \mig\ og \oc\ overordnet. Afsnit \ref{mig} giver en introduktion til mulighederne i \mig. Afsnit \ref{oneclick} og \ref{begraensninger} beskriver muligheder for, og begrænsninger ifm. udvikling af \oc-applikationer. \mig\ er beskrevet i \cite{simplemig} og \cite{mig}, en introduktion til udvikling med \oc\ findes i 'Developer wiki' på \url{migrid.org}\footnote{Adgang kræver certifikat der kan bestilles på \url{https://mig-1.imada.sdu.dk/cgi-sid/requestcert_html.py}}.
 
 \subsection{Minimum intrusion Grid}\label{mig}
 
-\textsc{Minimum instrusion Grid}, herefter \mig, er et grid-system der sigter efter at stille så få krav for deltagelse som muligt - både overfor brugere og ressourcer. I \mig-terminologi er en ressource en enhed der kan sættes til at beregne et problem. I mange andre gridsystemer benyttes ekstra software på den enkelte ressource. Undgår man helt dette mindskes kompleksiteten af det samlede system dramatisk. 
+\textsc{Minimum instrusion Grid}, herefter \mig, er et grid-system der sigter mod at stille så få krav for deltagelse som muligt - både overfor brugere og ressourcer. I \mig-terminologi er en ressource en enhed der kan sættes til at beregne et problem. Mange andre gridsystemer benytter ekstra software på den enkelte ressource, men undgår man helt dette, mindskes kompleksiteten af det samlede system dramatisk. 
 
-Desuden implementerer \mig\ en model der sikrer fuldstændig anonymitet, det er umuligt for ressourcer at vide hvor de job de regner på kommer fra, og umuligt for brugere af vide hvor deres job afvikles. Få krav til deltagelse, anonymitet, sikkerhed\footnote{Baseret på ssl-certifikater} og skalerbarhed er hovedprincipperne bag \mig. Lige præcis til vores formål ligger der dog en begrænsning i den fuldstændige anonymitet. Vi er vi ude af stand til at parre specifikke job med specifikke ressourcer. En sådan mulighed kunne ellers danne basis for en alternativ løsning på scheduleringen af heterogene job, se afsnit \ref{opdelingogschedulering}. 
+\mig\ implementerer en model der sikrer fuldstændig anonymitet - det er umuligt for ressourcer at vide hvor de job de regner på kommer fra, og umuligt for brugere af vide hvor deres job afvikles. Få krav til deltagelse, anonymitet, sikkerhed\footnote{Baseret på ssl-certifikater} og skalerbarhed er hovedprincipperne bag \mig. Lige præcis til vores formål ligger der dog en begrænsning i den fuldstændige anonymitet. Vi er vi ude af stand til at parre specifikke job med specifikke ressourcer. En sådan mulighed kunne ellers danne basis for en alternativ løsning på scheduleringen af heterogene job, som beskrevet i afsnit \ref{opdelingogschedulering}. 
 %\fixme{beskrivelse af anonymitet!, Det er vigtigt fordi det begrænser os, vi kan ikke vide noget om ressourcers hastighed, matche jobs til ressourcer(, osv?)}
 
 %\fixme{Kort om sikkerhed i \mig}
@@ -262,7 +262,11 @@ Desuden implementerer \mig\ en model der sikrer fuldstændig anonymitet, det er 
 	\item Hvem der ejer dem.
 	\item Hvorvidt de hver især er istand til at løse den aktuelle opgave\footnote{Et givent problem kan f.eks. stille særlige krav til ressourcens arkitektur, eksisterende programmel, osv.}.
 \end{itemize}
-Her og i det nedenstående henviser udtrykket brugeren til en udvikler der ønsker at få beregnet et problem vha. \mig . Brugeren præsenteres for en abstraktion af \mig, der fremstiller et kendt paradigme fra unix-systemer; et hjemmekatalog hvori brugeren kan placere sine data- og programfiler. Brugerens interaktion med \mig\ foregår via en række scripts, der efterligner kendte kommandoer til manipulation af filer i hjemmekataloget, og introducerer kommandoer til at starte og stoppe job. Alt dette foregår i over \emph{https}, som forespørgsler til en webserver. Al den ovennævnte interaktion med \mig\ kan alternativt foregå gennem et særligt webinterface. 
+Her og i det nedenstående henviser udtrykket brugeren til en udvikler der ønsker at få beregnet et problem vha. \mig. 
+
+Brugeren præsenteres for en abstraktion af \mig, der fremstiller et kendt paradigme fra unix-systemer; et hjemmekatalog hvori brugeren kan placere sine data- og programfiler. Brugerens interaktion med \mig\ foregår via en række scripts, der efterligner kendte kommandoer til manipulation af filer i hjemmekataloget, og introducerer kommandoer til at starte og stoppe job. Alt dette foregår over \emph{https}, som forespørgsler til en webserver. 
+
+Interaktion med \mig\ kan alternativt foregå gennem et særligt webinterface. 
 Begge metoder giver mulighed for at udføre følgende basale funktioner på \mig:
 \begin{itemize}
 	\item Igangsatte job.
@@ -272,12 +276,12 @@ Begge metoder giver mulighed for at udføre følgende basale funktioner på \mig
 	\item Få adgang til data-, program- og resultatfiler i hjemmekataloget. 
 \end{itemize}
 
-Et job sættes igang ved at køre kommandoen \emph{migsubmit} med en såkaldt mRSL-fil\footnote{\mig\ Resource Language} som argument. mRSL-filer indeholder beskrivelser af job der skal afvikles. Beskrivelsen fortæller \mig\ hvilken programfil der skal køres, med hvilke parametre, hvor lang tid jobbet forventes at tage og eventuelle krav jobbet har til ressourcer der skal afvikle det. Et job har adgang til filerne i  hjemmekataloget. Resultatet af et job skal skrives til hjemmekataloget for senere at kunne aflæses af brugeren. For hvert job oprettes desuden 3 filer i hjemmekataloget. De indeholder hhv. exit-status, standard output og standard error, ganske som de kendes fra unix-systemer.
+Et job sættes igang ved at køre kommandoen \emph{migsubmit} med en såkaldt mRSL-fil\footnote{\mig\ Resource Language} som argument. mRSL-filer indeholder beskrivelser af job der skal afvikles. Beskrivelsen fortæller \mig\ hvilken programfil der skal køres, med hvilke parametre, hvor lang tid jobbet forventes at tage og eventuelle krav jobbet har til de ressourcer der skal afvikle det. Et job har adgang til filerne i  hjemmekataloget. Resultatet af et job skrives til hjemmekataloget for senere at kunne aflæses af brugeren. For hvert job oprettes desuden 3 filer i hjemmekataloget. De indeholder hhv. exit-status, standard output og standard error, ganske som de kendes fra unix-systemer.
 
 \mig\ tilbyder desuden at informere indsenderen via e-mail eller jabber\footnote{Open Source øjeblikkelig-besked-protokol, se mere på \url{http://www.jabber.org}} når et job afsluttet. 
 
 \subsection{\oc} \label{oneclick}
-\oc\ er en java-applet der muligør deltagelse i \mig\ uden andre forudsætninger end en webbrowser og java. Tilgengæld er denne metode begrænset til at afvikle programmer, der er tilgængelige som java-bytekode. Brug af \oc\ giver adgang til et enormt (potentielt) antal beregningsressourcer, da det gør det muligt for ganske alm. mennesker at bidrage regnekraft til gridet.
+\oc\ er en java-applet der muligør deltagelse i \mig, uden andre forudsætninger end en webbrowser og java. Tilgengæld er denne metode begrænset til at afvikle programmer, der er tilgængelige som java-bytekode. Brug af \oc\ giver adgang til et enormt (potentielt) antal beregningsressourcer, da det gør det muligt for ganske alm. mennesker at bidrage regnekraft til gridet.
 
 Implementerer man sit problem i en \oc-applet vil det kunne afvikles på alle \oc-ressourcer, uden at skulle specificere særlige krav til arkitektur med videre. Til gengæld vil det være begrænset til kun at køre på \oc-ressourcer.
 \oc\ er især interessant i forbindelse med hvad man kunne kalde sociale beregninger, det vil sige beregningsprojekter som almindelige mennesker kunne have interesse i at bidrage til, eller endog konkurrere om at bidrage mest til. Kendte eksempler på sådanne projekter er SETI@home (BOINC) og FOLDING@home. Til forskel fra disse, sammenlignelige projekter, er \oc\ ikke applikationsspecifikt. \oc-udviklere kan implementere nye projekter og få dem kørt, uden at der skal foretages nogen ændringer på ressourcesiden. Alt hvad der er specifikt for applikationen sendes med jobbet til \oc-ressourcen. Omvendt kan en \oc-ressource ikke bestemme hvilke job-typer den vil afvikle eller hvilke projekter den vil deltage i.
