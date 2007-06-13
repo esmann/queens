@@ -131,19 +131,20 @@ i forhold til \texttt{int}. For den iterative udgave er udgaven med
 \subsection{Antal valg}
 
 For at sammenligne om de forskellige udgaver af koden, laver det samme antal
-valg, kan man i c-koden og de første 2 udgaver af java-koden
-\ref{kodeudgaver}, tælle antallet af kald til backtrack og sammenligne dem.  I
-den iterative udgave er det i stedet antallet af iterationer i while loopet på
-linie xx i \ref{kode:middleboard} og linie xx i \ref{kode:cornerboard}
-\fixme{indsæt linie numre}. Hvis man gør dette med $maxSteps=0$ for vores kode,
-kan man se at antallet af iterationer/kald til backtrack er det samme (se tabel
-\ref{tabel:backtrackkald}. Som tidligere nævnt kører den iterative kode
-væsentligt langsommere end den rekursive. Dette skyldes altså ikke at der bliver
-lavet flere iterationer, men derimod at mængden af arbejde der udføres hver
-iteration er væsentlig større. Man kunne derfor kigge på hvordan koden i while
-loop'et kan optimeres Det skal dog lige nævnes, at med $maxSteps>0$ får vi færre
-kald til backtrack/iterationer, hvilket skyldes at en del af disse kald bliver
-lavet i forbindelse med oprettelsen af de ekstra boards. 
+valg, kan man i c-koden og de første 2 udgaver af java-koden \ref{kodeudgaver},
+tælle antallet af kald til backtrack og sammenligne dem.  I den iterative udgave
+er det i stedet antallet af iterationer i while loopet på linie 90 i
+\ref{kode:middleboard} og linje 98 i \ref{kode:cornerboard}. For den rekursive
+java-kode tæller vi igen kald til backtrack. Hvis man gør dette med $maxSteps=0$
+for vores kode, kan man se at antallet af iterationer/kald til backtrack er det
+samme (se tabel \ref{tabel:backtrackkald}. Som tidligere nævnt kører den
+iterative kode væsentligt langsommere end den rekursive. Dette skyldes altså
+ikke at der bliver lavet flere iterationer, men derimod at mængden af arbejde
+der udføres hver iteration er væsentlig større. Man kunne derfor kigge på
+hvordan koden i while loop'et kan optimeres Det skal dog lige nævnes, at med
+$maxSteps>0$ får vi færre kald til backtrack/iterationer, hvilket skyldes at en
+del af disse kald bliver lavet i forbindelse med oprettelsen af de ekstra
+boards. 
 
 \begin{table}
 \begin{center}
