@@ -1,17 +1,17 @@
 Benchmarking-delens fremmeste formål er at finde svar på en række spørgsmål
-inden udregningen sættes igang. Vi præsenterer her resultaterne af en lang række prøvekørsler, hver med en kort beskrivelse af omstændigheder omkring kørslen og de udledninger vi har foretaget på baggrund af resultatet. Prøvekørslerne refereres fra de foregående afsnit, hvor det er relevant. Uddata for benchmarkkørsler er ikke inkluderet i rapporten på grund af pladshensyn. Al uddata kan hentes fra \url{http://queens.googlecode.com/svn/trunk/doc/benchmarks/}.
+inden udregningen sættes i gang. Vi præsenterer her resultaterne af en lang række prøvekørsler, hver med en kort beskrivelse af omstændigheder omkring kørslen og de udledninger vi har foretaget på baggrund af resultatet. Prøvekørslerne refereres fra de foregående afsnit, hvor det er relevant. Uddata for benchmarkkørsler er ikke inkluderet i rapporten på grund af pladshensyn. Al uddata kan hentes fra \url{http://queens.googlecode.com/svn/trunk/doc/benchmarks/}.
 
 \subsection{Lokale tests}
 
 Vi har 3 forskellige udgaver af koden
 \begin{description}
-\item[1] En direkte port, der ikke er parallelliseret.
-\item[2] En parallelliseret udgave, der kører rekursivt.
-\item[3] En parallelliseret udgave, der kører iterativt.
+\item[1] En direkte port, der ikke er paralleliseret.
+\item[2] En paralleliseret udgave, der kører rekursivt.
+\item[3] En paralleliseret udgave, der kører iterativt.
 \end{description}
 
 Disse udgaver er beskrevet mere indgående i afsnit \ref{implementering}
-I dette afsnit vil der ind i mellem blive referet til noget vi har kaldt
+I dette afsnit vil der ind i mellem blive refereret til noget vi har kaldt
 \texttt{maxSteps}. \texttt{maxSteps} er beskrevet mere i \ref{impcornerboard} 
 
 Vi starter med at teste de forskellige udgaver af koden lokalt, så vi har en
@@ -19,21 +19,21 @@ baseline at sammenligne med.
 
 Alle lokale tests er kørt på en IBM T43, med en pentium m 1.86Ghz cpu, 
 
-Java koden er kompilet med javac
+Java koden er oversat med javac
 
 \begin{verbatim}
 alex@roadrunner:~/temp/queens/src/main/java$ javac -version
 javac 1.5.0_11
 \end{verbatim}
 
-C koden er kompilet med \texttt{gcc -O2 -o nq nqueens.c}
+C koden er oversat med \texttt{gcc -O2 -o nq nqueens.c}
 
 \begin{verbatim}
 alex@roadrunner:~/temp/queens/src/main/java$ gcc --version
 gcc (GCC) 4.1.2 (Ubuntu 4.1.2-0ubuntu4)
 \end{verbatim}
 
-I de første test der brugt int til resultaterne i java-koden. 
+I de første test der brugt \texttt{int} til resultaterne i java-koden. 
 
 \begin{figure}[h]
 \begin{center}
@@ -141,7 +141,7 @@ tabel \ref{tabel:backtrackkald}. Som tidligere nævnt kører den iterative kode
 væsentligt langsommere end den rekursive. Dette skyldes altså ikke at der bliver
 lavet flere iterationer, men derimod at mængden af arbejde der udføres hver
 iteration er væsentlig større. Man kunne derfor kigge på hvordan koden i while
-loop'et kan optimeres Det skal dog lige nævnes, at med $maxSteps>0$ får vi færre
+loop'et kan optimeres Det skal dog nævnes, at med $maxSteps>0$ får vi færre
 kald til backtrack/iterationer, hvilket skyldes at en del af disse kald bliver
 lavet i forbindelse med oprettelsen af de ekstra boards. 
 
@@ -161,7 +161,7 @@ lavet i forbindelse med oprettelsen af de ekstra boards.
 \end{table}
 
 
-\subsection{Andel af hjørnebræt vs. midterbræt}
+\subsection{Andel af hjørnebræt i forhold til midterbræt}
 I tabel  \ref{andelHvsM} Andelen af midterbræt ses en oversigt over andelen af midterbræt. Da der bruges mest tid i midterbræt, vil selv små optimeringer og bedre opdelingsstrategi for midterbræt give en bedre global forbedring i forhold til forbedringer for hjørnebræt\footnote{Amdahls lov}. 
 
 \begin{table}[h!]\label{andelHvsM}
@@ -181,7 +181,7 @@ I tabel  \ref{andelHvsM} Andelen af midterbræt ses en oversigt over andelen af 
 
 Det skal bemærkes at indsendelse af jobs afhænger af nethastigheden. Tiden for
 generering og indsendelse af de forskellige jobs har svinget fra 4ms til 1252ms
-(se tabel \ref{tabel:boardgenerering}. Langt den største delaf tiden går også med
+(se tabel \ref{tabel:boardgenerering}. Langt den største del af tiden går også med
 at sende jobsne da genereringen af jobs for større mængder jobs tager ca
 0.01ms/job
 
@@ -252,6 +252,5 @@ foregående job fra, og man har så et estimat for hvor lang tid et jobskifte
 tager, vi har gjort dette for 8 jobs, og får så 7 estimater, gennemsnittet af
 dem bliver 18.455 sek.  Op til 15 af disse 18 sekunder, skyldes at oneclick
 applet'en sover i 15 sekunder.  Ved en kørsel med $n=18$ og $maxSteps=1$, hvor
-vi så får 289 jobs, giver det knap 89 minutter ved kørsel på én ressource. En del af dette overhead vil
-selvfølgelig blive "gemt", når der er flere ressourcer der kører samtidigt.
+vi så får 289 jobs, giver det knap 89 minutter ved kørsel på én ressource. En del af dette overhead vil selvfølgelig blive "gemt", når der er flere ressourcer der kører samtidigt.
 
