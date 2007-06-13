@@ -131,20 +131,19 @@ i forhold til \texttt{int}. For den iterative udgave er udgaven med
 \subsection{Antal valg}
 
 For at sammenligne om de forskellige udgaver af koden, laver det samme antal
-valg, kan man i c-koden og de første 2 udgaver af java-koden \ref{kodeudgaver},
-tælle antallet af kald til backtrack og sammenligne dem.  I den iterative udgave
-er det i stedet antallet af iterationer i while loopet på linie 90 i
-\ref{middleboard} og linje 98 i \ref{cornerboard}. For den rekursive
-java-kode tæller vi igen kald til backtrack. Hvis man gør dette med $maxSteps=0$
-for vores kode, kan man se at antallet af iterationer/kald til backtrack er det
-samme (se tabel \ref{tabel:backtrackkald}. Som tidligere nævnt kører den
-iterative kode væsentligt langsommere end den rekursive. Dette skyldes altså
-ikke at der bliver lavet flere iterationer, men derimod at mængden af arbejde
-der udføres hver iteration er væsentlig større. Man kunne derfor kigge på
-hvordan koden i while loop'et kan optimeres Det skal dog lige nævnes, at med
-$maxSteps>0$ får vi færre kald til backtrack/iterationer, hvilket skyldes at en
-del af disse kald bliver lavet i forbindelse med oprettelsen af de ekstra
-boards. 
+valg, kan man i c-koden og den første 2 udgaver af java-koden \ref{nqueenc},
+\ref{nqueensl} og \ref{cornerboard}, tælle antallet af kald til backtrack og
+sammenligne dem.  I den iterative udgave er det i stedet antallet af iterationer
+i while loopet på linie 90 i \ref{middleboard}. For den rekursive java-kode
+tæller vi igen kald til backtrack. Hvis man gør dette med $maxSteps=0$ for vores
+kode, kan man se at antallet af iterationer/kald til backtrack er det samme (se
+tabel \ref{tabel:backtrackkald}. Som tidligere nævnt kører den iterative kode
+væsentligt langsommere end den rekursive. Dette skyldes altså ikke at der bliver
+lavet flere iterationer, men derimod at mængden af arbejde der udføres hver
+iteration er væsentlig større. Man kunne derfor kigge på hvordan koden i while
+loop'et kan optimeres Det skal dog lige nævnes, at med $maxSteps>0$ får vi færre
+kald til backtrack/iterationer, hvilket skyldes at en del af disse kald bliver
+lavet i forbindelse med oprettelsen af de ekstra boards. 
 
 \begin{table}[h]
 \begin{center}
@@ -157,7 +156,7 @@ boards.
 \hline
 \end{tabular}
 \caption{Antal valg for $n=14$}
-\label{table:backtrackkald}
+\label{tabel:backtrackkald}
 \end{center}
 \end{table}
 
@@ -178,23 +177,11 @@ I tabel  \ref{andelHvsM} Andelen af midterbræt ses en oversigt over andelen af 
 \end{center}
 \end{table}
  
-\subsection{Jobstørrelse}
-
-Med jobstørrelse refererer vi til hvor lang tid det tager at løse et job, og
-ikke størrelsen på data.  Som det ses i \ref{tabel:jobsize}, varierer
-jobstørrelsen meget. Cornerboards er generelt ret små, mens middleboards er
-generelt er en del større. Det ses også i tabellen at jobstørrelsen afhænger af
-de bounds der er i henholdsvist MiddleBoard og CornerBoard. Hvis man øger
-$maxSteps$ og dermed får lavet flere jobs, ses det at de enkelte jobs bliver
-delt op i nogenlunde lige store dele.
-
-
-
 \subsection{Generering af jobs}
 
 Det skal bemærkes at indsendelse af jobs afhænger af nethastigheden. Tiden for
 generering og indsendelse af de forskellige jobs har svinget fra 4ms til 1252ms
-(se tabel \ref{tabel:jobgenerering}. Langt den største de laf tiden går også med
+(se tabel \ref{tabel:boardgenerering}. Langt den største delaf tiden går også med
 at sende jobsne da genereringen af jobs for større mængder jobs tager ca
 0.01ms/job
 
@@ -214,7 +201,7 @@ at sende jobsne da genereringen af jobs for større mængder jobs tager ca
 \hline
 \end{tabular}
 \caption{Tid for generering af bræt}
-\label{table:boardgenering}
+\label{tabel:boardgenering}
 \end{center}
 \end{table}
 

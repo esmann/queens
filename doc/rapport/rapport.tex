@@ -493,7 +493,7 @@ På grund af anonymitet kan vi ikke sende to ens job ud til beregning på to for
 
 \subsection{Resultatets størrelse}
 For at sikre at vi ikke får overløb ved brug 64-bit tokomplement heltal, undersøges udviklingen af resultaterne for lavere n.
-På figur \ref{figur:maxantal} ses det at den maximale positive værdi for \texttt{long} er en faktor \~1000-500  større end løsningen for n=25. Samtidig viser figur \ref{figur:loesningfaktor}, at man kan formode resultatet for $n=26$ er ~10 gange større end for $n=25$. Denne forskel vurderes signifikant nok til at vi kan regne n=26 ud for 64-bit tokomplement heltal.
+På figur \ref{figur:maxantal} ses det at den maximale positive værdi for \texttt{long} er en faktor  $\sim1000-500$  større end løsningen for n=25. Samtidig viser figur \ref{figur:loesningfaktor}, at man kan formode resultatet for $n=26$ er ~10 gange større end for $n=25$. Denne forskel vurderes signifikant nok til at vi kan regne n=26 ud for 64-bit tokomplement heltal.
 
 \begin{figure}[h!]
 \begin{center}
@@ -578,7 +578,7 @@ Corner- og MiddleBoard er implementeret.
 \label{impcornerboard}
 
 CornerBoard er egentlig et andet, og måske lidt mere sigende navn, end dens
-tilsvarende funktion fra c-koden (\ref{nqueensc}), Backtrack1 De 2 vigtigste
+tilsvarende funktion fra c-koden (\ref{nqueenc}), Backtrack1 De 2 vigtigste
 dele af denne klasse er backtrackRecursive og backtrackIterative.
 backtrackRecursive er den samme som Backtrack1 fra den oprindelige c-kode. Da vi
 gerne vil have mulighed for at lave checkpoints, er der blevet lavet en iterativ
@@ -590,7 +590,7 @@ backtrackRecursive. \fixme{beskrivelse af iterativ udgave}
 
 I samme stil som CornerBoard, er MiddleBoard tilsvarende Backtrack2 fra
 \ref{nqueens}. Her har vi igen en backtrackRecursive og backtrackIterative, hvor
-backtrackRecursive er den samme som Backtrack2 fra \ref{nqueens} og
+backtrackRecursive er den samme som Backtrack2 fra \ref{nqueenc} og
 backtrackIterative er ændret således at vi kan lave checkpoints.
 
 \subsection{NQueenJob}
