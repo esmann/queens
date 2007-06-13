@@ -57,7 +57,7 @@
 \renewcommand{\thepage}{\roman{page}}
 
 \title{Bachelorprojekt\\N-dronning problemet i \mig}
-\author{Thomas Clement Mogensen \\ Frej Soya \\ Alex Esmann }
+\author{Thomas Clement Mogensen \\ Frej Soya \\ Alexis Esmann }
 \usepackage{amsmath}
 
 \begin{document}
@@ -284,15 +284,13 @@ Et job sættes igang ved at køre kommandoen \emph{migsubmit} med en såkaldt mR
 \oc\ er en java-applet der muligør deltagelse i \mig\ uden andre forudsætninger end en webbrowser og java. Tilgengæld er denne metode begrænset til at afvikle programmer, der er tilgængelige som java-bytekode. Brug af \oc\ giver adgang til et enormt (potentielt) antal beregningsressourcer, da det gør det muligt for ganske alm. mennesker at bidrage regnekraft til gridet.
 
 Implementerer man sit problem i en \oc-applet vil det kunne afvikles på alle \oc-ressourcer, uden at skulle specificere særlige krav til arkitektur med videre. Til gengæld vil det være begrænset til kun at køre på \oc-ressourcer.
-\oc\ er især interessant i forbindelse med hvad man kunne kalde sociale beregninger, det vil sige beregningsprojekter som almindelige mennesker kunne have interesse i at bidrage til, eller endog konkurrere om at bidrage mest til. Kendte eksempler på sådanne projekter er SETI@home og FOLDING@home.
+\oc\ er især interessant i forbindelse med hvad man kunne kalde sociale beregninger, det vil sige beregningsprojekter som almindelige mennesker kunne have interesse i at bidrage til, eller endog konkurrere om at bidrage mest til. Kendte eksempler på sådanne projekter er SETI@home (BOINC) og FOLDING@home. Til forskel fra disse, sammenlignelige projekter, er \oc\ ikke applikationsspecifikt. \oc-udviklere kan implementere nye projekter og få dem kørt, uden at der skal foretages nogen ændringer på ressourcesiden. Alt hvad der er specifikt for applikationen sendes med jobbet til \oc-ressourcen. Omvendt kan en \oc-ressource ikke bestemme hvilke job-typer den vil afvikle eller hvilke projekter den vil deltage i.
 
 \oc\ indeholder java-klasser til læsning og skrivning af filer i hjemmekataloget på \mig\, samt checkpointing af det kørende job. 
 
 \subsubsection{Checkpointing}
 \oc\ indeholder kode til oprettelse af checkpoints under kørslen af et job. Et checkpoint er en gemt programtilstand, hvorfra det er muligt at fortsætte afviklingen. \oc\ indeholder desuden mekanismer til genetablering af programtilstanden fra et givent checkpoint. Når et \oc-job sendes til en ressource sendes det nyeste checkpoint med, hvis et sådant eksisterer, og \oc\ sørger for at genetablere tilstanden før eksekveringen af jobbet starter. Dette er præcis den funktionalitet vi behøver for at kunne sikre, at vi ikke behøver køre en beregning forfra, når en ressource forlader gridet.
-Checkpoint foretages ved at serialisere det kørende job-objekt\footnote{\mig-applettens hoved objekt, der nedarver fra MiGJob-klassen} til hjemmekataloget på \mig. Det er altså kun objekt-grafen, med rod i MigJob-objektet, og eventuelle åbne filer, 
-\fixme{Er det buffere for åbne filer eller noget andet?}
-der overlever på tværs af et checkpoint. Hverken kald-stak eller programtæller gemmes på tværs af checkpoint.
+Checkpoint foretages ved at serialisere det kørende job-objekt\footnote{\mig-applettens hoved objekt, der nedarver fra MiGJob-klassen} til hjemmekataloget på \mig. Det er altså kun objekt-grafen, med rod i MigJob-objektet, og eventuelle åbne filer, der overlever på tværs af et checkpoint. Hverken kald-stak eller programtæller gemmes på tværs af checkpoint.
 
 \subsubsection{\oc-specifikke begrænsninger}
 En java-applet afvikles i et lukket miljø, en såkaldt sandkasse, for at beskytte den maskine der afvikler appletten. Der er en række begrænsinger vi bliver nødt til at forholde os til
@@ -304,7 +302,6 @@ En java-applet afvikles i et lukket miljø, en såkaldt sandkasse, for at beskyt
 \end{itemize}
 
 Det bliver naturligvis et krav at alle delproblemer vi sender ud kan beregnes uden at bruge mere end 64MB hukommelse på klienten. Uden JNI har vi ikke mulighed for måle cputid.
-\fixme{Som BV siger : I bør skrive noget om at One-Click ikke er applikations specifik som BOINC}
 
 \section{Problemstørrelse og jobschedulering}\label{opdelingogschedulering}
 
