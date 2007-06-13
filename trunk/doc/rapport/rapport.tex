@@ -347,12 +347,9 @@ Det bliver naturligvis et krav at alle delproblemer vi sender ud kan beregnes ud
 \begin{figure}[!h]
 \begin{center}
 
-\begin{tikzpicture}[show background grid]
+\begin{tikzpicture}%[show background grid]
 \tikzstyle{background grid}=[draw, black!50,step=.5cm]
 \tikzstyle{every node} = [draw]
-
-\draw[snake=brace] (0.6,-3.75) --
-        node [draw=none,right=0.5em,fill=none]{$ventetid$}(0.6,-4.75) ;
 
 \draw[->] (0,0) -- node[draw=none,left=0.5em]{Tid} (0,-4);
 
