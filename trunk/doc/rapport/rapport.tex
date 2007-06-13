@@ -527,7 +527,6 @@ Den udviklede kildekode er beregnet til at undersøge hvordan \nq\ parallelisere
 
 Kildekoden implementerer en rekursiv og en iterativ udgave af Takakens algoritme, som beskrevet i afsnit \ref{takalgo}, og giver mulighed for enten at afvikle disse lokalt eller indsende dem som job til \mig. Den lokale afvikling er så vidt muligt den samme kode som hvad der afvikles i \oc. Dette er med henblik på at sikre korrekthed og kunne foretage flest mulige test lokalt, før de køres på gridet. 
 
-\fixme{Beskrivelse af hvordan vi checkpointer og de lokale tests af checkpoint}
 
 Den udviklede kildekode er organiseret i følgende filer:
 
@@ -609,6 +608,7 @@ skriver resultatet til stdout.
 
 \subsection{CheckPointer.java, CheckPointActionMiG.java}
 
+\fixme{Beskrivelse af hvordan vi checkpointer og de lokale tests af checkpoint}
 Disse 2 klasser bliver brugt til at lave checkpoints. Hovedideen bag vores
 checkpointing er at vi venter i 15 min, derefter siger vi så at nu er vi klar
 til at lave checkpoint, og når backtrackIterative så kommer til et sted hvor den
