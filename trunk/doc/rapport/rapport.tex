@@ -313,12 +313,12 @@ Det bliver naturligvis et krav at alle delproblemer vi sender ud kan beregnes ud
 %\tikzstyle{background grid}=[draw, black!50,step=.5cm]
 
 
-\draw[snake=brace,very thick] (-0.6,-3.25) --
+\draw[snake=brace] (-0.6,-3.25) --
         node [draw=none,left=0.5em,fill=none]{$spildtid$}(-0.6,-2.5) ;
-\draw[snake=brace,very thick] (0.6,-3.75) --
+\draw[snake=brace] (0.6,-3.75) --
         node [draw=none,right=0.5em,fill=none]{$ventetid$}(0.6,-4.75) ;
 
-\tikzstyle{every node} = [rounded corners,draw, very thick,fill=blue!20,shade]
+\tikzstyle{every node} = [draw]
 \begin{scope}
 \path (0,0) node[circle] {$ressource$};
 \path (0,-2) node[rectangle,minimum height=1cm] {$Job$};
@@ -338,6 +338,37 @@ Det bliver naturligvis et krav at alle delproblemer vi sender ud kan beregnes ud
 \end{tikzpicture}		
 \caption{Illustration af \emph{spildtid} og \emph{ventetid}. Tegningen viser afviklingen af et samlet problem med 4 delproblemer, kørt på 2 ressourcer.}
 
+
+\end{center}
+\end{figure}
+
+
+%Figur over summen
+\begin{figure}[!h]
+\begin{center}
+
+\begin{tikzpicture}[show background grid]
+\tikzstyle{background grid}=[draw, black!50,step=.5cm]
+\tikzstyle{every node} = [draw]
+
+\draw[snake=brace] (0.6,-3.75) --
+        node [draw=none,right=0.5em,fill=none]{$ventetid$}(0.6,-4.75) ;
+
+\draw[->] (0,0) -- node[draw=none,left=0.5em]{Tid} (0,-4);
+
+\draw (1,0) node[circle] {$Ress_1$};
+\draw (2.5,0) node[circle] {$Ress_2$};
+\draw[fill] (3.4,0) circle (1.5pt);
+\draw[fill] (3.7,0) circle (1.5pt);
+\draw[fill] (4.0,0) circle (1.5pt);
+\draw (5,0) node[circle] {$Ress_n$};
+
+\path (1,-2.5) node[rectangle,minimum height=3cm] {$Job_1$};
+\path (2.5,-2) node[rectangle,minimum height=2cm] {$Job_2$};
+\path (5,-1.5) node[rectangle,minimum height=1cm] {$Job_n$};
+
+\end{tikzpicture}		
+\caption{Illustrerer en tænkt opstilling hvor \texttt{\#Ress=\#Job}} 
 \end{center}
 \end{figure}
 
