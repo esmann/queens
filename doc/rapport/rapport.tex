@@ -242,10 +242,8 @@ Selve parrallelisering er yderst simpel. Hvert delbræt kan løses uafhængigt e
 %\fixme{Beskriv evt. med lidt matematik istedet.}. Det ses på figur \ref{fig:midterandel} og \ref{fig:tidsvssol}} at Takakens %%%optimeringer vil forandre denne både for antallet af løsninger og køretid. \fixme{rigtigt afsnit?)
 
 \section{\mig\ og \oc}\label{migogoneclick}
-\begin{verse}
-	Her beskrives \mig\ og \oc\ overordnet. Afsnit \ref{mig} giver en introduktion til mulighederne i \mig. Afsnit \ref{oneclick} og \ref{begraensninger} beskriver muligheder for, og begrænsninger ifm. udvikling af \oc-applikationer. \mig\ er beskrevet i \cite{simplemig,mig}, en introduktion til udvikling med \oc\ findes i 'Developer wiki' på \url{migrid.org}\footnote{Kun tilgængeligt for registrerede \mig-udviklere}.
-\end{verse}
 
+	Her beskrives \mig\ og \oc\ overordnet. Afsnit \ref{mig} giver en introduktion til mulighederne i \mig. Afsnit \ref{oneclick} og \ref{begraensninger} beskriver muligheder for, og begrænsninger ifm. udvikling af \oc-applikationer. \mig\ er beskrevet i \cite{simplemig,mig}, en introduktion til udvikling med \oc\ findes i 'Developer wiki' på \url{migrid.org}\footnote{Kun tilgængeligt for registrerede \mig-udviklere}.
 
 \subsection{Minimum intrusion Grid}\label{mig}
 
@@ -278,7 +276,7 @@ Et job sættes igang ved at køre kommandoen \emph{migsubmit} med en såkaldt mR
 
 \mig\ tilbyder desuden at informere indsenderen via e-mail eller jabber\footnote{Open Source øjeblikkelig-besked-protokol, se mere på \url{http://www.jabber.org}} når et job afsluttet. 
 
-\subsection{\oc}\label{oneclick}
+\subsection{\oc} \label{oneclick}
 \oc\ er en java-applet der muligør deltagelse i \mig\ uden andre forudsætninger end en webbrowser og java. Tilgengæld er denne metode begrænset til at afvikle programmer, der er tilgængelige som java-bytekode. Brug af \oc\ giver adgang til et enormt (potentielt) antal beregningsressourcer, da det gør det muligt for ganske alm. mennesker at bidrage regnekraft til gridet.
 
 Implementerer man sit problem i en \oc-applet vil det kunne afvikles på alle \oc-ressourcer, uden at skulle specificere særlige krav til arkitektur med videre. Til gengæld vil det være begrænset til kun at køre på \oc-ressourcer.
@@ -290,7 +288,7 @@ Implementerer man sit problem i en \oc-applet vil det kunne afvikles på alle \o
 \oc\ indeholder kode til oprettelse af checkpoints under kørslen af et job. Et checkpoint er en gemt programtilstand, hvorfra det er muligt at fortsætte afviklingen. \oc\ indeholder desuden mekanismer til genetablering af programtilstanden fra et givent checkpoint. Når et \oc-job sendes til en ressource sendes det nyeste checkpoint med, hvis et sådant eksisterer, og \oc\ sørger for at genetablere tilstanden før eksekveringen af jobbet starter. Dette er præcis den funktionalitet vi behøver for at kunne sikre, at vi ikke behøver køre en beregning forfra, når en ressource forlader gridet.
 Checkpoint foretages ved at serialisere det kørende job-objekt\footnote{\mig-applettens hoved objekt, der nedarver fra MiGJob-klassen} til hjemmekataloget på \mig. Det er altså kun objekt-grafen, med rod i MigJob-objektet, og eventuelle åbne filer, der overlever på tværs af et checkpoint. Hverken kald-stak eller programtæller gemmes på tværs af checkpoint.
 
-\subsubsection{\oc-specifikke begrænsninger}
+\subsubsection{\oc-specifikke begrænsninger}\label{begraensninger}
 En java-applet afvikles i et lukket miljø, en såkaldt sandkasse, for at beskytte den maskine der afvikler appletten. Der er en række begrænsinger vi bliver nødt til at forholde os til
 \begin{itemize}
 	\item Appletten kan maksimalt allokere 64MB hukommelse.
