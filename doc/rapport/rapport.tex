@@ -489,7 +489,19 @@ jobsne ud og sammenligner resultatet.
 \label{solrelativecount}
 \end{figure}
 
-\fixme{Tabel med TidLong TidBiginter og ProcentForøgelse}. 
+%\fixme{Tabel med TidLong TidBiginter og ProcentForøgelse}. 
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline  & int & long & bigint \\
+\hline rekursiv & 406.065 & 403.178 & 414.238 \\
+\hline iterativ & 700.887 & 714.718 & 736.157 \\
+\hline
+\end{tabular}
+\caption{Sammenligning af kørsler med int, long og BigInteger}
+\end{center}
+\end{table}
 
 På figur \ref{solrelativecount} ses
 
