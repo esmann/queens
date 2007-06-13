@@ -1,18 +1,4 @@
-% Glossary
-%
-% checkpoint =
-% overhead = 
-% resource = ressource
-% grid = grid
-% backtrack = 
-% board = bræt 
-% cornerboard = hjørnebræt (ikke ved kodehenvisning) 
-% middleboard = midte(r)bræt (ikke ved kodehenvisning)
-% bitmap = bitmap
-% bound =
-% 	
-
-\documentclass[draft,a4paper,11pt]{article}
+\documentclass[a4paper,11pt]{article}
 \usepackage{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[danish]{babel}
@@ -26,10 +12,9 @@
 \usepackage{amssymb,amsmath}
 \usepackage{lscape}
 \usepackage{multicol}
-\usepackage[draft,inline,nomargin,silent]{fixme}
+\usepackage[inline,nomargin,silent]{fixme}
 \usepackage{tikz}
-\usetikzlibrary{trees,backgrounds,shapes,snakes}
-\tikzstyle{every picture}+=[remember picture]
+
 %\usepackage{pgflibrarytikztrees}
 \usepackage[final]{listings}
 \usepackage{fancyvrb}
@@ -61,6 +46,10 @@
 \usepackage{amsmath}
 
 \begin{document}
+
+\usetikzlibrary{trees,backgrounds,shapes,snakes}
+\tikzstyle{every picture}+=[remember picture]
+
 
 \maketitle
 \tableofcontents
@@ -596,7 +585,7 @@ backtrackRecursive er den samme som Backtrack1 fra den oprindelige c-kode. Da vi
 gerne vil have mulighed for at lave checkpoints, er der blevet lavet en iterativ
 udgave af backtrackRecursive, dette skyldes at checkpoint ikke gemmer kaldstak
 og programtæller, så vi ville ikke kunne starte op fra et checkpoint med
-backtrackRecursive. \fixme{beskrivelse af iterativ udgave}
+backtrackRecursive.
 
 \subsection{MiddleBoard.java}
 
