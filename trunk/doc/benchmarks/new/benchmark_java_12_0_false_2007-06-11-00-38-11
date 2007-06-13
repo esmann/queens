@@ -1,4 +1,4 @@
-type time total unique
+ztype time total unique
 cb 6 272 34
 cb 2 240 30
 cb 0 360 45
@@ -13,4 +13,4 @@ mb 6 4752 600
 mb 2 1648 207
 mb 1 264 36
 mb 0 0 0
-12: 14200 1787 0.04 14
+½½12: 14200 1787 0.04 14
