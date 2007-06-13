@@ -45,7 +45,7 @@
 \newcommand{\nq}{N-dronning-problemet}
 
 %\headheight 14.5pt                             %H<F8>jden af headeren
-%\textwidth 5.87in                              %Tekstbredden
+\textwidth 5.87in                              %Tekstbredden
 
 %\oddsidemargin 0.2in                           %Venstre margin er 1in + dette tal
                                                %Med en textwidth p<E5> 5.87in og en
@@ -219,29 +219,28 @@ Da der er forskellige måder at finde rotationer og spejlinger afhængig af dron
 	\item[Midterbræt] dronningen er i første række placeret i kolonnerne $2$  til og med $\lfloor n/2 \rfloor$.
 \end{description}
 
-Den første placering\footnote{For hjørnebræt er dette række 2, netop fordi den første dronning skal være placeret i hjørnet} af en dronning bestemmer hvilke valg vi kan undgå, og dermed mængden af deltræ vi kan fjerne. Da der er forskellige optimeringer, \emph{bounds}, vil der være forskel på andelen af løsninger afhængig af bounds som set på figur \ref{fig:midterandel}
+Den første placering \footnote{For hjørnebræt er dette række 2, fordi den første dronning skal være placeret i hjørnet} af en dronning bestemmer hvilke valg vi kan undgå,\emph{bounds}, og dermed mængden af deltræ vi kan fjerne. Derfor vil der være forskel på andelen af løsninger som set på figur \ref{fig:midterandel}. Sammenholdt med figur\ref{fig:tidsvssol} kan vi se at antallet af forholdet mellem antallet af løsninger ca. angiver forholdet mellem beregningstiden af to bræt.
 
 \begin{figure}
-\caption{Andelen af løsninger for midterbræt for $n=10\ldots18$.}
+\includegraphics{../benchmarks/middleandel.pdf}
+\caption{Bemærk at dette kun er \% af det totale antal løsninger for midterbræt. Det ses at antallet af løsninger falder drastisk for start placeringer der nærmer sig midten.}
 \label{fig:midterandel}
 \end{figure}
 
 \begin{figure}
-\caption{Løsninger pr. sekund for $n=10\ldots18$}
-\label{fig:solutionspersekund}
+\includegraphics{../benchmarks/tidsandel.pdf}
+\caption{Kørt for den iterative, fixme caption}
+\label{fig:tidsvssol}
 \end{figure}
 
-Det ses på figur \ref{fig:midterandel} at andelen af løsninger for bræt hvor den første dronning ikke placeres i et hjørne er over 90\% og stigende for større $n$. Sammenholdt med figur \ref{fig:solutionspersekund} kan vi se at antallet af løsninger er relateret til køretiden med samme faktor for forskellige $n$. Hvis ca. 90\% af løsningerne findes i ét delproblem vil det også tage ca. 90\% af tiden at beregne dette delproblem. \fixme{flyt til andet afsnit}
+Det ses på figur/tabel FIXME at andelen af løsninger for bræt hvor den første dronning ikke placeres i et hjørne er over 90\% og stigende for større $n$, Det samme gælder for køretiden. Så hvis ca. 90\% af løsningerne findes i ét delproblem vil det også tage ca. 90\% af tiden at beregne dette delproblem. \fixme{flyt til benchmarks, og lav tabel der viser vi skal bare have at 90\% af køretiden er i middlebræt (og samme for køretiden??), jvnf. amdahls lov at vi ikke gider optimere hjørnebræt}
 
 \subsection{Paralleliserings metode}\label{parallel}
 
+Selve parrallelisering er yderst simpel. Hvert delbræt kan løses uafhængigt efter at den første dronning er placeret, og deraf bounds. Antallet af løsninger for hvert bræt akkumuleres for at få det totale antal løsninger. Ved kun at vælge forudvælge samme antal rækker, vil vi opnå meget skæv fordeling af opgaver, jvnf. figur \ref{fig:midterandel}. Dette problem er yderligere beskrevet i afsnit \ref{opdelingipraksis}.
 
-En fordeling af løsninger uden Takakens optimeringer vil være distribueret således, at for lige n kan det totale antal løsninger udregnes som summen af løsningenerne, for de delproblemer, hvor første dronning er placeret hhv. kolonne 1 \ldots n/2 ganget med 2. Se \cite{etsi} side 7. 
-\fixme{Beskriv evt. med lidt matematik istedet.} Takakens optimeringer vil dog forandre denne fordeling. 
-
-Det ses let at , inklusiv takakens optimeringer.  Hvert delbræt kan løses uafhængigt og antallet af løsninger for hvert bræt akkumuleres for at få det totale antal løsninger. Selve da takakens optimeringer fjerne mulige valg afhængig af den første placering
-
-\fixme{Den første placering afgør hvilke deltræer der fjernes, ... , BOUNDS}
+%Fordelingen af løsninger, når Takakens optimeringer ikke, er forskellig . Se \cite{etsi} side 7. 
+%\fixme{Beskriv evt. med lidt matematik istedet.}. Det ses på figur \ref{fig:midterandel} og \ref{fig:tidsvssol}} at Takakens %%%optimeringer vil forandre denne både for antallet af løsninger og køretid. \fixme{rigtigt afsnit?)
 
 \section{\mig\ og \oc}\label{migogoneclick}
 \begin{verse}
