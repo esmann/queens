@@ -289,11 +289,11 @@ Implementerer man sit problem i en \oc-applet vil det kunne afvikles på alle \o
 \oc\ indeholder java-klasser til læsning og skrivning af filer i hjemmekataloget på \mig\, samt checkpointing af det kørende job. 
 
 \subsubsection{Checkpointing}
-\oc\ indeholder kode til oprettelse af checkpoints under kørslen af et job. Et checkpoint er en gemt programtilstand, hvorfra det er muligt at fortsætte afviklingen. \oc\ indeholder desuden mekanismer til genetablering af programtilstanden fra et givent checkpoint. Når et \oc-job sendes til en ressource sendes det nyeste checkpoint med, hvis et sådant eksisterer, og \oc\ sørger for at genetablere tilstanden før eksekveringen af jobbet starter. Dette er præcis den funktionalitet vi behøver for at kunne sikre, at vi ikke behøver køre en beregning forfra, når en ressource forlader gridet.
-Checkpoint foretages ved at serialisere det kørende job-objekt\footnote{\mig-applettens hoved objekt, der nedarver fra MiGJob-klassen} til hjemmekataloget på \mig. Det er altså kun objekt-grafen, med rod i MigJob-objektet, og eventuelle åbne filer, der overlever på tværs af et checkpoint. Hverken kald-stak eller programtæller gemmes på tværs af checkpoint.
+\oc\ indeholder kode til oprettelse af checkpoints under kørslen af et job. Et checkpoint er en gemt programtilstand, hvorfra det er muligt at fortsætte afviklingen. \oc\ indeholder desuden mekanismer til genetablering af programtilstanden fra et givent checkpoint. Når et \oc-job sendes til en ressource, sendes det nyeste checkpoint med, hvis et sådant eksisterer. \oc\ sørger så for at genetablere tilstanden før eksekveringen af jobbet starter. Dette er præcis den funktionalitet vi behøver for at kunne sikre, at vi ikke skal køre en beregning forfra, når en ressource forlader gridet.
+Checkpoint foretages ved at serialisere det kørende job-objekt\footnote{\mig-applettens hoved objekt, der nedarver fra MiGJob-klassen} til hjemmekataloget på \mig. Det er altså kun objekt-grafen, med rod i MigJob-objektet, og eventuelle åbne filer, der overlever på tværs af et checkpoint. Hverken kald-stak eller programtæller overlever.
 
 \subsubsection{\oc-specifikke begrænsninger}\label{begraensninger}
-En java-applet afvikles i et lukket miljø, en såkaldt sandkasse, for at beskytte den maskine der afvikler appletten. Der er en række begrænsinger vi bliver nødt til at forholde os til
+En java-applet afvikles i et lukket miljø, en såkaldt sandkasse, for at beskytte den maskine der afvikler appletten. En applet skal desuden overholde \texttt{Applet security model}\footnote{\url{http://java.sun.com/sfaq/}}. Dette giver en række begrænsinger vi bliver nødt til at forholde os til
 \begin{itemize}
 	\item Appletten kan maksimalt allokere 64MB hukommelse.
 	\item Java's JNI (Java Native Interfaces) kan ikke benyttes fra appletter. 
@@ -304,8 +304,6 @@ En java-applet afvikles i et lukket miljø, en såkaldt sandkasse, for at beskyt
 Det bliver naturligvis et krav at alle delproblemer vi sender ud kan beregnes uden at bruge mere end 64MB hukommelse på klienten. Uden JNI har vi ikke mulighed for måle cputid.
 
 \section{Problemstørrelse og jobschedulering}\label{opdelingogschedulering}
-
-
 
 \begin{figure}[!h]\label{fig:spildtidventetid}
 \begin{center}
@@ -398,7 +396,7 @@ I det følgende benyttes disse forkortelser for ofte anvendte begreber.
 	\item[\texttt{\#Ress}] Antallet af ressourcer.  
 \end{description}
 
-Desuden defineres \emph{spildtid} som den tid en ressource benytter til at sende resultater og hente nye job. Denne tid kan spares hvis jobbets beregningstid svarede til den tid ressourcen er tilgængelig. Omvendt defineres \emph{ventetid} som den tid en ressource ikke benyttes, fordi der ikke er job klar til beregning. Se også figur \ref{fig:spildtidventetid}.
+Desuden defineres \emph{spildtid} som den tid en ressource benytter til at sende resultater og hente nye job. Denne tid kan spares hvis jobbets beregningstid svarede til den tid ressourcen er tilgængelig. Omvendt defineres \emph{ventetid} som den tid en ressource ikke benyttes, fordi der ikke er job klar til beregning. Disse tider er illustreret på figur \ref{fig:spildtidventetid}.
 
 Et centralt emne ved parallelisering af algoritmer er partitionering af de data der beregnes på. Vi kan forestille os en ideel situation, hvor:
 \begin{enumerate}
@@ -454,16 +452,14 @@ Uanset jobstørrelser, er det essentielle, at undgå ubenyttede ressourcer, uden
 
 
 \section{Opdeling af opgaver i praksis}\label{opdelingipraksis}
-\begin{verse}
-	Herunder vil vi, fortrinsvis ved at kigge på data for problemstørrelser for mindre $n$, forsøge at finde frem til en optimal opdeling at problemet for $n=26$.
-\end{verse}
+	Herunder vil vi, fortrinsvis ved at kigge på data for problemstørrelser for mindre $n$, forsøge at finde frem til en optimal opdeling af problemet for $n=26$.
 
 I \mig\ skemalægges afviklingen af job som en FIFO-kø. Dvs. at job afvikles i samme rækkefølge som de submittes til gridet. Ved afbryding af jobbet eller ved udløb af tidsfristen for afvikling af jobbet placeres jobbet bagerst i køen. 
 
-Den løsning der er implementeret, i forbindelse med denne opgave, kan bedst karakteriseres som såkaldt \emph{statisk orkestration}. Idet opdelingen i delproblemer er endeligt foretaget inden beregningen af delproblemer begynder. Som beskrevet i afsnit \ref{opdelingogschedulering} er der et grundlæggende problem ved en statisk opdeling, nemlig at beregningen ikke kan tilpasse sig til en forøgelse af mængden af ressourcer. I stedet bliver man nødt til fra starten at generere nok opgaver til at kunne udnytte en eventuel ressourcetilgang. Samme problem opstår, på grund af heterogene ressourcer og opgaver, når antallet af delopgaver falder henimod slutningen af udregningen. 
+Den løsning der er implementeret, i forbindelse med denne opgave, kan bedst karakteriseres som såkaldt \emph{statisk orkestration}. I det opdelingen i delproblemer er endeligt foretaget inden beregningen af delproblemer begynder. Som beskrevet i afsnit \ref{opdelingogschedulering} er der et grundlæggende problem ved en statisk opdeling, nemlig at beregningen ikke kan tilpasse sig til en forøgelse af mængden af ressourcer. I stedet bliver man nødt til fra starten at generere nok opgaver til at kunne udnytte en eventuel ressourcetilgang. Samme problem opstår, på grund af heterogene ressourcer og opgaver, når antallet af delopgaver falder henimod slutningen af udregningen. 
 
 For at afhjælpe dette problem kan joboprettelsen gøres mere dynamisk. Den indledende mængde delopgaver kan tilpasses det øjeblikkelige antal ressourcer. Herefter opdeles en eller flere af disse i mindre delopgaver, så snart der er ledige ressourcer. På denne måde sikres det at ingen beregningskraft står ubrugt hen. 
-Det bedste valg af job til genopdeling vil være det der kræver mest beregningstid, da dette vil resultere i den mindst mulige spredning i beregningsstørrelse for de alle opgaver efter opdelingen\footnote{Idet alle nye opgaver vil være mindre end det oprindelige, men ingen vil være mindre end den mindste der ville oprettes hvis vi valgte en anden end den største til opdeling.}. På figur \ref{fig:tidsvssol} ser vi eksempler for beregningstiden for hver delopgave. Det er tydeligt at de følger et mønster, og at vi kan bestemme et indbyrdes størrelsesforhold mellem hhv. alle hjørne- og midterbræt. Dette giver os en god idé om hvilken delopgave det bedst kan betale sig at splitte op. Tilgengæld har vi ikke mulighed for at vide, om beregningen af denne opgave allerede er ved at være færdig, hvorfor en opsplitning ville være uhensigtsmæssig. Dette har vi dog ingen mulighed for at vide noget om.
+Det bedste valg af job til genopdeling vil være det der kræver mest beregningstid, da dette vil resultere i den mindst mulige spredning i beregningsstørrelse for alle opgaver efter opdelingen\footnote{Idet alle nye opgaver vil være mindre end det oprindelige, men ingen vil være mindre end den mindste der blev oprettes, hvis vi valgte en anden end den største til opdeling.}. På figur \ref{fig:tidsvssol} ser vi eksempler for beregningstiden for hver delopgave. Det er tydeligt at de følger et mønster, og at vi kan bestemme et indbyrdes størrelsesforhold mellem alle midterbræt. Dette giver os en god idé om hvilken delopgave det bedst kan betale sig at splitte op. Tilgengæld har vi ikke mulighed for at vide, om beregningen af denne opgave allerede er ved at være færdig, og en opsplitning ville være uhensigtsmæssig. 
 
 Alternativet til den dynamiske joboprettelse er en statisk, hvor spredningen af beregningsstørrelser for delproblemer forsøges minimeret ud fra antagelser om fordelingen af løsninger i delproblemerne. Disse antagelser kan vi kun retfærdiggøre ud fra vores viden om fordelingen for mindre $n$. Det er altså den samme viden om fordelinger vi gør brug af her, som i den dynamiske model. Her opdeler vi blot de (formodet) mest beregningstunge problemer fra starten. Vi sparer altså overvågning af projektet, men foretager til gengæld opdelinger før vi er sikre på at vi har det overskud af ressourcer, der gør dem fordelagtige.    
 
