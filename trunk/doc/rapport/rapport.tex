@@ -75,17 +75,19 @@
 \setcounter{page}{1}
 
 \abstract
-Denne opgave beskriver først \nq, \mig\ og \oc\ overordnet, som introduktion til den efterfølgende diskussion. Så gennemgås de overvejelser vi har gjort os omkring paralleliseringsmetode, problemstørrelse, schedulering og resultatvisning. 
+Denne opgave beskriver først \nq, \mig\ og \oc\ overordnet, som introduktion til den efterfølgende diskussion. Så gennemgåes de overvejelser vi har gjort os omkring paralleliseringsmetode, problemstørrelse, schedulering og resultatvisning. 
 
 Derefter beskrives hvad vi reelt har implementeret, som en introduktion til de benchmarks vi har foretaget i afsnit \ref{benchmarks}. 
 Afslutningsvis kommer vi i afsnit \ref{forbedringer} med en række forslag til forbedringer af \mig\ og særligt \oc.
 
-Implementationen er foretaget fortrinsvis med henblik på at foretage test og benchmarks for $n<26$ og derved afdække karakteristika ved algoritmen, der kan benyttes til at bestemme de bedst mulige praktiske valg for $n=26$. Disse løsninger beskrives i afsnit \ref{opdelingipraksis}, \ref{resultatindsamling} og \ref{implementering}, og vil nemt kunne implementeres i den udviklede kode før den endelige kørsel af $n=26$.
+Implementationen er foretaget fortrinsvis med henblik på at foretage test og benchmarks for $n<26$ og derved afdække karakteristika ved algoritmen, der kan benyttes til at bestemme de bedst mulige praktiske valg i forhold for $n=26$. Disse løsninger beskrives i afsnit \ref{opdelingipraksis}, \ref{resultatindsamling} og \ref{implementering}, og vil nemt kunne implementeres i den udviklede kode før den endelige kørsel af $n=26$. 
+
+En uoptimeret beregning for $n=26$ er igangsat.
 
 
 \section{\nq}\label{nqueenproblemet}
 
-\nq\ består i at finde antallet af måder man kan placere $n$ dronninger på et et kvadratisk $N \times N$ bræt, således at ingen dronning kan slå en anden. Bemærk at vi skal finde alle løsninger, $Q(n)$, og ikke bare finde en løsning - hvilket er et helt andet problem. Hidtil er der kun fundet løsninger for $n \in \{1,...,25\}$ som kan findes i OIES databasen vedligeholdt af \citep{sekvenser}. Derudover beskriver \cite{etsi} en manuelt\footnote{Resultater indsamlet over email} distribueret løsning for $n=25$. Der findes masser af referencer til materiale over nqueen på \url{http://www.liacs.nl/home/kosters/nqueens.html} (2007) relateret til \nq. 
+\nq\ består i at finde antallet af måder man kan placere $n$ dronninger på et et kvadratisk $n \times n$ bræt, således at ingen dronning kan slå en anden. Bemærk at vi skal finde alle løsninger, $Q(n)$, og ikke bare finde en løsning - hvilket er et helt andet problem. Hidtil er der kun fundet løsninger for $n \in \{1,...,25\}$ som kan findes i OIES databasen vedligeholdt af \citep{sekvenser}. Derudover beskriver \cite{etsi} en manuelt\footnote{Resultater indsamlet over email} distribueret løsning for $n=25$. Der findes masser af referencer til materiale om nqueen på \url{http://www.liacs.nl/home/kosters/nqueens.html} (2007) relateret til \nq. 
 
 \begin{figure}
 \begin{center}
