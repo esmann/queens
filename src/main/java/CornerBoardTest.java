@@ -52,7 +52,7 @@ public class CornerBoardTest {
 		CornerBoard cboard = new CornerBoard(size);
 		cboard.setRecursive(recursive);
 
-		BigInteger total = BigInteger.ZERO;
+		long total = 0L;
 		for (Board2 b : cboard.init()) {
 
 			/*
@@ -61,7 +61,7 @@ public class CornerBoardTest {
 			 */
 			b.backtrack();
 			// t.cancel(); // Doesn't kill currently running task...
-			total = total.add(b.getTotal());
+			total =  + b.getTotal();
 
 		}
 		assertEquals(expectedSolutions, total);

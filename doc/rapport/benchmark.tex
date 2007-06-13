@@ -146,10 +146,10 @@ $maxSteps>0$ får vi færre kald til backtrack/iterationer, hvilket skyldes at e
 del af disse kald bliver lavet i forbindelse med oprettelsen af de ekstra
 boards. 
 
-\begin{table}
+\begin{table}[h]
 \begin{center}
 \begin{tabular}{|c|c|c|}
-\hline kodebase  & hjørnebrædt & midtebrædt \\
+\hline kodebase  & hjørnebræt & midtebræt \\
 \hline C kode    &  748267           &  5293206           \\
 \hline Java      &  748267           &  5293206           \\
 \hline Java rek. &  748267           &  5293206           \\
@@ -161,6 +161,23 @@ boards.
 \end{center}
 \end{table}
 
+
+\subsection{Andel af hjørnebræt vs. midterbræt}
+I tabel  \ref{andelHvsM} Andelen af midterbræt ses en oversigt over andelen af midterbræt. Da der bruges mest tid i midterbræt, vil selv små optimeringer og bedre opdelingsstrategi for midterbræt give en bedre global forbedring i forhold til forbedringer for hjørnebræt\footnote{Amdahls lov}. 
+
+\begin{table}[h!]\label{andelHvsM}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline N & Andel af midterbræt \\
+\hline 15 & 89\% \\ 
+\hline 16 & 90\% \\
+\hline 17 & 91\% \\
+\hline 18 & 91\% \\
+\hline
+\end{tabular}	
+\end{center}
+\end{table}
+ 
 \subsection{Jobstørrelse}
 
 Med jobstørrelse refererer vi til hvor lang tid det tager at løse et job, og
@@ -170,6 +187,8 @@ generelt er en del større. Det ses også i tabellen at jobstørrelsen afhænger
 de bounds der er i henholdsvist MiddleBoard og CornerBoard. Hvis man øger
 $maxSteps$ og dermed får lavet flere jobs, ses det at de enkelte jobs bliver
 delt op i nogenlunde lige store dele.
+
+
 
 \subsection{Generering af jobs}
 
@@ -182,7 +201,7 @@ at sende jobsne da genereringen af jobs for større mængder jobs tager ca
 \begin{table}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
-\hline N & maxSteps & tid (ms) & brædt & tid (ms) /brædt \\
+\hline N & maxSteps & tid (ms) & bræt & tid (ms) /bræt \\
 \hline 17 & 0 & 4 & 21 & 0.19 \\
 \hline 17 & 1 & 6 & 243 & 0.02 \\
 \hline 17 & 2 & 23 & 2282 & 0.01 \\
@@ -194,7 +213,7 @@ at sende jobsne da genereringen af jobs for større mængder jobs tager ca
 \hline 18 & 3 & 280 & 26204 & 0.01 \\
 \hline
 \end{tabular}
-\caption{Tid for generering af brædt}
+\caption{Tid for generering af bræt}
 \label{table:boardgenering}
 \end{center}
 \end{table}
