@@ -18,7 +18,7 @@
 
   * skal vi konkludere at det er lige meget med opgavestørrelserne, vi får alligevel kun problemet til sidst, og der har vi så andre projekter, der vil overtage gridet.
 
-  *
+  * Vi kunne lave estimat af hvor langt tid det vil tage at køre hhv. den største og den mindste opgave. Vi har pt. en færdig opgave at regne ud fra.
 
 
 
