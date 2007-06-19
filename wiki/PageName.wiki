@@ -2,6 +2,11 @@
 
 =Status på projektet (implementationen)=
 
+
+
+==Ting vi mangler at forklare i rapporten== 
+
+
   * Hvad har vi sat i gang? Hvad kører? Hvad fejler? (Hvilke undtagelser og hvorfor?)
 
   * Benchmarks for den efterfølgende stakbaserede implementation
@@ -10,8 +15,6 @@
 
 
 
-
-==Ting vi mangler at forklare i rapporten== 
 
   * punkt et
  
