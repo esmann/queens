@@ -1,10 +1,12 @@
 #summary Brainstorm over mundtlig eksamen.
 
-=Status på projektet (implementationen)=
-
 
 
 ==Ting vi mangler at forklare i rapporten== 
+
+
+=Status på projektet (implementationen)=
+
 
 
   * Hvad har vi sat i gang? Hvad kører? Hvad fejler? (Hvilke undtagelser og hvorfor?)
