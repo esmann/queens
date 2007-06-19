@@ -1,12 +1,16 @@
 #summary Brainstorm over mundtlig eksamen.
 
 = Status på projektet (implementationen) =
+
 * Hvad har vi sat i gang? Hvad kører? Hvad fejler? (Hvilke undtagelser og hvorfor?)
+
 * Benchmarks for den efterfølgende stakbaserede implementation
+
 * Problemer med MiG
 
 = Ting vi mangler at forklare i rapporten = 
-* 
-*
 
+* 
+
+*
 
