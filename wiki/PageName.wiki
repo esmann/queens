@@ -1,13 +1,6 @@
 #summary Brainstorm over mundtlig eksamen.
 
-
-
-
-
-
 =Status på projektet (implementationen)=
-
-
 
   * Hvad har vi sat i gang? Hvad kører? Hvad fejler? (Hvilke undtagelser og hvorfor?)
 
@@ -17,13 +10,15 @@
 
 =Ting vi mangler at forklare i rapporten=
 
+  * Skal vi lave en gennemgang af (de værste) fejl?
 
-  * punkt et
- 
-  * punkt 2
+==Idéer:==
 
-Blahblah
+  * schedulering i BOINC osv. Kan vi overføre noget til MiG?
 
+  * skal vi konkludere at det er lige meget med opgavestørrelserne, vi får alligevel kun problemet til sidst, og der har vi så andre projekter, der vil overtage gridet.
+
+  *
 
 
 
