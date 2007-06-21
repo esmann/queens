@@ -1,6 +1,10 @@
 #summary Brainstorm over mundtlig eksamen.
 
-=Status på projektet (implementationen)=
+=Hovedemner (overhead)=
+
+Udover disse emner har vi et errata-dokument. 
+
+==Status på projektet (implementationen)==
 
   * Hvad har vi sat i gang? Hvad kører? Hvad fejler? (Hvilke undtagelser og hvorfor?)
 
@@ -8,11 +12,19 @@
 
   * Problemer med MiG
 
-=Ting vi mangler at forklare i rapporten=
+==Ting vi mangler at forklare i rapporten==
 
   * Skal vi lave en gennemgang af (de værste) fejl?
 
-==Idéer:==
+  * Hvad har/mangler vi i forhold til problemformuleringen?
+  
+  * Hvorfor er vi ikke gået videre med løsningen med intelligente ressourcer? (manglende ipc)
+
+==Flere forbedringer til One-Click:==
+  * checkpointing kunne returnere efter serialisering, så vi kan regne videre mens der sendes. (latency-hiding?)   
+
+
+=Idéer:=
 
   * schedulering i BOINC osv. Kan vi overføre noget til MiG?
 
@@ -20,6 +32,11 @@
 
   * Vi kunne lave estimat af hvor langt tid det vil tage at køre hhv. den største og den mindste opgave. Vi har pt. en færdig opgave at regne ud fra.
 
+  * Forklaring af checkpointing-mekanismen, og hvorfor vi gør som vi gør. Hvor kan vi checkpointe 
+
+=Vi skal læse op på: (for at kunne besvare spørgsmål :-))=
+  
+  * Problemformuleringen, referencer, 
 
 
 
