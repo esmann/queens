@@ -36,7 +36,9 @@ Udover disse emner har vi et errata-dokument.
 
 =Vi skal læse op på: (for at kunne besvare spørgsmål :-))=
   
-  * Problemformuleringen, referencer, 
+  * Problemformuleringen, referencer, dynamisk/statisk orkestration
+  
+  * 
 
 
 
