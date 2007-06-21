@@ -1,0 +1,10 @@
+=Errata=
+
+Nedest linie, side 8: Her er det underforstået at vi ikke kender antallet af løsninger i et delproblem.
+
+Sidst linie, afsnit 3, side 9: "ventetid" skulle naturligvis have været "spildtid".
+
+Tekst til figur 9, side 12: "for n = 15 ... 25" skulle have været "for n op til 25. Fra n = 15 ses faktor som stabil og stigende.". "26 gange større" skulle have været "10 gange større"
+
+Linie 4, side 15: "26 gange" skulle have været "10 gange"
+     
