@@ -19,7 +19,15 @@ Udover disse emner har vi et errata-dokument.
   * Hvad har/mangler vi i forhold til problemformuleringen?
   
   * Hvorfor er vi ikke gået videre med løsningen med intelligente ressourcer? (manglende ipc)
+    
+    - 
 
+  * Hvad ville vi gerne have haft tid til? 
+    
+    - Optimeringer af javakoden (stak, mRSL-argumenter).
+    
+    - Benchmarks af alternative implementationer.  
+   
 ==Flere forbedringer til One-Click:==
   * checkpointing kunne returnere efter serialisering, så vi kan regne videre mens der sendes. (latency-hiding?)   
 
