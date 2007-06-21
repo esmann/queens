@@ -1,0 +1,8 @@
+#!/bin/bash
+if [ -n "$1" ] 
+then
+	echo -n "18: " > $1-results && cat $1-files/*.stdout | awk '/total/ {sum += $2} END {printf("%d ",sum)}' >>$1-results && cat $1-files/*.stdout | awk '/unique/ {sum += $2} END {printf("%d ", sum) }' >> $1-results && cat $1-files/*.stdout | awk '/^time/ {sum += $2} END {printf("%.3f\n", sum/1000)}' >>$1-results
+else
+	echo "please tell me what test to fetch results from"
+fi
+

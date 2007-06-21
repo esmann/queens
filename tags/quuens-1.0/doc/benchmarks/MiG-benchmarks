@@ -1,0 +1,12 @@
+fil med jobid, tid det tog at lave og submitte jobs, size, maxsteps, recursive, int/bigint
+test-1180886206054, 8.983, 18, 1, true (regnet forkert? tjek status for failed jobs el.lign) int
+test-1180949643489, 1.837, 18, 0, true(false?), int
+test-1180951842931, 1.762, 18, 0, true(false?), int
+test-1180952901775, 1.855, 18, 0, true, int -- 802
+test-1180953445916, 12.002, 18, 1, true, int -- 7199
+test-1180966353656, 8.445, 18, 1, false, int -- 11229 (hmm et af jobsne maa vaere blevet requeued og ikke taget lige med det samme, da der har vaeret jobs fra andre koersler i ko)
+test-1180966543083, 1.908, 18, 0, false, int -- 982
+test-1180998931128, 103.442, 18, 1, true, bigint -- 6255
+test-1180999041775,  15.504, 18, 1, false, bigint -- 25231
+test-1180999205654, 19.079, 18, 0, true bigint
+test-1180999144782, 19.779, 18, 0, false, bigint

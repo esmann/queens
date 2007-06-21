@@ -1,0 +1,225 @@
+Java Plug-in 1.6.0
+Using JRE version 1.6.0 Java HotSpot(TM) Client VM
+User home directory = /home/alex
+
+
+----------------------------------------------------
+c:   clear console window
+f:   finalize objects on finalization queue
+g:   garbage collect
+h:   display this help message
+l:   dump classloader list
+m:   print memory usage
+o:   trigger logging
+p:   reload proxy configuration
+q:   hide console
+r:   reload policy configuration
+s:   dump system and deployment properties
+t:   dump thread list
+v:   dump thread stack
+x:   clear classloader cache
+0-5: set trace level to <n>
+----------------------------------------------------
+
+server: https://mig-1.imada.sdu.dk
+sandboxkey: 6cc180be71d4f6db0360d6c48d611674f22b24f5674ea6872e0d607ee5c6300d
+resource_name: oneclick.71
+cputime: 1000000
+Resource: oneclick.71, sandboxkey: 6cc180be71d4f6db0360d6c48d611674f22b24f5674ea6872e0d607ee5c6300d
+getinputfiles_url: https://mig-1.imada.sdu.dk/sid_redirect/1181212022966.getinputfiles
+Job check URL:https://mig-1.imada.sdu.dk/cgi-sid/isjobactive.py?iosessionid=276e436f863951b55bbb66158cacd4c7e31482ace8ce52917c4f958f50d20d66
+execute_vector size: 1
+execute_str: 'NQueenJob boards/board8-0-true-0.obj'
+Execute_cmd: NQueenJob
+Execute args[0]: boards/board8-0-true-0.obj
+checkpoint_request_url_str: https://mig-1.imada.sdu.dk/sid_redirect/276e436f863951b55bbb66158cacd4c7e31482ace8ce52917c4f958f50d20d66/956_6_7_2007__10_26_43_mig-1.imada.sdu.dk.0.NQueenJob.checkpoint.latest
+JOB START: 1181212026678
+Opening file: 'boards/board8-0-true-0.obj' in mode: 0
+
+boards/board8-0-true-0.obj
+total: 0
+unique: 0
+boardtime: 0
+time: 1242
+JOB SLUT: 1181212027933
+sendJobFinished
+sendfiles_url: https://mig-1.imada.sdu.dk/sid_redirect/c1323109d64e3ebae7f74188bf4c88c330cdcfaaa9bbf9eea4471e212834eddc.sendoutputfiles
+stderr size: 0
+stdout size: 70
+exit value: 0
+Resource loop finished, sleep for a while
+getinputfiles_url: https://mig-1.imada.sdu.dk/sid_redirect/1181212041088.getinputfiles
+Job check URL:https://mig-1.imada.sdu.dk/cgi-sid/isjobactive.py?iosessionid=60b86f0af678981f4c1a336b787971c7f98b5fdd23807a197811e4fec149a24f
+execute_vector size: 1
+execute_str: 'NQueenJob boards/board8-0-true-1.obj'
+Execute_cmd: NQueenJob
+Execute args[0]: boards/board8-0-true-1.obj
+checkpoint_request_url_str: https://mig-1.imada.sdu.dk/sid_redirect/60b86f0af678981f4c1a336b787971c7f98b5fdd23807a197811e4fec149a24f/957_6_7_2007__10_26_43_mig-1.imada.sdu.dk.0.NQueenJob.checkpoint.latest
+JOB START: 1181212042730
+Opening file: 'boards/board8-0-true-1.obj' in mode: 0
+
+boards/board8-0-true-1.obj
+total: 0
+unique: 0
+boardtime: 0
+time: 136
+JOB SLUT: 1181212042869
+sendJobFinished
+sendfiles_url: https://mig-1.imada.sdu.dk/sid_redirect/81be687047028d9be92470ba6ae822e66e66e3180225790b55a5985f5f0ec4ed.sendoutputfiles
+stderr size: 0
+stdout size: 69
+exit value: 0
+Resource loop finished, sleep for a while
+getinputfiles_url: https://mig-1.imada.sdu.dk/sid_redirect/1181212062334.getinputfiles
+Job check URL:https://mig-1.imada.sdu.dk/cgi-sid/isjobactive.py?iosessionid=96ce1af867b54733d7cb2309de47e18611197bb75b4f155a4ea9165a28ada0bf
+execute_vector size: 1
+execute_str: 'NQueenJob boards/board8-0-true-2.obj'
+Execute_cmd: NQueenJob
+Execute args[0]: boards/board8-0-true-2.obj
+checkpoint_request_url_str: https://mig-1.imada.sdu.dk/sid_redirect/96ce1af867b54733d7cb2309de47e18611197bb75b4f155a4ea9165a28ada0bf/958_6_7_2007__10_26_43_mig-1.imada.sdu.dk.0.NQueenJob.checkpoint.latest
+JOB START: 1181212063958
+Opening file: 'boards/board8-0-true-2.obj' in mode: 0
+
+boards/board8-0-true-2.obj
+total: 8
+unique: 1
+boardtime: 0
+time: 110
+JOB SLUT: 1181212064068
+sendJobFinished
+sendfiles_url: https://mig-1.imada.sdu.dk/sid_redirect/a20a5a63e18eb7ad8a270a5baae50a58c325f6e0b1967405e6768486b1cae5eb.sendoutputfiles
+stderr size: 0
+stdout size: 69
+exit value: 0
+Resource loop finished, sleep for a while
+getinputfiles_url: https://mig-1.imada.sdu.dk/sid_redirect/1181212080595.getinputfiles
+getinputfiles_url: https://mig-1.imada.sdu.dk/sid_redirect/1181212080595.getinputfiles
+Job check URL:https://mig-1.imada.sdu.dk/cgi-sid/isjobactive.py?iosessionid=0c5e8d1841369902178fe895ad2e9ed09a5ff0c564554c89ecc57fec8f2842db
+execute_vector size: 1
+execute_str: 'NQueenJob boards/board8-0-true-3.obj'
+Execute_cmd: NQueenJob
+Execute args[0]: boards/board8-0-true-3.obj
+checkpoint_request_url_str: https://mig-1.imada.sdu.dk/sid_redirect/0c5e8d1841369902178fe895ad2e9ed09a5ff0c564554c89ecc57fec8f2842db/959_6_7_2007__10_26_43_mig-1.imada.sdu.dk.0.NQueenJob.checkpoint.latest
+JOB START: 1181212083382
+Opening file: 'boards/board8-0-true-3.obj' in mode: 0
+
+boards/board8-0-true-3.obj
+total: 8
+unique: 1
+boardtime: 0
+time: 115
+JOB SLUT: 1181212083497
+sendJobFinished
+sendfiles_url: https://mig-1.imada.sdu.dk/sid_redirect/72fd054de6a3c99b097fb6dbe4e89b4659e35470160eda11a63bd2a26e3e0e65.sendoutputfiles
+stderr size: 0
+stdout size: 69
+exit value: 0
+Resource loop finished, sleep for a while
+getinputfiles_url: https://mig-1.imada.sdu.dk/sid_redirect/1181212100044.getinputfiles
+getinputfiles_url: https://mig-1.imada.sdu.dk/sid_redirect/1181212100044.getinputfiles
+Job check URL:https://mig-1.imada.sdu.dk/cgi-sid/isjobactive.py?iosessionid=90c9274b75caef5b040106d47c5369215b00f87ca000addc234524f4b7c5247d
+execute_vector size: 1
+execute_str: 'NQueenJob boards/board8-0-true-4.obj'
+Execute_cmd: NQueenJob
+Execute args[0]: boards/board8-0-true-4.obj
+checkpoint_request_url_str: https://mig-1.imada.sdu.dk/sid_redirect/90c9274b75caef5b040106d47c5369215b00f87ca000addc234524f4b7c5247d/960_6_7_2007__10_26_43_mig-1.imada.sdu.dk.0.NQueenJob.checkpoint.latest
+JOB START: 1181212102783
+Opening file: 'boards/board8-0-true-4.obj' in mode: 0
+
+boards/board8-0-true-4.obj
+total: 0
+unique: 0
+boardtime: 0
+time: 115
+JOB SLUT: 1181212102898
+sendJobFinished
+sendfiles_url: https://mig-1.imada.sdu.dk/sid_redirect/17829833606695be1cad05862a5391d9faa2737ebe042292dbc6a70230a57f70.sendoutputfiles
+stderr size: 0
+stdout size: 69
+exit value: 0
+Resource loop finished, sleep for a while
+getinputfiles_url: https://mig-1.imada.sdu.dk/sid_redirect/1181212119509.getinputfiles
+Job check URL:https://mig-1.imada.sdu.dk/cgi-sid/isjobactive.py?iosessionid=f30999b5598104ce13d300860e0c4bfc422ed594db6228dde0bde4bc0b3a38f2
+execute_vector size: 1
+execute_str: 'NQueenJob boards/board8-0-true-5.obj'
+Execute_cmd: NQueenJob
+Execute args[0]: boards/board8-0-true-5.obj
+checkpoint_request_url_str: https://mig-1.imada.sdu.dk/sid_redirect/f30999b5598104ce13d300860e0c4bfc422ed594db6228dde0bde4bc0b3a38f2/961_6_7_2007__10_26_43_mig-1.imada.sdu.dk.0.NQueenJob.checkpoint.latest
+JOB START: 1181212121375
+Opening file: 'boards/board8-0-true-5.obj' in mode: 0
+
+boards/board8-0-true-5.obj
+total: 56
+unique: 7
+boardtime: 0
+time: 417
+JOB SLUT: 1181212121794
+sendJobFinished
+sendfiles_url: https://mig-1.imada.sdu.dk/sid_redirect/10e403f8ff37f3b4105f691584af2d71059ade53da6bf31b0fa336b5479185a1.sendoutputfiles
+stderr size: 0
+stdout size: 70
+exit value: 0
+Resource loop finished, sleep for a while
+getinputfiles_url: https://mig-1.imada.sdu.dk/sid_redirect/1181212137862.getinputfiles
+Job check URL:https://mig-1.imada.sdu.dk/cgi-sid/isjobactive.py?iosessionid=53cb3a4d92f856728387fdb3076074e3e94897380c76ec8d68f36b2a54a4c2d9
+execute_vector size: 1
+execute_str: 'NQueenJob boards/board8-0-true-6.obj'
+Execute_cmd: NQueenJob
+Execute args[0]: boards/board8-0-true-6.obj
+checkpoint_request_url_str: https://mig-1.imada.sdu.dk/sid_redirect/53cb3a4d92f856728387fdb3076074e3e94897380c76ec8d68f36b2a54a4c2d9/962_6_7_2007__10_26_43_mig-1.imada.sdu.dk.0.NQueenJob.checkpoint.latest
+JOB START: 1181212139757
+Opening file: 'boards/board8-0-true-6.obj' in mode: 0
+
+boards/board8-0-true-6.obj
+total: 20
+unique: 3
+boardtime: 0
+time: 117
+JOB SLUT: 1181212139874
+sendJobFinished
+sendfiles_url: https://mig-1.imada.sdu.dk/sid_redirect/4202111fe2dcf9998fac595414d4399140c2c4cc53f315de317066eb6402ac39.sendoutputfiles
+stderr size: 0
+stdout size: 70
+exit value: 0
+Resource loop finished, sleep for a while
+getinputfiles_url: https://mig-1.imada.sdu.dk/sid_redirect/1181212156387.getinputfiles
+Job check URL:https://mig-1.imada.sdu.dk/cgi-sid/isjobactive.py?iosessionid=62c80998c24f1f970d1f9317b22f840e36281803e292e1a51a86aa48e09ad68e
+execute_vector size: 1
+execute_str: 'NQueenJob boards/board8-0-true-7.obj'
+Execute_cmd: NQueenJob
+Execute args[0]: boards/board8-0-true-7.obj
+checkpoint_request_url_str: https://mig-1.imada.sdu.dk/sid_redirect/62c80998c24f1f970d1f9317b22f840e36281803e292e1a51a86aa48e09ad68e/963_6_7_2007__10_26_43_mig-1.imada.sdu.dk.0.NQueenJob.checkpoint.latest
+JOB START: 1181212158069
+Opening file: 'boards/board8-0-true-7.obj' in mode: 0
+
+boards/board8-0-true-7.obj
+total: 0
+unique: 0
+boardtime: 0
+time: 139
+JOB SLUT: 1181212158208
+sendJobFinished
+sendfiles_url: https://mig-1.imada.sdu.dk/sid_redirect/d6bf2c06b59db26d7e7f4777a0252a896855302262849d64481127d5302e7a62.sendoutputfiles
+stderr size: 0
+stdout size: 69
+exit value: 0
+Resource loop finished, sleep for a while
+getinputfiles_url: https://mig-1.imada.sdu.dk/sid_redirect/1181212174728.getinputfiles
+Job check URL:https://mig-1.imada.sdu.dk/cgi-sid/isjobactive.py?iosessionid=e1fa3d2dfa3080837f6b2181b80d816281eacb266c586d87254ecf92180aefaa
+execute_vector size: 1
+execute_str: 'sleep 80'
+Execute_cmd: sleep
+Execute args[0]: 80
+sendJobFinished
+sendfiles_url: https://mig-1.imada.sdu.dk/sid_redirect/05252789ae8d88c7712433f336c274cd1c4b8b5e3a42062a93b64c7d923312a2.sendoutputfiles
+stderr size: 0
+stdout size: 0
+exit value: 0
+Resource loop finished, sleep for a while
+getinputfiles_url: https://mig-1.imada.sdu.dk/sid_redirect/1181212268141.getinputfiles
+Job check URL:https://mig-1.imada.sdu.dk/cgi-sid/isjobactive.py?iosessionid=c3b073488e5f7c7e8b931ae9995939aeae62fd95cb026d9b7f9fd02840210ad7
+execute_vector size: 1
+execute_str: 'sleep 160'
+Execute_cmd: sleep
+Execute args[0]: 160
+
