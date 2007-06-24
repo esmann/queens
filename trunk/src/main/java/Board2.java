@@ -20,8 +20,8 @@ public abstract class Board2 implements Cloneable, Serializable {
 
 	protected int currentBoardLine = 0;
 
-	private boolean recursive = false;
-
+	public enum Algo {RECURSIVE,ARRAY};
+	
 	protected int MASK;
 
 	abstract int getBound1();
@@ -43,7 +43,7 @@ public abstract class Board2 implements Cloneable, Serializable {
 	protected boolean suspendBacktrack = false;
 
 	private boolean checkpointing = true;
-
+	Algo algorithm = Algo.RECURSIVE; 
 	protected int top = -1;
 
 	public Board2(int size) {
@@ -58,12 +58,8 @@ public abstract class Board2 implements Cloneable, Serializable {
 		MASK = (1 << size) - 1;
 	}
 
-	public void setRecursive(boolean b) {
-		this.recursive = b;
-	}
-
-	protected boolean isRecursive() {
-		return this.recursive;
+	public void setAlgo(Algo a) {
+		this.algorithm = a;
 	}
 
 	abstract Collection<Board2> init();
@@ -79,22 +75,28 @@ public abstract class Board2 implements Cloneable, Serializable {
 
 	public void backtrack() {
 
-		// Save original currenboardLine to top
 		if (top == -1) {
 			top = currentBoardLine;
 		} else {
 			System.out.println("Board detected resume");
 			System.out.println("Has already spent cputime (ms):" + time);
-			if (isRecursive())
+			if (algorithm == Algo.RECURSIVE)
 				throw new Error("Can not resume when backtracking recursively");
-		}
-
-		if (isRecursive()) {
-			// System.out.println(this.toString());
+		}			
+		
+		switch (algorithm) {
+		//case LINKEDLIST:
+			//
+//			break;
+		case RECURSIVE:
 			backtrackRecursive(top, isOccupiedLeftDiagonal[top],
 					isOccupiedHorizontal[top], isOccupiedRightDiagonal[top]);
-		} else {
+			break;
+		case ARRAY:
 			backtrackIterative();
+			break;
+		default:
+			break;
 		}
 
 		// System.out.println("Total Backtracking took(ms) :" + this.time);

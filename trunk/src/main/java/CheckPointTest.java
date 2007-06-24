@@ -71,7 +71,7 @@ public class CheckPointTest implements Serializable {
 				+ expectedSolutions);
 
 		MiddleBoardMock mboard = new MiddleBoardMock(size);
-		mboard.setRecursive(false);
+		mboard.setAlgo(Board2.Algo.ARRAY);
 		mboard.enableExitAfterCheckPoint(); // TESTING PURPOSES ONLY
 
 		long total = 0, count2 = 0, count4 = 0, count8 = 0;

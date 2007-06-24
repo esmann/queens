@@ -33,26 +33,22 @@ public class CornerBoardTest {
 	@Test
 	public void testIterative() {
 
-		// testHelper(18, 1744912, false);
-
-		testHelper(6, 0, false);
-		testHelper(5, 8, false);
-		testHelper(7, 2 * 8, false);
-		testHelper(8, 2 * 8, false);
-		testHelper(9, 14 * 8, false); // Up from 2 to 14 unique!
-		testHelper(6, 0, true);
-		testHelper(5, 8, true);
-		testHelper(7, 2 * 8, true);
-		testHelper(8, 2 * 8, true);
-		testHelper(9, 14 * 8, true); // Up from 2 to 14 unique!
+		//testHelper(18, 1744912, false);
+		for (Board2.Algo a : Board2.Algo.values()) {
+			testHelper(6, 0,a);
+			testHelper(5, 8,a);
+			testHelper(7, 2 * 8,a);
+			testHelper(8, 2 * 8,a);
+			testHelper(9, 14 * 8,a); // Up from 2 to 14 unique!
+		}
 	}
 
-	void testHelper(int size, int expectedSolutions, boolean recursive) {
+	void testHelper(int size, int expectedSolutions, Board2.Algo a) {
 		System.out.println("SIZE: " + size);
 		CornerBoard cboard = new CornerBoard(size);
-		cboard.setRecursive(recursive);
+		cboard.setAlgo(a);
 
-		long total = 0L;
+		long total = 0;
 		for (Board2 b : cboard.init()) {
 
 			/*
@@ -61,9 +57,12 @@ public class CornerBoardTest {
 			 */
 			b.backtrack();
 			// t.cancel(); // Doesn't kill currently running task...
-			total =  + b.getTotal();
+			total += b.getTotal();
 
 		}
-		assertEquals(expectedSolutions, total);
+		assertNotNull(expectedSolutions);
+		assertNotNull(total);
+		assertTrue((expectedSolutions == total));
 	}
 }
+

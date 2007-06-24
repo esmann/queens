@@ -1,11 +1,11 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.junit.Assert.assertTrue;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
 
 import org.junit.Test;
-
 public class MiddleboardTest {
 	// format is size,total solutions,count8,count4,count2 { 4, 2, 0, 0, 1 },
 	static int[][] solutions = { { 5, 2, 0, 0, 1 }, { 6, 4, 0, 1, 0 },
@@ -14,14 +14,12 @@ public class MiddleboardTest {
 
 	@Test(timeout = 10000)
 	public void testMiddleBoard() {
-
-		boolean isRecursive = false;
-		for (int[] solution : solutions)
-			testHelper(isRecursive, solution);
-
-		isRecursive = true;
-		for (int[] solution : solutions)
-			testHelper(isRecursive, solution);
+		
+		for (Board2.Algo a : Board2.Algo.values()) {
+			for (int[] solution : solutions)
+				testHelper(a, solution);	
+		}
+		
 
 	}
 
@@ -29,7 +27,7 @@ public class MiddleboardTest {
 	public void testParrallel() {
 		System.out.println("Parrallel test");
 		MiddleBoard mboard = new MiddleBoard(12);
-		mboard.setRecursive(false);
+		mboard.setAlgo(Board2.Algo.ARRAY);
 		int maxSteps = 9;
 
 		Queue<Board2> boards = new LinkedList<Board2>();
@@ -47,7 +45,7 @@ public class MiddleboardTest {
 			int i = 0;
 			// Do a backtrack for each step
 			for (Board2 board : boards) {
-				board.setRecursive(false);
+				board.setAlgo(Board2.Algo.ARRAY);
 				System.out.println("Board nr: " + i++ + " is backtracking:");
 				board.backtrack();
 				/*total += board.getTotal();
@@ -62,40 +60,37 @@ public class MiddleboardTest {
 		}
 	}
 
-	void testHelper(boolean recursive, int... args) {
+	void testHelper(Board2.Algo a, int... args) {
 		if (args.length != 5)
 			fail("Must get five ints");
 
 		int size = args[0];
-		int expectedSolutions = args[1];
-		int expectedCount8 = args[2];
-		int expectedCount4 = args[3];
-		int expectedCount2 = args[4];
+		long expectedSolutions = args[1];
+		long expectedCount8 = args[2];
+		long expectedCount4 = args[3];
+		long expectedCount2 = args[4];
 
 		System.out.println("Testing SIZE,EXPECTS,RECURSIVE: " + size + ","
-				+ expectedSolutions + ", " + recursive);
+				+ expectedSolutions + ", " + a);
 
 		MiddleBoard mboard = new MiddleBoard(size);
-		mboard.setRecursive(recursive);
+		mboard.setAlgo(a);
 
 		long total = 0, count2 = 0, count4 = 0, count8 = 0;
-		//long total = BigInteger.ZERO, count2 = BigInteger.ZERO, count4 = BigInteger.ZERO, count8 = BigInteger.ZERO;
+
 		for (Board2 b : mboard.init()) {
 			b.backtrack();
-			if (!recursive)
-				b.backtrack(); // This way we test resume on a finished board
 
 			total = total +(b.getTotal());
 			count2 = count2 +(((MiddleBoard) b).getCount2());
-			count2 = count4 + (((MiddleBoard) b).getCount4());
-			count2 = count8 +(((MiddleBoard) b).getCount8());
+			count4 = count4 + (((MiddleBoard) b).getCount4());
+			count8 = count8 +(((MiddleBoard) b).getCount8());
 
 		}
-		assertEquals(expectedCount8, count8);
-		assertEquals(expectedCount4, count4);
-		assertEquals(expectedCount2, count2);
-		assertEquals(expectedSolutions, total);
+		assertTrue(expectedCount8 == count8);
+		assertTrue(expectedCount4 == count4);
+		assertTrue(expectedCount2 == count2);
+		assertTrue(expectedSolutions == total);
 		System.out.println("DONE");
 	}
-
 }

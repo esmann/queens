@@ -39,7 +39,7 @@ public class NQueenBoards {
 
 		size = 8;
 		maxSteps = 1;
-		isRecursive = false;
+		Board2.Algo alg = Board2.Algo.ARRAY; 
 
 		if (args.length > 2) {
 			if (Integer.parseInt(args[0]) > 0) {
@@ -51,19 +51,19 @@ public class NQueenBoards {
 			}
 
 			if (args[2] != "")
-				isRecursive = Boolean.parseBoolean(args[2]);
+				Board2.Algo.valueOf(args[2]);		
 		}
 
 		long starttime, boardtime, endtime;
 		starttime = System.currentTimeMillis();
 
 		CornerBoard cboard = new CornerBoard(size);
-		cboard.setRecursive(isRecursive);
+		cboard.setAlgo(alg);
 		cboard.setCheckpointing(true);
 		boards.addAll(cboard.init());
 		//dout("After INIT #cornerboards=" + boards.size());
 		MiddleBoard mboard = new MiddleBoard(size);
-		mboard.setRecursive(isRecursive);
+		mboard.setAlgo(alg);
 		mboard.setCheckpointing(true);
 		boards.addAll(mboard.init());
 		//dout("After INIT #middleboards=" + boards.size());
