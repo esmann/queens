@@ -4,10 +4,14 @@
 
 Udover disse emner har vi et errata-dokument. 
 
+==Kort introduktion (meget kort!)==
+
 ==Status på projektet (implementationen)==
 
   * Hvad har vi sat i gang? Hvad kører? Hvad fejler? (Hvilke undtagelser og hvorfor?)
-
+    
+    - 
+    
   * Benchmarks for den efterfølgende stakbaserede implementation
 
   * Problemer med MiG
@@ -19,14 +23,16 @@ Udover disse emner har vi et errata-dokument.
   * Hvad har/mangler vi i forhold til problemformuleringen?
   
   * Hvorfor er vi ikke gået videre med løsningen med intelligente ressourcer? (manglende ipc)
-    
-    - 
+
+    - Til at begynde med snakkede vi meget om en løsning med intelligente job, der selv tager sig af at hente nye problemer fra gridet, og som samtidig hver især kunne overvåge den samlede beregning, og generere nye problemer (ved at opsplitte de store, initielle problemer) når der var ressourcer til at beregne dem. Vi gik væk fra denne idé, da den er væsentligt mere kompliceret og de fordele en intelligent løsning ville give vil ikke nødvendigvis overstige den ekstra køretid for den mere komplicerede algoritme. Adgang til filer på MiG er ikke atomisk. 
 
   * Hvad ville vi gerne have haft tid til? 
     
     - Optimeringer af javakoden (stak, mRSL-argumenter).
     
-    - Benchmarks af alternative implementationer.  
+    - Benchmarks af alternative implementationer.
+      
+      -    
    
 ==Flere forbedringer til One-Click:==
   * checkpointing kunne returnere efter serialisering, så vi kan regne videre mens der sendes. (latency-hiding?)   
@@ -41,11 +47,10 @@ Udover disse emner har vi et errata-dokument.
   * Vi kunne lave estimat af hvor langt tid det vil tage at køre hhv. den største og den mindste opgave. Vi har pt. en færdig opgave at regne ud fra.
 
   * Forklaring af checkpointing-mekanismen, og hvorfor vi gør som vi gør. Hvor kan vi checkpointe 
+  
+  * Kørselsvejledning?!
 
 =Vi skal læse op på: (for at kunne besvare spørgsmål :-))=
   
   * Problemformuleringen, referencer, dynamisk/statisk orkestrering
   
-  * 
-
-
