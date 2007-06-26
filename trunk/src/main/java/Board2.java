@@ -20,9 +20,9 @@ public abstract class Board2 implements Cloneable, Serializable {
 
 	protected int currentBoardLine = 0;
 
-	public enum Algo {RECURSIVE,ARRAY};
+	public enum Algo {RECURSIVE,ARRAY,LINKEDLIST};
 	
-	protected int MASK;
+	protected static int MASK;
 
 	abstract int getBound1();
 
@@ -68,7 +68,7 @@ public abstract class Board2 implements Cloneable, Serializable {
 
 	abstract void backtrackRecursive(int top, int leftDiagonal, int horizontal,
 			int rightDiagonal);
-
+    abstract void backtrackLinkedList();
 	abstract void backtrackIterative();
 
 	abstract void countBacktrack();
@@ -85,9 +85,9 @@ public abstract class Board2 implements Cloneable, Serializable {
 		}			
 		
 		switch (algorithm) {
-		//case LINKEDLIST:
-			//
-//			break;
+		case LINKEDLIST:
+			backtrackLinkedList();
+			break;
 		case RECURSIVE:
 			backtrackRecursive(top, isOccupiedLeftDiagonal[top],
 					isOccupiedHorizontal[top], isOccupiedRightDiagonal[top]);
@@ -105,7 +105,8 @@ public abstract class Board2 implements Cloneable, Serializable {
 	abstract long getUnique();
 
 	abstract long getTotal();
-
+	
+	
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		Board2 b = (Board2) super.clone();

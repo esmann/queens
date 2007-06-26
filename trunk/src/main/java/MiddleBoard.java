@@ -323,4 +323,10 @@ public class MiddleBoard extends Board2 {
 		// this.Count8 + ")");
 		return this.count2 + this.count4 + this.count8;
 	}
+
+	@Override
+	void backtrackLinkedList() {
+		// TODO Auto-generated method stub
+		
+	}
 }

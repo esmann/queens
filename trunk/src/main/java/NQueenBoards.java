@@ -39,7 +39,7 @@ public class NQueenBoards {
 
 		size = 8;
 		maxSteps = 1;
-		Board2.Algo alg = Board2.Algo.ARRAY; 
+		Board2.Algo alg = Board2.Algo.LINKEDLIST; 
 
 		if (args.length > 2) {
 			if (Integer.parseInt(args[0]) > 0) {

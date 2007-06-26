@@ -52,7 +52,7 @@ public class CornerBoard extends Board2 {
 		Collection<Board2> boards = new LinkedList<Board2>();
 		CornerBoard bnew;
 		for (bound1 = 2; bound1 < sizee; bound1++) {
-			//dout("Bound1: " + bound1);
+			// dout("Bound1: " + bound1);
 
 			try {
 				bnew = (CornerBoard) this.clone();
@@ -89,18 +89,62 @@ public class CornerBoard extends Board2 {
 		this.bound1 = bound;
 	}
 
+	public synchronized void backtrackLinkedList() {
+		System.out.println("backtrackLinkedList, mask is : " + MASK);
+		BoardLine firstLine = new BoardLine(
+				isOccupiedHorizontal[currentBoardLine],
+				isOccupiedRightDiagonal[currentBoardLine],
+				isOccupiedLeftDiagonal[currentBoardLine], currentBoardLine);
+		BoardLine line = firstLine;
+		while (line != null) {
+			line.printBoard();
+			// checkpoint here
+			if (line.lineNumber == sizee) {
+				if (line.hasPossiblePlacements()) {
+					System.out.println("solution found");
+					this.count8++;
+					line.possiblePlacements = 0;
+				}
+			}
+			/*
+			else {
+				if (line.lineNumber < bound1) {
+					line.possiblePlacements |= 2;
+					line.possiblePlacements ^= 2;
+				}
+			}*/
+			// backtrack
+			while (line != null && line.possiblePlacements == 0) {
+				line = line.parent;
+				if (line == null) {
+					return;
+				}
+			}
+			 
+			int selected = -line.possiblePlacements & line.possiblePlacements;
+			//int selected = Integer.lowestOneBit(line.possiblePlacements);
+			line.possiblePlacements ^= selected;
+			line = new BoardLine((line.horisontal | selected),
+					(line.rightDiagonal | selected) >>> 1,
+					(line.leftDiagonal | selected << 1), line);
+
+			// System.out.println("end of while: " + line.lineNumber);
+		}
+
+	}
+
 	public synchronized final void backtrackIterative() {
-		//dout("iterative starts at: " + top);
+		// dout("iterative starts at: " + top);
 		int bit;
 		int bitmap; // used for minimizing array lookups
 		long begin = System.currentTimeMillis();
-		//		 for lines above 'top' queen placement is predetermined
+		// for lines above 'top' queen placement is predetermined
 		while (currentBoardLine >= top) {
 			countBacktrack();
-			//dout("CurrentBoardLine: " + currentBoardLine);
+			// dout("CurrentBoardLine: " + currentBoardLine);
 
 			if (suspendBacktrack) {
-				//dout("DETECTED a suspend request");
+				// dout("DETECTED a suspend request");
 				long now = System.currentTimeMillis();
 				long diff = now - begin;
 
@@ -109,22 +153,24 @@ public class CornerBoard extends Board2 {
 				begin = System.currentTimeMillis();
 				while (suspendBacktrack) {
 					try { // We ignore interrupts......
-						wait(); // Allow checkpointing thread to enter the boards monitor
+						wait(); // Allow checkpointing thread to enter the
+						// boards monitor
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 				}
-				if (exitAfterCheckpoint) // testing purposes only					
+				if (exitAfterCheckpoint) // testing purposes only
 					return;
 			}
+			// 
 			bitmap = this.MASK
 					& ~(isOccupiedLeftDiagonal[currentBoardLine]
 							| isOccupiedHorizontal[currentBoardLine] | isOccupiedRightDiagonal[currentBoardLine]);
-
+            System.out.println(bitmap);
 			if (currentBoardLine == sizee) {
 				if (bitmap != 0) {
 					this.count8++;
-					//dout("Solution " + currentBoardLine);
+					// dout("Solution " + currentBoardLine);
 					bitmap = 0; // We take the only solution that exists
 				}
 			} else {
@@ -138,11 +184,11 @@ public class CornerBoard extends Board2 {
 			// Go back up if no possibleplacements
 			if (bitmap == 0) {
 
-				//dout("No more possible solutions: " + currentBoardLine);
+				// dout("No more possible solutions: " + currentBoardLine);
 				while ((currentBoardLine >= top)
 						&& (possiblePlacements[currentBoardLine]) == 0) {
 					currentBoardLine--;
-					//dout("Going Back " + currentBoardLine);
+					// dout("Going Back " + currentBoardLine);
 				}
 			}
 
@@ -180,7 +226,7 @@ public class CornerBoard extends Board2 {
 	public final void backtrackRecursive(final int y, final int left,
 			final int down, final int right) {
 		countBacktrack();
-		//dout("BTCORNER y: " + y);
+		// dout("BTCORNER y: " + y);
 
 		/*
 		 * System.out.println("size: " + size); System.out.println("bound1: " +
@@ -190,14 +236,14 @@ public class CornerBoard extends Board2 {
 		int bitmap, bit;
 
 		bitmap = this.MASK & ~(left | down | right);
-		//dout("BTCORNER bitmap: " + Integer.toBinaryString(bitmap));
+		// dout("BTCORNER bitmap: " + Integer.toBinaryString(bitmap));
 
 		if (y == sizee) {
 			if (bitmap != 0) {
 				// board[y] = bitmap;
 				// System.out.println("b1: " + y + ", " + left + ", " + down +
 				// ", " + right);
-				//				System.out.println("SOLUTION!\n");
+				// System.out.println("SOLUTION!\n");
 				this.count8++;
 			}
 		} else {

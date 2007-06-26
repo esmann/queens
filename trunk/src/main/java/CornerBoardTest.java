@@ -37,11 +37,13 @@ public class CornerBoardTest {
 		for (Board2.Algo a : Board2.Algo.values()) {
 			testHelper(6, 0,a);
 			testHelper(5, 8,a);
-			testHelper(7, 2 * 8,a);
-			testHelper(8, 2 * 8,a);
+			//testHelper(7, 2 * 8,a);
+			//testHelper(8, 2 * 8,a);
 			testHelper(9, 14 * 8,a); // Up from 2 to 14 unique!
+		
 		}
 	}
+
 
 	void testHelper(int size, int expectedSolutions, Board2.Algo a) {
 		System.out.println("SIZE: " + size);
@@ -60,9 +62,11 @@ public class CornerBoardTest {
 			total += b.getTotal();
 
 		}
-		assertNotNull(expectedSolutions);
 		assertNotNull(total);
-		assertTrue((expectedSolutions == total));
+		
+		assertNotNull(expectedSolutions);
+		
+		assertTrue("total: " + total ,(expectedSolutions == total));
 	}
 }
 
