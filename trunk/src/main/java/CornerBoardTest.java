@@ -36,10 +36,10 @@ public class CornerBoardTest {
 		//testHelper(18, 1744912, false);
 		for (Board2.Algo a : Board2.Algo.values()) {
 			testHelper(6, 0,a);
-			testHelper(5, 8,a);
+			//testHelper(5, 8,a);
 			//testHelper(7, 2 * 8,a);
 			//testHelper(8, 2 * 8,a);
-			testHelper(9, 14 * 8,a); // Up from 2 to 14 unique!
+			//testHelper(9, 14 * 8,a); // Up from 2 to 14 unique!
 		
 		}
 	}
@@ -49,6 +49,7 @@ public class CornerBoardTest {
 		System.out.println("SIZE: " + size);
 		CornerBoard cboard = new CornerBoard(size);
 		cboard.setAlgo(a);
+		cboard.setCheckpointing(true);
 
 		long total = 0;
 		for (Board2 b : cboard.init()) {

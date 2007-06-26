@@ -90,29 +90,29 @@ public class CornerBoard extends Board2 {
 	}
 
 	public synchronized void backtrackLinkedList() {
-		System.out.println("backtrackLinkedList, mask is : " + MASK);
+		//System.out.println("backtrackLinkedList, mask is : " + MASK);
 		BoardLine firstLine = new BoardLine(
 				isOccupiedHorizontal[currentBoardLine],
 				isOccupiedRightDiagonal[currentBoardLine],
 				isOccupiedLeftDiagonal[currentBoardLine], currentBoardLine);
 		BoardLine line = firstLine;
 		while (line != null) {
-			line.printBoard();
+			//line.printBoard();
 			// checkpoint here
 			if (line.lineNumber == sizee) {
 				if (line.hasPossiblePlacements()) {
-					System.out.println("solution found");
+					//System.out.println("solution found");
 					this.count8++;
 					line.possiblePlacements = 0;
 				}
 			}
-			/*
+			
 			else {
 				if (line.lineNumber < bound1) {
 					line.possiblePlacements |= 2;
 					line.possiblePlacements ^= 2;
 				}
-			}*/
+			}
 			// backtrack
 			while (line != null && line.possiblePlacements == 0) {
 				line = line.parent;
@@ -126,7 +126,7 @@ public class CornerBoard extends Board2 {
 			line.possiblePlacements ^= selected;
 			line = new BoardLine((line.horisontal | selected),
 					(line.rightDiagonal | selected) >>> 1,
-					(line.leftDiagonal | selected << 1), line);
+					(line.leftDiagonal | selected) << 1, line);
 
 			// System.out.println("end of while: " + line.lineNumber);
 		}
@@ -166,7 +166,10 @@ public class CornerBoard extends Board2 {
 			bitmap = this.MASK
 					& ~(isOccupiedLeftDiagonal[currentBoardLine]
 							| isOccupiedHorizontal[currentBoardLine] | isOccupiedRightDiagonal[currentBoardLine]);
-            System.out.println(bitmap);
+            /*System.out.println("possible  : " + bitmap);
+            System.out.println("left      :  " + isOccupiedLeftDiagonal[currentBoardLine]);
+            System.out.println("right     :  " + isOccupiedRightDiagonal[currentBoardLine]);
+            System.out.println("horizontal:  " + isOccupiedHorizontal[currentBoardLine]);*/
 			if (currentBoardLine == sizee) {
 				if (bitmap != 0) {
 					this.count8++;

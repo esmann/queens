@@ -27,7 +27,7 @@ public class MiddleboardTest {
 	public void testParrallel() {
 		System.out.println("Parrallel test");
 		MiddleBoard mboard = new MiddleBoard(12);
-		mboard.setAlgo(Board2.Algo.ARRAY);
+		mboard.setAlgo(Board2.Algo.LINKEDLIST);
 		int maxSteps = 9;
 
 		Queue<Board2> boards = new LinkedList<Board2>();

@@ -71,53 +71,43 @@ public class NQueenJob extends Job {
 
 		long starttime, endtime, boardtime;
 		// out("starting up :-)");
+		starttime = System.currentTimeMillis();
 		try {
-			starttime = System.currentTimeMillis();
 			if (board == null) {
 				board = getBoard(argv[0]);
 			} else {
 				System.out.println("Board loaded from checkpoint");
 				System.out.println(board.toString());
 			}
-
-			if (board.useCheckpointing())
-				t.schedule(new CheckPointer(board,
-						new CheckPointActionMiG(this)), CHECKPOINT_INTERVAL,
-						CHECKPOINT_INTERVAL);
-
-			// out("File read");
-			// Actual work is done in the board class :-)
-
-			boardtime = System.currentTimeMillis();
-			board.backtrack();
-			endtime = System.currentTimeMillis();
-
-			if (board.useCheckpointing())
-				t.cancel();
-
-			boardtime = endtime - boardtime;
-
-			String output = "\n" + argv[0] + "\ntotal: " + board.getTotal()
-					+ "\nunique: " + board.getUnique() + "\nboardtime: "
-					+ boardtime + "\ntime: " + (endtime - starttime);
-
-			System.out.println(output);
-			out(output);
-		} catch (IOException ex) {
+		} catch (Throwable ex) {
 			ex.printStackTrace();
-			err("error: ioexception");
+			err("error: exception");
 			err(ex.toString());
-		} catch (ClassNotFoundException ex) {
-			ex.printStackTrace();
-			err("error: class not found");
-			err(ex.toString());
-		} catch (FileException ex) {
-			err("error: fileexception");
-			err(ex.toString());
-		} finally {
-			if (board.useCheckpointing())
-				t.cancel();
-		}
+			return;
+		} 
+		if (board.useCheckpointing())
+			t.schedule(new CheckPointer(board, new CheckPointActionMiG(this)),
+					CHECKPOINT_INTERVAL, CHECKPOINT_INTERVAL);
+
+		// out("File read");
+		// Actual work is done in the board class :-)
+
+		boardtime = System.currentTimeMillis();
+		board.backtrack();
+		endtime = System.currentTimeMillis();
+
+		if (board.useCheckpointing())
+			t.cancel();
+
+		boardtime = endtime - boardtime;
+
+		String output = "\n" + argv[0] + "\ntotal: " + board.getTotal()
+				+ "\nunique: " + board.getUnique() + "\nboardtime: "
+				+ boardtime + "\ntime: " + (endtime - starttime);
+
+		System.out.println(output);
+		out(output);
+
 		System.out.println("JOB SLUT: " + System.currentTimeMillis());
 	}
 
