@@ -26,7 +26,7 @@ Udover disse emner har vi et errata-dokument.
   
   * Hvorfor er vi ikke gået videre med løsningen med intelligente ressourcer? (manglende ipc)
 
-    - Til at begynde med snakkede vi meget om en løsning med intelligente job, der selv tager sig af at hente nye problemer fra gridet, og som samtidig hver især kunne overvåge den samlede beregning, og generere nye problemer (ved at opsplitte de store, initielle problemer) når der var ressourcer til at beregne dem. Vi gik væk fra denne idé, da den er væsentligt mere kompliceret og de fordele en intelligent løsning ville give vil ikke nødvendigvis overstige den ekstra køretid for den mere komplicerede algoritme. Adgang til filer på MiG er ikke atomisk. 
+    - Til at begynde med snakkede vi meget om en løsning med intelligente job, der selv tager sig af at hente nye problemer fra gridet, og som samtidig hver især kunne overvåge den samlede beregning, og generere nye problemer (ved at opsplitte de store, initielle problemer) når der var ressourcer til at beregne dem. Vi gik væk fra denne idé, da den er væsentligt mere kompliceret og de fordele en intelligent løsning ville give vil ikke nødvendigvis overstige den ekstra køretid for den mere komplicerede algoritme. Adgang til filer på MiG er ikke atomisk. Heterogene ressourcer gør det svært at sige noget foruftigt om hvordan job kunne opføre sig intelligent. 
 
 ==Status på projektet (implementationen)==
 
