@@ -6,25 +6,49 @@ Udover disse emner har vi et errata-dokument.
 
 ==Kort introduktion (meget kort!)==
 
+  * gentagelse af PF (i datid ;-)), afgrænsning og konklusion. Herunder (ultra kort) hvad er MiG, oc og nq.
+  * Status er ganske kort: "Vi har sat beregning igang for n=26, ved at submitte 1000 ud af 120000 job". "Vi vil komme give en grundigere status senere" 
+  
+
+==Fejl og mangler i rapporten==
+    
+  - Grundigere forklaring af mekanismen bag checkpointing'en og hvorfor det bliver så kompliceret.
+
+    * vi er nødt til at checkpointe det rigtige sted. 
+
+    * fordi checkpointing fungerer med serialiserede java-objekter, og programtæller ikke gemmes.
+  
+  - Billedtekst figur 9 / senere afsnit 26 skulle have været 10!!!
+     
+    * ny udregning af hvor meget checkpoints kan komme til at fylde.
+  
+  - Afsnit 8 - Det ville være nemmere at porte og test oc- programmer hvis Migob ikke arvede fra Applet. Glem abstract - det er en tanke-omformulerings-torsk
+ 
+  - TODO: Har vi andre mangler i forhold til problemformuleringen?
+  
+  - Hvorfor er vi ikke gået videre med løsningen med intelligente ressourcer? (manglende ipc)
+
+    - Til at begynde med snakkede vi meget om en løsning med intelligente job, der selv tager sig af at hente nye problemer fra gridet, og som samtidig hver især kunne overvåge den samlede beregning, og generere nye problemer (ved at opsplitte de store, initielle problemer) når der var ressourcer til at beregne dem. Vi gik væk fra denne idé, da den er væsentligt mere kompliceret og de fordele en intelligent løsning ville give vil ikke nødvendigvis overstige den ekstra køretid for den mere komplicerede algoritme. Adgang til filer på MiG er ikke atomisk. 
+
+==Flere forbedringer til One-Click:== 
+ 
+  * checkpointing kunne returnere efter serialisering, så vi kan regne videre mens der sendes. (latency-hiding?)   
+
+
 ==Status på projektet (implementationen)==
 
   * Hvad har vi sat i gang? Hvad kører? Hvad fejler? (Hvilke undtagelser og hvorfor?)
     
-    - 
+    - Vi har submittet 1000 ud af ca. 12000 job for n=26, har fået svar på ét. 
+
+    - java 1.5 er minimum. Ellers fejles med ERROR, MiG status = success!! 
+
+    - vi har ikke mulighed for at standse dem.
     
   * Benchmarks for den efterfølgende stakbaserede implementation
 
   * Problemer med MiG
 
-==Ting vi mangler at forklare i rapporten==
-
-  * Skal vi lave en gennemgang af (de værste) fejl?
-
-  * Hvad har/mangler vi i forhold til problemformuleringen?
-  
-  * Hvorfor er vi ikke gået videre med løsningen med intelligente ressourcer? (manglende ipc)
-
-    - Til at begynde med snakkede vi meget om en løsning med intelligente job, der selv tager sig af at hente nye problemer fra gridet, og som samtidig hver især kunne overvåge den samlede beregning, og generere nye problemer (ved at opsplitte de store, initielle problemer) når der var ressourcer til at beregne dem. Vi gik væk fra denne idé, da den er væsentligt mere kompliceret og de fordele en intelligent løsning ville give vil ikke nødvendigvis overstige den ekstra køretid for den mere komplicerede algoritme. Adgang til filer på MiG er ikke atomisk. 
 
   * Hvad ville vi gerne have haft tid til? 
     
@@ -33,22 +57,19 @@ Udover disse emner har vi et errata-dokument.
     - Benchmarks af alternative implementationer.
       
       -    
-   
-==Flere forbedringer til One-Click:==
-  * checkpointing kunne returnere efter serialisering, så vi kan regne videre mens der sendes. (latency-hiding?)   
 
 
-=Idéer:=
+
+=Resterende idéer:=
 
   * schedulering i BOINC osv. Kan vi overføre noget til MiG?
 
   * skal vi konkludere at det er lige meget med opgavestørrelserne, vi får alligevel kun problemet til sidst, og der har vi så andre projekter, der vil overtage gridet.
 
   * Vi kunne lave estimat af hvor langt tid det vil tage at køre hhv. den største og den mindste opgave. Vi har pt. en færdig opgave at regne ud fra.
-
-  * Forklaring af checkpointing-mekanismen, og hvorfor vi gør som vi gør. Hvor kan vi checkpointe 
   
   * Kørselsvejledning?!
+
 
 =Vi skal læse op på: (for at kunne besvare spørgsmål :-))=
   
