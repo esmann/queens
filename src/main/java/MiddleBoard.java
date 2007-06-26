@@ -81,6 +81,64 @@ public class MiddleBoard extends Board2 {
 	}
 
 	@Override
+	public synchronized void backtrackLinkedList() {
+		//System.out.println("backtrackLinkedList, mask is : " + MASK);
+		BoardLine firstLine = new BoardLine(
+				isOccupiedHorizontal[currentBoardLine],
+				isOccupiedRightDiagonal[currentBoardLine],
+				isOccupiedLeftDiagonal[currentBoardLine], currentBoardLine);
+		BoardLine line = firstLine;
+		while (line != null) {
+			//line.printBoard();
+			// checkpoint here
+			if (line.lineNumber == sizee) {
+				if (line.hasPossiblePlacements()) {
+					if ((line.possiblePlacements & LASTMASK) == 0) {
+						line.queenPlacement = line.possiblePlacements;
+						board[line.lineNumber] = line.queenPlacement;
+						// System.out.println("b2: " + y + ", " + left + ", " +
+						// down + ", " + right);
+						this.check();
+					}
+				}
+			} else {
+			if (line.lineNumber < bound1) {
+				line.possiblePlacements |= SIDEMASK;
+				line.possiblePlacements ^= SIDEMASK;
+			} else if (line.lineNumber == bound2) {
+
+				if ((line.horisontal & SIDEMASK) == 0) {
+					line.possiblePlacements = 0;
+				}
+
+				if ((line.horisontal & SIDEMASK) != SIDEMASK) {
+					line.possiblePlacements &= SIDEMASK;
+				}
+			}
+			}
+		
+			// backtrack
+			while (line != null && line.possiblePlacements == 0) {
+				line = line.parent;
+				if (line == null) {
+					return;
+				}
+			}
+			 
+			int selected = -line.possiblePlacements & line.possiblePlacements;
+			line.queenPlacement = board[line.lineNumber] = selected;
+			//int selected = Integer.lowestOneBit(line.possiblePlacements);
+			line.possiblePlacements ^= selected;
+			line = new BoardLine((line.horisontal | selected),
+					(line.rightDiagonal | selected) >>> 1,
+					(line.leftDiagonal | selected) << 1, line);
+
+			// System.out.println("end of while: " + line.lineNumber);
+		}
+
+	}
+
+	@Override
 	public synchronized final void backtrackIterative() {
 		int bit;
 		int bitmap; // used for minimizing array lookups
@@ -324,9 +382,5 @@ public class MiddleBoard extends Board2 {
 		return this.count2 + this.count4 + this.count8;
 	}
 
-	@Override
-	void backtrackLinkedList() {
-		// TODO Auto-generated method stub
-		
-	}
+
 }

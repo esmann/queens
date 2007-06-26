@@ -15,8 +15,11 @@ public class BoardLine {
 		this.parent = null;
 		this.lineNumber = lineNumber;
 		this.possiblePlacements = Board2.MASK & ~(leftDiagonal | horisontal | rightDiagonal);
-        System.out.println(this.possiblePlacements);
-	}
+        //System.out.println("possible: " + this.possiblePlacements);
+        //System.out.println("left      : " + this.leftDiagonal);
+        //System.out.println("right     : " + this.rightDiagonal);
+        //System.out.println("horisontal: " + this.horisontal);
+    	}
     
     public BoardLine(int horisontal, int rightDiagonal, int leftDiagonal, BoardLine parent) {
 		this.horisontal = horisontal;
@@ -25,7 +28,10 @@ public class BoardLine {
 		this.parent = parent;
 		this.lineNumber = parent.lineNumber + 1;
 		this.possiblePlacements = Board2.MASK & ~(leftDiagonal | horisontal | rightDiagonal);
-        System.out.println(this.possiblePlacements);
+        //System.out.println("possible  : " + this.possiblePlacements);
+        //System.out.println("left      : " + this.leftDiagonal);
+        //System.out.println("right     : " + this.rightDiagonal);
+        //System.out.println("horisontal: " + this.horisontal);
 		assert(parent != this);
 	}
     
@@ -38,6 +44,5 @@ public class BoardLine {
     		parent.printBoard();
     	System.out.println(lineNumber + ": " + Integer.toBinaryString(possiblePlacements));
     	*/
-    	
     }
 }

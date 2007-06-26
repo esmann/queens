@@ -152,7 +152,7 @@ void NQueens(void)
     BOARDE = &BOARD[SIZEE];
     TOPBIT = 1 << SIZEE;
     MASK   = (1 << SIZE) - 1;
-
+		printf("mask: %2d\n", MASK);
     /* 0:000000001 */
     /* 1:011111100 */
    BOARD[0] = 1;

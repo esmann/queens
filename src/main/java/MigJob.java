@@ -17,7 +17,7 @@ public class MigJob {
 		mrsl.put("RUNTIMEENVIRONMENT", "JVM_BYTECODE");
 		mrsl.put("SANDBOX", "1");
 		mrsl.put("CPUTIME", "100000");
-		// mrsl.put("VGRID", "NQueen");
+		mrsl.put("VGRID", "NQueen");
 		// mrsl.put("PROJECT", "NQueen_Test");
 	}
 
