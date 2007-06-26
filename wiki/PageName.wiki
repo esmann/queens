@@ -28,22 +28,17 @@ Udover disse emner har vi et errata-dokument.
 
     - Til at begynde med snakkede vi meget om en løsning med intelligente job, der selv tager sig af at hente nye problemer fra gridet, og som samtidig hver især kunne overvåge den samlede beregning, og generere nye problemer (ved at opsplitte de store, initielle problemer) når der var ressourcer til at beregne dem. Vi gik væk fra denne idé, da den er væsentligt mere kompliceret og de fordele en intelligent løsning ville give vil ikke nødvendigvis overstige den ekstra køretid for den mere komplicerede algoritme. Adgang til filer på MiG er ikke atomisk. 
 
-==Flere forbedringer til One-Click:== 
- 
-  * checkpointing kunne returnere efter serialisering, så vi kan regne videre mens der sendes. (latency-hiding?)   
-
-
 ==Status på projektet (implementationen)==
 
   * Hvad har vi sat i gang? Hvad kører? Hvad fejler? (Hvilke undtagelser og hvorfor?)
     
-    - Vi har submittet 1000 ud af ca. 12000 job for n=26, har fået svar på ét. 
+    - Vi har submittet 1000 ud af ca. 12000 job for n=26, har indtil videre fået svar på ét bræt. Tog 24timer, ca. 13mia løsninger.
 
-    - java 1.5 er minimum. Ellers fejles med ERROR, MiG status = success!! 
-
-    - vi har ikke mulighed for at standse dem.
+    - java 1.5 er minimum. Ellers fejles med ERROR, MiG status = success!!. Der kan opstå andre fejl, der vil give os errors og MiG status = succes... 
     
-  * Benchmarks for den efterfølgende stakbaserede implementation
+    - problemer med gamle job, vi submittede først alle 13000 job, men fik så timeout før vi fik jobid tilbage. Herefter submittede vi 1000 nye, efter timeout får vi ikke lov til at køre migls. :-) Uden jobid har vi ikke mulighed for at standse dem.
+    
+  * Benchmarks for den efterfølgende stakbaserede implementation. Implementeret en ny løsning for at undgå tjek for overløb ifm. med arraytilgange. Vi overvejede java's Stack, men den har et underliggende Array. Derfor har vi istedet brugt en hægtet liste. Denne løsning er dog langsommere(!) - vi har erstattet tjek-for-overløb med objekt-oprettelse. Det vidste vi jo godt i forvejen, men håbede java netop ville optimere oprettele og collection for os. Istedet burde vi forsøge med for-oprettet liste af n objekter, og genbruge disse objekter.
 
   * Problemer med MiG
 
@@ -54,12 +49,16 @@ Udover disse emner har vi et errata-dokument.
     
     - Benchmarks af alternative implementationer.
       
-      -    
+      - 
 
+=Idéer=
 
-
-=Resterende idéer:=
-
+==Flere forbedringer til One-Click:== 
+ 
+  * checkpointing kunne returnere efter serialisering, så vi kan regne videre mens der sendes. (latency-hiding?)
+  
+==Whatever else==
+  
   * schedulering i BOINC osv. Kan vi overføre noget til MiG?
 
   * skal vi konkludere at det er lige meget med opgavestørrelserne, vi får alligevel kun problemet til sidst, og der har vi så andre projekter, der vil overtage gridet.
