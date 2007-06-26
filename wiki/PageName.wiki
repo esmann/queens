@@ -43,14 +43,6 @@ Udover disse emner har vi et errata-dokument.
   * Problemer med MiG
 
 
-  * Hvad ville vi gerne have haft tid til? 
-    
-    - Optimeringer af javakoden (stak, mRSL-argumenter).
-    
-    - Benchmarks af alternative implementationer.
-      
-      - 
-
 =Idéer=
 
 ==Flere forbedringer til One-Click:== 
@@ -66,6 +58,8 @@ Udover disse emner har vi et errata-dokument.
   * Vi kunne lave estimat af hvor langt tid det vil tage at køre hhv. den største og den mindste opgave. Vi har pt. en færdig opgave at regne ud fra.
   
   * Kørselsvejledning?!
+
+  * Havde vi haft mere tid ville vi have foretaget optimeringer af javakoden (stak, mRSL-argumenter). Det første fik vi gjort efter opgaven blev afleveret. Implementation med hhv. dobblethægtet liste ville være næste punkt. Benchmarks af alternative implementationer.
 
 
 =Vi skal læse op på: (for at kunne besvare spørgsmål :-))=
