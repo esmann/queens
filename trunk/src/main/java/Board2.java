@@ -20,8 +20,6 @@ public abstract class Board2 implements Cloneable, Serializable {
 
 	protected int currentBoardLine = 0;
 
-	public enum Algo {RECURSIVE,ARRAY,LINKEDLIST};
-	
 	protected static int MASK;
 
 	abstract int getBound1();
@@ -65,9 +63,10 @@ public abstract class Board2 implements Cloneable, Serializable {
 	abstract Collection<Board2> init();
 
 	abstract boolean checkBounds();
-
+	
 	abstract void backtrackRecursive(int top, int leftDiagonal, int horizontal,
 			int rightDiagonal);
+	abstract void backtrackDoubleLinkedList();
     abstract void backtrackLinkedList();
 	abstract void backtrackIterative();
 
@@ -85,6 +84,9 @@ public abstract class Board2 implements Cloneable, Serializable {
 		}			
 		
 		switch (algorithm) {
+		case DOUBLELINKEDLIST:
+			backtrackDoubleLinkedList();
+			break;
 		case LINKEDLIST:
 			backtrackLinkedList();
 			break;
@@ -102,6 +104,8 @@ public abstract class Board2 implements Cloneable, Serializable {
 		// System.out.println("Total Backtracking took(ms) :" + this.time);
 	}
 
+	
+	
 	abstract long getUnique();
 
 	abstract long getTotal();

@@ -89,24 +89,73 @@ public class CornerBoard extends Board2 {
 		this.bound1 = bound;
 	}
 
+	public synchronized void backtrackDoubleLinkedList() {
+		// System.out.println("backtrackLinkedList, mask is : " + MASK);
+		BoardLine firstLine = new BoardLine(
+				isOccupiedHorizontal[currentBoardLine],
+				isOccupiedRightDiagonal[currentBoardLine],
+				isOccupiedLeftDiagonal[currentBoardLine], currentBoardLine);
+		BoardLine line = firstLine;
+
+		BoardLine bl = firstLine;
+
+		for (int linenr = currentBoardLine; linenr < this.size; linenr++) {
+			bl = new BoardLine(bl);
+		}
+		
+		while (line != null) {			
+			// checkpoint here
+			if (line.lineNumber == sizee) {
+				if (line.hasPossiblePlacements()) {
+					this.count8++;
+					line.possiblePlacements = 0;
+				}
+			} else if (line.lineNumber < bound1) {
+				line.possiblePlacements |= 2;
+				line.possiblePlacements ^= 2;
+			}
+			// backtrack
+			while (line != null && line.possiblePlacements == 0) {
+				line = line.prev;
+				if (line == null) {
+					return;
+				}			
+			}
+
+			int selected = -line.possiblePlacements & line.possiblePlacements;
+			// int selected = Integer.lowestOneBit(line.possiblePlacements);
+			line.possiblePlacements ^= selected;
+
+			line.next.horisontal = line.horisontal | selected;
+			line.next.rightDiagonal = (line.rightDiagonal | selected) >>> 1;
+			line.next.leftDiagonal = (line.leftDiagonal | selected) << 1;
+			line.next.possiblePlacements = Board2.MASK
+					& ~(line.next.leftDiagonal | line.next.horisontal | line.next.rightDiagonal);
+			line = line.next;
+
+			// System.out.println("end of while: " + line.lineNumber);
+		}
+
+	}
+
 	public synchronized void backtrackLinkedList() {
-		//System.out.println("backtrackLinkedList, mask is : " + MASK);
+		// System.out.println("backtrackLinkedList, mask is : " + MASK);
 		BoardLine firstLine = new BoardLine(
 				isOccupiedHorizontal[currentBoardLine],
 				isOccupiedRightDiagonal[currentBoardLine],
 				isOccupiedLeftDiagonal[currentBoardLine], currentBoardLine);
 		BoardLine line = firstLine;
 		while (line != null) {
-			//line.printBoard();
+			// line.printBoard();
 			// checkpoint here
 			if (line.lineNumber == sizee) {
 				if (line.hasPossiblePlacements()) {
-					//System.out.println("solution found");
+					// System.out.println("solution found");
 					this.count8++;
 					line.possiblePlacements = 0;
 				}
 			}
-			
+
 			else {
 				if (line.lineNumber < bound1) {
 					line.possiblePlacements |= 2;
@@ -115,14 +164,14 @@ public class CornerBoard extends Board2 {
 			}
 			// backtrack
 			while (line != null && line.possiblePlacements == 0) {
-				line = line.parent;
+				line = line.prev;
 				if (line == null) {
 					return;
 				}
 			}
-			 
+
 			int selected = -line.possiblePlacements & line.possiblePlacements;
-			//int selected = Integer.lowestOneBit(line.possiblePlacements);
+			// int selected = Integer.lowestOneBit(line.possiblePlacements);
 			line.possiblePlacements ^= selected;
 			line = new BoardLine((line.horisontal | selected),
 					(line.rightDiagonal | selected) >>> 1,
@@ -166,10 +215,15 @@ public class CornerBoard extends Board2 {
 			bitmap = this.MASK
 					& ~(isOccupiedLeftDiagonal[currentBoardLine]
 							| isOccupiedHorizontal[currentBoardLine] | isOccupiedRightDiagonal[currentBoardLine]);
-            /*System.out.println("possible  : " + bitmap);
-            System.out.println("left      :  " + isOccupiedLeftDiagonal[currentBoardLine]);
-            System.out.println("right     :  " + isOccupiedRightDiagonal[currentBoardLine]);
-            System.out.println("horizontal:  " + isOccupiedHorizontal[currentBoardLine]);*/
+			/*
+			 * System.out.println("possible : " + bitmap);
+			 * System.out.println("left : " +
+			 * isOccupiedLeftDiagonal[currentBoardLine]);
+			 * System.out.println("right : " +
+			 * isOccupiedRightDiagonal[currentBoardLine]);
+			 * System.out.println("horizontal: " +
+			 * isOccupiedHorizontal[currentBoardLine]);
+			 */
 			if (currentBoardLine == sizee) {
 				if (bitmap != 0) {
 					this.count8++;

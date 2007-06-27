@@ -1,0 +1,5 @@
+/**
+ * 
+ */
+
+public enum Algo {RECURSIVE,ARRAY,LINKEDLIST,DOUBLELINKEDLIST}

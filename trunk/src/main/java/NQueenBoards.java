@@ -40,7 +40,7 @@ public class NQueenBoards {
 		size = 16;
 		maxSteps = 1;
 
-		Board2.Algo alg = Board2.Algo.LINKEDLIST; 
+		Algo alg = Algo.LINKEDLIST; 
 
 		if (args.length > 2) {
 			if (Integer.parseInt(args[0]) > 0) {
@@ -52,7 +52,7 @@ public class NQueenBoards {
 			}
 
 			if (args[2] != ""){
-				alg = Board2.Algo.valueOf(args[2]);		
+				alg = Algo.valueOf(args[2]);		
 			}
 		}
 

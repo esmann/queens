@@ -15,7 +15,7 @@ public class MiddleboardTest {
 	@Test(timeout = 10000)
 	public void testMiddleBoard() {
 		
-		for (Board2.Algo a : Board2.Algo.values()) {
+		for (Algo a : Algo.values()) {
 			for (int[] solution : solutions)
 				testHelper(a, solution);	
 		}
@@ -27,7 +27,7 @@ public class MiddleboardTest {
 	public void testParrallel() {
 		System.out.println("Parrallel test");
 		MiddleBoard mboard = new MiddleBoard(12);
-		mboard.setAlgo(Board2.Algo.LINKEDLIST);
+		mboard.setAlgo(Algo.LINKEDLIST);
 		int maxSteps = 9;
 
 		Queue<Board2> boards = new LinkedList<Board2>();
@@ -45,7 +45,7 @@ public class MiddleboardTest {
 			int i = 0;
 			// Do a backtrack for each step
 			for (Board2 board : boards) {
-				board.setAlgo(Board2.Algo.ARRAY);
+				board.setAlgo(Algo.ARRAY);
 				System.out.println("Board nr: " + i++ + " is backtracking:");
 				board.backtrack();
 				/*total += board.getTotal();
@@ -60,7 +60,7 @@ public class MiddleboardTest {
 		}
 	}
 
-	void testHelper(Board2.Algo a, int... args) {
+	void testHelper(Algo a, int... args) {
 		if (args.length != 5)
 			fail("Must get five ints");
 
