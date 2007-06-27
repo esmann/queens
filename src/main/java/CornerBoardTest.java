@@ -29,23 +29,23 @@ public class CornerBoardTest {
 
 	}
 
-	// @Test(timeout = 5000)
 	@Test
-	public void testIterative() {
+	public void testbackTrack() {
 
 		//testHelper(18, 1744912, false);
-		for (Board2.Algo a : Board2.Algo.values()) {
+		for (Algo a : Algo.values()) {	
+			System.out.println(a.name());
 			testHelper(6, 0,a);
-			//testHelper(5, 8,a);
-			//testHelper(7, 2 * 8,a);
-			//testHelper(8, 2 * 8,a);
-			//testHelper(9, 14 * 8,a); // Up from 2 to 14 unique!
+			testHelper(5, 8,a);
+			testHelper(7, 2 * 8,a);
+			testHelper(8, 2 * 8,a);
+			testHelper(9, 14 * 8,a); // Up from 2 to 14 unique!
 		
 		}
 	}
 
 
-	void testHelper(int size, int expectedSolutions, Board2.Algo a) {
+	void testHelper(int size, int expectedSolutions, Algo a) {
 		System.out.println("SIZE: " + size);
 		CornerBoard cboard = new CornerBoard(size);
 		cboard.setAlgo(a);

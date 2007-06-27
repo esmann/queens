@@ -81,53 +81,128 @@ public class MiddleBoard extends Board2 {
 	}
 
 	@Override
+	public synchronized void backtrackDoubleLinkedList() {
+		// System.out.println("backtrackLinkedList, mask is : " + MASK);
+		BoardLine firstLine = new BoardLine(
+				isOccupiedHorizontal[currentBoardLine],
+				isOccupiedRightDiagonal[currentBoardLine],
+				isOccupiedLeftDiagonal[currentBoardLine], currentBoardLine);
+		BoardLine line = firstLine;
+
+		BoardLine bl = firstLine;
+
+		for (int linenr = currentBoardLine; linenr < this.size; linenr++) {
+			bl = new BoardLine(bl);
+		}
+
+		while (line != null) {
+			// checkpoint here
+			if (line.lineNumber == sizee) {
+				if (line.hasPossiblePlacements()) {
+					if ((line.possiblePlacements & LASTMASK) == 0) {
+						line.queenPlacement = line.possiblePlacements;
+						
+						// We could make a special version of check that is faster?
+						setBoard(line);													
+						this.check();
+					}
+				}
+			} else {
+				if (line.lineNumber < bound1) {
+					line.possiblePlacements |= SIDEMASK;
+					line.possiblePlacements ^= SIDEMASK;
+				} else if (line.lineNumber == bound2) {
+
+					if ((line.horisontal & SIDEMASK) == 0) {
+						line.possiblePlacements = 0;
+					}
+
+					if ((line.horisontal & SIDEMASK) != SIDEMASK) {
+						line.possiblePlacements &= SIDEMASK;
+					}
+				}
+			}
+
+			// backtrack
+			while (line != null && line.possiblePlacements == 0) {
+				line = line.prev;
+				if (line == null) {
+					return;
+				}
+			}
+			int selected = -line.possiblePlacements & line.possiblePlacements;
+			line.queenPlacement = selected;
+			// int selected = Integer.lowestOneBit(line.possiblePlacements);
+			line.possiblePlacements ^= selected;
+			
+			
+			line.next.horisontal = line.horisontal | selected;
+			line.next.rightDiagonal = (line.rightDiagonal | selected) >>> 1;
+			line.next.leftDiagonal = (line.leftDiagonal | selected) << 1;
+			line.next.possiblePlacements = Board2.MASK
+					& ~(line.next.leftDiagonal | line.next.horisontal | line.next.rightDiagonal);
+			line = line.next;
+
+			// System.out.println("end of while: " + line.lineNumber);
+		}
+
+	}
+	public void setBoard(BoardLine last) {
+		BoardLine foo = last;
+		while (foo != null) {
+			board[foo.lineNumber] = foo.queenPlacement;
+			foo = foo.prev;
+		}
+	}
+	
+	@Override
 	public synchronized void backtrackLinkedList() {
-		//System.out.println("backtrackLinkedList, mask is : " + MASK);
+		// System.out.println("backtrackLinkedList, mask is : " + MASK);
 		BoardLine firstLine = new BoardLine(
 				isOccupiedHorizontal[currentBoardLine],
 				isOccupiedRightDiagonal[currentBoardLine],
 				isOccupiedLeftDiagonal[currentBoardLine], currentBoardLine);
 		BoardLine line = firstLine;
 		while (line != null) {
-			//line.printBoard();
+			// line.printBoard();
 			// checkpoint here
 			if (line.lineNumber == sizee) {
 				if (line.hasPossiblePlacements()) {
 					if ((line.possiblePlacements & LASTMASK) == 0) {
-						line.queenPlacement = line.possiblePlacements;
-						board[line.lineNumber] = line.queenPlacement;
-						// System.out.println("b2: " + y + ", " + left + ", " +
-						// down + ", " + right);
+						line.queenPlacement = line.possiblePlacements;						
+						// We could make a special version of check that is faster?
+						setBoard(line);
+														
 						this.check();
 					}
 				}
 			} else {
-			if (line.lineNumber < bound1) {
-				line.possiblePlacements |= SIDEMASK;
-				line.possiblePlacements ^= SIDEMASK;
-			} else if (line.lineNumber == bound2) {
+				if (line.lineNumber < bound1) {
+					line.possiblePlacements |= SIDEMASK;
+					line.possiblePlacements ^= SIDEMASK;
+				} else if (line.lineNumber == bound2) {
 
-				if ((line.horisontal & SIDEMASK) == 0) {
-					line.possiblePlacements = 0;
-				}
+					if ((line.horisontal & SIDEMASK) == 0) {
+						line.possiblePlacements = 0;
+					}
 
-				if ((line.horisontal & SIDEMASK) != SIDEMASK) {
-					line.possiblePlacements &= SIDEMASK;
+					if ((line.horisontal & SIDEMASK) != SIDEMASK) {
+						line.possiblePlacements &= SIDEMASK;
+					}
 				}
 			}
-			}
-		
+
 			// backtrack
 			while (line != null && line.possiblePlacements == 0) {
-				line = line.parent;
+				line = line.prev;
 				if (line == null) {
 					return;
 				}
 			}
-			 
+
 			int selected = -line.possiblePlacements & line.possiblePlacements;
-			line.queenPlacement = board[line.lineNumber] = selected;
-			//int selected = Integer.lowestOneBit(line.possiblePlacements);
+			line.queenPlacement = selected;
+			// int selected = Integer.lowestOneBit(line.possiblePlacements);
 			line.possiblePlacements ^= selected;
 			line = new BoardLine((line.horisontal | selected),
 					(line.rightDiagonal | selected) >>> 1,
@@ -144,12 +219,12 @@ public class MiddleBoard extends Board2 {
 		int bitmap; // used for minimizing array lookups
 
 		long begin = System.currentTimeMillis();
-		// for lines above 'top' queen placement is predetermined		
+		// for lines above 'top' queen placement is predetermined
 		while (currentBoardLine >= top) {
 			countBacktrack();
 
 			if (suspendBacktrack) {
-				//dout("DETECTED a suspend request");
+				// dout("DETECTED a suspend request");
 				long now = System.currentTimeMillis();
 				long diff = now - begin;
 
@@ -158,17 +233,18 @@ public class MiddleBoard extends Board2 {
 				begin = System.currentTimeMillis();
 				while (suspendBacktrack) {
 					try { // We ignore interrupts......
-						wait(); // Allow checkpointing thread to enter the boards monitor
+						wait(); // Allow checkpointing thread to enter the
+						// boards monitor
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 				}
 
-				if (exitAfterCheckpoint) // testing purposes only					
+				if (exitAfterCheckpoint) // testing purposes only
 					return;
 			}
 
-			bitmap = this.MASK
+			bitmap = Board2.MASK
 					& ~(isOccupiedLeftDiagonal[currentBoardLine]
 							| isOccupiedHorizontal[currentBoardLine] | isOccupiedRightDiagonal[currentBoardLine]);
 
@@ -262,7 +338,7 @@ public class MiddleBoard extends Board2 {
 
 	public void backtrackRecursive(int y, int left, int down, int right) {
 		countBacktrack();
-		//System.out.println("backtrackMiddle");
+		// System.out.println("backtrackMiddle");
 
 		int bitmap;
 		int bit;
@@ -381,6 +457,4 @@ public class MiddleBoard extends Board2 {
 		// this.Count8 + ")");
 		return this.count2 + this.count4 + this.count8;
 	}
-
-
 }
