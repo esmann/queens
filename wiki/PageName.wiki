@@ -30,29 +30,59 @@ Udover disse emner har vi et errata-dokument.
 
 Grundigere gennemgang af status på projektet.
 
-Vil give en status for den konkrete beregning af n-dronning-problemet for n=26, og de problemer vi er stødt på.
+Vil give en opdateret status for den konkrete beregning af n-dronning-problemet for n=26, og de problemer vi er stødt på.
+    
+    - Vi har foretaget en iterativ, arraybaseret implementation, og igangsat beregningen på MiG. Står i rapport.
+    
+    - Beregninger for n op til 18 med ? antal opgaver er foretaget på gridet, uden problemer.
+    
+    - Vi har submittet 1000 ud af ca. 12000 job for n=26, har indtil videre fået svar på ét bræt. Tog 24timer, ca. 13mia løsninger.
 
-  * Hvad er implementeret
-    - Vi har implementeret Takakens algoritme i java, der kan afvikles hhv. lokalt på og på MiG. 
-og en job-klasse der kan finde løsningen for en af disse delopgaver. Jobklassen kan afvikles på 2 forskellige måder. Rekursiv som den originale  algoritme, iterativt, hvor bitvektorerne gemmes i arrays. Den  
-Opdelingen i delopgave foretages af en opgavegenerator, der 
+    - problemer med gamle job, vi submittede først alle 13000 job, men fik så timeout før vi fik jobid tilbage. 
     
-    - Vi har foretaget en iterativ, arraybaseret implementation, og igangsat beregningen på MiG.
-    
-    - Vi har submittet 1000 ud af ca. 12000 job for n=26, har indtil videre fået svar på ét bræt. Tog 24timer, ca. 13mia løsninger. Delproblemer har meget forskellig størrelse hvorfor vi 
+      * Uden jobid har vi ikke mulighed for at standse dem. 
+      
+      * Efter timeouten får vi ikke lov til at køre migls på hele kataloget. :-) 
 
-    - Vi har haft en del problemer med de . Beregninger for n op til 18 med ? antal opgaver er foretaget på gridet, uden problemer. Java 1.5 er minimum. Ellers fejles med ERROR, MiG status = success!!. Der kan opstå andre fejl, der vil give os errors og MiG status = succes... 
-    Gamle klassefiler 
-    Slettede klassefiler
-    For io exceptions vi fanger, men vi kan ikke sætte status.
+      * Status-siden virker ikke i øjeblikket, vi har dog snakket med Martin Rehr, han er ved at ordne det.
     
-    - problemer med gamle job, vi submittede først alle 13000 job, men fik så timeout før vi fik jobid tilbage. Herefter submittede vi 1000 nye, efter timeout får vi ikke lov til at køre migls. :-) Uden jobid har vi ikke mulighed for at standse dem. Status-siden virker ikke i øjeblikket, vi har dog snakket med Martin Rehr, han er ved at ordne det.
+    - Ting man skal ligge mærke til:
+      
+      * Det der kører er kompileret til minimum Java 1.5. 
+      
+      * Vi oplever ofte tomme status, stdout og stderr filer på job der er tomme, selvom jobbets status er finished.
+          
+      * java.lang.ERROR, MiG status = success!!. 
+      
+      * Der kan opstå andre fejl, der vil give os errors og MiG status = succes... 
+       
+      * For gammel jvm-version på klienten
+        
+      * Gamle klassefiler 
+        
+      * Slettede klassefiler
+      
+      * IO og andre EXCEPTIONS vi fanger, kan vi kan ikke sætte status - kun skrive i stderr.
     
-    - Mht. hastigheden er vi ikke selv udpræget tilfredse, og ville gerne have haft tid til at foretage alternative implementationer. For n op til 18 har vi set at vores iterative er næsten dobbelt så langtsom som originalen (og den rekursive java kode). 
+    - Mht. hastigheden er vi ikke selv udpræget tilfredse, men det blev i første omgang prioriteret lavt.
+
+      * For n op til 18 har vi set at vores iterative er næsten dobbelt så langtsom som originalen (og den rekursive java kode). 
     
-     Det skyldes at vi i den iterative implementation har været nødt til at have flere branches end i den originale, rekursive. Derudover tror vi overløbscheck i java-arrays er en stor skurk, vi har svært ved at profilere koden, da profileringsværktøjer som regel viser tidsforbrug per funktion (og vi har jo kun en :-). I forsøget på at undgå overløbscheck har vi 
-    
-  * Implementeret en ny løsning for at undgå tjek for overløb ifm. med arraytilgange. Vi overvejede java's Stack, men den har et underliggende Array. Derfor har vi istedet brugt en hægtet liste. Denne løsning er dog langsommere(!) - vi har erstattet tjek-for-overløb med objekt-oprettelse. Det vidste vi jo godt i forvejen, men håbede java netop ville optimere oprettele og collection for os. Istedet burde vi forsøge med for-oprettet liste af n objekter, og genbruge disse objekter. 
+    - Som nævnt mener vi det skyldes
+      
+      * i den iterative implementation har vi været nødt til at have flere branches end i den originale, rekursive.
+      
+      * Vi formode at overløbscheck i java-arrays er en stor skurk
+      
+      * Dog har vi har svært ved at profilere koden, da profileringsværktøjer som regel viser tidsforbrug per funktion, ikke per linie. 
+      
+    - I forsøget på at undgå overløbscheck har vi implementeret en løsning der bruger en dobbelthægtet liste 
+      
+      * liste af linieobjekter med bitvektorer.
+      
+      * Overvejede java's Stack, men den har et underliggende Array. 
+      
+      * Ny version kører næsten lige så hurtigt som rekursiv java impl.
 
   
   * Hvorfor er vi ikke gået videre med løsningen med intelligente ressourcer? (manglende ipc)
