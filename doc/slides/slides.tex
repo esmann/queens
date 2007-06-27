@@ -1,5 +1,4 @@
 \documentclass{beamer}
-
 \usepackage{beamerthemesplit}
 \usepackage[utf8]{inputenc}
 
@@ -41,10 +40,9 @@
   \frametitle{Status}
 
   \begin{itemize}
-  \item<1-> Hvad er implementeret.
   \item<.-> Hvad er status for den konkrete beregning
   \item<.-> Hvilke problemer er vi stødt på
-  \item<.-> Alternativ implementation.
+  \item<.-> Alternativ implementation
   \end{itemize}
 }
 
@@ -54,20 +52,21 @@
   \frametitle{Ideer til forbedringer}
 
   \begin{itemize}
-		\item<+-> MiG
-		\begin{itemize}
-			\item<+-> Spildtid mellem hvert job (MiG IO?)
-		\end{itemize}
 		\item<+-> One-Click
 		\begin{itemize}
-			\item<+-> Checkpointing kunne returnere efter serialisering
+			\item<+-> Checkpoint() kunne returnere før I/O.
+			\item<+-> Webstart fremfor Applets
 		\end{itemize}
 		\item<+-> NQueen 
-		\begin{itemize}
-			\item<+-> Angive board som argument, i stedet for at serialisere
-			\item<+-> Opgavestørrelser, problemet opstår først til sidst og der er der andre projekter der vil overtage.      
-			\item<+-> Estimat af hvor lang tid den største/mindste opgave tager. 
+		\begin{itemize}7
+			\item<+-> Undgå serialisering
+			\item<+-> Fair opdeling af bræt
 		\end{itemize}
+				\item<+-> MiG
+		\begin{itemize}
+			\item<+-> MiG IO - Spildtid mellem hvert job er stor.
+		\end{itemize}
+
   \end{itemize}
 }
 \end{document}
