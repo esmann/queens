@@ -16,8 +16,7 @@
 	\frametitle{Introduktion}
 
 	\begin{itemize}
-	\item<1-> Opgaven
-	\item<.-> MiG
+	\item<1-> MiG
 	\item<.-> One-Click
 	\item<.-> NQueen
 	\end{itemize}
@@ -55,10 +54,20 @@
   \frametitle{Ideer til forbedringer}
 
   \begin{itemize}
-  \item<1-> Checkpointing kunne returnere efter serialisering
-  \item<.-> Schedulering i BOINC, kan vi overføre noget til MiG.
-  \item<.-> Opgavestørrelser, problemet opstår først til sidst og der er der andre projekter der vil overtage.      
-	\item<.-> Estimat af hvor lang tid den største/mindste opgave tager. 
+		\item<+-> MiG
+		\begin{itemize}
+			\item<+-> Spildtid mellem hvert job (MiG IO?)
+		\end{itemize}
+		\item<+-> One-Click
+		\begin{itemize}
+			\item<+-> Checkpointing kunne returnere efter serialisering
+		\end{itemize}
+		\item<+-> NQueen 
+		\begin{itemize}
+			\item<+-> Angive board som argument, i stedet for at serialisere
+			\item<+-> Opgavestørrelser, problemet opstår først til sidst og der er der andre projekter der vil overtage.      
+			\item<+-> Estimat af hvor lang tid den største/mindste opgave tager. 
+		\end{itemize}
   \end{itemize}
 }
 \end{document}
