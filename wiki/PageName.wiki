@@ -8,6 +8,7 @@ Udover disse emner har vi et errata-dokument.
 
   * gentagelse af PF (i datid ;-)), afgrænsning og konklusion. Herunder (ultra kort) hvad er MiG, oc og nq.
   * Status er ganske kort: "Vi har sat beregning igang for n=26, ved at submitte 1000 ud af 120000 job". "Vi vil komme give en grundigere status senere" 
+  * "Spørg endelig ind"
   
 
 ==Fejl og mangler i rapporten==
@@ -23,24 +24,40 @@ Udover disse emner har vi et errata-dokument.
   * Afsnit 8 - Det ville være nemmere at porte og test oc- programmer hvis Migob ikke arvede fra Applet. Glem abstract - det er en tanke-omformulerings-torsk
  
   * TODO: Har vi andre mangler i forhold til problemformuleringen?
+ 
+
+==Status på projektet==
+
+Grundigere gennemgang af status på projektet.
+
+Vil give en status for den konkrete beregning af n-dronning-problemet for n=26, og de problemer vi er stødt på.
+
+  * Hvad er implementeret
+    - Vi har implementeret Takakens algoritme i java, der kan afvikles hhv. lokalt på og på MiG. 
+og en job-klasse der kan finde løsningen for en af disse delopgaver. Jobklassen kan afvikles på 2 forskellige måder. Rekursiv som den originale  algoritme, iterativt, hvor bitvektorerne gemmes i arrays. Den  
+Opdelingen i delopgave foretages af en opgavegenerator, der 
+    
+    - Vi har foretaget en iterativ, arraybaseret implementation, og igangsat beregningen på MiG.
+    
+    - Vi har submittet 1000 ud af ca. 12000 job for n=26, har indtil videre fået svar på ét bræt. Tog 24timer, ca. 13mia løsninger. Delproblemer har meget forskellig størrelse hvorfor vi 
+
+    - Vi har haft en del problemer med de . Beregninger for n op til 18 med ? antal opgaver er foretaget på gridet, uden problemer. Java 1.5 er minimum. Ellers fejles med ERROR, MiG status = success!!. Der kan opstå andre fejl, der vil give os errors og MiG status = succes... 
+    Gamle klassefiler 
+    Slettede klassefiler
+    For io exceptions vi fanger, men vi kan ikke sætte status.
+    
+    - problemer med gamle job, vi submittede først alle 13000 job, men fik så timeout før vi fik jobid tilbage. Herefter submittede vi 1000 nye, efter timeout får vi ikke lov til at køre migls. :-) Uden jobid har vi ikke mulighed for at standse dem. Status-siden virker ikke i øjeblikket, vi har dog snakket med Martin Rehr, han er ved at ordne det.
+    
+    - Mht. hastigheden er vi ikke selv udpræget tilfredse, og ville gerne have haft tid til at foretage alternative implementationer. For n op til 18 har vi set at vores iterative er næsten dobbelt så langtsom som originalen (og den rekursive java kode). 
+    
+     Det skyldes at vi i den iterative implementation har været nødt til at have flere branches end i den originale, rekursive. Derudover tror vi overløbscheck i java-arrays er en stor skurk, vi har svært ved at profilere koden, da profileringsværktøjer som regel viser tidsforbrug per funktion (og vi har jo kun en :-). I forsøget på at undgå overløbscheck har vi 
+    
+  * Implementeret en ny løsning for at undgå tjek for overløb ifm. med arraytilgange. Vi overvejede java's Stack, men den har et underliggende Array. Derfor har vi istedet brugt en hægtet liste. Denne løsning er dog langsommere(!) - vi har erstattet tjek-for-overløb med objekt-oprettelse. Det vidste vi jo godt i forvejen, men håbede java netop ville optimere oprettele og collection for os. Istedet burde vi forsøge med for-oprettet liste af n objekter, og genbruge disse objekter. 
+
   
   * Hvorfor er vi ikke gået videre med løsningen med intelligente ressourcer? (manglende ipc)
 
     - Til at begynde med snakkede vi meget om en løsning med intelligente job, der selv tager sig af at hente nye problemer fra gridet, og som samtidig hver især kunne overvåge den samlede beregning, og generere nye problemer (ved at opsplitte de store, initielle problemer) når der var ressourcer til at beregne dem. Vi gik væk fra denne idé, da den er væsentligt mere kompliceret og de fordele en intelligent løsning ville give vil ikke nødvendigvis overstige den ekstra køretid for den mere komplicerede algoritme. Adgang til filer på MiG er ikke atomisk. Heterogene ressourcer gør det svært at sige noget foruftigt om hvordan job kunne opføre sig intelligent. 
-
-==Status på projektet (implementationen)==
-
-  * Hvad har vi sat i gang? Hvad kører? Hvad fejler? (Hvilke undtagelser og hvorfor?)
-    
-    - Vi har submittet 1000 ud af ca. 12000 job for n=26, har indtil videre fået svar på ét bræt. Tog 24timer, ca. 13mia løsninger.
-
-    - java 1.5 er minimum. Ellers fejles med ERROR, MiG status = success!!. Der kan opstå andre fejl, der vil give os errors og MiG status = succes... 
-    
-    - problemer med gamle job, vi submittede først alle 13000 job, men fik så timeout før vi fik jobid tilbage. Herefter submittede vi 1000 nye, efter timeout får vi ikke lov til at køre migls. :-) Uden jobid har vi ikke mulighed for at standse dem.
-    
-  * Benchmarks for den efterfølgende stakbaserede implementation. Implementeret en ny løsning for at undgå tjek for overløb ifm. med arraytilgange. Vi overvejede java's Stack, men den har et underliggende Array. Derfor har vi istedet brugt en hægtet liste. Denne løsning er dog langsommere(!) - vi har erstattet tjek-for-overløb med objekt-oprettelse. Det vidste vi jo godt i forvejen, men håbede java netop ville optimere oprettele og collection for os. Istedet burde vi forsøge med for-oprettet liste af n objekter, og genbruge disse objekter.
-
-  * Problemer med MiG
 
 
 =Idéer=
